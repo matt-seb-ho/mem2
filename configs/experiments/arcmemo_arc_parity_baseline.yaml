@@ -1,0 +1,8 @@
+_base_: ../arcmemo_arc_strict.yaml
+
+run:
+  run_type: arcmemo_arc_parity_baseline
+
+components:
+  benchmark:
+    limit: 3

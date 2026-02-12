@@ -1,0 +1,17 @@
+_base_: ./arcmemo_arc_logic_parity_openrouter_mem_retry_desc.yaml
+
+run:
+  run_type: arcmemo_arc_livefull_nocache_bs8
+
+components:
+  benchmark:
+    include_ids: []
+    limit: 0
+  inference_engine:
+    gen_cfg:
+      ignore_cache: true
+      batch_size: 8
+  memory_retriever:
+    selector_gen_cfg:
+      ignore_cache: true
+      batch_size: 8

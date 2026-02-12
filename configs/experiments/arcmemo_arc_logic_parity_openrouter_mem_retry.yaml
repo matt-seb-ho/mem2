@@ -1,0 +1,80 @@
+_base_: ../base.yaml
+
+pipeline:
+  provider: llmplus_openrouter
+  memory_retriever: arcmemo_selector
+
+run:
+  run_type: arcmemo_arc_logic_parity_openrouter_mem_retry
+  execution_mode: arc_batch
+  max_passes: 2
+  retry_criterion: train
+  retry_policy:
+    max_passes: 2
+    criterion: train
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+  strict_arcmemo_compat: false
+  strict_arcmemo_logic_compat: false
+
+components:
+  benchmark:
+    data_root: /root/workspace/data/benchmarks/ARC-AGI/data/evaluation
+    limit: 0
+    include_ids:
+      - ba9d41b8
+      - 9f27f097
+      - 22a4bbc2
+      - 0c9aba6e
+      - 2b01abd0
+      - 50aad11f
+      - 84f2aca1
+      - e69241bd
+      - 2072aba6
+      - 12eac192
+  provider:
+    profile_name: llmplus_openrouter
+  memory_retriever:
+    top_k: 5
+    lesson_file: /root/workspace/arc_memo/data/lessons/from_trace_fs/parsed_lessons.json
+    description_file: null
+    include_prev_attempt: true
+    fallback_to_memory_entries: true
+    use_llm_selector: true
+    selector_model: google/gemini-2.5-flash
+    selector_gen_cfg:
+      n: 1
+      temperature: 0.3
+      max_tokens: 1024
+      top_p: 1.0
+      batch_size: 16
+      seed: null
+      ignore_cache: false
+      expand_multi: null
+    max_candidates_for_prompt: 200
+  memory_builder:
+    max_entries: 1000
+    seed_lessons_file: /root/workspace/arc_memo/data/lessons/from_trace_fs/parsed_lessons.json
+    seed_lessons_per_problem: 5
+  inference_engine:
+    model: google/gemini-2.5-flash
+    gen_cfg:
+      n: 1
+      temperature: 0.3
+      max_tokens: 1024
+      top_p: 1.0
+      batch_size: 16
+      seed: 88
+      ignore_cache: true
+      expand_multi: null
+    prompt_options:
+      include_hint: true
+      hint_template_key: selected
+      require_hint_citations: false
+      instruction_key: default
+      system_prompt_key: default
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+    include_reselected_lessons: true

@@ -1,0 +1,13 @@
+_base_: ./arcmemo_arc_logic_parity_openrouter_mem_retry.yaml
+
+run:
+  run_type: arcmemo_arc_logic_parity_openrouter_mem_retry_desc
+
+components:
+  inference_engine:
+    prompt_options:
+      problem_data: /root/workspace/arc_memo/data/desc_ens/prompt_info.json
+      problem_data_variant_key: gpt41_img
+  memory_retriever:
+    description_file: /root/workspace/arc_memo/data/desc_ens/prompt_info.json
+    description_variant_key: gpt41_img

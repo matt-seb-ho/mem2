@@ -1,0 +1,12 @@
+_base_: ./arcmemo_arc_logic_parity_openrouter_mem_retry_desc.yaml
+
+run:
+  run_type: arcmemo_arc_live10_nocache
+
+components:
+  inference_engine:
+    gen_cfg:
+      ignore_cache: true
+  memory_retriever:
+    selector_gen_cfg:
+      ignore_cache: true

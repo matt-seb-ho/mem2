@@ -1,0 +1,38 @@
+arcmemo_default_spec:
+  execution:
+    mode: arc_batch
+  model:
+    provider_profile: llmplus_arcmemo_gpt41
+    provider: openai
+    name: gpt-4.1-2025-04-14
+  generation:
+    n: 1
+    temperature: 0.3
+    max_tokens: 1024
+    top_p: 1.0
+    batch_size: 16
+    seed: 88
+    ignore_cache: false
+    expand_multi: null
+  prompt:
+    instruction_key: default
+    system_prompt_key: default
+    hint_template_key: selected
+    include_hint: false
+    require_hint_citations: false
+  retry_policy:
+    max_passes: 3
+    criterion: train
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+  retry_prompt:
+    include_reselected_lessons: false
+  scoring:
+    official:
+      step_selection: all
+      attempts_allowed: null
+    strict:
+      include_train: true
+      step_selection: last
+      aggregate_step_method: any

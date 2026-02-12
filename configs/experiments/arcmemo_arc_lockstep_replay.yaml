@@ -1,0 +1,9 @@
+_base_: ./arcmemo_arc_logic_parity_openrouter_mem_retry_desc.yaml
+
+run:
+  run_type: arcmemo_arc_lockstep_replay
+  lockstep_replay:
+    enabled: true
+    source_run_dir: /root/workspace/arc_memo/outputs/2026-02-12/07-29-56
+    replay_initial_completions: true
+    replay_reselected_lessons: true

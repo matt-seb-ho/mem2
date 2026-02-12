@@ -1,0 +1,13 @@
+top_k: 5
+lesson_file: /root/workspace/arc_memo/data/lessons/from_trace_fs/parsed_lessons.json
+description_file: null
+description_variant_key: gpt41_img
+include_prev_attempt: true
+fallback_to_memory_entries: true
+use_llm_selector: true
+selector_model: ""
+selector_gen_cfg:
+  n: 1
+  temperature: 0.0
+  max_tokens: 512
+max_candidates_for_prompt: 200

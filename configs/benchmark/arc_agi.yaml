@@ -1,0 +1,2 @@
+data_root: /root/workspace/data/benchmarks/ARC-AGI/data/training
+limit: 20

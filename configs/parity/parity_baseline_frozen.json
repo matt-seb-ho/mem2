@@ -1,0 +1,12 @@
+{
+  "strict_config_path": "configs/experiments/arcmemo_arc_strict.yaml",
+  "strict_config_hash": "2e2a3e16c350542a6856ec7b73a2395635682c69ef2df631cf540d3d941d6134",
+  "parity_spec_path": "configs/parity/arcmemo_default_spec.yaml",
+  "parity_spec_hash": "d70f186befbcb3fe82f056ff6c2396b586f24edf1b21078cf75c0443b5b18b58",
+  "prompt_template_hashes": {
+    "ARC_INTRO": "7f194abfcacc1e82492f46c17d800900816f3f817b00ca876363dcf6cb95513b",
+    "EXAMPLE_GRIDS_INTRO": "e618cc8a3645053f869841b6b316ac9d4cfcc838a02cf60db903828ff5556bed",
+    "CODE_INSTR_DEFAULT": "d1f5f73373bc91457a79f928ef2c8bb4fc5b1aae66eef3ffaf643a35d4c037af",
+    "RETRY_INSTRUCTION": "86a9889ff77b83f5fe1ba606cff96a8bcceca63e802fb80143f2a098cea28afd"
+  }
+}

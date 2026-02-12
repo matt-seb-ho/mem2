@@ -1,0 +1,20 @@
+model: "gpt-4.1-2025-04-14"
+gen_cfg:
+  n: 1
+  temperature: 0.3
+  max_tokens: 1024
+  top_p: 1.0
+  batch_size: 16
+  seed: 88
+  ignore_cache: false
+  expand_multi: null
+prompt_options:
+  include_hint: false
+  hint_template_key: selected
+  require_hint_citations: false
+  instruction_key: default
+  system_prompt_key: default
+error_feedback: all
+num_feedback_passes: 1
+include_past_outcomes: true
+include_reselected_lessons: false

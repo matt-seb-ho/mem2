@@ -1,0 +1,46 @@
+_base_: ../base.yaml
+
+pipeline:
+  provider: llmplus_openrouter
+
+run:
+  run_type: arcmemo_arc_logic_parity_openrouter
+  execution_mode: arc_batch
+  max_passes: 1
+  retry_criterion: train
+  retry_policy:
+    max_passes: 1
+    criterion: train
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+  strict_arcmemo_compat: false
+  strict_arcmemo_logic_compat: true
+
+components:
+  benchmark:
+    data_root: /root/workspace/data/benchmarks/ARC-AGI/data/evaluation
+    limit: 10
+  provider:
+    profile_name: llmplus_openrouter
+  inference_engine:
+    model: google/gemini-2.5-flash
+    gen_cfg:
+      n: 1
+      temperature: 0.3
+      max_tokens: 1024
+      top_p: 1.0
+      batch_size: 32
+      seed: 88
+      ignore_cache: true
+      expand_multi: null
+    prompt_options:
+      include_hint: false
+      hint_template_key: selected
+      require_hint_citations: false
+      instruction_key: default
+      system_prompt_key: default
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+    include_reselected_lessons: false

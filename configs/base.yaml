@@ -1,0 +1,67 @@
+pipeline:
+  task_adapter: arc_grid
+  benchmark: arc_agi
+  memory_builder: arcmemo_ps
+  memory_retriever: lesson_topk
+  trajectory_policy: single_path
+  provider: mock
+  inference_engine: python_transform_retry
+  feedback_engine: gt_check
+  evaluator: arc_exec
+  artifact_sink: json_local
+
+run:
+  run_type: smoke
+  seed: 88
+  execution_mode: sequential
+  max_passes: 1
+  retry_criterion: train
+  retry_policy:
+    max_passes: 1
+    criterion: train
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+  strict_arcmemo_compat: false
+  strict_arcmemo_logic_compat: false
+  lockstep_replay:
+    enabled: false
+    source_run_dir: null
+    replay_initial_completions: true
+    replay_reselected_lessons: true
+  output_root: outputs/_runs
+
+components:
+  task_adapter:
+    task_name: arc_grid
+  benchmark:
+    data_root: /root/workspace/data/benchmarks/ARC-AGI/data/training
+    limit: 1
+  memory_builder:
+    max_entries: 100
+  memory_retriever:
+    top_k: 2
+  trajectory_policy:
+    retry_paths: 1
+  provider:
+    profile_name: mock
+  inference_engine:
+    model: mock-grid-echo
+    gen_cfg:
+      n: 1
+      temperature: 0.0
+    prompt_options:
+      include_hint: false
+      hint_template_key: selected
+      require_hint_citations: false
+      instruction_key: default
+      system_prompt_key: default
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+    include_reselected_lessons: false
+  feedback_engine: {}
+  evaluator:
+    require_all_tests: true
+    timeout_s: 2.0
+  artifact_sink: {}

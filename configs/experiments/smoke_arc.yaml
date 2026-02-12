@@ -1,0 +1,11 @@
+_base_: ../base.yaml
+
+run:
+  run_type: smoke_arc
+  max_passes: 1
+
+components:
+  benchmark:
+    limit: 2
+  provider:
+    profile_name: mock
