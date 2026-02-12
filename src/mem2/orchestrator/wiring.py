@@ -7,6 +7,18 @@ from mem2.core.arcmemo_compat import (
     validate_arcmemo_compat_config,
     validate_arcmemo_logic_compat_config,
 )
+from mem2.core.contracts import (
+    ArtifactSink,
+    BenchmarkAdapter,
+    Evaluator,
+    FeedbackEngine,
+    InferenceEngine,
+    MemoryBuilder,
+    MemoryRetriever,
+    ProviderClient,
+    TaskAdapter,
+    TrajectoryPolicy,
+)
 from mem2.core.errors import ConfigurationError
 from mem2.registry.artifact_sink import ARTIFACT_SINKS
 from mem2.registry.benchmark import BENCHMARKS
@@ -22,16 +34,16 @@ from mem2.registry.trajectory_policy import TRAJECTORY_POLICIES
 
 @dataclass(slots=True)
 class PipelineComponents:
-    task_adapter: Any
-    benchmark: Any
-    memory_builder: Any
-    memory_retriever: Any
-    trajectory_policy: Any
-    provider: Any
-    inference_engine: Any
-    feedback_engine: Any
-    evaluator: Any
-    artifact_sink: Any
+    task_adapter: TaskAdapter
+    benchmark: BenchmarkAdapter
+    memory_builder: MemoryBuilder
+    memory_retriever: MemoryRetriever
+    trajectory_policy: TrajectoryPolicy
+    provider: ProviderClient
+    inference_engine: InferenceEngine
+    feedback_engine: FeedbackEngine
+    evaluator: Evaluator
+    artifact_sink: ArtifactSink
 
 
 
