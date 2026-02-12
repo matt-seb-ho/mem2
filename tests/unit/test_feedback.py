@@ -75,7 +75,7 @@ def _make_eval_with_parsing_error(uid: str = "p1") -> EvalRecord:
 
 class TestGroundTruthFeedback:
     def _run(self, coro):
-        return asyncio.get_event_loop().run_until_complete(coro)
+        return asyncio.run(coro)
 
     def test_correct_attempt_gives_positive(self):
         engine = GroundTruthFeedbackEngine()

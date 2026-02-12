@@ -22,7 +22,7 @@ class LessonTopKRetriever:
         ]
         source_entries = problem_entries if problem_entries else entries
         items = source_entries[-self.top_k :] if self.top_k > 0 else []
-        hint_text = "\\n".join(str(x.get("hint", "")) for x in items if x.get("hint")) or None
+        hint_text = "\n".join(str(x.get("hint", "")) for x in items if x.get("hint")) or None
         return RetrievalBundle(
             problem_uid=problem.uid,
             hint_text=hint_text,

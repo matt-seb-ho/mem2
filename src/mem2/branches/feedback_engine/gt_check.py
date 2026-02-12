@@ -39,8 +39,8 @@ class GroundTruthFeedbackEngine:
         parsing_error = eval_record.metadata.get("parsing_error")
         if parsing_error:
             return (
-                "**Execution / Parsing Errors**\\n"
-                f"- {parsing_error}\\n"
+                "**Execution / Parsing Errors**\n"
+                f"- {parsing_error}\n"
                 "- Please return a markdown python code block defining `transform`."
             )
 
@@ -59,7 +59,7 @@ class GroundTruthFeedbackEngine:
                 )
         if not sections:
             sections.append(self.negative_msg)
-        return "\\n".join(sections)
+        return "\n".join(sections)
 
     async def generate(
         self,
