@@ -1,3 +1,8 @@
+outputs/
+.llm_cache/
+__pycache__/
+.pytest_cache/
+*.pyc
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

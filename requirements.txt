@@ -1,0 +1,11 @@
+PyYAML>=6.0
+numpy>=1.24
+openai
+tiktoken
+diskcache
+tenacity
+tqdm
+orjson
+python-dotenv
+nest-asyncio
+omegaconf
