@@ -1,0 +1,7 @@
+data_root: /root/workspace/data/hf/qwedsacf__competition_math
+split: train
+types:
+  - "Number Theory"
+  - "Counting & Probability"
+require_integer_answer: true
+limit: 0

@@ -582,12 +582,12 @@ class PipelineRunner:
                 f"(initial_completions={self.lockstep_replay.replay_initial_completions}, "
                 f"reselected_lessons={self.lockstep_replay.replay_reselected_lessons})",
             )
-        sys_prompt = (
+        prompt_opts = (
             self.config.get("components", {})
             .get("inference_engine", {})
-            .get("prompt_options", {})
-            .get("system_prompt_key", "default")
+            .get("prompt_options") or {}
         )
+        sys_prompt = prompt_opts.get("system_prompt_key", "default")
         self._driver_log("__main__", f"Using system prompt: {sys_prompt}")
 
         self.lifecycle.emit("run", "runner", "info", "run started", {"run_id": ctx.run_id})
