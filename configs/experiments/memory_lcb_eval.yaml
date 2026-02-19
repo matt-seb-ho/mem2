@@ -1,0 +1,162 @@
+_base_: ../base.yaml
+pipeline:
+  task_adapter: livecodebench
+  benchmark: livecodebench
+  memory_builder: arcmemo_ps
+  memory_retriever: lesson_topk
+  trajectory_policy: single_path
+  provider: llmplus_openrouter
+  inference_engine: lcb_solve
+  feedback_engine: lcb_gt
+  evaluator: lcb_exec
+  artifact_sink: json_local
+run:
+  run_type: memory_lcb_eval
+  seed: 42
+  max_passes: 2
+  execution_mode: arc_batch
+  retry_criterion: test
+  retry_policy:
+    max_passes: 2
+    criterion: test
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+components:
+  task_adapter:
+    task_name: livecodebench
+  benchmark:
+    data_root: data/livecodebench_v56
+    limit: 0
+    include_ids:
+    - '3502'
+    - '3566'
+    - '3588'
+    - '3591'
+    - '3604'
+    - '3607'
+    - '3608'
+    - '3616'
+    - '3621'
+    - '3631'
+    - '3632'
+    - '3636'
+    - '3638'
+    - '3646'
+    - '3647'
+    - '3648'
+    - '3653'
+    - '3654'
+    - '3656'
+    - '3680'
+    - '3684'
+    - '3699'
+    - '3705'
+    - '3709'
+    - '3714'
+    - '3715'
+    - '3731'
+    - '3736'
+    - '3743'
+    - '3748'
+    - '3759'
+    - '3760'
+    - '3763'
+    - '3764'
+    - '3778'
+    - '3781'
+    - '3785'
+    - '3786'
+    - '3789'
+    - '3794'
+    - '3809'
+    - '3817'
+    - '3832'
+    - abc374_e
+    - abc375_a
+    - abc375_c
+    - abc375_d
+    - abc376_a
+    - abc376_b
+    - abc376_d
+    - abc376_f
+    - abc376_g
+    - abc377_d
+    - abc378_b
+    - abc378_f
+    - abc380_d
+    - abc380_f
+    - abc381_b
+    - abc382_c
+    - abc382_f
+    - abc383_a
+    - abc383_c
+    - abc383_e
+    - abc384_b
+    - abc384_e
+    - abc384_f
+    - abc386_c
+    - abc387_a
+    - abc390_c
+    - abc390_f
+    - abc391_b
+    - abc391_g
+    - abc392_c
+    - abc392_d
+    - abc393_a
+    - abc393_b
+    - abc393_d
+    - abc395_a
+    - abc396_b
+    - abc396_c
+    - abc397_e
+    - abc397_g
+    - abc398_b
+    - abc398_f
+    - abc400_e
+    - arc184_c
+    - arc184_e
+    - arc185_c
+    - arc185_e
+    - arc188_c
+    - arc188_d
+    - arc189_c
+    - arc190_d
+    - arc192_b
+    - arc193_d
+    - arc194_c
+    - arc194_d
+    - arc195_a
+    - arc196_b
+    - arc196_c
+  memory_builder:
+    max_entries: 200
+    seed_lessons_file: /root/arc/mem2/outputs/_runs/build_lcb/5b254edab37a/memory/final.json
+    seed_lessons_per_problem: 5
+  memory_retriever:
+    top_k: 2
+  trajectory_policy:
+    retry_paths: 1
+  provider:
+    profile_name: llmplus_openrouter
+    dotenv_path: .env.example
+    default_max_concurrency: 32
+  inference_engine:
+    model: qwen/qwen3-coder-30b-a3b-instruct
+    gen_cfg:
+      n: 1
+      temperature: 0.3
+      max_tokens: 16384
+      top_p: 1.0
+      batch_size: 32
+      seed: 42
+      ignore_cache: true
+      expand_multi: null
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+    include_reselected_lessons: false
+  feedback_engine: {}
+  evaluator:
+    timeout_s: 30.0
+  artifact_sink: {}
