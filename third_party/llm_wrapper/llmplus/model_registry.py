@@ -130,6 +130,18 @@ MODEL_REGISTRY: dict[Provider, ProviderMeta] = {
             "moonshotai/kimi-k2-thinking": ModelMeta(
                 "moonshotai/kimi-k2-thinking",
             ),
+            "qwen/qwen-2.5-7b-instruct": ModelMeta(
+                "qwen/qwen-2.5-7b-instruct",
+            ),
+            "qwen/qwen3-4b:free": ModelMeta(
+                "qwen/qwen3-4b:free",
+            ),
+            "qwen/qwen3-8b": ModelMeta(
+                "qwen/qwen3-8b",
+            ),
+            "qwen/qwen3-coder-next": ModelMeta(
+                "qwen/qwen3-coder-next",
+            ),
         },
     ),
     Provider.ANTHROPIC: ProviderMeta(
