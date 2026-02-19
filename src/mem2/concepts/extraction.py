@@ -1,7 +1,13 @@
-"""Concept extraction from solved math/code problems.
+"""Two-stage concept extraction from solved math/code problems.
 
-Reads build run artifacts, calls an LLM to extract typed PS-format concepts,
-and assembles a ConceptMemory-compatible structure.
+Follows the ARC pipeline architecture:
+  Stage 1: solution code → pseudocode + summary  (per problem, one LLM call)
+  Stage 2: pseudocode → concepts                 (batched, with concept repo in prompt)
+
+Stage 2 passes the *current* concept repository into each prompt so the LLM
+can reuse existing concept names rather than inventing duplicates.  After each
+batch, newly extracted concepts are written into memory, so later batches see
+a growing repository — exactly matching the ARC offline extraction flow.
 """
 from __future__ import annotations
 
@@ -30,148 +36,323 @@ class SolvedProblem:
 
 
 # ---------------------------------------------------------------------------
-# YAML extraction regex (same pattern used in concept_selector / arcmemo_selector)
+# YAML / tag extraction helpers
 # ---------------------------------------------------------------------------
 _YAML_BLOCK_RE = re.compile(r"```yaml\s*(.*?)```", flags=re.DOTALL | re.IGNORECASE)
 
 
-# ---------------------------------------------------------------------------
-# Prompt templates
-# ---------------------------------------------------------------------------
+def _extract_tag(text: str, tag: str) -> str:
+    """Extract content between <tag>...</tag>.  Returns '' on failure."""
+    pattern = re.compile(rf"<{tag}>\s*(.*?)\s*</{tag}>", re.DOTALL)
+    m = pattern.search(text)
+    return m.group(1).strip() if m else ""
 
-MATH_EXTRACTION_PROMPT = """\
-You are analyzing a correctly solved competition math problem to extract reusable problem-solving concepts.
 
-## Problem
+def _extract_yaml_block(text: str) -> str | None:
+    """Extract first ```yaml ... ``` block from text."""
+    m = _YAML_BLOCK_RE.search(text)
+    return m.group(1).strip() if m else None
+
+
+# =========================================================================
+# Stage 1: Solution → Pseudocode + Summary
+# =========================================================================
+
+# -- Prompt templates -----------------------------------------------------
+
+_MATH_PSEUDOCODE_PROMPT = """\
+# Introduction
+We are analyzing correctly solved competition math problems to build a reusable \
+concept library.  Your task is to analyze a solution, rewrite it as pseudocode \
+that can more easily be abstracted into concepts, and write a one-liner summary \
+of the solution approach.
+
+A concept can encode any of:
+(a) a mathematical technique or theorem application
+(b) how certain parameters or values are determined
+(c) properties that are checked or leveraged
+(d) an algorithmic pattern used in the computation
+
+# Instructions
+Pseudocode:
+- write the pseudocode translation inside <pseudocode> and </pseudocode> tags
+- be concise without compromising correctness
+- emphasize the mathematical reasoning steps and techniques over implementation details
+Summary:
+- write a one-liner summary of the solution approach inside <summary> and </summary> tags
+
+# Your Problem Solution
+Analyze, abstract into pseudocode, and summarize the following solution:
+
+Problem:
 {problem_text}
 
-## Correct Solution
+Solution:
+```python
 {solution_code}
-
-## Task
-Analyze this solution and extract the key mathematical concepts, techniques, and patterns used. For each concept, provide structured annotations.
-
-Output a YAML block with this structure:
-```yaml
-summary: <one-line summary of the solution approach>
-pseudocode: |
-  <step-by-step pseudocode of the solution logic>
-concepts:
-  - concept: <concept name - a short descriptive name>
-    kind: <category - discover organically, e.g. "technique", "theorem", "identity", "counting method", "algebraic manipulation", "number theory tool", etc.>
-    description: <what this concept does or represents>
-    parameters:
-      - name: <parameter name>
-        typing: <parameter type>
-        description: <what this parameter controls>
-    cues:
-      - <when to consider using this concept - what problem features suggest it>
-    implementation:
-      - <how this concept was applied in this specific solution>
 ```
-
-Example:
-```yaml
-summary: Uses combinatorics to count favorable outcomes and compute a probability ratio.
-pseudocode: |
-  1. Compute total ways to draw 4 slips from 40: C(40,4)
-  2. Count favorable outcomes for event p: 10 numbers * C(4,4) each
-  3. Count favorable outcomes for event q: C(10,2) pairs * C(4,2)^2
-  4. Return q/p = favorable_q / favorable_p
-concepts:
-  - concept: combinatorial counting
-    kind: technique
-    description: Count outcomes by decomposing into independent choices and multiplying
-    parameters:
-      - name: n
-        typing: int
-        description: total items to choose from
-      - name: k
-        typing: int
-        description: number of items to choose
-    cues:
-      - Problem asks to count arrangements, selections, or probability of discrete events
-      - Multiple independent selection steps can be identified
-    implementation:
-      - Used C(40,4) for total outcomes, C(10,2) to choose number pairs, C(4,2) to choose slips per number
-```
-
-Guidelines:
-- Extract 1-5 concepts per problem (only meaningful ones)
-- Name concepts clearly and concisely (e.g. "modular arithmetic", "pigeonhole principle", "generating function")
-- Discover concept kinds organically - use whatever category naturally fits
-- Cues should describe problem features that suggest this concept is relevant
-- Implementation notes should be specific to this solution
-- Parameters are optional - only include if the concept has meaningful parameters
 """
 
-CODE_EXTRACTION_PROMPT = """\
-You are analyzing a correctly solved competitive programming problem to extract reusable algorithmic concepts.
+_CODE_PSEUDOCODE_PROMPT = """\
+# Introduction
+We are analyzing correctly solved competitive programming problems to build a \
+reusable concept library.  Your task is to analyze a solution, rewrite it as \
+pseudocode that can more easily be abstracted into concepts, and write a \
+one-liner summary of the solution approach.
 
-## Problem
+A concept can encode any of:
+(a) an algorithmic technique or data structure usage
+(b) how certain parameters or values are determined
+(c) properties that are checked or leveraged
+(d) an optimization or implementation pattern
+
+# Instructions
+Pseudocode:
+- write the pseudocode translation inside <pseudocode> and </pseudocode> tags
+- be concise without compromising correctness
+- emphasize algorithmic operations and data structure choices over I/O details
+Summary:
+- write a one-liner summary of the solution approach inside <summary> and </summary> tags
+
+# Your Problem Solution
+Analyze, abstract into pseudocode, and summarize the following solution:
+
+Problem:
 {problem_text}
 
-## Correct Solution
+Solution:
+```python
 {solution_code}
-
-## Task
-Analyze this solution and extract the key algorithmic concepts, data structures, and implementation patterns used. For each concept, provide structured annotations.
-
-Output a YAML block with this structure:
-```yaml
-summary: <one-line summary of the solution approach>
-pseudocode: |
-  <step-by-step pseudocode of the solution logic>
-concepts:
-  - concept: <concept name - a short descriptive name>
-    kind: <category - discover organically, e.g. "algorithm", "data structure", "technique", "optimization", "graph method", "dp pattern", "string algorithm", etc.>
-    description: <what this concept does or represents>
-    parameters:
-      - name: <parameter name>
-        typing: <parameter type>
-        description: <what this parameter controls>
-    cues:
-      - <when to consider using this concept - what problem features suggest it>
-    implementation:
-      - <how this concept was applied in this specific solution>
 ```
-
-Example:
-```yaml
-summary: Uses prefix sums to efficiently compute subarray sums and find the answer.
-pseudocode: |
-  1. Read array of N integers
-  2. Build prefix sum array P where P[i] = sum(A[0..i-1])
-  3. For each query (l, r), answer is P[r+1] - P[l]
-  4. Output results
-concepts:
-  - concept: prefix sum array
-    kind: technique
-    description: Precompute cumulative sums to answer range-sum queries in O(1)
-    parameters:
-      - name: array
-        typing: list[int]
-        description: the input array to build prefix sums over
-    cues:
-      - Problem involves multiple range sum queries over a static array
-      - Need to compute sum of contiguous subarray efficiently
-    implementation:
-      - Built prefix sum array of size N+1, used difference of two prefix values for each query
-```
-
-Guidelines:
-- Extract 1-5 concepts per problem (only meaningful ones)
-- Name concepts clearly and concisely (e.g. "binary search", "union-find", "sliding window", "topological sort")
-- Discover concept kinds organically - use whatever category naturally fits
-- Cues should describe problem features that suggest this concept is relevant
-- Implementation notes should be specific to this solution
-- Parameters are optional - only include if the concept has meaningful parameters
 """
 
 
-# ---------------------------------------------------------------------------
+def build_pseudocode_prompt(problem: SolvedProblem, domain: str) -> str:
+    """Stage 1: build prompt that converts solution → pseudocode + summary."""
+    template = _MATH_PSEUDOCODE_PROMPT if domain == "math" else _CODE_PSEUDOCODE_PROMPT
+    return template.format(
+        problem_text=problem.problem_text,
+        solution_code=problem.solution_code,
+    )
+
+
+def parse_pseudocode_response(response: str) -> tuple[str, str]:
+    """Parse Stage 1 LLM output.  Returns (pseudocode, summary)."""
+    pseudocode = _extract_tag(response, "pseudocode")
+    summary = _extract_tag(response, "summary")
+    if not pseudocode:
+        logger.warning("Stage 1: no <pseudocode> tag found in response")
+    if not summary:
+        logger.warning("Stage 1: no <summary> tag found in response")
+    return pseudocode, summary
+
+
+# =========================================================================
+# Stage 2: Pseudocode → Concepts  (with concept repo in prompt)
+# =========================================================================
+
+# -- Prompt templates -----------------------------------------------------
+
+_MATH_CONCEPT_PROMPT = """\
+# Introduction
+We are analyzing correctly solved competition math problems to build a reusable \
+concept library.  Your task is to analyze a solution (rendered as pseudocode) \
+and abstract out reusable concepts.
+
+A concept encodes one of the following:
+(a) a mathematical technique -- a method or approach for solving a class of problems
+(b) a theorem or identity -- a known result that can be applied
+(c) an algorithmic pattern -- a computational strategy (e.g. enumeration, recursion)
+(d) a definition -- a term for a recurring structure or phenomenon
+
+Programs can be viewed as a sequence of reasoning steps.  To construct a solution, \
+we compose steps and determine what parameters to use for each.
+
+# Instructions
+- Format your final concept list inside a fenced yaml markdown block \
+(first line = "```yaml" and last line = "```")
+- Feel free to think before writing your final response
+- Each concept entry should have these fields:
+    concept: technique name / theorem name / pattern name
+    kind: discover organically (e.g. "technique", "theorem", "identity", \
+"counting method", "algebraic manipulation", "number theory tool", "algorithm", etc.)
+    description: (optional) elaborate if the name is not self-evident
+    parameters: list of {{name, typing, description}} if the concept has meaningful parameters
+    cues: list of problem features that suggest this concept is relevant
+    implementation: list of how this concept was applied in this specific solution
+- **Reuse concepts whenever possible**
+    - check existing concepts in the `Concept Repository` section below
+    - if an existing concept matches what you see, reuse its exact name
+    - when reusing a concept, you may omit `kind` and `description` (only fill `concept`)
+    - you can still add new `cues` and `implementation` entries when reusing
+- Distinct concepts must have different names
+- Extract 1-5 concepts per problem (only meaningful ones)
+
+# Concept Repository
+Here is the current concept repository.  Check for reuse before creating new concepts:
+{concept_list}
+
+# Your Problem Solution
+Abstract the following solution into a concept list:
+```
+{pseudocode}
+```
+"""
+
+_CODE_CONCEPT_PROMPT = """\
+# Introduction
+We are analyzing correctly solved competitive programming problems to build a \
+reusable concept library.  Your task is to analyze a solution (rendered as \
+pseudocode) and abstract out reusable concepts.
+
+A concept encodes one of the following:
+(a) an algorithm -- a named algorithmic technique (e.g. binary search, BFS)
+(b) a data structure -- a data organization used (e.g. segment tree, union-find)
+(c) a technique -- an implementation pattern or optimization (e.g. two pointers, prefix sums)
+(d) a definition -- a term for a recurring problem structure
+
+Programs can be viewed as a sequence of algorithmic steps.  To construct a solution, \
+we compose steps and determine what parameters to use for each.
+
+# Instructions
+- Format your final concept list inside a fenced yaml markdown block \
+(first line = "```yaml" and last line = "```")
+- Feel free to think before writing your final response
+- Each concept entry should have these fields:
+    concept: algorithm name / data structure name / technique name
+    kind: discover organically (e.g. "algorithm", "data structure", "technique", \
+"optimization", "graph method", "dp pattern", "string algorithm", etc.)
+    description: (optional) elaborate if the name is not self-evident
+    parameters: list of {{name, typing, description}} if the concept has meaningful parameters
+    cues: list of problem features that suggest this concept is relevant
+    implementation: list of how this concept was applied in this specific solution
+- **Reuse concepts whenever possible**
+    - check existing concepts in the `Concept Repository` section below
+    - if an existing concept matches what you see, reuse its exact name
+    - when reusing a concept, you may omit `kind` and `description` (only fill `concept`)
+    - you can still add new `cues` and `implementation` entries when reusing
+- Distinct concepts must have different names
+- Extract 1-5 concepts per problem (only meaningful ones)
+
+# Concept Repository
+Here is the current concept repository.  Check for reuse before creating new concepts:
+{concept_list}
+
+# Your Problem Solution
+Abstract the following solution into a concept list:
+```
+{pseudocode}
+```
+"""
+
+
+def render_concept_repo(mem: ConceptMemory) -> str:
+    """Render the current concept memory as a text list for the Stage 2 prompt.
+
+    Follows the ARC pattern: list concepts grouped by kind with descriptions,
+    so the LLM can see what already exists and reuse names.
+    """
+    if not mem.concepts:
+        return "(empty — no concepts extracted yet)"
+
+    lines: list[str] = []
+    for kind in sorted(mem.categories.keys()):
+        names = mem.categories[kind]
+        if not names:
+            continue
+        lines.append(f"## {kind}")
+        for name in names:
+            c = mem.concepts[name]
+            line = f"- concept: {c.name}"
+            if c.description:
+                line += f"\n  description: {c.description}"
+            lines.append(line)
+        lines.append("")  # spacer
+    return "\n".join(lines).rstrip()
+
+
+def build_concept_prompt(pseudocode: str, domain: str, mem: ConceptMemory) -> str:
+    """Stage 2: build prompt that extracts concepts from pseudocode.
+
+    The current concept repository is rendered into the prompt so the LLM
+    can reuse existing concept names.
+    """
+    template = _MATH_CONCEPT_PROMPT if domain == "math" else _CODE_CONCEPT_PROMPT
+    return template.format(
+        concept_list=render_concept_repo(mem),
+        pseudocode=pseudocode,
+    )
+
+
+def parse_concept_response(response: str) -> list[dict]:
+    """Parse Stage 2 LLM output.  Returns list of concept annotation dicts."""
+    yaml_text = _extract_yaml_block(response)
+    if not yaml_text:
+        logger.warning("Stage 2: no YAML block found in response")
+        return []
+
+    try:
+        parsed = yaml.safe_load(yaml_text)
+    except yaml.YAMLError as exc:
+        logger.warning(f"Stage 2 YAML parse error: {exc}")
+        return []
+
+    if isinstance(parsed, list):
+        return parsed
+    if isinstance(parsed, dict) and "concepts" in parsed:
+        return parsed["concepts"]
+    logger.warning(f"Stage 2: expected list of concepts, got {type(parsed)}")
+    return []
+
+
+# =========================================================================
+# Writing concepts into ConceptMemory (bypassing kind filter)
+# =========================================================================
+
+def write_concept(mem: ConceptMemory, problem_uid: str, ann: dict) -> None:
+    """Write a single concept annotation into memory.
+
+    Bypasses ConceptMemory.write_concept() which rejects kinds not in
+    {"structure", "routine"}.  Directly constructs Concept objects to allow
+    organic kind discovery for math/code domains.
+    """
+    name = ann.get("concept") or ann.get("name")
+    if not name:
+        logger.info(f"[{problem_uid}] Skipping concept: missing 'concept' field")
+        return
+
+    name = name.strip()
+
+    if name in mem.concepts:
+        # Merge into existing concept
+        mem.concepts[name].update(problem_uid, ann)
+    else:
+        kind = ann.get("kind", "technique").strip()
+
+        # Build parameters
+        params: list[ParameterSpec] = []
+        for p in ann.get("parameters") or []:
+            if isinstance(p, dict):
+                params.append(ParameterSpec(
+                    name=p.get("name", ""),
+                    typing=p.get("typing"),
+                    description=p.get("description"),
+                ))
+
+        concept = Concept(
+            name=name,
+            kind=kind,
+            parameters=params,
+            description=ann.get("description"),
+        )
+        concept.update(problem_uid, ann)
+        mem.concepts[name] = concept
+        mem.categories[kind].append(name)
+
+
+# =========================================================================
 # Loading solved problems from a build run directory
-# ---------------------------------------------------------------------------
+# =========================================================================
 
 def load_solved_problems(run_dir: Path, domain: str) -> list[SolvedProblem]:
     """Read build run artifacts and return correctly solved problems.
@@ -245,120 +426,3 @@ def load_solved_problems(run_dir: Path, domain: str) -> list[SolvedProblem]:
 
     logger.info(f"Loaded {len(solved)} solved problems from {run_dir}")
     return solved
-
-
-# ---------------------------------------------------------------------------
-# Prompt building
-# ---------------------------------------------------------------------------
-
-def build_extraction_prompt(problem: SolvedProblem, domain: str) -> str:
-    """Build domain-specific extraction prompt for a solved problem."""
-    template = MATH_EXTRACTION_PROMPT if domain == "math" else CODE_EXTRACTION_PROMPT
-    return template.format(
-        problem_text=problem.problem_text,
-        solution_code=problem.solution_code,
-    )
-
-
-# ---------------------------------------------------------------------------
-# Response parsing
-# ---------------------------------------------------------------------------
-
-def parse_extraction_response(response: str) -> dict | None:
-    """Extract and parse YAML block from LLM response.
-
-    Returns dict with 'summary', 'pseudocode', 'concepts' or None on failure.
-    """
-    m = _YAML_BLOCK_RE.search(response)
-    if not m:
-        # Try parsing the whole response as YAML
-        yaml_text = response.strip()
-    else:
-        yaml_text = m.group(1).strip()
-
-    try:
-        parsed = yaml.safe_load(yaml_text)
-    except yaml.YAMLError as exc:
-        logger.warning(f"YAML parse error: {exc}")
-        return None
-
-    if not isinstance(parsed, dict):
-        logger.warning(f"Expected dict from YAML, got {type(parsed)}")
-        return None
-
-    # Validate required fields
-    if "concepts" not in parsed or not isinstance(parsed.get("concepts"), list):
-        logger.warning("Missing or invalid 'concepts' field in extraction response")
-        return None
-
-    return parsed
-
-
-# ---------------------------------------------------------------------------
-# Assembly
-# ---------------------------------------------------------------------------
-
-def assemble_concept_memory(
-    extractions: list[tuple[str, dict]],
-) -> ConceptMemory:
-    """Assemble a ConceptMemory from parsed extraction results.
-
-    Parameters
-    ----------
-    extractions : list of (problem_uid, parsed_extraction_dict) tuples
-
-    Returns
-    -------
-    ConceptMemory with concepts and solutions populated.
-
-    Note: bypasses ConceptMemory.write_concept() which rejects kinds not in
-    {"structure", "routine"}. We directly construct Concept objects to allow
-    organic kind discovery.
-    """
-    mem = ConceptMemory()
-
-    for problem_uid, extraction in extractions:
-        # Record solution
-        mem.solutions[problem_uid] = ProblemSolution(
-            problem_id=problem_uid,
-            solution=None,
-            summary=extraction.get("summary"),
-            pseudocode=extraction.get("pseudocode"),
-        )
-
-        # Process each concept annotation
-        for ann in extraction.get("concepts", []):
-            name = ann.get("concept")
-            if not name:
-                logger.info(f"[{problem_uid}] Skipping concept: missing 'concept' field")
-                continue
-
-            name = name.strip()
-            kind = ann.get("kind", "technique").strip()
-
-            if name in mem.concepts:
-                # Merge into existing concept
-                mem.concepts[name].update(problem_uid, ann)
-            else:
-                # Build parameters
-                params: list[ParameterSpec] = []
-                for p in ann.get("parameters") or []:
-                    if isinstance(p, dict):
-                        params.append(ParameterSpec(
-                            name=p.get("name", ""),
-                            typing=p.get("typing"),
-                            description=p.get("description"),
-                        ))
-
-                # Construct concept directly (bypassing write_concept kind filter)
-                concept = Concept(
-                    name=name,
-                    kind=kind,
-                    parameters=params,
-                    description=ann.get("description"),
-                )
-                concept.update(problem_uid, ann)
-                mem.concepts[name] = concept
-                mem.categories[kind].append(name)
-
-    return mem
