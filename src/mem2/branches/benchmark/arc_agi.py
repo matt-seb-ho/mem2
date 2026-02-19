@@ -12,7 +12,7 @@ class ArcAgiBenchmarkAdapter:
 
     def __init__(
         self,
-        data_root: str = "/root/workspace/data/benchmarks/ARC-AGI/data/training",
+        data_root: str = "data/arc_agi/training",
         limit: int = 5,
         include_ids: list[str] | None = None,
     ):
