@@ -1,0 +1,67 @@
+_base_: ../base.yaml
+
+pipeline:
+  task_adapter: math_ps
+  benchmark: competition_math_ps
+  memory_builder: arcmemo_ps
+  memory_retriever: lesson_topk
+  trajectory_policy: single_path
+  provider: llmplus_openrouter
+  inference_engine: math_ps_solve
+  feedback_engine: math_ps_gt
+  evaluator: math_ps_exec
+  artifact_sink: json_local
+
+run:
+  run_type: recovery_math_10
+  seed: 42
+  max_passes: 2
+  execution_mode: arc_batch
+  retry_criterion: test
+  retry_policy:
+    max_passes: 2
+    criterion: test
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+
+components:
+  task_adapter:
+    task_name: math_ps
+  benchmark:
+    data_root: /root/workspace/data/hf/qwedsacf__competition_math
+    split: train
+    types:
+      - "Number Theory"
+    limit: 10
+    require_integer_answer: true
+  memory_builder:
+    max_entries: 50
+  memory_retriever:
+    top_k: 2
+  trajectory_policy:
+    retry_paths: 1
+  provider:
+    profile_name: llmplus_openrouter
+    dotenv_path: /root/arc/mem2/.env.example
+  inference_engine:
+    model: google/gemini-2.5-flash
+    gen_cfg:
+      n: 1
+      temperature: 0.3
+      max_tokens: 2048
+      top_p: 1.0
+      batch_size: 10
+      seed: 42
+      ignore_cache: true
+      expand_multi: null
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+    include_reselected_lessons: false
+    prompt_options: null
+  feedback_engine: {}
+  evaluator:
+    timeout_s: 10.0
+    require_all_tests: null
+  artifact_sink: {}

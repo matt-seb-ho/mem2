@@ -1,0 +1,172 @@
+_base_: ../base.yaml
+
+pipeline:
+  task_adapter: math_ps
+  benchmark: competition_math_ps
+  memory_builder: arcmemo_ps
+  memory_retriever: lesson_topk
+  trajectory_policy: single_path
+  provider: llmplus_openrouter
+  inference_engine: math_ps_solve
+  feedback_engine: math_ps_gt
+  evaluator: math_ps_exec
+  artifact_sink: json_local
+
+run:
+  run_type: baseline_math_l5_100_qwen25_7b
+  seed: 42
+  max_passes: 2
+  execution_mode: arc_batch
+  retry_criterion: test
+  retry_policy:
+    max_passes: 2
+    criterion: test
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+
+components:
+  task_adapter:
+    task_name: math_ps
+  benchmark:
+    data_root: /root/workspace/data/hf/qwedsacf__competition_math
+    split: train
+    types:
+      - "Number Theory"
+      - "Counting & Probability"
+    levels:
+      - "Level 5"
+    limit: 0
+    require_integer_answer: true
+    include_ids:
+      - cmath_1745
+      - cmath_1759
+      - cmath_1763
+      - cmath_1769
+      - cmath_1770
+      - cmath_1776
+      - cmath_1779
+      - cmath_1783
+      - cmath_1801
+      - cmath_1803
+      - cmath_1814
+      - cmath_1815
+      - cmath_1817
+      - cmath_1822
+      - cmath_1843
+      - cmath_1854
+      - cmath_1859
+      - cmath_1882
+      - cmath_1923
+      - cmath_1924
+      - cmath_1926
+      - cmath_1937
+      - cmath_1941
+      - cmath_1970
+      - cmath_1988
+      - cmath_1993
+      - cmath_2000
+      - cmath_2005
+      - cmath_2027
+      - cmath_2050
+      - cmath_2067
+      - cmath_2069
+      - cmath_2070
+      - cmath_2071
+      - cmath_2072
+      - cmath_2073
+      - cmath_2074
+      - cmath_2075
+      - cmath_2076
+      - cmath_2077
+      - cmath_2078
+      - cmath_2080
+      - cmath_2081
+      - cmath_2082
+      - cmath_2083
+      - cmath_2084
+      - cmath_2085
+      - cmath_2086
+      - cmath_2087
+      - cmath_2088
+      - cmath_2090
+      - cmath_2091
+      - cmath_2092
+      - cmath_2093
+      - cmath_2094
+      - cmath_2095
+      - cmath_2096
+      - cmath_2097
+      - cmath_2098
+      - cmath_2099
+      - cmath_2100
+      - cmath_2101
+      - cmath_2102
+      - cmath_2103
+      - cmath_2104
+      - cmath_2105
+      - cmath_2106
+      - cmath_2107
+      - cmath_2108
+      - cmath_2109
+      - cmath_2110
+      - cmath_2111
+      - cmath_2112
+      - cmath_2113
+      - cmath_2114
+      - cmath_2115
+      - cmath_2116
+      - cmath_2117
+      - cmath_2119
+      - cmath_2120
+      - cmath_2121
+      - cmath_2122
+      - cmath_2123
+      - cmath_2124
+      - cmath_2125
+      - cmath_2126
+      - cmath_2127
+      - cmath_2128
+      - cmath_2129
+      - cmath_2130
+      - cmath_2131
+      - cmath_2132
+      - cmath_2133
+      - cmath_2134
+      - cmath_2136
+      - cmath_2137
+      - cmath_2138
+      - cmath_2139
+      - cmath_2140
+      - cmath_2141
+  memory_builder:
+    max_entries: 50
+  memory_retriever:
+    top_k: 2
+  trajectory_policy:
+    retry_paths: 1
+  provider:
+    profile_name: llmplus_openrouter
+    dotenv_path: /root/arc/mem2/.env.example
+    default_max_concurrency: 32
+  inference_engine:
+    model: qwen/qwen-2.5-7b-instruct
+    gen_cfg:
+      n: 1
+      temperature: 0.3
+      max_tokens: 2048
+      top_p: 1.0
+      batch_size: 32
+      seed: 42
+      ignore_cache: true
+      expand_multi: null
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+    include_reselected_lessons: false
+    prompt_options: null
+  feedback_engine: {}
+  evaluator:
+    timeout_s: 10.0
+    require_all_tests: null
+  artifact_sink: {}

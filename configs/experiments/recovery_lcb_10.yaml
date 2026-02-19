@@ -1,0 +1,62 @@
+_base_: ../base.yaml
+
+pipeline:
+  task_adapter: livecodebench
+  benchmark: livecodebench
+  memory_builder: arcmemo_ps
+  memory_retriever: lesson_topk
+  trajectory_policy: single_path
+  provider: llmplus_openrouter
+  inference_engine: lcb_solve
+  feedback_engine: lcb_gt
+  evaluator: lcb_exec
+  artifact_sink: json_local
+
+run:
+  run_type: recovery_lcb_10
+  seed: 42
+  max_passes: 2
+  execution_mode: arc_batch
+  retry_criterion: test
+  retry_policy:
+    max_passes: 2
+    criterion: test
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+
+components:
+  task_adapter:
+    task_name: livecodebench
+  benchmark:
+    data_root: /root/workspace/data/hf/livecodebench
+    split: test
+    limit: 10
+  memory_builder:
+    max_entries: 50
+  memory_retriever:
+    top_k: 2
+  trajectory_policy:
+    retry_paths: 1
+  provider:
+    profile_name: llmplus_openrouter
+    dotenv_path: /root/arc/mem2/.env.example
+  inference_engine:
+    model: google/gemini-2.5-flash
+    gen_cfg:
+      n: 1
+      temperature: 0.3
+      max_tokens: 4096
+      top_p: 1.0
+      batch_size: 10
+      seed: 42
+      ignore_cache: true
+      expand_multi: null
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+    include_reselected_lessons: false
+  feedback_engine: {}
+  evaluator:
+    timeout_s: 30.0
+  artifact_sink: {}
