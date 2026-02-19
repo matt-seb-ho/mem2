@@ -1,0 +1,9 @@
+top_k: 10
+domain: arc
+use_llm_selector: true
+selector_model: ""
+selector_gen_cfg:
+  n: 1
+  temperature: 0.0
+  max_tokens: 1024
+hint_template_key: op3

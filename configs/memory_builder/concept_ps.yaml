@@ -1,0 +1,4 @@
+seed_memory_file: null
+seed_annotations_file: null
+domain: arc
+max_concepts: 500

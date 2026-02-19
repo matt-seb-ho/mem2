@@ -1,0 +1,54 @@
+_base_: ../base.yaml
+
+pipeline:
+  task_adapter: arc_grid
+  benchmark: arc_agi
+  memory_builder: concept_ps
+  memory_retriever: concept_selector
+  trajectory_policy: single_path
+  provider: mock
+  inference_engine: python_transform_retry
+  feedback_engine: gt_check
+  evaluator: arc_exec
+  artifact_sink: json_local
+
+run:
+  run_type: smoke_arc_concept
+  seed: 42
+  max_passes: 1
+
+components:
+  benchmark:
+    limit: 2
+  memory_builder:
+    seed_memory_file: null
+    seed_annotations_file: null
+    domain: arc
+    max_concepts: 500
+  memory_retriever:
+    top_k: 10
+    domain: arc
+    use_llm_selector: false
+    hint_template_key: op3
+  provider:
+    profile_name: mock
+  inference_engine:
+    model: mock-grid-echo
+    gen_cfg:
+      n: 1
+      temperature: 0.0
+    prompt_options:
+      include_hint: true
+      hint_template_key: op3
+      require_hint_citations: false
+      instruction_key: default
+      system_prompt_key: default
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+    include_reselected_lessons: false
+  feedback_engine: {}
+  evaluator:
+    require_all_tests: true
+    timeout_s: 2.0
+  artifact_sink: {}

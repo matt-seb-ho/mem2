@@ -1,0 +1,2 @@
+positive_msg: "All test cases passed"
+negative_msg: "Some test cases failed"
