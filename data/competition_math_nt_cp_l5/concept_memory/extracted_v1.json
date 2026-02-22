@@ -1,0 +1,412 @@
+{
+  "concepts": {
+    "Chinese Remainder Theorem": {
+      "name": "Chinese Remainder Theorem",
+      "kind": "theorem",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "moduli",
+          "typing": "list of integers",
+          "description": "The divisors in the system of congruences"
+        },
+        {
+          "name": "remainders",
+          "typing": "list of integers",
+          "description": "The remainders in the system of congruences"
+        }
+      ],
+      "description": "A theorem that provides a way to solve systems of simultaneous congruences with pairwise coprime moduli",
+      "cues": [
+        "system of modular equations",
+        "multiple congruence conditions",
+        "finding integer satisfying all conditions"
+      ],
+      "implementation": [
+        "identifies the system of congruences x ≡ 5 (mod 7), x ≡ 10 (mod 11), x ≡ 10 (mod 13)",
+        "applies systematic search to find solution within range"
+      ],
+      "used_in": [
+        "cmath_10547"
+      ]
+    },
+    "exhaustive search": {
+      "name": "exhaustive search",
+      "kind": "algorithm",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "search_space",
+          "typing": "iterable",
+          "description": "The set of values to be checked"
+        },
+        {
+          "name": "stopping_condition",
+          "typing": "boolean function",
+          "description": "Function that determines when to stop searching"
+        }
+      ],
+      "description": "A problem-solving approach that systematically checks all possibilities until a solution is found",
+      "cues": [
+        "iterate through values in descending order",
+        "return first value meeting criteria",
+        "bounded search space"
+      ],
+      "implementation": [
+        "iterates from 2009 down to 1",
+        "checks each value against all three modular conditions",
+        "returns first match found"
+      ],
+      "used_in": [
+        "cmath_10547"
+      ]
+    },
+    "modular arithmetic": {
+      "name": "modular arithmetic",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "modulus",
+          "typing": "integer",
+          "description": "The value to take the modulo with"
+        }
+      ],
+      "description": "Mathematical technique involving operations on integers with respect to a modulus",
+      "cues": [
+        "modulo operations",
+        "remainder calculations",
+        "congruence relations",
+        "Problem asks for the units digit of a sum",
+        "Problem requires finding remainder after division by 10"
+      ],
+      "implementation": [
+        "uses modulo operator to check divisibility conditions",
+        "evaluates x mod 7 == 5, x mod 11 == 10, x mod 13 == 10",
+        "Computed total sum modulo 10 to get the units digit"
+      ],
+      "used_in": [
+        "cmath_10547",
+        "cmath_10564"
+      ]
+    },
+    "gcd": {
+      "name": "gcd",
+      "kind": "number theory tool",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "a",
+          "typing": "integer",
+          "description": "first integer to compute gcd with 12"
+        },
+        {
+          "name": "b",
+          "typing": "integer",
+          "description": "second integer (fixed as 12)"
+        }
+      ],
+      "description": "Greatest Common Divisor function used to determine if two numbers are coprime",
+      "cues": [
+        "problem involves coprime numbers",
+        "problem requires checking if two numbers share no common factors"
+      ],
+      "implementation": [
+        "checks if gcd(a, 12) == 1 to ensure a and 12 are coprime",
+        "used to filter valid values of a in the range [1, 32]"
+      ],
+      "used_in": [
+        "cmath_10550"
+      ]
+    },
+    "brute force enumeration": {
+      "name": "brute force enumeration",
+      "kind": "algorithm",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "range_start",
+          "typing": "integer",
+          "description": "starting value of the enumeration (inclusive)"
+        },
+        {
+          "name": "range_end",
+          "typing": "integer",
+          "description": "ending value of the enumeration (exclusive)"
+        }
+      ],
+      "description": "systematic checking of all possible values in a given range",
+      "cues": [
+        "iterating through a fixed range of integers",
+        "checking each value against a condition",
+        "searching within a known range of values",
+        "checking each candidate until condition is met"
+      ],
+      "implementation": [
+        "iterates through values of a from 1 to 32",
+        "evaluates condition gcd(a, 12) == 1 for each value",
+        "iterating through base values from 7 to 99",
+        "testing each value against the condition"
+      ],
+      "used_in": [
+        "cmath_10550",
+        "cmath_10600"
+      ]
+    },
+    "optimization through enumeration": {
+      "name": "optimization through enumeration",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "objective_function",
+          "typing": "function",
+          "description": "function to compute value for each candidate"
+        },
+        {
+          "name": "search_space",
+          "typing": "iterable",
+          "description": "set of candidates to evaluate"
+        }
+      ],
+      "description": "finding maximum or minimum value by evaluating all possibilities in a search space",
+      "cues": [
+        "finding maximum value among computed results",
+        "evaluating a function for each candidate in a range",
+        "problem asks for optimal value within a constrained range",
+        "solution involves checking all possibilities in a defined interval",
+        "searching for a specific value that satisfies a condition",
+        "limited search space makes exhaustive checking feasible"
+      ],
+      "implementation": [
+        "computes current_sum = num1 + num2 for each valid a",
+        "tracks maximum sum found so far",
+        "determine ranges for base 3 and base 6 numbers",
+        "find intersection of the ranges",
+        "compute average of integers in the intersection",
+        "systematically testing base values to find the one satisfying the equation",
+        "returning immediately upon finding the first valid solution"
+      ],
+      "used_in": [
+        "cmath_10550",
+        "cmath_10590",
+        "cmath_10600"
+      ]
+    },
+    "algebraic manipulation": {
+      "name": "algebraic manipulation",
+      "kind": "algebraic manipulation",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "transforming mathematical expressions to simplify or optimize calculations",
+      "cues": [
+        "computing sum of two expressions",
+        "using known relationships between variables",
+        "symbolic expressions with variables",
+        "equality checking between algebraic expressions"
+      ],
+      "implementation": [
+        "computes num1 = 3 * a and num2 = 36",
+        "calculates current_sum = num1 + num2",
+        "directly uses the relationship between a and the computed values",
+        "transforming expressions involving base into equivalent forms",
+        "comparing products of algebraic expressions with polynomial expressions"
+      ],
+      "used_in": [
+        "cmath_10550",
+        "cmath_10600"
+      ]
+    },
+    "double factorial": {
+      "name": "double factorial",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "n",
+          "typing": "integer",
+          "description": "The number for which the double factorial is calculated"
+        }
+      ],
+      "description": "A mathematical operation defined as the product of all integers from 1 to n that have the same parity (odd or even) as n",
+      "cues": [
+        "Problem involves products of integers with specific parity patterns",
+        "Problem requires computation of factorials with step sizes of 2"
+      ],
+      "implementation": [
+        "Defined a recursive function to compute double factorial for odd numbers",
+        "Used the recurrence relation n!! = n × (n-2)!! for n > 1"
+      ],
+      "used_in": [
+        "cmath_10564"
+      ]
+    },
+    "summation": {
+      "name": "summation",
+      "kind": "algorithm",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "range",
+          "typing": "integer pair",
+          "description": "The start and end values of the sequence to sum"
+        },
+        {
+          "name": "step",
+          "typing": "integer",
+          "description": "The increment between consecutive terms"
+        }
+      ],
+      "description": "The process of adding a sequence of numbers",
+      "cues": [
+        "Problem involves adding multiple terms in a sequence",
+        "Problem requires iterating over odd integers from 1 to 49",
+        "problem asks for average of integers in a range",
+        "requires summing integers in a given interval"
+      ],
+      "implementation": [
+        "Used a loop to iterate through odd integers from 1 to 49",
+        "Accumulated the double factorial values in a running total",
+        "compute average of integers in intersection [27, 35]"
+      ],
+      "used_in": [
+        "cmath_10564",
+        "cmath_10590"
+      ]
+    },
+    "recursion": {
+      "name": "recursion",
+      "kind": "algorithm",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "base_case",
+          "typing": "condition",
+          "description": "The condition that stops the recursive calls"
+        },
+        {
+          "name": "recursive_case",
+          "typing": "function_call",
+          "description": "The function call that reduces the problem size"
+        }
+      ],
+      "description": "A programming technique where a function calls itself to solve a problem",
+      "cues": [
+        "Problem involves computing a mathematical function with self-similar subproblems",
+        "Problem defines a function that calls itself with a smaller argument"
+      ],
+      "implementation": [
+        "Defined double_factorial using recursion with base cases n=0 and n=1",
+        "Used recursive relation n!! = n × (n-2)!! for n > 1"
+      ],
+      "used_in": [
+        "cmath_10564"
+      ]
+    },
+    "pattern recognition": {
+      "name": "pattern recognition",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Identifying recurring structures or sequences in mathematical problems",
+      "cues": [
+        "Problem involves repeated application of the same operation",
+        "Problem requires identifying a sequence of odd numbers",
+        "recognizable algebraic patterns in the expressions",
+        "consistent structure in how numbers are expressed in terms of base"
+      ],
+      "implementation": [
+        "Recognized that the problem required summing double factorials of odd numbers",
+        "Identified the pattern of odd integers from 1 to 49",
+        "identifying that num1 and num2 follow a pattern of (4*base + 4) and (5*base + 5)",
+        "recognizing that num3 follows a cubic polynomial pattern"
+      ],
+      "used_in": [
+        "cmath_10564",
+        "cmath_10600"
+      ]
+    },
+    "range determination": {
+      "name": "range determination",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": null,
+      "cues": [
+        "problem involves identifying valid ranges for numbers in different bases",
+        "requires understanding of base conversion and number limits"
+      ],
+      "implementation": [
+        "calculate minimum and maximum values for 4-digit base 3 numbers",
+        "calculate minimum and maximum values for 2-digit base 6 numbers"
+      ],
+      "used_in": [
+        "cmath_10590"
+      ]
+    },
+    "set intersection": {
+      "name": "set intersection",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": null,
+      "cues": [
+        "problem requires finding common elements between two sets/ranges",
+        "solution involves identifying overlapping intervals"
+      ],
+      "implementation": [
+        "find intersection of [27, 80] and [6, 35]",
+        "result is [27, 35]"
+      ],
+      "used_in": [
+        "cmath_10590"
+      ]
+    }
+  },
+  "solutions": {
+    "cmath_10547": {
+      "problem_id": "cmath_10547",
+      "solution": null,
+      "summary": "Iterate downward from 2009, checking each integer against the given modular congruences until the first valid solution is found.",
+      "pseudocode": "function find_largest_integer_less_than_2010():\n    for x from 2009 down to 1:\n        if (x mod 7 == 5) and (x mod 11 == 10) and (x mod 13 == 10):\n            return x"
+    },
+    "cmath_10550": {
+      "problem_id": "cmath_10550",
+      "solution": null,
+      "summary": "Maximize the sum of two integers with GCD 3 and LCM equal to 12 times one integer by expressing them as 3a and 36, then finding the largest coprime a < 33.",
+      "pseudocode": "function solve():\n    max_sum = 0\n    for a in range(1, 33):\n        if gcd(a, 12) == 1:\n            num1 = 3 * a\n            num2 = 36\n            current_sum = num1 + num2\n            if current_sum > max_sum:\n                max_sum = current_sum\n    return max_sum"
+    },
+    "cmath_10564": {
+      "problem_id": "cmath_10564",
+      "solution": null,
+      "summary": "Compute the units digit of the sum of double factorials for odd integers from 1 to 49 by leveraging the property that only the units digits of individual terms affect the final units digit of the sum.",
+      "pseudocode": "FUNCTION solve():\n    FUNCTION double_factorial(n):\n        IF n == 0 OR n == 1:\n            RETURN 1\n        ELSE:\n            RETURN n * double_factorial(n - 2)\n    \n    total_sum = 0\n    FOR i = 1 TO 49 STEP 2:\n        total_sum = total_sum + double_factorial(i)\n    \n    units_digit = total_sum MOD 10\n    RETURN units_digit\nEND FUNCTION"
+    },
+    "cmath_10590": {
+      "problem_id": "cmath_10590",
+      "solution": null,
+      "summary": "Find the intersection of integers that are 4-digit in base 3 and 2-digit in base 6, then compute their average.",
+      "pseudocode": "// Determine range of 4-digit base 3 numbers: [27, 80]\n// Determine range of 2-digit base 6 numbers: [6, 35]  \n// Find intersection of ranges: [27, 35]\n// Compute average of integers in intersection"
+    },
+    "cmath_10600": {
+      "problem_id": "cmath_10600",
+      "solution": null,
+      "summary": "Test integer bases starting from 7 until the equation holds, converting base-b numbers to base-10 for comparison.",
+      "pseudocode": "for base in range(7, 100):\n    num1 = 4 * base + 4\n    num2 = 5 * base + 5\n    product = num1 * num2\n    num3 = 3 * base^3 + 5 * base^2 + 6\n    if product == num3:\n        return base"
+    }
+  },
+  "custom_types": {}
+}

@@ -1,0 +1,2298 @@
+{
+  "concepts": {
+    "Bit Length Calculation": {
+      "name": "Bit Length Calculation",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "value",
+          "typing": "integer",
+          "description": "The positive integer to measure"
+        }
+      ],
+      "description": "Computes the number of bits required to represent a positive integer in binary.",
+      "cues": [
+        "Problems involving binary representation size",
+        "Comparing magnitude against powers of 2",
+        "Need to determine bit-width of a number"
+      ],
+      "implementation": [
+        "Iteratively right-shifts a temporary copy of the input until zero, incrementing a counter"
+      ],
+      "used_in": [
+        "3676"
+      ]
+    },
+    "All-Ones Mask Construction": {
+      "name": "All-Ones Mask Construction",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "k",
+          "typing": "integer",
+          "description": "The number of consecutive bits to set starting from LSB"
+        }
+      ],
+      "description": "Generates an integer with the lowest k bits set to 1 (mathematically 2^k - 1).",
+      "cues": [
+        "Requirement for numbers of the form 2^k - 1",
+        "Need to create a binary mask of specific width",
+        "Problems asking for smallest number with all set bits >= N"
+      ],
+      "implementation": [
+        "Computes (1 << bits_needed) - 1 to generate the result"
+      ],
+      "used_in": [
+        "3676"
+      ]
+    },
+    "Linear Scan": {
+      "name": "Linear Scan",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "collection",
+          "typing": "array/list",
+          "description": "The data structure to traverse"
+        },
+        {
+          "name": "range",
+          "typing": [
+            "start",
+            "end"
+          ],
+          "description": "The start and end indices for iteration"
+        }
+      ],
+      "description": "Iterating sequentially through all elements of a collection to process each one.",
+      "cues": [
+        "Requirement to process every input element",
+        "No obvious sorting or divide-and-conquer structure",
+        "Iterating through string/array elements sequentially",
+        "Single pass through input data",
+        "Input is a sequence (string) that must be processed element-by-element.",
+        "Aggregation (counting) requires visiting every character.",
+        "Iterating through a sequence element by element",
+        "Processing each position in a string or array",
+        "Need to validate every element in a range against a condition.",
+        "Aggregating values or checking properties across a collection.",
+        "Input involves a sequence (string or array) that must be processed element by element.",
+        "Iterating through every character of a string sequentially",
+        "Processing input elements one by one without random access",
+        "Processing a sequence of commands or characters",
+        "Need to handle each element in order exactly once",
+        "Iterating through all elements of a collection sequentially",
+        "Need to process each item in a list",
+        "Iterating through every element of an array to treat it as a starting point",
+        "Need to try all possible adjacent swap positions",
+        "Sequential iteration through array indices",
+        "Iterating through array indices sequentially",
+        "Iterating through a known range of integers (1 to N)",
+        "Checking every candidate in a sequence",
+        "Processing every character in the input sequence exactly once.",
+        "No need for random access or multiple passes over the data.",
+        "Input is an array/list",
+        "Solution requires processing every element once",
+        "Input is a sequence or array",
+        "Requirement to inspect elements sequentially to find a pattern",
+        "Processing every element in a collection (array, grid, string) sequentially",
+        "No complex data structure traversal required, just sequential access",
+        "Sequential iteration over a collection is required to process elements.",
+        "Problem involves examining every item in a sequence exactly once.",
+        "Processing every element in a sequence (string or array) exactly once.",
+        "No need for random access or complex traversal patterns."
+      ],
+      "implementation": [
+        "For each index i from 0 to n-1",
+        "For loop from 0 to N-1 processing each character of string S",
+        "The `count occurrences` operation implicitly iterates through the entire string `N` once for each digit, or once total if implemented efficiently.",
+        "Results in O(N) time complexity relative to the length of the string.",
+        "Outer while loop iterates through string S from index 0 to N-1",
+        "Inner while loop advances through consecutive '1' characters",
+        "Iterated from index `0` to `mid - 1` to verify all characters are '1'.",
+        "Iterated from index `mid + 1` to `N - 1` to verify all characters are '2'.",
+        "Iterating through the string S to inspect each character.",
+        "Loop `For each character ch in S` traverses the input string from start to end",
+        "Iterating through command_string T with For each command in T",
+        "Executing movement logic sequentially for each character",
+        "Inner loop iterates through all snakes in the list for each day",
+        "Each snake's (T, L) pair is processed exactly once per day",
+        "Outer loop iterates i from 0 to N-1 to consider each element as the first item of a pair",
+        "Iterated from index 0 to length(A)-2",
+        "Tested each adjacent pair (i, i+1) as potential swap location",
+        "FOR loop from 1 to N-2 to check each triplet",
+        "Loop iterated sequentially from `i = 1` to `N`.",
+        "Performed an existence check for each `i` against the precomputed set.",
+        "Used `for char in S` loop to traverse the input string sequentially from start to end.",
+        "Loop For each index i from 0 to N-1",
+        "Iterating index i from 0 to N - 3 to traverse valid starting positions",
+        "Using a boolean flag found to track if the condition is met",
+        "Terminating the loop early via Break once the pattern is detected",
+        "Nested loops iterating `i` from 0 to `H - 1` and `j` from 0 to `W - 1` to access every cell in the grid",
+        "Accumulating `row_ones` by visiting each column in the current row",
+        "Iterates through string `S` using a loop `for i from 0 to n-1`.",
+        "Iterated through strings S and T sequentially to calculate character frequencies.",
+        "Ensures O(N) time complexity for the counting phase."
+      ],
+      "used_in": [
+        "3723",
+        "abc379_e",
+        "abc380_a",
+        "abc380_c",
+        "abc381_a",
+        "abc382_a",
+        "abc384_a",
+        "abc385_b",
+        "abc388_b",
+        "abc388_c",
+        "abc390_a",
+        "abc390_b",
+        "abc392_b",
+        "abc394_d",
+        "abc395_c",
+        "abc396_a",
+        "abc396_g",
+        "abc397_b",
+        "arc194_e"
+      ]
+    },
+    "Index Boundary Check": {
+      "name": "Index Boundary Check",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "index",
+          "typing": "integer",
+          "description": "The computed index to validate"
+        },
+        {
+          "name": "bounds",
+          "typing": [
+            "min",
+            "max"
+          ],
+          "description": "The valid range (e.g., 0 to n-1)"
+        }
+      ],
+      "description": "Verifying that a computed index lies within valid array bounds before access to prevent errors.",
+      "cues": [
+        "Accessing neighbors (i-1, i+1) or offsets (i-k, i+k)",
+        "Risk of negative indices or indices >= length",
+        "Grid or array traversal",
+        "Computed indices that may go out of bounds",
+        "Movement logic that changes coordinates",
+        "Accessing array elements at offset i-k requires ensuring i >= k.",
+        "DP state transitions involve computed indices that must remain within allocated table dimensions.",
+        "Loop variables or derived counts used for array access need validation."
+      ],
+      "implementation": [
+        "If i - k >= 0",
+        "If i + k < n",
+        "Condition 0 <= next_row < H AND 0 <= next_col < W before accessing grid",
+        "Prevents invalid memory access or logical errors at grid edges",
+        "Condition if i >= 2 before accessing S[i-2:i].",
+        "IF new_e > N/2: CONTINUE ensures `new_e` is a valid index for the DP table dimension."
+      ],
+      "used_in": [
+        "3723",
+        "abc385_b",
+        "abc386_b",
+        "abc389_g"
+      ]
+    },
+    "Conditional Summation": {
+      "name": "Conditional Summation",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "accumulator",
+          "typing": "numeric",
+          "description": "Variable storing the running total"
+        },
+        {
+          "name": "predicate",
+          "typing": "boolean expression",
+          "description": "Condition determining if the current value is added"
+        }
+      ],
+      "description": "Accumulating a total sum of values that satisfy a specific boolean predicate.",
+      "cues": [
+        "Problem asks for \"sum of elements where...\"",
+        "Filtering criteria applied during aggregation",
+        "The goal is to count elements satisfying a specific condition.",
+        "Accumulating values based on boolean conditions",
+        "Selective inclusion of elements in aggregate calculation",
+        "Predicate determines which values contribute to total",
+        "Accumulating a value based on a condition inside a loop.",
+        "Need to sum specific elements that satisfy a predicate.",
+        "Accumulating a total count based on elements satisfying a specific condition",
+        "Accumulating a result based on a specific condition (missing numbers)",
+        "Counting items that satisfy a negative predicate (not present)",
+        "Accumulating a total based on a specific boolean predicate.",
+        "Counting elements that satisfy or violate a condition.",
+        "Goal is to count the number of pairs satisfying multiple conditions.",
+        "Result is an aggregate count based on boolean predicates."
+      ],
+      "implementation": [
+        "If is_good: total_sum += nums[i]",
+        "Counting occurrences of '@' by summing 1 for each match.",
+        "Sums scores[i] only when bit i is set in current mask",
+        "Predicate is `(mask >> i) AND 1` for each position",
+        "Builds both numeric sum and string concatenation conditionally",
+        "Accumulated X into excluded_sum only when i divides X and quotient j is within range.",
+        "Incrementing count by (N - j), representing the number of valid elements in the suffix",
+        "Implicitly counted missing elements by appending them to `missing_list` only when `i NOT IN present_set`.",
+        "The final output length represents the count of such elements.",
+        "Increments `insertions` counter only when `S[i] != expected`.",
+        "Incrementing a counter variable only when all adjacency and structural checks pass."
+      ],
+      "used_in": [
+        "3723",
+        "abc382_a",
+        "abc384_c",
+        "abc387_b",
+        "abc388_c",
+        "abc392_b",
+        "abc397_b",
+        "abc399_d"
+      ]
+    },
+    "Fixed Offset Comparison": {
+      "name": "Fixed Offset Comparison",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "offset",
+          "typing": "integer",
+          "description": "The fixed distance k from the current index"
+        },
+        {
+          "name": "comparison_op",
+          "typing": "operator",
+          "description": "The relational operator used (e.g., <, <=, >)"
+        }
+      ],
+      "description": "Comparing an element with other elements located at a specific fixed distance away in the array.",
+      "cues": [
+        "Logic involves arr[i] vs arr[i-k] or arr[i+k]",
+        "Problems involving local peaks, valleys, or specific neighbor relations",
+        "Condition depends on relationship between current element and neighbors",
+        "Fixed distance relationship between indices (e.g., i, i+1, i+2)",
+        "Validity depends on indices being consecutive (difference of 1).",
+        "Adjacency checks require verifying specific arithmetic relationships between positions."
+      ],
+      "implementation": [
+        "If nums[i] <= nums[i - k]",
+        "If nums[i] <= nums[i + k]",
+        "Comparing A[i] with A[i+1] and A[i+2] inside the loop",
+        "Verifying equality across three consecutive indices to identify a run",
+        "Checking if sorted indices satisfy `p[i+1] == p[i] + 1`.",
+        "Using absolute difference check `ABS(i - j) == 1` for original adjacency."
+      ],
+      "used_in": [
+        "3723",
+        "abc396_a",
+        "abc399_d"
+      ]
+    },
+    "Circular Indexing": {
+      "name": "Circular Indexing",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "index",
+          "typing": "integer",
+          "description": "The current position in the sequence"
+        },
+        {
+          "name": "size",
+          "typing": "integer",
+          "description": "The total number of elements in the circular structure"
+        }
+      ],
+      "description": "Using modulo arithmetic to handle wrap-around indices when traversing a circular array or buffer.",
+      "cues": [
+        "circular array",
+        "wrap-around adjacency",
+        "ring buffer",
+        "last element connects to first"
+      ],
+      "implementation": [
+        "Calculated the next neighbor index using `(i + 1) % n` to seamlessly transition from the last element back to index 0."
+      ],
+      "used_in": [
+        "3747"
+      ]
+    },
+    "Running Maximum": {
+      "name": "Running Maximum",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "current_value",
+          "typing": "numeric",
+          "description": "The newly computed value to compare"
+        },
+        {
+          "name": "stored_max",
+          "typing": "numeric",
+          "description": "The maximum value found up to the current step"
+        }
+      ],
+      "description": "Maintaining a variable to track the maximum value encountered so far during a linear iteration.",
+      "cues": [
+        "find the maximum",
+        "maximize a metric",
+        "largest difference",
+        "global optimum",
+        "Tracking the best result seen so far during iteration",
+        "Comparing current candidate against stored maximum",
+        "Problem asks for a maximum value (e.g., longest length, max sum) derived from iterative processing.",
+        "Solution involves updating a global best variable during a loop.",
+        "Need to find the maximum value among a set of computed values",
+        "Tracking best result seen so far during iteration",
+        "Requirement to track the optimal value (minimum or maximum) found across multiple iterations or configurations",
+        "Solution involves comparing a current candidate value against a global best",
+        "Need to find a lower bound for a global parameter based on individual constraints",
+        "Constraint requires global value to be at least as large as all local known values"
+      ],
+      "implementation": [
+        "Initialized `max_diff` to 0 before the loop.",
+        "Updated `max_diff` at each iteration using `max(max_diff, current_diff)`.",
+        "max_len initialized to 0",
+        "Updated via max_len = max(max_len, current_len) after each valid window",
+        "current_len computed as right - left + 1",
+        "Maintains `max_len` variable updated via `max(max_len, count)` whenever a longer valid sequence is found.",
+        "max_weight variable initialized to 0 for each day",
+        "Updated using max(max_weight, weight) for each snake",
+        "Final max_weight output after processing all snakes for that day",
+        "Initializing `min_total_ones` to infinity",
+        "Updating the global best using `min(min_total_ones, current_total_ones)` after evaluating each mask configuration",
+        "Initializes `target` to 0",
+        "Iterates through arrays updating `target = max(target, A[i])` or `max(target, B[i])` when one value in the pair is missing"
+      ],
+      "used_in": [
+        "3747",
+        "abc381_d",
+        "abc385_c",
+        "abc388_b",
+        "abc396_g",
+        "arc195_b"
+      ]
+    },
+    "String Suffix Check": {
+      "name": "String Suffix Check",
+      "kind": "string algorithm",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "text",
+          "typing": "string",
+          "description": "The main string to analyze."
+        },
+        {
+          "name": "suffix",
+          "typing": "string",
+          "description": "The substring expected at the end of text."
+        }
+      ],
+      "description": "Verifying if a string ends with a specific substring pattern.",
+      "cues": [
+        "Problem asks if a string ends with a specific sequence.",
+        "Problem involves validating name endings or file extensions.",
+        "Need to verify if current position ends with a specific pattern."
+      ],
+      "implementation": [
+        "Applied `ends_with` check on input string `S` against literal \"san\".",
+        "Checking if S[i-2:i] equals \"00\" before applying special transition."
+      ],
+      "used_in": [
+        "abc374_a",
+        "abc386_b"
+      ]
+    },
+    "Yes/No Output Pattern": {
+      "name": "Yes/No Output Pattern",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "condition",
+          "typing": "boolean",
+          "description": "The logical result determining the output."
+        }
+      ],
+      "description": "Mapping a boolean condition to standard \"Yes\" or \"No\" string output.",
+      "cues": [
+        "Problem requires a binary answer.",
+        "Output specification mentions \"Yes\" and \"No\" (case may vary).",
+        "Problem asks for a boolean decision (valid/invalid configuration).",
+        "Standard competitive programming requirement for string output based on condition.",
+        "Problem asks for a boolean feasibility check.",
+        "Output format requires specific string literals for true/false conditions.",
+        "Problem asks for a boolean feasibility check",
+        "Output specification requires standard \"Yes\" or \"No\" strings",
+        "Problem asks whether a condition is achievable",
+        "Binary answer required",
+        "Boolean result required",
+        "Problem requires a boolean answer (true/false condition).",
+        "Output format specifies standard \"Yes\" or \"No\" strings.",
+        "Problem asks for existence or possibility verification",
+        "Output format requires specific string literals based on boolean result",
+        "Problem requires a boolean decision (possible/impossible, equal/not equal).",
+        "Standard competitive programming output format for decision problems.",
+        "Decision problem requiring a boolean answer",
+        "Standard competitive programming output format for feasibility checks"
+      ],
+      "implementation": [
+        "Used IF-ELSE block to print \"Yes\" if suffix matches, else \"No\".",
+        "Conditional logic checks if all frequency constraints are met.",
+        "Prints \"Yes\" if constraints satisfied, otherwise prints \"No\".",
+        "Returned \"No\" immediately upon finding any validation failure.",
+        "Returned \"Yes\" only after all structural constraints were satisfied.",
+        "Printing \"Yes\" immediately upon finding a valid partition condition",
+        "Printing \"No\" if no conditions are met after all checks",
+        "Returned \"Yes\" if any single swap produces sorted array",
+        "Returned \"No\" if already sorted or no single swap works",
+        "Printing \"Yes\" if loop completes successfully",
+        "Printing \"No\" and returning immediately if condition fails",
+        "Uses an IF-ELSE block to print \"Yes\" when the multiplicative condition is satisfied and \"No\" otherwise.",
+        "Mapping the boolean flag found to \"Yes\" or \"No\" strings",
+        "Using an If-Else block for final output based on the search result",
+        "Output \"Yes\" if the frequency counts of both strings matched.",
+        "Output \"No\" otherwise.",
+        "Returns string \"No\" immediately upon detecting any constraint violation",
+        "Returns string \"Yes\" only after all validation loops complete successfully"
+      ],
+      "used_in": [
+        "abc374_a",
+        "abc380_a",
+        "abc381_a",
+        "abc385_a",
+        "abc390_a",
+        "abc390_b",
+        "abc392_a",
+        "abc396_a",
+        "arc194_e",
+        "arc195_b"
+      ]
+    },
+    "Bitmask Enumeration": {
+      "name": "Bitmask Enumeration",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "N",
+          "typing": "integer",
+          "description": "The number of elements in the set, determining the iteration range 0 to 2^N - 1."
+        }
+      ],
+      "description": "Iterating through all possible subsets of a set by treating integers as binary masks where each bit represents an element's inclusion.",
+      "cues": [
+        "Small constraint on N (typically N <= 20)",
+        "Requirement to evaluate all combinations or subsets",
+        "Binary choice for each element (include/exclude or group A/group B)",
+        "Small fixed set size (n ≤ 20)",
+        "Need to enumerate all possible subsets",
+        "Combinatorial exploration of element combinations",
+        "Small constraint on one dimension (e.g., W <= 20) suggesting exponential complexity is acceptable",
+        "Problem involves making a binary choice (flip/no-flip, include/exclude) for each element in a set"
+      ],
+      "implementation": [
+        "Outer loop iterates `mask` from 0 to 2^N - 1",
+        "Inner loop checks individual bits using `(mask >> i) & 1` to determine subset membership",
+        "Iterates mask from 1 to 31 (2^5 - 1) to generate all non-empty subsets",
+        "Uses bit shift and AND operation `(mask >> i) AND 1` to check element inclusion",
+        "Builds subset properties (score_sum, name_str) for each valid mask",
+        "Iterating `mask` from 0 to `2^W - 1` to represent all subsets of columns to flip",
+        "Checking if the j-th column is flipped using bitwise operation `(mask >> j) & 1`"
+      ],
+      "used_in": [
+        "abc374_c",
+        "abc384_c",
+        "abc396_g"
+      ]
+    },
+    "Two-Subset Partition": {
+      "name": "Two-Subset Partition",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "elements",
+          "typing": "list of numbers",
+          "description": "The items to be distributed between the two subsets."
+        }
+      ],
+      "description": "Dividing a collection of items into two disjoint groups to optimize a function of their aggregate values.",
+      "cues": [
+        "Problem asks to split items into two groups",
+        "Objective involves sums or weights of the two groups",
+        "Load balancing between two entities",
+        "Goal is to divide items into groups with equal sums",
+        "Small input size (N=3) allows direct subset sum comparison"
+      ],
+      "implementation": [
+        "Elements added to `sum_a` if corresponding mask bit is 1",
+        "Elements added to `sum_b` if corresponding mask bit is 0",
+        "Checking if one number equals the sum of the other two (e.g., A + B == C)",
+        "Verifying all permutations of the sum condition to cover all 2-vs-1 splits"
+      ],
+      "used_in": [
+        "abc374_c",
+        "abc385_a"
+      ]
+    },
+    "Minimax Optimization": {
+      "name": "Minimax Optimization",
+      "kind": "optimization",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "metrics",
+          "typing": "list of numbers",
+          "description": "The values among which the maximum is selected for minimization."
+        }
+      ],
+      "description": "Finding a configuration that minimizes the maximum value among a set of resulting metrics.",
+      "cues": [
+        "Objective function contains nested MIN and MAX operations",
+        "Goal is to balance quantities or minimize the worst-case load",
+        "Phrases like \"minimize the maximum sum\""
+      ],
+      "implementation": [
+        "Compute `MAX(sum_a, sum_b)` for each configuration",
+        "Update global `min_ans` with the minimum of these maximums"
+      ],
+      "used_in": [
+        "abc374_c"
+      ]
+    },
+    "Sorting": {
+      "name": "Sorting",
+      "kind": "algorithm",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "collection",
+          "typing": "list or string",
+          "description": "The sequence of elements to be ordered."
+        }
+      ],
+      "description": "Rearranging elements of a collection into a specific order (e.g., lexicographical or numerical).",
+      "cues": [
+        "Need to process elements in a specific order.",
+        "Need to compare collections ignoring original positions.",
+        "Problem involves finding order statistics (k-th smallest).",
+        "Need to order results by multiple criteria",
+        "Primary and secondary sort keys required",
+        "Output must follow specific ranking order",
+        "Need to normalize data for comparison independent of original order or keys",
+        "Comparing distributions or shapes of data",
+        "Need to determine if array can reach sorted state",
+        "Comparing current arrangement against ordered target",
+        "Problem requires ordering collection elements based on a specific metric",
+        "Relative order of a small subset of indices determines validity.",
+        "Indices need to be normalized to check for contiguous blocks.",
+        "Need to process items in order of some metric (price, value, etc.)",
+        "Greedy selection requires ordering candidates by priority"
+      ],
+      "implementation": [
+        "Applied to the characters of string S to arrange them lexicographically.",
+        "Sorts participants list by score_sum descending (negative key)",
+        "Uses name_str as secondary key for tiebreaking in ascending order",
+        "Applied after all subset combinations are generated",
+        "Sorting the frequency counts descending to create a canonical signature of the hand (e.g., [3, 1] vs [2, 2])",
+        "Created target array by sorting input A",
+        "Used sorted version as reference for comparison after each swap attempt",
+        "Sorted the list of input strings S based on their length in ascending order",
+        "Sorting the four indices associated with the current pair of values.",
+        "Pairs sorted by price in descending order to prioritize higher-value selections"
+      ],
+      "used_in": [
+        "abc377_a",
+        "abc384_c",
+        "abc386_a",
+        "abc390_a",
+        "abc394_b",
+        "abc399_d",
+        "abc400_g"
+      ]
+    },
+    "Multiset Equality via Sorting": {
+      "name": "Multiset Equality via Sorting",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "source",
+          "typing": "list or string",
+          "description": "The input collection to verify."
+        },
+        {
+          "name": "target",
+          "typing": "list or string",
+          "description": "The reference collection to match against."
+        }
+      ],
+      "description": "Determining if two collections contain the same elements with the same frequencies by transforming them into a canonical sorted form and comparing.",
+      "cues": [
+        "Problem asks if one string is a permutation of another.",
+        "Order of elements does not matter, only their counts.",
+        "Need to check if two groups of items are identical composition-wise."
+      ],
+      "implementation": [
+        "Compared the sorted version of S against the fixed list ['A', 'B', 'C'] to confirm S is a permutation of \"ABC\"."
+      ],
+      "used_in": [
+        "abc377_a"
+      ]
+    },
+    "Frequency Map": {
+      "name": "Frequency Map",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "collection",
+          "typing": "list",
+          "description": "The input sequence of elements to count."
+        }
+      ],
+      "description": "Using a hash map to aggregate counts of distinct elements in a collection.",
+      "cues": [
+        "Need to count occurrences of specific values.",
+        "Distinct values are unknown or large range.",
+        "Grouping by equality.",
+        "Problem requires counting occurrences of specific elements (digits '1', '2', '3').",
+        "Validation depends on the aggregate counts of distinct items rather than their order.",
+        "Counting occurrences of elements within a sliding window",
+        "Need to track when an element appears more than a threshold number of times",
+        "Problems requiring aggregation of element counts",
+        "Analyzing the distribution of values in a collection",
+        "Need to compare the composition of two collections or strings.",
+        "Problem involves counting occurrences of specific elements.",
+        "Order of elements does not matter, only their quantities."
+      ],
+      "implementation": [
+        "Initialized `freq_map` to store counts.",
+        "Iterated through `colors` array to populate frequencies.",
+        "Used explicit variables `count_1`, `count_2`, `count_3` to store frequencies instead of a generic hash map, optimized for a small fixed set of keys.",
+        "Counts are compared against target values (1, 2, 3) to verify the string composition.",
+        "count map tracks frequency of values that form valid pairs",
+        "Increment count[value] when a valid pair is found at odd index",
+        "Decrement count[old_value] when shrinking window from left",
+        "Remove entry when count reaches 0 to keep map clean",
+        "Used to count occurrences of each card value to determine the current hand structure",
+        "Aggregated counts of '0' and '1' characters for both strings S and T.",
+        "Used simple integer variables instead of a generic hash map due to the small fixed alphabet size (binary).",
+        "Compared the resulting frequency counts to determine equivalence."
+      ],
+      "used_in": [
+        "abc378_a",
+        "abc380_a",
+        "abc381_d",
+        "abc386_a",
+        "arc194_e"
+      ]
+    },
+    "Pair Counting from Frequencies": {
+      "name": "Pair Counting from Frequencies",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "frequencies",
+          "typing": "list of integers",
+          "description": "List of counts for each distinct item type."
+        }
+      ],
+      "description": "Calculating the maximum number of pairs formable from a set of items based on their frequencies.",
+      "cues": [
+        "Problem involves forming pairs of identical items.",
+        "Goal is to maximize number of pairs.",
+        "Leftover items (odd counts) do not contribute."
+      ],
+      "implementation": [
+        "Iterated through values of `freq_map`.",
+        "Added `count DIV 2` to `total_operations`."
+      ],
+      "used_in": [
+        "abc378_a"
+      ]
+    },
+    "Hash Map": {
+      "name": "Hash Map",
+      "kind": "data structure",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "Key Type",
+          "typing": "type",
+          "description": "The type of the key (e.g., integer, string)"
+        },
+        {
+          "name": "Value Type",
+          "typing": "type",
+          "description": "The type of the value stored"
+        }
+      ],
+      "description": "A data structure that stores key-value pairs allowing for average O(1) insertion, deletion, and lookup.",
+      "cues": [
+        "Need to associate values with metadata (like indices or counts)",
+        "Need fast lookup to check existence or retrieve associated data",
+        "Frequency counting or index mapping requirements",
+        "Need O(1) lookup and update for element frequencies",
+        "Keys are array values, values are counts",
+        "Need for O(1) average time complexity for insertion and lookup.",
+        "Grouping elements by a key or checking for existence of values.",
+        "Need for constant time retrieval of associated values",
+        "Relationship between distinct keys and specific values",
+        "Need to associate closing brackets with their corresponding opening brackets for O(1) lookup.",
+        "Mapping one set of values (closers) to another (openers) without complex conditional logic.",
+        "Need to store and lookup values efficiently",
+        "Checking for existence of previous elements"
+      ],
+      "implementation": [
+        "Used `last_pos` map to store the most recent index of each value encountered.",
+        "Checked existence using `If val in last_pos`.",
+        "Updated mapping using `Set last_pos[val] = i`.",
+        "empty frequency map initialized as count",
+        "Supports increment, decrement, and removal operations",
+        "Used to check if count[value] > 1 for window validity",
+        "Used to store `groups` mapping height values to lists of indices.",
+        "Used to create `index_set` for O(1) existence checks during sequence verification.",
+        "Initialized dictionary MAP with direction strings as keys and opposites as values",
+        "Retrieved opposite_direction using input string D as the key",
+        "Defined `matching` dictionary mapping closing characters (')', ']', '>') to opening characters ('(', '[', '<').",
+        "Accessed `matching[char]` to retrieve the expected opening bracket for comparison.",
+        "last_seen_map dictionary stores value-to-index mapping for O(1) lookup"
+      ],
+      "used_in": [
+        "abc378_c",
+        "abc381_d",
+        "abc385_c",
+        "abc391_a",
+        "abc394_d",
+        "abc395_c"
+      ]
+    },
+    "Last Position Tracking": {
+      "name": "Last Position Tracking",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "Sequence",
+          "typing": "list/array",
+          "description": "The sequence being iterated over"
+        },
+        {
+          "name": "State Map",
+          "typing": "map/dictionary",
+          "description": "The data structure storing the last position"
+        }
+      ],
+      "description": "Maintaining the most recent index or state of an element while iterating through a sequence.",
+      "cues": [
+        "Problem asks for the index of the previous occurrence of an element",
+        "Problem involves distance between identical elements",
+        "Need to detect duplicates or recurring patterns in a stream",
+        "Problem involves distance between occurrences of the same value",
+        "Requires knowledge of where a value was last seen"
+      ],
+      "implementation": [
+        "Iterated through array `A` with index `i`.",
+        "Queried `last_pos` for previous index before updating it.",
+        "Updated `last_pos[val]` to current `i` at the end of each iteration.",
+        "Updating last_seen_map[current_val] = i at each step to record the latest index"
+      ],
+      "used_in": [
+        "abc378_c",
+        "abc395_c"
+      ]
+    },
+    "Backtracking": {
+      "name": "Backtracking",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "state",
+          "typing": "mutable data structure",
+          "description": "Tracks the current partial solution configuration (e.g., visited set, current path)"
+        },
+        {
+          "name": "constraint",
+          "typing": "predicate",
+          "description": "Condition to determine validity or termination of the current branch"
+        }
+      ],
+      "description": "An algorithmic technique for solving problems recursively by building a solution incrementally and abandoning a candidate (backtracking) as soon as it is determined that the candidate cannot lead to a valid solution, typically involving state restoration.",
+      "cues": [
+        "Problem requires counting or finding all valid paths/configurations",
+        "Solution involves making a sequence of choices",
+        "Choices must be undone to explore alternative branches",
+        "Trying multiple candidate operations sequentially",
+        "Need to restore state after each trial",
+        "Exploring solution space by making and undoing changes"
+      ],
+      "implementation": [
+        "Modifying 'visited' set before recursive call (visited.ADD)",
+        "Reverting 'visited' set after recursive call returns (visited.REMOVE)",
+        "Ensures each path is simple (no repeated nodes within the path)",
+        "Swapped adjacent elements at position i",
+        "Checked if swap achieved sorted state",
+        "Reverted swap before trying next position to maintain original array state"
+      ],
+      "used_in": [
+        "abc378_d",
+        "abc390_a"
+      ]
+    },
+    "Depth First Search": {
+      "name": "Depth First Search",
+      "kind": "algorithm",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "start_node",
+          "typing": "node",
+          "description": "The starting point of the traversal"
+        },
+        {
+          "name": "termination_condition",
+          "typing": "predicate",
+          "description": "Condition to stop recursion (e.g., depth limit, target found)"
+        }
+      ],
+      "description": "A traversal algorithm that explores as far as possible along each branch before backtracking, often implemented recursively.",
+      "cues": [
+        "Recursive function structure exploring neighbors",
+        "Need to reach a specific depth or target node",
+        "Graph or tree structure implied by problem"
+      ],
+      "implementation": [
+        "Recursive function 'DFS' taking current coordinates and step count",
+        "Base case checks if 'steps == K' to count valid path",
+        "Iterates through 'directions' to find next states"
+      ],
+      "used_in": [
+        "abc378_d"
+      ]
+    },
+    "Grid Graph Modeling": {
+      "name": "Grid Graph Modeling",
+      "kind": "definition",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "rows",
+          "typing": "integer",
+          "description": "Number of rows in the grid (H)"
+        },
+        {
+          "name": "cols",
+          "typing": "integer",
+          "description": "Number of columns in the grid (W)"
+        },
+        {
+          "name": "move_set",
+          "typing": "list of tuples",
+          "description": "Allowed relative coordinate changes (e.g., 4-directional moves)"
+        }
+      ],
+      "description": "Treating a 2D matrix as a graph where cells are nodes and valid adjacent cells are connected by edges based on movement rules.",
+      "cues": [
+        "Input is a 2D array or character grid",
+        "Movement is restricted to adjacent cells (horizontal/vertical)",
+        "Boundary checks and obstacle checks required for movement",
+        "2D matrix input representing a map or board",
+        "Movement commands (Up, Down, Left, Right)",
+        "Obstacles or walls represented by specific characters"
+      ],
+      "implementation": [
+        "Using 'directions' list [(0, 1), (0, -1), (1, 0), (-1, 0)] to define edges",
+        "Checking bounds '0 <= nr < H AND 0 <= nc < W'",
+        "Checking cell validity 'Grid[nr][nc] == .' before traversing",
+        "Reading grid H x W",
+        "Checking grid[next_row][next_col] != '#' to validate traversability",
+        "Treating cell coordinates (row, col) as node positions"
+      ],
+      "used_in": [
+        "abc378_d",
+        "abc385_b"
+      ]
+    },
+    "Dynamic Programming Running State": {
+      "name": "Dynamic Programming Running State",
+      "kind": "dp pattern",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "state_variable",
+          "typing": "numeric",
+          "description": "The running state that gets updated each iteration"
+        },
+        {
+          "name": "recurrence_relation",
+          "typing": "formula",
+          "description": "Mathematical relationship defining how state evolves from previous state"
+        }
+      ],
+      "description": "Maintaining a state variable that evolves through iterations based on a recurrence relation from the previous state, avoiding full DP table storage",
+      "cues": [
+        "Problem involves computing aggregate values over subsequences/substrings",
+        "Current position's answer depends on previous position's answer",
+        "Can express solution as recurrence relation",
+        "Need to compute aggregate values (like sum, min, max) for ranges ending at the current index.",
+        "Current value can be derived from the previous iteration's value with O(1) update.",
+        "Memory optimization is desired to avoid storing a full 2D DP table or recomputing from scratch."
+      ],
+      "implementation": [
+        "current_ending_sum tracks sum of all substrings ending at position i",
+        "Recurrence: current_ending_sum = current_ending_sum * 10 + digit * (i + 1)",
+        "State updated in-place without storing full DP table",
+        "Maintaining `current_subarray_sum` variable inside the inner loop.",
+        "Updating sum incrementally via `current_subarray_sum + A[r]` instead of recalculating sum from `l` to `r` each time."
+      ],
+      "used_in": [
+        "abc379_e",
+        "abc399_f"
+      ]
+    },
+    "Position-Weighted Contribution": {
+      "name": "Position-Weighted Contribution",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "position_factor",
+          "typing": "function of index",
+          "description": "How the element's position affects its contribution weight"
+        }
+      ],
+      "description": "Computing each element's contribution to the total based on its position/index in the sequence",
+      "cues": [
+        "Element values need to be multiplied by position-dependent factors",
+        "Counting how many subsequences/substrings include each position",
+        "Combinatorial counting based on index"
+      ],
+      "implementation": [
+        "digit * (i + 1) accounts for (i+1) substrings ending at position i",
+        "Each digit's contribution weighted by number of substrings containing it"
+      ],
+      "used_in": [
+        "abc379_e"
+      ]
+    },
+    "Substring Sum via DP": {
+      "name": "Substring Sum via DP",
+      "kind": "dp pattern",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Efficiently computing sum of all substrings without explicit enumeration by using positional recurrence relations",
+      "cues": [
+        "Problem asks for sum/count of all substrings",
+        "String contains numeric digits",
+        "Naive O(n²) or O(n³) enumeration would be too slow"
+      ],
+      "implementation": [
+        "total_sum accumulates current_ending_sum at each position",
+        "Avoids explicitly generating all O(n²) substrings",
+        "Achieves O(n) time complexity instead of O(n²)"
+      ],
+      "used_in": [
+        "abc379_e"
+      ]
+    },
+    "Contiguous Block Extraction": {
+      "name": "Contiguous Block Extraction",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "sequence",
+          "typing": "array or string",
+          "description": "The input sequence to scan for blocks"
+        },
+        {
+          "name": "predicate",
+          "typing": "boolean function",
+          "description": "Condition that determines block membership (e.g., character equals '1')"
+        }
+      ],
+      "description": "Identifying and recording consecutive runs of elements that satisfy a condition, storing their start and end positions.",
+      "cues": [
+        "Need to find consecutive runs of matching elements",
+        "Problem involves segments or blocks of identical values",
+        "Solution requires tracking start and end indices of runs"
+      ],
+      "implementation": [
+        "Nested while loops identify consecutive '1' characters",
+        "Each block stored as tuple (start_index, end_index)",
+        "Blocks list accumulates all identified segments"
+      ],
+      "used_in": [
+        "abc380_c"
+      ]
+    },
+    "String Segment Reconstruction": {
+      "name": "String Segment Reconstruction",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "original_string",
+          "typing": "string",
+          "description": "The source string to extract segments from"
+        },
+        {
+          "name": "segment_boundaries",
+          "typing": "list of index pairs",
+          "description": "Start and end positions defining each segment"
+        },
+        {
+          "name": "reorder_pattern",
+          "typing": "sequence",
+          "description": "The order in which segments should be concatenated"
+        }
+      ],
+      "description": "Building a new string by concatenating substrings from the original in a rearranged order based on computed indices.",
+      "cues": [
+        "Output requires rearranging parts of input string",
+        "Solution involves string slicing and concatenation",
+        "Problem asks to swap or reorder substrings"
+      ],
+      "implementation": [
+        "Result built from 4 concatenated substrings",
+        "Segments extracted using slice notation with computed boundaries",
+        "Order: prefix + selected_block + middle + suffix"
+      ],
+      "used_in": [
+        "abc380_c"
+      ]
+    },
+    "Parity Check": {
+      "name": "Parity Check",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "value",
+          "typing": "integer",
+          "description": "The number whose parity is being checked."
+        }
+      ],
+      "description": "Determining whether an integer is even or odd using modulo arithmetic, often used to filter impossible cases early.",
+      "cues": [
+        "Constraints involving even/odd counts or lengths.",
+        "Problems with alternating patterns or turn-based mechanics.",
+        "Bipartite graph coloring feasibility.",
+        "Logic branches based on whether a value is even or odd.",
+        "Final answer or state must satisfy a parity constraint (even/odd).",
+        "Problem behavior differs based on odd/even input N",
+        "Symmetric structure depends on length parity"
+      ],
+      "implementation": [
+        "Used `if N % 2 == 0` to immediately reject even-length strings as invalid.",
+        "Determines `expected` character ('i' or 'o') based on index parity `(i+1) is odd`.",
+        "Ensures final total length `(n + insertions)` is even by adding 1 if odd.",
+        "Branching logic `if N is odd` determines placement strategy for center characters"
+      ],
+      "used_in": [
+        "abc381_a",
+        "abc397_b",
+        "abc398_a"
+      ]
+    },
+    "Center Index Calculation": {
+      "name": "Center Index Calculation",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "length",
+          "typing": "integer",
+          "description": "The total number of elements in the sequence."
+        }
+      ],
+      "description": "Computing the 0-based index of the central element in a sequence, typically for odd-length arrays or strings.",
+      "cues": [
+        "Problems involving symmetry or palindromes.",
+        "Strings with a specific separator character at the middle.",
+        "Divide and conquer strategies requiring a pivot.",
+        "Need to access middle element(s) of a sequence",
+        "Constructing symmetric/palindromic patterns"
+      ],
+      "implementation": [
+        "Calculated `mid = (N + 1) // 2 - 1` to locate the separator '/' position.",
+        "Computed `N // 2` for odd center, and `N // 2 - 1`, `N // 2` for even centers"
+      ],
+      "used_in": [
+        "abc381_a",
+        "abc398_a"
+      ]
+    },
+    "Sliding Window": {
+      "name": "Sliding Window",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "left_pointer",
+          "typing": "integer",
+          "description": "Starting index of the current window"
+        },
+        {
+          "name": "right_pointer",
+          "typing": "integer",
+          "description": "Ending index of the current window that expands through iteration"
+        },
+        {
+          "name": "validity_condition",
+          "typing": "boolean predicate",
+          "description": "Condition that determines when the window is valid or needs shrinking"
+        }
+      ],
+      "description": "Maintains a contiguous subarray using two pointers (left and right) that expand and contract based on validity conditions to find optimal subarrays.",
+      "cues": [
+        "Finding maximum/minimum length subarray satisfying a condition",
+        "Two pointer variables tracking window boundaries",
+        "Window expands with right pointer and contracts from left when invalid"
+      ],
+      "implementation": [
+        "left and right pointers define window boundaries",
+        "right pointer expands through linear iteration (0 to N-1)",
+        "left pointer advances by 2 to shrink window when count[value] > 1",
+        "Window resets (left = right + 1, clear count) on invalid pair boundary"
+      ],
+      "used_in": [
+        "abc381_d"
+      ]
+    },
+    "Pair-based Window Constraint": {
+      "name": "Pair-based Window Constraint",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Window validity depends on consecutive equal element pairs at specific index positions (odd-even pairs).",
+      "cues": [
+        "Problem involves finding subarrays with pair-based structure",
+        "Valid elements occur at specific index patterns (e.g., odd indices completing pairs)",
+        "Window must maintain pair integrity when shrinking"
+      ],
+      "implementation": [
+        "Only process positions where right is odd AND A[right] == A[right-1]",
+        "Window shrinks by 2 (left += 2) to maintain pair boundaries",
+        "Complete window reset when invalid pair boundary encountered"
+      ],
+      "used_in": [
+        "abc381_d"
+      ]
+    },
+    "Complementary Counting": {
+      "name": "Complementary Counting",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "total_count",
+          "typing": "int",
+          "description": "The total number of elements in the collection."
+        },
+        {
+          "name": "complement_count",
+          "typing": "int",
+          "description": "The number of elements in the complement set (satisfying the opposite condition)."
+        }
+      ],
+      "description": "Calculating the size of a target set by subtracting the size of its complement from the known total size.",
+      "cues": [
+        "Problem asks for the count of items NOT satisfying a condition.",
+        "The total size of the collection is known.",
+        "Counting the items that DO satisfy the condition is straightforward.",
+        "Problem requires counting/summing valid configurations where invalid ones are easier to identify.",
+        "Total search space is easily calculable (e.g., via formula).",
+        "Need to determine the count of elements satisfying the inverse condition (e.g., zeros vs ones)",
+        "Total size of the collection is known and fixed"
+      ],
+      "implementation": [
+        "Deriving originally_empty as N - cookie_count.",
+        "Calculated TOTAL_SUM using mathematical formula (sum of 1-9 squared).",
+        "Subtracted excluded_sum (sum of invalid pairs) from TOTAL_SUM to get RESULT.",
+        "Calculating the number of zeros in a row as `W - row_ones` instead of explicitly counting them",
+        "Using `min(row_ones, W - row_ones)` to greedily choose the state with fewer 1s",
+        "Computed edges_to_remove by subtracting max_forest_edges from total edges M"
+      ],
+      "used_in": [
+        "abc382_a",
+        "abc387_b",
+        "abc396_g",
+        "abc399_c"
+      ]
+    },
+    "Conditional String Construction": {
+      "name": "Conditional String Construction",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Building a result string by iterating through an input sequence and appending characters based on a boolean predicate",
+      "cues": [
+        "Problem requires transforming a string character-by-character",
+        "Output is a modified version of the input string based on specific rules",
+        "Logic involves deciding which character to append at each step"
+      ],
+      "implementation": [
+        "Initialize `result` as an empty string",
+        "Inside the loop, check `If ch == c1`",
+        "Append `ch` if condition is true, otherwise append `c2`"
+      ],
+      "used_in": [
+        "abc384_a"
+      ]
+    },
+    "Partition Structure Enumeration": {
+      "name": "Partition Structure Enumeration",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Identifying all valid structural configurations of a partition (e.g., group sizes) for a small set and checking each scenario separately.",
+      "cues": [
+        "Small number of elements limits possible partition shapes",
+        "Problem involves grouping items into equal-sum sets"
+      ],
+      "implementation": [
+        "Separating logic into Case 1 (three groups of size 1, requiring all elements equal)",
+        "Separating logic into Case 2 (two groups of sizes 2 and 1, requiring sum equality)"
+      ],
+      "used_in": [
+        "abc385_a"
+      ]
+    },
+    "Set Data Structure": {
+      "name": "Set Data Structure",
+      "kind": "data structure",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "A collection that stores unique elements, typically supporting efficient insertion and existence checks without maintaining order.",
+      "cues": [
+        "Need to track unique items encountered during traversal",
+        "Requirement to count distinct occurrences without duplicates",
+        "Need to check existence of elements efficiently",
+        "Input sequence may contain duplicates or unsorted values",
+        "Requirement to verify presence of numbers in a range",
+        "Store elements of S in a Hash Set",
+        "O(1) lookup"
+      ],
+      "implementation": [
+        "visited_houses = Empty Set initialized to store coordinates",
+        "Add (curr_row, curr_col) to visited_houses only when house '@' is found",
+        "Using Size(visited_houses) to get count of unique houses visited",
+        "Created a hash set (`present_set`) from the input sequence `A` to allow O(1) lookups.",
+        "Used the set to check if numbers from 1 to N were present in the original sequence.",
+        "Used to store input set S for constant-time existence checks of the computed third term."
+      ],
+      "used_in": [
+        "abc385_b",
+        "abc392_b",
+        "abc392_g"
+      ]
+    },
+    "Index Grouping by Value": {
+      "name": "Index Grouping by Value",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Preprocessing step that organizes array indices into lists based on their corresponding values to facilitate value-specific processing.",
+      "cues": [
+        "Problems requiring operations on positions of identical elements separately.",
+        "Need to iterate over all occurrences of each distinct value.",
+        "Input contains duplicate values where position tracking is required.",
+        "Need to retrieve all occurrences of a specific value efficiently."
+      ],
+      "implementation": [
+        "Constructed `groups` dictionary where `groups[val]` contains all indices `i` such that `H[i] == val`.",
+        "Initializing a map to store lists of indices for each value.",
+        "Iterating through the input array to append current index to the corresponding value's list."
+      ],
+      "used_in": [
+        "abc385_c",
+        "abc399_d"
+      ]
+    },
+    "Arithmetic Progression Check": {
+      "name": "Arithmetic Progression Check",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Verifying if a sequence of numbers forms an arithmetic progression by iteratively checking existence of terms start, start+diff, start+2*diff in a set.",
+      "cues": [
+        "Problems involving sequences with constant differences or steps.",
+        "Finding longest chains or subsequences with fixed intervals.",
+        "Compute c = 2 * b - a",
+        "unique pair (a, b) from S where a < b"
+      ],
+      "implementation": [
+        "For each candidate difference `diff`, iterates `curr += diff` starting from `start_index` and checks membership in `index_set` to count sequence length.",
+        "Derived the third term of a potential arithmetic progression (c) from two known terms (a, b) using the relation 2b = a + c.",
+        "Validated the existence of the third term in the pre-stored set to confirm the triplet."
+      ],
+      "used_in": [
+        "abc385_c",
+        "abc392_g"
+      ]
+    },
+    "Frequency Pattern Matching": {
+      "name": "Frequency Pattern Matching",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Validating a collection's structure by comparing its sorted frequency counts against known valid patterns or target states.",
+      "cues": [
+        "Card game hand evaluation (e.g., Poker, Mahjong)",
+        "Checking if items can form specific groups (pairs, triples)",
+        "Partition constraints on element counts"
+      ],
+      "implementation": [
+        "Comparing the sorted frequency list against specific shapes ([3, 1], [2, 2], etc.) to determine if a Full House is reachable"
+      ],
+      "used_in": [
+        "abc386_a"
+      ]
+    },
+    "Prefix Dynamic Programming": {
+      "name": "Prefix Dynamic Programming",
+      "kind": "dp pattern",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "dp_array",
+          "typing": "array",
+          "description": "Stores the optimal value for each prefix length."
+        },
+        {
+          "name": "transitions",
+          "typing": "list of functions",
+          "description": "Rules defining how to compute dp[i] from previous dp values."
+        }
+      ],
+      "description": "Solving optimization problems on sequences by defining state dp[i] as the optimal solution for the prefix of length i, transitioning from previous states.",
+      "cues": [
+        "Optimization problem on a sequence or string.",
+        "Solution for position i depends on solutions for positions < i.",
+        "Minimizing or maximizing a cost/count."
+      ],
+      "implementation": [
+        "dp array initialized to infinity with dp[0] = 0.",
+        "Iterating i from 1 to n to fill dp table.",
+        "Updating dp[i] using min of dp[i-1] + 1 and dp[i-2] + 1."
+      ],
+      "used_in": [
+        "abc386_b"
+      ]
+    },
+    "Factor Pair Enumeration": {
+      "name": "Factor Pair Enumeration",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Iterating through a range of integers to find pairs that multiply to a specific target value, verifying divisibility and range constraints.",
+      "cues": [
+        "Problem involves divisors, factors, or multiplication tables.",
+        "Need to find pairs (a, b) such that a * b = X within bounds."
+      ],
+      "implementation": [
+        "Iterated i from 1 to 9.",
+        "Checked divisibility (X MOD i == 0).",
+        "Calculated complementary factor j = X DIV i and validated range."
+      ],
+      "used_in": [
+        "abc387_b"
+      ]
+    },
+    "String Index Access": {
+      "name": "String Index Access",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Retrieving a character at a specific zero-based index from a string.",
+      "cues": [
+        "Problem requires inspecting specific characters (e.g., first, last) of a string.",
+        "Logic depends on the value of characters at fixed positions."
+      ],
+      "implementation": [
+        "Accessed the first character of input string S using index 0 (`head ← S[0]`)."
+      ],
+      "used_in": [
+        "abc388_a"
+      ]
+    },
+    "String Concatenation": {
+      "name": "String Concatenation",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Joining two or more string values to form a new string.",
+      "cues": [
+        "Output requires combining input parts with constant strings.",
+        "Construction of a result string from multiple components.",
+        "Need to combine multiple string inputs into one continuous output",
+        "Final output requires a single string",
+        "Solution builds result in parts or array"
+      ],
+      "implementation": [
+        "Combined the extracted character and the literal \"UPC\" to form the result (`result ← head + \"UPC\"`).",
+        "Joined all elements from the sorted list S into a single result string",
+        "Joined character array `result` into final string using `join`"
+      ],
+      "used_in": [
+        "abc388_a",
+        "abc394_b",
+        "abc398_a"
+      ]
+    },
+    "Brute Force Enumeration": {
+      "name": "Brute Force Enumeration",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "outer_range",
+          "typing": "integer range",
+          "description": "Range of outer loop iterations (e.g., days 1 to D)"
+        },
+        {
+          "name": "inner_collection",
+          "typing": "list/array",
+          "description": "Collection of items to iterate through for each outer iteration"
+        }
+      ],
+      "description": "Systematically checking all possible combinations of parameters to find optimal values without optimization shortcuts",
+      "cues": [
+        "Small enough input constraints to allow O(N*D) complexity",
+        "Need to evaluate a function across all parameter combinations",
+        "No obvious mathematical shortcut to avoid checking all cases",
+        "For each unique pair (a, b)",
+        "Initialize count = 0",
+        "Problem requires checking interactions between all pairs of distinct values.",
+        "Constraints allow for O(N^2) complexity over the number of unique values.",
+        "Problem requires checking all possible contiguous subarrays or segments.",
+        "Constraints on N allow for O(N^2) complexity (e.g., N <= 2000).",
+        "No obvious greedy or mathematical closed-form solution exists.",
+        "Small enough input size to check all combinations",
+        "Need to consider all possible pairings or groupings"
+      ],
+      "implementation": [
+        "Outer loop iterates through days k from 1 to D",
+        "Inner loop evaluates weight formula T * (L + k) for every snake",
+        "No pruning or early termination - all combinations checked",
+        "Iterated through all unique pairs of elements from the set to check for valid third terms.",
+        "Accumulated the count of valid triplets found during the enumeration.",
+        "Using nested loops to iterate through every unique pair (a, b) with a < b.",
+        "Nested loops iterating `l` from 0 to N-1 and `r` from `l` to N-1 to cover all subarrays.",
+        "Generated all N*(N-1)/2 possible cake pairs by nested loop iteration"
+      ],
+      "used_in": [
+        "abc388_b",
+        "abc392_g",
+        "abc399_d",
+        "abc399_f",
+        "abc400_g"
+      ]
+    },
+    "Binary Search": {
+      "name": "Binary Search",
+      "kind": "algorithm",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "collection",
+          "typing": "sorted array",
+          "description": "The data structure to search within."
+        },
+        {
+          "name": "condition",
+          "typing": "predicate",
+          "description": "The criteria an element must meet (e.g., value >= threshold)."
+        }
+      ],
+      "description": "Efficiently locating a target value or boundary within a sorted sequence by repeatedly halving the search space.",
+      "cues": [
+        "Sorted input data",
+        "Requirement to find first/last element satisfying an inequality",
+        "Need for O(log N) lookup within a loop"
+      ],
+      "implementation": [
+        "Used LowerBound to find the first index j where A[j] >= 2 * A[i] within the range [i+1, N)"
+      ],
+      "used_in": [
+        "abc388_c"
+      ]
+    },
+    "DP with Generating Functions": {
+      "name": "DP with Generating Functions",
+      "kind": "dp pattern",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "state_dimensions",
+          "typing": "list of integers",
+          "description": "The dimensions of the DP table (e.g., vertices, parity, counts)."
+        },
+        {
+          "name": "polynomial_degree",
+          "typing": "integer",
+          "description": "The maximum degree of the polynomials stored in DP states."
+        }
+      ],
+      "description": "A dynamic programming approach where each state stores a polynomial (generating function) representing the distribution of a secondary metric (e.g., edge count), allowing combination via convolution.",
+      "cues": [
+        "Counting configurations where a secondary metric (like total weight or edges) needs to be tracked distributively.",
+        "Transitions involve combining independent choices where metrics sum up."
+      ],
+      "implementation": [
+        "dp[v][e][p] stores a polynomial where coefficients represent ways to achieve specific edge counts.",
+        "Transitions update DP state by convolving current polynomial with layer polynomial."
+      ],
+      "used_in": [
+        "abc389_g"
+      ]
+    },
+    "Polynomial Convolution": {
+      "name": "Polynomial Convolution",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "poly_a",
+          "typing": "list of integers",
+          "description": "Coefficients of the first polynomial."
+        },
+        {
+          "name": "poly_b",
+          "typing": "list of integers",
+          "description": "Coefficients of the second polynomial."
+        },
+        {
+          "name": "modulus",
+          "typing": "integer",
+          "description": "The modulo value for arithmetic operations."
+        }
+      ],
+      "description": "Multiplying two polynomials to combine independent counting distributions, corresponding to the sum of their exponents (metrics).",
+      "cues": [
+        "Need to calculate the distribution of a sum of independent random variables or counts.",
+        "DP transitions require combining results from disjoint subproblems additively."
+      ],
+      "implementation": [
+        "Used to combine dp[v][e][p] with layer_poly.",
+        "Used to combine poly_internal and poly_connect."
+      ],
+      "used_in": [
+        "abc389_g"
+      ]
+    },
+    "Graph Layering": {
+      "name": "Graph Layering",
+      "kind": "graph method",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "root_node",
+          "typing": "integer",
+          "description": "The starting node for layering (distance 0)."
+        },
+        {
+          "name": "max_layers",
+          "typing": "integer",
+          "description": "Maximum number of layers to consider."
+        }
+      ],
+      "description": "Decomposing a graph into sequential layers based on distance from a root (BFS levels) to enable constructive DP or counting.",
+      "cues": [
+        "Problems involving distances, bipartite properties, or level-wise graph construction.",
+        "Constraints on node counts at specific distances."
+      ],
+      "implementation": [
+        "DP state tracks vertices placed `v` and parity of last layer `p`.",
+        "Iterates by adding new layers of size `k`."
+      ],
+      "used_in": [
+        "abc389_g"
+      ]
+    },
+    "Combinatorial Precomputation": {
+      "name": "Combinatorial Precomputation",
+      "kind": "optimization",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "max_n",
+          "typing": "integer",
+          "description": "The maximum value for n in nCr or powers."
+        },
+        {
+          "name": "modulus",
+          "typing": "integer",
+          "description": "The prime modulus for calculations."
+        }
+      ],
+      "description": "Precomputing factorials, combinations, or powers modulo P to allow O(1) retrieval during the main algorithm's loops.",
+      "cues": [
+        "Frequent queries for binomial coefficients or powers within nested loops.",
+        "Time limit constraints requiring O(1) combinatorial lookups."
+      ],
+      "implementation": [
+        "PRECOMPUTE Combinations AND Powers UP TO N*N.",
+        "Used to calculate poly_internal and poly_connect coefficients."
+      ],
+      "used_in": [
+        "abc389_g"
+      ]
+    },
+    "Geometric Progression Check": {
+      "name": "Geometric Progression Check",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "sequence",
+          "typing": "array of integers",
+          "description": "The sequence to validate."
+        }
+      ],
+      "description": "Verifying if a sequence forms a geometric progression by ensuring the square of every middle element equals the product of its neighbors, using integer arithmetic to avoid precision errors.",
+      "cues": [
+        "Sequence validation problem",
+        "Requirement for constant ratio between consecutive terms",
+        "Avoiding floating point division"
+      ],
+      "implementation": [
+        "Iterating from index 1 to N-2",
+        "Checking condition A[i] * A[i] == A[i-1] * A[i+1]",
+        "Handling N <= 2 as trivially valid"
+      ],
+      "used_in": [
+        "abc390_b"
+      ]
+    },
+    "Direct Value Mapping": {
+      "name": "Direct Value Mapping",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Translating input values to output values using a pre-defined association table or map instead of conditional logic.",
+      "cues": [
+        "Small finite set of possible input values",
+        "Fixed one-to-one relationship between inputs and outputs",
+        "Requirement for clean code without multiple if-else branches"
+      ],
+      "implementation": [
+        "Precomputed mapping of all valid directions to their opposites",
+        "Direct lookup used to determine result instead of conditional checks"
+      ],
+      "used_in": [
+        "abc391_a"
+      ]
+    },
+    "Multiplicative Relationship Check": {
+      "name": "Multiplicative Relationship Check",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Verifying if a set of numbers satisfies a relationship where one element is the product of the remaining elements.",
+      "cues": [
+        "Small fixed number of integer inputs (e.g., 3).",
+        "Problem asks if the numbers can form a valid multiplication equation (a * b = c)."
+      ],
+      "implementation": [
+        "Explicitly checks all 3 permutations of the relationship (A1*A2==A3, A1*A3==A2, A2*A3==A1) combined with logical OR."
+      ],
+      "used_in": [
+        "abc392_a"
+      ]
+    },
+    "Stack": {
+      "name": "Stack",
+      "kind": "data structure",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "A Last-In-First-Out (LIFO) collection that supports push, pop, and top operations, essential for tracking nested structures or reversing order.",
+      "cues": [
+        "Problem involves nested structures or matching pairs (e.g., parentheses, tags).",
+        "Need to access the most recently added element efficiently.",
+        "Requirement to track depth or order of processing in a reverse manner."
+      ],
+      "implementation": [
+        "Used `stack.push(char)` to store opening brackets as they are encountered.",
+        "Used `stack.top()` to peek at the most recent unmatched opening bracket.",
+        "Used `stack.pop()` to remove the bracket upon successful match.",
+        "Checked `stack is empty` at the end to ensure all opened brackets were closed."
+      ],
+      "used_in": [
+        "abc394_d"
+      ]
+    },
+    "Bracket Sequence Validation": {
+      "name": "Bracket Sequence Validation",
+      "kind": "algorithm",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "S",
+          "typing": "string",
+          "description": "The sequence of characters containing brackets to validate."
+        }
+      ],
+      "description": "Determines if a string containing brackets is balanced by ensuring every closing bracket corresponds to the most recent unmatched opening bracket of the same type.",
+      "cues": [
+        "Input is a string containing pairs of delimiters (e.g., (), [], {}).",
+        "Problem asks for validity, balance, or nesting correctness of brackets.",
+        "Rules specify that closing brackets must match the immediately preceding open bracket."
+      ],
+      "implementation": [
+        "Iterated through the string `S` character by character.",
+        "Pushed opening brackets onto a stack.",
+        "For closing brackets, verified stack was non-empty and top matched the expected opener.",
+        "Returned false immediately on mismatch or if stack was empty when a closer appeared.",
+        "Returned true only if stack was empty after processing all characters."
+      ],
+      "used_in": [
+        "abc394_d"
+      ]
+    },
+    "Running Minimum": {
+      "name": "Running Minimum",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Maintaining a variable to track the minimum value encountered so far during a linear iteration.",
+      "cues": [
+        "Problem asks for the smallest/minimum value satisfying a condition found during iteration"
+      ],
+      "implementation": [
+        "min_len = min(min_len, span) updates the global minimum span found"
+      ],
+      "used_in": [
+        "abc395_c"
+      ]
+    },
+    "Threshold Classification": {
+      "name": "Threshold Classification",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "thresholds",
+          "typing": "list[number]",
+          "description": "The boundary values used to separate input ranges (e.g., 38.0, 37.5)."
+        },
+        {
+          "name": "categories",
+          "typing": "list[any]",
+          "description": "The output values corresponding to each range defined by the thresholds."
+        }
+      ],
+      "description": "Categorizing a numerical input into discrete groups by comparing against a sequence of ordered threshold values.",
+      "cues": [
+        "Problem asks to output different categories based on input value ranges.",
+        "Solution involves multiple conditional checks against fixed numerical constants.",
+        "Input is a scalar value (integer or float) representing a metric."
+      ],
+      "implementation": [
+        "Cascading if-else-if statements checking thresholds in descending order (highest first).",
+        "Each condition uses comparison operators (>=, >) against fixed threshold constants.",
+        "Final else block handles the remaining default case (values below the lowest threshold)."
+      ],
+      "used_in": [
+        "abc397_a"
+      ]
+    },
+    "Union-Find": {
+      "name": "Union-Find",
+      "kind": "data structure",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "N",
+          "typing": "integer",
+          "description": "Number of elements to manage in the disjoint sets"
+        }
+      ],
+      "description": "Maintains a partition of a set into disjoint subsets, supporting efficient union of sets and finding the representative of a subset.",
+      "cues": [
+        "Connectivity queries between elements",
+        "Dynamic connectivity problems",
+        "Counting connected components in a graph",
+        "Cycle detection in undirected graphs"
+      ],
+      "implementation": [
+        "Instantiated with N vertices to represent graph nodes",
+        "Union operations performed for each input edge to merge components",
+        "Component count retrieved to determine graph structure properties"
+      ],
+      "used_in": [
+        "abc399_c"
+      ]
+    },
+    "Spanning Forest Edge Count": {
+      "name": "Spanning Forest Edge Count",
+      "kind": "definition",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Relates the number of vertices, connected components, and edges in an acyclic graph (forest); specifically, max edges = vertices - components.",
+      "cues": [
+        "Problem asks to remove edges to eliminate cycles",
+        "Calculating redundant edges in a graph",
+        "Maximizing edges without forming cycles"
+      ],
+      "implementation": [
+        "Calculated maximum forest edges as N - k where k is the component count",
+        "Used to determine the baseline number of valid edges"
+      ],
+      "used_in": [
+        "abc399_c"
+      ]
+    },
+    "Modular Exponentiation": {
+      "name": "Modular Exponentiation",
+      "kind": "algorithm",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "base",
+          "typing": "integer",
+          "description": "The base value to be raised to a power."
+        },
+        {
+          "name": "exp",
+          "typing": "integer",
+          "description": "The exponent to raise the base to."
+        },
+        {
+          "name": "mod",
+          "typing": "integer",
+          "description": "The modulus to apply to the result."
+        }
+      ],
+      "description": "Efficiently computes (base^exp) % mod using binary exponentiation (square-and-multiply) in O(log exp) time.",
+      "cues": [
+        "Problem involves calculating large powers (e.g., x^K where K is large).",
+        "Results are required modulo a specific prime or integer (e.g., 10^9+7, 998244353).",
+        "Direct computation would overflow standard integer types."
+      ],
+      "implementation": [
+        "Calling `power(current_subarray_sum, K) % MOD` for each subarray sum.",
+        "Ensuring intermediate results in the power function are taken modulo MOD to prevent overflow."
+      ],
+      "used_in": [
+        "abc399_f"
+      ]
+    },
+    "Greedy Disjoint Selection": {
+      "name": "Greedy Disjoint Selection",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Selecting items greedily by priority while ensuring no element is used in multiple selections, typically using a usage tracking array",
+      "cues": [
+        "Need to select K items from candidates with a non-overlap constraint",
+        "Items can be ranked by a clear priority metric",
+        "Each element can only belong to one selected group"
+      ],
+      "implementation": [
+        "Iterated through sorted pairs and selected each pair only if both elements were unused",
+        "Maintained boolean array to track which cakes were already paired",
+        "Terminated early once K pairs were successfully selected"
+      ],
+      "used_in": [
+        "abc400_g"
+      ]
+    },
+    "Constraint Consistency Check": {
+      "name": "Constraint Consistency Check",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "global_param",
+          "typing": "integer",
+          "description": "The derived value that all local constraints must satisfy (e.g., target sum)"
+        },
+        {
+          "name": "local_constraints",
+          "typing": "list",
+          "description": "Conditions derived from input elements (e.g., sums, bounds)"
+        }
+      ],
+      "description": "Verifies that a set of local constraints (equalities and inequalities) are consistent with a derived global parameter.",
+      "cues": [
+        "Problem asks for feasibility of a configuration with missing values",
+        "Local data implies a global invariant (e.g., constant sum across pairs)",
+        "Need to validate if missing values can be filled to satisfy invariant without violating domain constraints"
+      ],
+      "implementation": [
+        "Checks if all fully defined pairs sum to `target` (equality constraint)",
+        "Checks if partially defined pairs allow non-negative completion (target >= known value inequality constraint)"
+      ],
+      "used_in": [
+        "arc195_b"
+      ]
+    }
+  },
+  "solutions": {
+    "3676": {
+      "problem_id": "3676",
+      "solution": null,
+      "summary": "Calculate the bit length of n and return the corresponding Mersenne number (2^bits - 1).",
+      "pseudocode": "function smallestNumber(n):\n    // Count the number of bits required to represent n\n    bits_needed = 0\n    temp = n\n    while temp > 0:\n        temp = temp >> 1\n        bits_needed = bits_needed + 1\n    \n    // Construct the number with 'bits_needed' ones (2^bits_needed - 1)\n    result = (1 << bits_needed) - 1\n    \n    return result"
+    },
+    "3723": {
+      "problem_id": "3723",
+      "solution": null,
+      "summary": "Iterate through all indices and check if each element is strictly greater than its k-distance neighbors (if they exist), summing all qualifying elements.",
+      "pseudocode": "Initialize total_sum = 0\nFor each index i from 0 to n-1:\n    is_good = true\n    \n    If i - k >= 0:\n        If nums[i] <= nums[i - k]:\n            is_good = false\n    \n    If i + k < n:\n        If nums[i] <= nums[i + k]:\n            is_good = false\n    \n    If is_good:\n        total_sum += nums[i]\n\nReturn total_sum"
+    },
+    "3747": {
+      "problem_id": "3747",
+      "solution": null,
+      "summary": "Iterate through the array using modulo arithmetic to handle circular adjacency and maintain the maximum absolute difference between neighbors.",
+      "pseudocode": "function maxCircularAdjacentDiff(nums):\n    n = length(nums)\n    max_diff = 0\n    for i from 0 to n-1:\n        next_idx = (i + 1) % n\n        current_diff = abs(nums[i] - nums[next_idx])\n        max_diff = max(max_diff, current_diff)\n    return max_diff"
+    },
+    "abc374_a": {
+      "problem_id": "abc374_a",
+      "solution": null,
+      "summary": "Check if the input string ends with a specific suffix using string manipulation methods.",
+      "pseudocode": "READ string S\nIF S ends_with \"san\" THEN\n    PRINT \"Yes\"\nELSE\n    PRINT \"No\"\nEND IF"
+    },
+    "abc374_c": {
+      "problem_id": "abc374_c",
+      "solution": null,
+      "summary": "Brute-force all $2^N$ department assignments using bitmasking to minimize the maximum sum of the two resulting groups.",
+      "pseudocode": "INPUT N, array K\nmin_ans = INFINITY\n\nFOR mask FROM 0 TO 2^N - 1:\n    sum_a = 0\n    sum_b = 0\n    FOR i FROM 0 TO N - 1:\n        IF (mask >> i) & 1:\n            sum_a += K[i]\n        ELSE:\n            sum_b += K[i]\n    \n    min_ans = MIN(min_ans, MAX(sum_a, sum_b))\n\nOUTPUT min_ans"
+    },
+    "abc377_a": {
+      "problem_id": "abc377_a",
+      "solution": null,
+      "summary": "Determine if a string is a permutation of a target by sorting its characters and comparing against the sorted target sequence.",
+      "pseudocode": "READ string S\nLET sorted_S = SORT characters of S\nIF sorted_S EQUALS ['A', 'B', 'C'] THEN\n    OUTPUT \"Yes\"\nELSE\n    OUTPUT \"No\"\nEND IF"
+    },
+    "abc378_a": {
+      "problem_id": "abc378_a",
+      "solution": null,
+      "summary": "Calculate color frequencies and sum the integer division of each frequency by 2 to find the maximum number of pairs.",
+      "pseudocode": "INPUT colors[4]\nfreq_map = EMPTY_HASH_MAP\nFOR c IN colors:\n    freq_map[c] = freq_map[c] + 1\n\ntotal_operations = 0\nFOR count IN freq_map.values():\n    total_operations = total_operations + (count DIV 2)\n\nOUTPUT total_operations"
+    },
+    "abc378_c": {
+      "problem_id": "abc378_c",
+      "solution": null,
+      "summary": "Track the most recent index of each element using a hash map during a single pass to identify previous occurrences.",
+      "pseudocode": "Initialize map last_pos\nInitialize list result\nFor i from 0 to N-1:\n    val = A[i]\n    If val in last_pos:\n        Append (last_pos[val] + 1) to result\n    Else:\n        Append -1 to result\n    Set last_pos[val] = i\nPrint result elements separated by spaces"
+    },
+    "abc378_d": {
+      "problem_id": "abc378_d",
+      "solution": null,
+      "summary": "Exhaustively count all simple paths of length K by running DFS with backtracking from every valid starting cell.",
+      "pseudocode": "Function CountPaths(H, W, K, Grid):\n    total_count = 0\n    directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n\n    Function DFS(r, c, steps, visited):\n        If steps == K:\n            Return 1\n        paths = 0\n        For (dr, dc) in directions:\n            nr, nc = r + dr, c + dc\n            If 0 <= nr < H AND 0 <= nc < W AND Grid[nr][nc] == '.' AND (nr, nc) NOT IN visited:\n                visited.ADD((nr, nc))\n                paths += DFS(nr, nc, steps + 1, visited)\n                visited.REMOVE((nr, nc))\n        Return paths\n\n    For i from 0 to H-1:\n        For j from 0 to W-1:\n            If Grid[i][j] == '.':\n                visited = {(i, j)}\n                total_count += DFS(i, j, 0, visited)\n    \n    Return total_count"
+    },
+    "abc379_e": {
+      "problem_id": "abc379_e",
+      "solution": null,
+      "summary": "Compute the total sum of all substrings by maintaining a running sum of substrings ending at each index via a linear DP recurrence.",
+      "pseudocode": "Read N and string S\nInitialize current_ending_sum = 0\nInitialize total_sum = 0\nFor i from 0 to N-1:\n    digit = integer value of S[i]\n    // DP Recurrence: Sum of substrings ending at i\n    // = 10 * (Sum of substrings ending at i-1) + digit * (number of substrings ending at i)\n    current_ending_sum = current_ending_sum * 10 + digit * (i + 1)\n    total_sum = total_sum + current_ending_sum\nPrint total_sum"
+    },
+    "abc380_a": {
+      "problem_id": "abc380_a",
+      "solution": null,
+      "summary": "Count digit frequencies and validate against target counts (1→1, 2→2, 3→3).",
+      "pseudocode": "read N as string\ncount_1 = count occurrences of '1' in N\ncount_2 = count occurrences of '2' in N\ncount_3 = count occurrences of '3' in N\nif count_1 == 1 AND count_2 == 2 AND count_3 == 3:\n    print \"Yes\"\nelse:\n    print \"No\""
+    },
+    "abc380_c": {
+      "problem_id": "abc380_c",
+      "solution": null,
+      "summary": "Identify 1-block boundaries via linear scan and reconstruct the string by splicing the K-th block to immediately follow the (K-1)-th block.",
+      "pseudocode": "function solve(N, K, S):\n    blocks = []\n    i = 0\n    while i < N:\n        if S[i] == '1':\n            start = i\n            while i < N and S[i] == '1':\n                i += 1\n            blocks.append((start, i - 1))\n        else:\n            i += 1\n            \n    prev_end = blocks[K-2].end\n    curr_start = blocks[K-1].start\n    curr_end = blocks[K-1].end\n    \n    result = S[0 : prev_end + 1] \n           + S[curr_start : curr_end + 1] \n           + S[prev_end + 1 : curr_start] \n           + S[curr_end + 1 : N]\n    print result"
+    },
+    "abc381_a": {
+      "problem_id": "abc381_a",
+      "solution": null,
+      "summary": "Validate string structure by verifying odd length, specific center delimiter, and uniform character requirements for prefix and suffix segments.",
+      "pseudocode": "function validate_11_22_string(N, S):\n    // Check length parity constraint\n    if N % 2 == 0:\n        return \"No\"\n    \n    // Calculate middle index (0-based)\n    mid = (N + 1) // 2 - 1\n    \n    // Validate center character\n    if S[mid] != '/':\n        return \"No\"\n    \n    // Validate prefix uniformity (all '1')\n    for i from 0 to mid - 1:\n        if S[i] != '1':\n            return \"No\"\n    \n    // Validate suffix uniformity (all '2')\n    for i from mid + 1 to N - 1:\n        if S[i] != '2':\n            return \"No\"\n    \n    return \"Yes\""
+    },
+    "abc381_d": {
+      "problem_id": "abc381_d",
+      "solution": null,
+      "summary": "Sliding window over consecutive equal pairs, tracking pair-value frequencies to ensure each value appears in at most one pair within the window.",
+      "pseudocode": "max_len = 0\nleft = 0\ncount = empty frequency map\n\nfor right from 0 to N-1:\n    # Only consider positions that complete a pair (odd indices, 0-indexed)\n    if right is odd and A[right] == A[right-1]:\n        value = A[right]\n        count[value] += 1\n        \n        # Shrink window from left while current value appears more than once as a pair\n        while count[value] > 1:\n            old_value = A[left]\n            count[old_value] -= 1\n            if count[old_value] == 0:\n                remove old_value from count\n            left += 2\n        \n        # Update maximum length with current valid window\n        current_len = right - left + 1\n        max_len = max(max_len, current_len)\n    else:\n        # Invalid pair boundary - reset window\n        clear count\n        left = right + 1\n\nprint max_len"
+    },
+    "abc382_a": {
+      "problem_id": "abc382_a",
+      "solution": null,
+      "summary": "Calculate empty boxes as D (cookies eaten) plus originally empty boxes (N minus cookie count).",
+      "pseudocode": "function solve(N, D, S):\n    cookie_count = count occurrences of '@' in S\n    originally_empty = N - cookie_count\n    newly_emptied = D\n    total_empty = originally_empty + newly_emptied\n    return total_empty"
+    },
+    "abc384_a": {
+      "problem_id": "abc384_a",
+      "solution": null,
+      "summary": "Iterate through the string and conditionally replace characters not equal to c1 with c2.",
+      "pseudocode": "Input N, c1, c2, S\nresult = empty string\nFor each character ch in S:\n    If ch == c1:\n        Append ch to result\n    Else:\n        Append c2 to result\nOutput result"
+    },
+    "abc384_c": {
+      "problem_id": "abc384_c",
+      "solution": null,
+      "summary": "Enumerate all non-empty subsets of problems using bitmasking to calculate scores, then sort participants by score descending and name lexicographically.",
+      "pseudocode": "READ scores[5]\nlabels = ['A', 'B', 'C', 'D', 'E']\nparticipants = empty list\n\nFOR mask FROM 1 TO 31:\n    score_sum = 0\n    name_str = \"\"\n    FOR i FROM 0 TO 4:\n        IF (mask >> i) AND 1:\n            score_sum += scores[i]\n            name_str += labels[i]\n    APPEND (score_sum, name_str) TO participants\n\nSORT participants BY primary key: -score_sum, secondary key: name_str\n\nFOR EACH p IN participants:\n    PRINT p.name_str"
+    },
+    "abc385_a": {
+      "problem_id": "abc385_a",
+      "solution": null,
+      "summary": "Validate partition possibility by checking if all three values are identical or if the largest value equals the sum of the other two.",
+      "pseudocode": "FUNCTION Solve():\n    READ A, B, C\n    \n    // Case 1: Three groups, each containing one number\n    // Requires all numbers to be equal\n    IF A == B AND B == C:\n        PRINT \"Yes\"\n        RETURN\n    \n    // Case 2: Two groups, one containing two numbers, one containing one number\n    // Requires one number to equal the sum of the other two\n    IF A + B == C OR A + C == B OR B + C == A:\n        PRINT \"Yes\"\n        RETURN\n    \n    // No valid partition found\n    PRINT \"No\""
+    },
+    "abc385_b": {
+      "problem_id": "abc385_b",
+      "solution": null,
+      "summary": "Simulate grid movement step-by-step, validating bounds and obstacles, while tracking unique house coordinates visited using a set.",
+      "pseudocode": "Read H, W, start_row, start_col\nRead grid H x W\nRead command_string T\n\ncurr_row = start_row - 1  // Convert to 0-indexed\ncurr_col = start_col - 1\nvisited_houses = Empty Set\n\nFor each command in T:\n    next_row = curr_row\n    next_col = curr_col\n    \n    // Determine candidate position based on direction\n    If command is 'U': next_row -= 1\n    If command is 'D': next_row += 1\n    If command is 'L': next_col -= 1\n    If command is 'R': next_col += 1\n    \n    // Validate move: within bounds and not a wall\n    If 0 <= next_row < H AND 0 <= next_col < W AND grid[next_row][next_col] != '#':\n        curr_row = next_row\n        curr_col = next_col\n    \n    // Track house if current cell contains one\n    If grid[curr_row][curr_col] == '@':\n        Add (curr_row, curr_col) to visited_houses\n\nPrint curr_row + 1, curr_col + 1, Size(visited_houses)"
+    },
+    "abc385_c": {
+      "problem_id": "abc385_c",
+      "solution": null,
+      "summary": "Group indices by building height and find the longest arithmetic progression of indices within each group.",
+      "pseudocode": "1. Input N and array H\n2. Group indices by height value: groups[val] = list of indices where H[i] == val\n3. max_len = 1\n4. For each list of indices in groups:\n    a. If size <= 1, continue\n    b. index_set = set(indices) for O(1) lookup\n    c. possible_diffs = set of (indices[j] - indices[i]) for all pairs i < j\n    d. For each diff in possible_diffs:\n        i. For each start_index in indices:\n            - count = 0, curr = start_index\n            - While curr in index_set:\n                count++, curr += diff\n            - max_len = max(max_len, count)\n5. Output max_len"
+    },
+    "abc386_a": {
+      "problem_id": "abc386_a",
+      "solution": null,
+      "summary": "Determine if the frequency distribution of four cards is either (3,1) or (2,2), as these are the only configurations that can become a (3,2) Full House by adding exactly one card.",
+      "pseudocode": "FUNCTION can_form_full_house(A, B, C, D):\n    cards = [A, B, C, D]\n    freq_map = COUNT_FREQUENCIES(cards)\n    freq_values = SORT_DESCENDING(VALUES(freq_map))\n    \n    // Analyze the distribution of counts among the 4 cards\n    IF freq_values == [4]:\n        RETURN False  // 4 identical cards -> adding 1 makes 5 identical (not Full House)\n    ELSE IF freq_values == [3, 1]:\n        RETURN True   // Add the singleton to make (3, 2)\n    ELSE IF freq_values == [2, 2]:\n        RETURN True   // Add one of the pairs to make (3, 2)\n    ELSE IF freq_values == [2, 1, 1]:\n        RETURN False  // Adding to pair makes (3,1,1); adding to singleton makes (2,2,1)\n    ELSE IF freq_values == [1, 1, 1, 1]:\n        RETURN False  // Adding any makes (2,1,1,1)\n    \n    RETURN False\nEND FUNCTION"
+    },
+    "abc386_b": {
+      "problem_id": "abc386_b",
+      "solution": null,
+      "summary": "Use dynamic programming where dp[i] tracks minimum button presses to form the first i characters, with transitions for single-digit presses and optimized \"00\" button presses for consecutive zeros.",
+      "pseudocode": "function minButtonPresses(S):\n    n = length(S)\n    dp = array of size (n + 1) initialized to infinity\n    dp[0] = 0\n    \n    for i from 1 to n:\n        // Transition 1: Press single digit button for character S[i-1]\n        dp[i] = dp[i-1] + 1\n        \n        // Transition 2: Press \"00\" button if last two characters form \"00\"\n        if i >= 2 and S[i-2:i] == \"00\":\n            dp[i] = min(dp[i], dp[i-2] + 1)\n    \n    return dp[n]"
+    },
+    "abc387_b": {
+      "problem_id": "abc387_b",
+      "solution": null,
+      "summary": "Calculate the total sum of all cells in the 9x9 multiplication table and subtract the value X for every valid cell coordinate (i, j) where the product i*j equals X.",
+      "pseudocode": "TOTAL_SUM = (SUM(1 to 9))^2\nexcluded_sum = 0\nFOR i FROM 1 TO 9:\n    IF X MOD i == 0:\n        j = X DIV i\n        IF 1 <= j <= 9:\n            excluded_sum = excluded_sum + X\nRESULT = TOTAL_SUM - excluded_sum\nPRINT RESULT"
+    },
+    "abc388_a": {
+      "problem_id": "abc388_a",
+      "solution": null,
+      "summary": "Extract the first character via string indexing and concatenate it with a constant suffix.",
+      "pseudocode": "READ string S\nhead ← S[0]\nresult ← head + \"UPC\"\nPRINT result"
+    },
+    "abc388_b": {
+      "problem_id": "abc388_b",
+      "solution": null,
+      "summary": "Brute-force iteration over all length increases k, computing T_i × (L_i + k) for each snake and tracking the maximum weight.",
+      "pseudocode": "read N, D\nread N pairs (T_i, L_i) into snakes list\n\nfor k from 1 to D:\n    max_weight = 0\n    for each (T, L) in snakes:\n        weight = T * (L + k)\n        max_weight = max(max_weight, weight)\n    output max_weight"
+    },
+    "abc388_c": {
+      "problem_id": "abc388_c",
+      "solution": null,
+      "summary": "Iterate each element as the top mochi and use binary search on the sorted suffix to count valid bottom mochi satisfying the half-size condition.",
+      "pseudocode": "Read integer N\nRead sorted array A of size N\nInitialize count = 0\n\nFor i from 0 to N-1:\n    threshold = 2 * A[i]\n    // Find first index j in range [i+1, N) such that A[j] >= threshold\n    j = LowerBound(A, threshold, start_index = i + 1)\n    \n    // All elements from index j to N-1 are valid bottom mochi\n    count += (N - j)\n\nPrint count"
+    },
+    "abc389_g": {
+      "problem_id": "abc389_g",
+      "solution": null,
+      "summary": "Dynamic programming over BFS layers with polynomial multiplication to count connected graphs with balanced distance parity.",
+      "pseudocode": "FUNCTION Solve(N, P):\n    // Precompute binomial coefficients and powers modulo P\n    PRECOMPUTE Combinations AND Powers UP TO N*N\n    \n    // DP state: dp[v][e][p] = Polynomial where coeff of x^m is #ways\n    // v: vertices placed in layers (excluding root)\n    // e: count of vertices at even distance (excluding root)\n    // p: parity of the last added layer (0=even, 1=odd)\n    INITIALIZE dp[N][N][2] AS Polynomials OF DEGREE N*(N-1)/2\n    \n    // Base case: Root is layer 0 (even), 0 vertices placed, 0 edges\n    dp[0][0][0][0] = 1 \n    \n    FOR v FROM 0 TO N-1:\n        FOR e FROM 0 TO N/2:\n            FOR p IN {0, 1}:\n                IF dp[v][e][p] IS EMPTY: CONTINUE\n                \n                // Try adding a new layer of size k\n                FOR k FROM 1 TO N - 1 - v:\n                    new_v = v + k\n                    new_p = 1 - p\n                    new_e = e + (k IF new_p == 0 ELSE 0)\n                    \n                    IF new_e > N/2: CONTINUE\n                    \n                    // Calculate polynomial for edges added by this layer\n                    // 1. Internal edges within new layer: any subset of k*(k-1)/2\n                    poly_internal = POLY_SUBSETS(k*(k-1)/2)\n                    \n                    // 2. Edges between previous layer (size prev_k) and new layer (size k)\n                    // Each of k nodes must connect to at least one of prev_k nodes\n                    // We need to track prev_k size, so add prev_k to DP state or iterate carefully\n                    // Simplified: Iterate prev_k in outer loop or store in state\n                    poly_connect = POLY_CONNECT(prev_k, k) \n                    \n                    layer_poly = CONVOLVE(poly_internal, poly_connect)\n                    \n                    // Update DP\n                    dp[new_v][new_e][new_p] += CONVOLVE(dp[v][e][p], layer_poly)\n    \n    // Sum results for full graph with balanced parity\n    // Root is even, so we need N/2 - 1 even vertices in layers, N/2 odd vertices\n    result_poly = dp[N-1][N/2 - 1][1] // Last layer must be odd to balance? \n    // Actually sum over last parity that satisfies total counts\n    \n    OUTPUT COEFFICIENTS OF result_poly FOR M FROM N-1 TO N*(N-1)/2\nEND FUNCTION"
+    },
+    "abc390_a": {
+      "problem_id": "abc390_a",
+      "solution": null,
+      "summary": "Check if the array is unsorted and becomes sorted after exactly one adjacent swap by brute-forcing all possible adjacent transpositions.",
+      "pseudocode": "function solve(A):\n    target = sorted(A)\n    if A == target:\n        return \"No\"\n    \n    for i from 0 to length(A) - 2:\n        swap(A[i], A[i+1])\n        if A == target:\n            return \"Yes\"\n        swap(A[i], A[i+1])  // revert to original state\n    \n    return \"No\""
+    },
+    "abc390_b": {
+      "problem_id": "abc390_b",
+      "solution": null,
+      "summary": "Validate geometric progression by verifying A[i]^2 = A[i-1]*A[i+1] for all internal elements using integer arithmetic to avoid floating-point precision issues.",
+      "pseudocode": "READ N\nREAD sequence A of length N\nIF N <= 2 THEN\n    PRINT \"Yes\"\n    RETURN\nEND IF\nFOR i FROM 1 TO N-2 DO\n    // Check geometric property using cross-multiplication to avoid floats\n    IF A[i] * A[i] != A[i-1] * A[i+1] THEN\n        PRINT \"No\"\n        RETURN\n    END IF\nEND FOR\nPRINT \"Yes\""
+    },
+    "abc391_a": {
+      "problem_id": "abc391_a",
+      "solution": null,
+      "summary": "Uses a precomputed hash map to perform constant-time lookup of the opposite direction.",
+      "pseudocode": "Initialize dictionary MAP mapping each direction string to its opposite direction\nRead input string D\nRetrieve opposite_direction = MAP[D]\nPrint opposite_direction"
+    },
+    "abc392_a": {
+      "problem_id": "abc392_a",
+      "solution": null,
+      "summary": "Check if any of the three integers equals the product of the other two integers.",
+      "pseudocode": "INPUT three integers A1, A2, A3\nIF (A1 * A2 == A3) OR (A1 * A3 == A2) OR (A2 * A3 == A1) THEN\n    PRINT \"Yes\"\nELSE\n    PRINT \"No\"\nEND IF"
+    },
+    "abc392_b": {
+      "problem_id": "abc392_b",
+      "solution": null,
+      "summary": "Store existing elements in a hash set for constant-time lookup, then iterate through the range [1, N] to collect missing values.",
+      "pseudocode": "INPUT N, M, sequence A\npresent_set ← CREATE_HASH_SET(A)\nmissing_list ← EMPTY_LIST\nFOR i FROM 1 TO N DO\n    IF i NOT IN present_set THEN\n        APPEND i TO missing_list\n    END IF\nEND FOR\nOUTPUT LENGTH(missing_list)\nOUTPUT ELEMENTS(missing_list)"
+    },
+    "abc392_g": {
+      "problem_id": "abc392_g",
+      "solution": null,
+      "summary": "Enumerate all pairs as the first two terms of an arithmetic progression and verify the third term's existence via hash set lookup.",
+      "pseudocode": "Store elements of S in a Hash Set for O(1) lookup\nInitialize count = 0\nFor each unique pair (a, b) from S where a < b:\n    Compute c = 2 * b - a\n    If c is present in Hash Set:\n        Increment count\nReturn count"
+    },
+    "abc394_b": {
+      "problem_id": "abc394_b",
+      "solution": null,
+      "summary": "Sort strings by length ascending and concatenate the sorted sequence.",
+      "pseudocode": "Store input strings in list S\nSort S by length ascending\nConcatenate elements of S into result string\nOutput result"
+    },
+    "abc394_d": {
+      "problem_id": "abc394_d",
+      "solution": null,
+      "summary": "Use a stack to validate bracket sequence well-formedness by ensuring every closing bracket matches the most recent opening bracket.",
+      "pseudocode": "function is_colorful_bracket_sequence(S):\n    stack = empty stack\n    matching = {')': '(', ']': '[', '>': '<'}\n    \n    for char in S:\n        if char is opening bracket:\n            stack.push(char)\n        else:\n            if stack is empty or stack.top() != matching[char]:\n                return False\n            stack.pop()\n            \n    return stack is empty"
+    },
+    "abc395_c": {
+      "problem_id": "abc395_c",
+      "solution": null,
+      "summary": "Track the most recent index of each value to find the minimum span between any two occurrences of the same element.",
+      "pseudocode": "Initialize last_seen_map as empty dictionary\nInitialize min_len to infinity\n\nFor each index i from 0 to N-1:\n    current_val = A[i]\n    If current_val exists in last_seen_map:\n        span = i - last_seen_map[current_val] + 1\n        min_len = min(min_len, span)\n    Update last_seen_map[current_val] = i\n\nIf min_len is infinity:\n    Return -1\nElse:\n    Return min_len"
+    },
+    "abc396_a": {
+      "problem_id": "abc396_a",
+      "solution": null,
+      "summary": "Linear scan checking for the existence of three consecutive identical elements.",
+      "pseudocode": "Input N, sequence A\nfound ← False\nFor i from 0 to N - 3:\n    If A[i] == A[i+1] AND A[i+1] == A[i+2]:\n        found ← True\n        Break\nIf found:\n    Output \"Yes\"\nElse:\n    Output \"No\""
+    },
+    "abc396_g": {
+      "problem_id": "abc396_g",
+      "solution": null,
+      "summary": "Exhaustively enumerate all $2^W$ column flip combinations and greedily minimize each row's contribution by flipping rows where 1s exceed 0s.",
+      "pseudocode": "function solve():\n    read H, W\n    read grid A as H rows of W bits\n    \n    min_total_ones = infinity\n    \n    // Enumerate all possible subsets of columns to flip (2^W combinations)\n    for mask from 0 to (2^W - 1):\n        current_total_ones = 0\n        \n        // For each row, calculate the minimum 1s achievable given the column flips\n        for i from 0 to H - 1:\n            row_ones = 0\n            for j from 0 to W - 1:\n                val = A[i][j]\n                // If j-th bit of mask is set, the column is flipped\n                if (mask >> j) & 1:\n                    val = 1 - val\n                row_ones += val\n            \n            // Greedily decide whether to flip the row itself\n            // If 1s > 0s, flipping the row reduces the count of 1s\n            current_total_ones += min(row_ones, W - row_ones)\n        \n        min_total_ones = min(min_total_ones, current_total_ones)\n    \n    print min_total_ones"
+    },
+    "abc397_a": {
+      "problem_id": "abc397_a",
+      "solution": null,
+      "summary": "Categorize a numerical input using sequential conditional checks against defined thresholds.",
+      "pseudocode": "Read temperature X\nIf X >= 38.0 then\n    Output 1\nElse If X >= 37.5 then\n    Output 2\nElse\n    Output 3\nEnd If"
+    },
+    "abc397_b": {
+      "problem_id": "abc397_b",
+      "solution": null,
+      "summary": "Count position mismatches against the alternating i-o pattern and ensure final length is even.",
+      "pseudocode": "insertions = 0\nn = length(S)\n\nfor i from 0 to n-1:\n    expected = 'i' if (i+1) is odd else 'o'\n    if S[i] != expected:\n        insertions += 1\n\nif (n + insertions) is odd:\n    insertions += 1\n\nreturn insertions"
+    },
+    "abc398_a": {
+      "problem_id": "abc398_a",
+      "solution": null,
+      "summary": "Construct palindrome by placing '=' at center position(s) determined by N's parity, filling remaining positions with '-'.",
+      "pseudocode": "function construct_palindrome_string(N):\n    initialize result array of length N with '-'\n    \n    if N is odd:\n        // Place single '=' at center for odd length\n        center = N // 2\n        result[center] = '='\n    else:\n        // Place two adjacent '=' at center for even length\n        left_center = N // 2 - 1\n        right_center = N // 2\n        result[left_center] = '='\n        result[right_center] = '='\n    \n    return join characters in result"
+    },
+    "abc399_c": {
+      "problem_id": "abc399_c",
+      "solution": null,
+      "summary": "Use Union-Find to count connected components and compute excess edges as total edges minus the maximum edges allowed in a forest (N - components).",
+      "pseudocode": "function solve():\n    read N, M\n    dsu = new UnionFind(N)\n    for i from 1 to M:\n        read u, v\n        dsu.union(u, v)\n    k = dsu.get_component_count()\n    // Property: A forest with N vertices and k components has exactly N - k edges\n    max_forest_edges = N - k\n    edges_to_remove = M - max_forest_edges\n    print edges_to_remove"
+    },
+    "abc399_d": {
+      "problem_id": "abc399_d",
+      "solution": null,
+      "summary": "Count pairs of couples that are initially non-adjacent but whose combined four positions form two disjoint adjacent index blocks.",
+      "pseudocode": "FUNCTION solve_test_case():\n    INPUT N\n    INPUT Array A of size 2N\n    \n    // Map each value to its two positions\n    positions = Map<value, List<index>>\n    FOR i FROM 0 TO 2N-1:\n        positions[A[i]].APPEND(i)\n    \n    valid_pairs_count = 0\n    \n    // Iterate over all unique pairs of couples (a, b)\n    FOR a FROM 1 TO N:\n        FOR b FROM a+1 TO N:\n            pos_a = positions[a]\n            pos_b = positions[b]\n            \n            // Condition 1 & 2: Neither couple is originally adjacent\n            IF is_adjacent(pos_a[0], pos_a[1]) OR is_adjacent(pos_b[0], pos_b[1]):\n                CONTINUE\n            \n            // Condition 3: Can form two adjacent pairs by swapping\n            // Combine all 4 positions and sort them\n            combined_positions = SORT([pos_a[0], pos_a[1], pos_b[0], pos_b[1]])\n            p1, p2, p3, p4 = combined_positions\n            \n            // Check if the 4 positions form two disjoint adjacent blocks\n            // i.e., (p1, p2) are adjacent AND (p3, p4) are adjacent\n            IF (p2 == p1 + 1) AND (p4 == p3 + 1):\n                valid_pairs_count += 1\n                \n    RETURN valid_pairs_count\n\nFUNCTION is_adjacent(i, j):\n    RETURN ABS(i - j) == 1\n\nMAIN:\n    INPUT T\n    FOR each test case:\n        PRINT solve_test_case()"
+    },
+    "abc399_f": {
+      "problem_id": "abc399_f",
+      "solution": null,
+      "summary": "",
+      "pseudocode": "MOD = 998244353\nInput N, K, Sequence A\ntotal_sum = 0\nFor l from 0 to N-1:\n    current_subarray_sum = 0\n    For r from l to N-1:\n        current_subarray_sum = (current_subarray_sum + A[r]) % MOD\n        term = power(current_subarray_sum, K) % MOD\n        total_sum = (total_sum + term) % MOD\nOutput total_sum"
+    },
+    "abc400_g": {
+      "problem_id": "abc400_g",
+      "solution": null,
+      "summary": "Generate all cake pairs with their max-attribute-sum prices, sort descending, and greedily select K non-overlapping pairs.",
+      "pseudocode": "function solve_test_case():\n    read N, K\n    cakes = array of N tuples (X, Y, Z)\n    \n    // Generate all possible pairs with their prices\n    pairs = empty list\n    for i from 0 to N-1:\n        for j from i+1 to N-1:\n            price = max(cakes[i].X + cakes[j].X, \n                       cakes[i].Y + cakes[j].Y, \n                       cakes[i].Z + cakes[j].Z)\n            pairs.append((price, i, j))\n    \n    // Sort pairs by price in descending order\n    sort pairs by price descending\n    \n    // Greedy selection of K non-overlapping pairs\n    used = boolean array of size N, initialized to false\n    total_price = 0\n    pairs_selected = 0\n    \n    for each (price, i, j) in pairs:\n        if not used[i] and not used[j]:\n            used[i] = true\n            used[j] = true\n            total_price += price\n            pairs_selected += 1\n            if pairs_selected == K:\n                break\n    \n    return total_price\n\n// Main driver\nread T\nfor each test case from 1 to T:\n    print solve_test_case()"
+    },
+    "arc194_e": {
+      "problem_id": "arc194_e",
+      "solution": null,
+      "summary": "Determine reachability by verifying the invariant that the source and target strings must have identical counts of '0's and '1's since operations preserve character frequencies.",
+      "pseudocode": "Function Solve():\n    Input N, X, Y\n    Input String S\n    Input String T\n    \n    // Calculate character frequencies for source string S\n    count_S_0 <- Count occurrences of '0' in S\n    count_S_1 <- Count occurrences of '1' in S\n    \n    // Calculate character frequencies for target string T\n    count_T_0 <- Count occurrences of '0' in T\n    count_T_1 <- Count occurrences of '1' in T\n    \n    // Check invariant: operations preserve the total count of 0s and 1s\n    If count_S_0 == count_T_0 AND count_S_1 == count_T_1:\n        Output \"Yes\"\n    Else:\n        Output \"No\""
+    },
+    "arc195_b": {
+      "problem_id": "arc195_b",
+      "solution": null,
+      "summary": "Determine a consistent target sum from fully known pairs or lower-bound constraints, then verify all pairs can satisfy this sum with non-negative fillers.",
+      "pseudocode": "function solve(N, A, B):\n    fixed_sums = [A[i] + B[i] for i in 0..N-1 if A[i] != -1 and B[i] != -1]\n    \n    if fixed_sums is not empty:\n        target = fixed_sums[0]\n        if any(s != target for s in fixed_sums):\n            return \"No\"\n    else:\n        target = 0\n        for i in 0..N-1:\n            if A[i] == -1 and B[i] != -1:\n                target = max(target, B[i])\n            else if A[i] != -1 and B[i] == -1:\n                target = max(target, A[i])\n    \n    for i in 0..N-1:\n        if A[i] != -1 and B[i] != -1 and A[i] + B[i] != target:\n            return \"No\"\n        if A[i] == -1 and B[i] != -1 and target < B[i]:\n            return \"No\"\n        if A[i] != -1 and B[i] == -1 and target < A[i]:\n            return \"No\"\n            \n    return \"Yes\""
+    }
+  },
+  "custom_types": {}
+}

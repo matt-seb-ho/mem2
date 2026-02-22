@@ -1,0 +1,470 @@
+{
+  "cmath_10547": {
+    "pseudocode": "Define system of congruences C = {(m_i, r_i)}\nSet upper_limit = 2010\nInitialize candidate x = upper_limit - 1\nWhile x > 0:\n    If x ≡ r_i (mod m_i) for all (m_i, r_i) in C:\n        Return x\n    Decrement x by 1",
+    "summary": "Iteratively decrement from the exclusive upper bound to find the largest integer satisfying all given modular congruence conditions."
+  },
+  "cmath_10550": {
+    "pseudocode": "Function MaximizeSumGivenGCDandLCM(gcd_val, lcm_multiplier, upper_bound):\n    // Parametrize integers as x = gcd_val * a, y = gcd_val * b with gcd(a, b) = 1\n    // LCM condition: LCM(x, y) = lcm_multiplier * x implies b = lcm_multiplier\n    fixed_factor = lcm_multiplier\n    fixed_num = gcd_val * fixed_factor\n    \n    // Determine maximum possible value for factor 'a' based on upper_bound\n    max_a = floor((upper_bound - 1) / gcd_val)\n    \n    // Find largest 'a' <= max_a such that gcd(a, fixed_factor) == 1\n    For a from max_a down to 1:\n        If gcd(a, fixed_factor) == 1:\n            variable_num = gcd_val * a\n            Return variable_num + fixed_num",
+    "summary": "Parametrize integers by their GCD to simplify LCM constraints, fix one factor, and maximize the other under coprimality and bound conditions."
+  },
+  "cmath_10564": {
+    "pseudocode": "DEFINE FUNCTION DoubleFactorial(n):\n    IF n <= 1 RETURN 1\n    RETURN n * DoubleFactorial(n - 2)\n\nINITIALIZE total_sum = 0\nFOR each odd integer i FROM 1 TO 49:\n    total_sum += DoubleFactorial(i)\n\nRETURN total_sum MOD 10",
+    "summary": "Compute the summation of the recursively defined sequence terms and extract the units digit via modulo 10."
+  },
+  "cmath_10590": {
+    "pseudocode": "FUNCTION get_base_range(num_digits, base):\n    # Smallest number with n digits in base b is b^(n-1)\n    min_val = base^(num_digits - 1)\n    # Largest number with n digits in base b is b^n - 1\n    max_val = base^num_digits - 1\n    RETURN (min_val, max_val)\n\nFUNCTION solve():\n    # Convert base-specific digit constraints to base-10 value ranges\n    range_base3 = get_base_range(4, 3)\n    range_base6 = get_base_range(2, 6)\n    \n    # Find the intersection of the two value ranges\n    intersection_start = MAX(range_base3.min, range_base6.min)\n    intersection_end = MIN(range_base3.max, range_base6.max)\n    \n    # Calculate the average of the consecutive integers in the intersection\n    IF intersection_start <= intersection_end:\n        # Average of an arithmetic progression of consecutive integers\n        average = (intersection_start + intersection_end) / 2\n        RETURN average\n    ELSE:\n        RETURN 0",
+    "summary": "Convert base-specific digit constraints to base-10 value ranges, compute their intersection, and calculate the mean of the resulting consecutive integer sequence."
+  },
+  "cmath_10600": {
+    "pseudocode": "1. Identify the maximum digit D present in all numbers within the equation\n2. Set the minimum valid base b_min = D + 1\n3. Convert each number from base-b representation to a polynomial in b\n   (e.g., digits d_n...d_0 map to sum(d_i * b^i))\n4. Construct the algebraic equation: Polynomial(operand1) * Polynomial(operand2) = Polynomial(result)\n5. Iterate integer b starting from b_min upwards\n6. Evaluate the equation for each b\n7. Return the first b where the equation holds true",
+    "summary": "Convert base-b numerals to polynomials in b and search for the integer root exceeding the maximum digit."
+  },
+  "cmath_10604": {
+    "pseudocode": "Define value_set = {2, 4, 8}\nDefine pick_count = 3\nGenerate all outcomes via Cartesian_Product(value_set, repeat=pick_count)\nMap each outcome to its sum\nStore sums in a Set to ensure uniqueness\nCompute final answer as the Sum of all elements in the Set",
+    "summary": "Generate all possible sums via Cartesian product with replacement, collect distinct values, and compute their total."
+  },
+  "cmath_10610": {
+    "pseudocode": "Function CalculateParameterSum():\n    // Step 1: Establish the formula for the product of all divisors\n    // Concept: Product of divisors of n with count x is n^(x/2)\n    Let exponent_all = x / 2\n    \n    // Step 2: Adjust for proper divisors (exclude n itself)\n    // Concept: Proper product = Total product / n\n    Let exponent_proper = exponent_all - 1\n    Simplify exponent_proper to (x - 2) / 2\n    \n    // Step 3: Equate derived exponent to the given parameterized form\n    // Given form: (a*x + b) / c\n    Set (a*x + b) / c == (x - 2) / 2\n    \n    // Step 4: Solve for parameters by matching coefficients of x and constants\n    // Concept: Identity in x implies coefficients must match\n    Match coefficient of x: a/c = 1/2  => c = 2a\n    Match constant term: b/c = -1      => b = -c\n    \n    // Step 5: Determine integer values satisfying GCD constraint\n    // Constraint: gcd(a, b, c) = 1 and c > 0\n    Substitute c = 2a into b = -c => b = -2a\n    Ratio a : b : c is 1 : -2 : 2\n    Set a = 1, b = -2, c = 2 (satisfies gcd(1, -2, 2) = 1)\n    \n    // Step 6: Compute final result\n    Return a + b + c",
+    "summary": "Derive the exponent for the product of proper divisors using the divisor count formula, equate coefficients with the given expression, and solve for parameters under GCD constraints."
+  },
+  "cmath_10619": {
+    "pseudocode": "FUNCTION SolveSmallestFourFactorSum(k):\n    // Concept: Divisor Count Structure\n    // An integer n has exactly 4 factors iff n = p^3 OR n = p * q (p, q distinct primes)\n    \n    primes = GENERATE_FIRST_N_PRIMES(sufficient_limit)\n    candidates = EMPTY_LIST\n    \n    // Generate Case 1: Cube of a prime\n    FOR EACH p IN primes:\n        APPEND p^3 TO candidates\n        \n    // Generate Case 2: Product of two distinct primes\n    FOR EACH pair (p, q) IN primes WHERE p < q:\n        APPEND p * q TO candidates\n        \n    // Selection and Aggregation\n    SORT candidates ASCENDING\n    smallest_k = TAKE_FIRST(candidates, k)\n    \n    RETURN SUM(smallest_k)",
+    "summary": "Classify integers with exactly four divisors as prime cubes or products of two distinct primes, generate candidates from small primes, and sum the five smallest."
+  },
+  "cmath_10621": {
+    "pseudocode": "Initialize count to 0\nFor each integer m from 1 to 99:\n    Compute g = gcd(m, 100)\n    If g is a single-digit number (1 <= g <= 9):\n        Increment count\nReturn count",
+    "summary": "Iterate through the valid range and count integers satisfying the single-digit GCD constraint with 100."
+  },
+  "cmath_10627": {
+    "pseudocode": "Function SolveLCMEquation():\n    Decompose constants into prime factors: 10^10 = 2^10 * 5^10, 8 = 2^3, 4 = 2^2\n    Represent m as 2^a * 5^b * k, where gcd(k, 10) = 1\n    \n    // Apply property: v_p(lcm(x, y)) = max(v_p(x), v_p(y))\n    For prime p in {2, 5}:\n        LHS_val = max(v_p(8m), v_p(10^10))\n        RHS_val = v_p(4) + max(v_p(m), v_p(10^10))\n        Set LHS_val = RHS_val to form exponent equations\n    \n    Solve exponent equation for p=2: max(a + 3, 10) = 2 + max(a, 10)\n        Case 1 (a >= 7): a + 3 = 12 => a = 9\n        Case 2 (a < 7): 10 = a + 2 => a = 8 (Invalid)\n        Determine a = 9\n    \n    Solve exponent equation for p=5: max(b, 10) = max(b, 10)\n        Determine b is unconstrained by equation\n    \n    Construct candidate m = 2^9 * 5^b * k = 512 * 5^b * k\n    Apply constraint: 100 <= m <= 999\n    Find unique integers b >= 0, k >= 1 satisfying range\n    Return m",
+    "summary": "Use prime valuation properties of LCM to derive the exponent of 2 in $m$, then determine the specific value using the 3-digit constraint."
+  },
+  "cmath_10630": {
+    "pseudocode": "FUNCTION count_perfect_square_factors(N):\n    factorization = get_prime_factorization(N)  // Returns {prime: exponent}\n    total_count = 1\n    FOR each exponent e IN factorization.values():\n        // Exponents in a perfect square factor must be even (0, 2, ..., 2k <= e)\n        num_even_choices = floor(e / 2) + 1\n        total_count = total_count * num_even_choices\n    RETURN total_count",
+    "summary": "Compute the prime factorization of the number and multiply the count of valid even exponent choices ($\\lfloor e/2 \\rfloor + 1$) for each prime factor."
+  },
+  "cmath_10637": {
+    "pseudocode": "INPUT: Integer N = 2013, Target Digit d = 3\nDERIVE: Condition for last digit d in base b is N mod b = d\nTRANSFORM: This implies b divides (N - d)\nCOMPUTE: Difference M = N - d = 2010\nFIND: Set of all positive divisors D of M\nAPPLY CONSTRAINT: Base b must be strictly greater than digit d (b > 3)\nFILTER: Valid Bases = {b in D | b > d}\nOUTPUT: Count of Valid Bases",
+    "summary": "Determine valid bases by counting divisors of the difference between the number and the target digit that exceed the digit value."
+  },
+  "cmath_10664": {
+    "pseudocode": "1. Identify the condition: For the fraction to be an integer, the Denominator must divide the Numerator\n2. Find all integer divisors D of the Numerator (including negative divisors)\n3. Initialize ValidSum = 0\n4. For each divisor d in D:\n    a. Set Denominator Expression = d\n    b. Solve the resulting equation for x\n    c. Check if x is an integer\n    d. If x is an integer, add x to ValidSum\n5. Return ValidSum",
+    "summary": "Equate the denominator to all integer divisors of the numerator, solve for the variable, and sum the resulting integer solutions."
+  },
+  "cmath_10691": {
+    "pseudocode": "FUNCTION calculate_correct_answers(total_items, true_divisor, mark_false_divisor, lcm_divisor):\n    // Count items satisfying the actual truth condition (multiples of 4)\n    count_actual_true <- FLOOR(total_items / true_divisor)\n    \n    // Count items satisfying the student's false marking condition (multiples of 3)\n    count_marked_false <- FLOOR(total_items / mark_false_divisor)\n    \n    // Count items satisfying both conditions (multiples of 12)\n    count_intersection <- FLOOR(total_items / lcm_divisor)\n    \n    // Correct True: Actually True AND Student marks True (not marked false)\n    correct_true <- count_actual_true - count_intersection\n    \n    // Correct False: Actually False AND Student marks False\n    correct_false <- count_marked_false - count_intersection\n    \n    RETURN correct_true + correct_false",
+    "summary": "Count multiples of the truth and response divisors and their LCM to calculate correct answers using set difference logic."
+  },
+  "cmath_10693": {
+    "pseudocode": "Procedure SolveLinearCongruence(a, c, m):\n    // Goal: Find n such that a * n ≡ c (mod m)\n    \n    // 1. Verify existence of solution\n    Assert gcd(a, m) == 1\n    \n    // 2. Compute modular inverse of a modulo m\n    // Use Extended Euclidean Algorithm to find x, y where a*x + m*y = 1\n    (g, x, y) ← ExtendedEuclidean(a, m)\n    inverse_a ← x mod m\n    \n    // 3. Scale inverse by constant term c\n    n ← (c * inverse_a) mod m\n    \n    Return n\nEnd Procedure",
+    "summary": "Solve linear congruence by computing the modular inverse via Extended Euclidean Algorithm and scaling by the constant term."
+  },
+  "cmath_10695": {
+    "pseudocode": "PROCEDURE SolveBaseSystem:\n    // Step 1: Convert base-c representation to algebraic equation\n    // Concept: Base Expansion (Polynomial Form)\n    EQUATION_1 <- b^2 = 1*c^2 + 2*c + 1\n    \n    // Step 2: Simplify to find relationship between b and c\n    // Concept: Factoring Perfect Squares\n    SIMPLIFY EQUATION_1 TO b^2 = (c + 1)^2\n    DERIVE LINEAR_RELATION: b = c + 1 (since b, c > 0)\n    \n    // Step 3: Convert base-b representation to algebraic equation\n    // Concept: Base Expansion (Polynomial Form)\n    EQUATION_2 <- c^2 = 7*b + 1\n    \n    // Step 4: Combine equations to solve for one variable\n    // Concept: Substitution\n    SUBSTITUTE LINEAR_RELATION INTO EQUATION_2\n    FORM_QUADRATIC: c^2 - 7c - 8 = 0\n    \n    // Step 5: Solve quadratic and apply domain constraints\n    // Concept: Quadratic Formula & Integer Constraints\n    ROOTS <- SOLVE(c^2 - 7c - 8 = 0)\n    c <- SELECT root FROM ROOTS WHERE root > 0 AND root IS INTEGER\n    \n    // Step 6: Compute final result\n    b <- c + 1\n    RETURN b + c\nEND PROCEDURE",
+    "summary": "Translate base representations into polynomial equations, derive a linear relationship between the bases, and solve the resulting quadratic equation for positive integer solutions."
+  },
+  "cmath_10731": {
+    "pseudocode": "Define M as total milk ounces, C as total coffee ounces\nSet up equation based on Angela's consumption: M/4 + C/6 = 8\nSimplify equation to integer coefficients: 3M + 2C = 96\nApply constraint: M and C must be multiples of 8 (let M = 8m, C = 8c)\nSubstitute constraints into simplified equation: 3m + 2c = 12\nIterate through positive integer values for m\n  Calculate c = (12 - 3m) / 2\n  If c is a positive integer:\n    Compute family size n = m + c\n    Return n",
+    "summary": "Model consumption fractions as a linear equation, apply divisibility constraints to simplify variables, and solve the resulting Diophantine equation for the family size."
+  },
+  "cmath_10774": {
+    "pseudocode": "FUNCTION extended_gcd(a, b):\n    IF a == 0:\n        RETURN (b, 0, 1)\n    (gcd, x1, y1) <- extended_gcd(b MOD a, a)\n    x <- y1 - (b DIV a) * x1\n    y <- x1\n    RETURN (gcd, x, y)\n\nFUNCTION mod_inverse(a, m):\n    (gcd, x, y) <- extended_gcd(a, m)\n    ASSERT gcd == 1  // Verify existence of inverse\n    RETURN (x MOD m) // Normalize to range [0, m-1]\n\nFUNCTION solve():\n    n <- mod_inverse(160, 1399)\n    RETURN n",
+    "summary": "Compute the modular multiplicative inverse of 160 modulo 1399 using the Extended Euclidean Algorithm to solve the linear Diophantine equation $160x + 1399y = 1$."
+  },
+  "cmath_10808": {
+    "pseudocode": "Input: g = gcd(m, n), L = lcm(m, n)\nCompute product P = g * L\nInitialize count = 0\nFor each candidate m such that m is a multiple of g and m divides P:\n    n = P / m\n    Let a = m / g, b = n / g\n    If gcd(a, b) == 1:\n        count += 1\nReturn count",
+    "summary": "Use the product identity gcd*m*lcm to reduce the problem to counting pairs of coprime factors whose product equals lcm/gcd."
+  },
+  "cmath_10816": {
+    "pseudocode": "Define digit set D = {1, 2, 3, 4, 5, 6}\nInitialize valid_count = 0\nGenerate all permutations P of D\nFor each permutation p in P:\n    is_valid = True\n    For each adjacent pair (u, v) in p:\n        If gcd(u, v) > 1:\n            is_valid = False\n            Break\n    If is_valid:\n        valid_count = valid_count + 1\nReturn valid_count",
+    "summary": "Exhaustively enumerate all permutations and count those satisfying the pairwise consecutive coprime constraint."
+  },
+  "cmath_10822": {
+    "pseudocode": "function solve():\n    // Determine base 10 range for 3-digit base 5 numbers\n    min_5 = value of smallest 3-digit number in base 5 (100_5)\n    max_5 = value of largest 3-digit number in base 5 (444_5)\n    \n    // Determine base 10 range for 2-digit base 8 numbers\n    min_8 = value of smallest 2-digit number in base 8 (10_8)\n    max_8 = value of largest 2-digit number in base 8 (77_8)\n    \n    // Find intersection of valid integer ranges\n    valid_min = max(min_5, min_8)\n    valid_max = min(max_5, max_8)\n    \n    // Calculate average of consecutive integers [valid_min, valid_max]\n    // Concept: Mean of arithmetic progression is (first + last) / 2\n    result = (valid_min + valid_max) / 2\n    \n    return result",
+    "summary": "Convert base-specific digit constraints to base 10 intervals, find their intersection, and compute the average of the resulting consecutive integers using the arithmetic mean property."
+  },
+  "cmath_10860": {
+    "pseudocode": "1. Compute N = 3! * 5! * 7!\n2. Determine the prime factorization of N to get the set of exponents {e_1, e_2, ..., e_k}\n3. Initialize cube_divisor_count = 1\n4. For each exponent e in {e_1, ..., e_k}:\n    cube_divisor_count *= (floor(e / 3) + 1)\n5. Return cube_divisor_count",
+    "summary": "Compute the prime factorization exponents of the product and multiply (floor(e/3) + 1) for each exponent to count valid cube divisors."
+  },
+  "cmath_10934": {
+    "pseudocode": "Function CountPerfectPowerFactors(PrimeExponents, RootPower):\n    TotalCombinations = 1\n    For each exponent E in PrimeExponents:\n        # A factor's exponent x must satisfy 0 <= x <= E\n        # For a perfect RootPower, x must be a multiple of RootPower\n        # Valid x values are {0, RootPower, 2*RootPower, ...}\n        NumValidChoices = Floor(E / RootPower) + 1\n        TotalCombinations = TotalCombinations * NumValidChoices\n    Return TotalCombinations\n\n# Problem Application\nExponents = [6, 10]  # From 3^6 * 5^10\nRootPower = 3        # Perfect cube\nResult = CountPerfectPowerFactors(Exponents, RootPower)",
+    "summary": "Determine the number of multiples of the root power within each prime exponent's range and multiply these counts."
+  },
+  "cmath_10942": {
+    "pseudocode": "Function SolveModularExpression(n, a, b):\n    Input: n >= 3, (ab) invertible mod n, (ab)^(-1) ≡ 2 mod n, (a+b) invertible mod n\n    Target: Compute E = (a+b)^(-1) * (a^(-1) + b^(-1)) mod n\n\n    // Step 1: Simplify sum of inverses using algebraic identity\n    // Identity: 1/a + 1/b = (a+b)/(ab)\n    Transform: (a^(-1) + b^(-1)) ≡ (a + b) * (ab)^(-1) mod n\n\n    // Step 2: Substitute the given value for the inverse of the product\n    Substitute: (ab)^(-1) → 2\n    Result: (a^(-1) + b^(-1)) ≡ 2 * (a + b) mod n\n\n    // Step 3: Evaluate the target expression\n    Substitute: E ≡ (a + b)^(-1) * [2 * (a + b)] mod n\n\n    // Step 4: Cancel terms using the inverse property\n    // Property: x^(-1) * x ≡ 1 mod n\n    Rearrange: E ≡ 2 * [(a + b)^(-1) * (a + b)] mod n\n    Simplify: E ≡ 2 * 1 mod n\n\n    Return 2",
+    "summary": "Apply the identity $a^{-1}+b^{-1}=(a+b)(ab)^{-1}$ to simplify the expression and cancel the $(a+b)$ term."
+  },
+  "cmath_10958": {
+    "pseudocode": "Function FindMinSumFromGcdLcm(g, l):\n    // Use the identity m * n = gcd(m, n) * lcm(m, n)\n    // Let m = g * a and n = g * b where gcd(a, b) = 1\n    // Then g^2 * a * b = g * l  =>  a * b = l / g\n    \n    If l % g != 0: Return Error\n    \n    target_product = l / g\n    min_sum = Infinity\n    \n    // Iterate through all factor pairs (a, b) of target_product\n    For each divisor a of target_product:\n        b = target_product / a\n        \n        // Enforce the condition that a and b must be coprime\n        If GCD(a, b) == 1:\n            current_sum = g * (a + b)\n            min_sum = Min(min_sum, current_sum)\n            \n    Return min_sum",
+    "summary": "Use the GCD-LCM product identity to express the integers as scaled coprime factors, then minimize the sum by testing valid factor pairs of the ratio $\\text{lcm}/\\gcd$."
+  },
+  "cmath_10978": {
+    "pseudocode": "Function EvaluateInverseSum(p):\n    Input: Prime integer p >= 7\n    Verify p satisfies constraints (p >= 7, p is prime)\n    Initialize Sum S = 0\n    For each integer k from 1 to p-2:\n        Compute modular inverse inv_k = k^(-1) mod p\n        Compute modular inverse inv_k1 = (k+1)^(-1) mod p\n        Term = (inv_k * inv_k1) mod p\n        S = (S + Term) mod p\n    Return S",
+    "summary": "Directly evaluate the sum of products of consecutive modular inverses modulo p by iterating through all terms."
+  },
+  "cmath_10993": {
+    "pseudocode": "Define modulus n = 2^4\nDefine ResidueSystem = {0, 1, ..., n-1}\nDefine Condition(x): gcd(x, n) == 1  // Invertibility check\nA = Sum(x for x in ResidueSystem where Condition(x) is True)\nB = Sum(x for x in ResidueSystem where Condition(x) is False)\nResult = A - B\nReturn Result",
+    "summary": "Partition the residue system modulo $n$ based on coprimality to compute the difference between the sums of invertible and non-invertible elements."
+  },
+  "cmath_10998": {
+    "pseudocode": "Function CountValidValues(gcd_val, lcm_val):\n    // Mathematical Reduction:\n    // Let a = gcd_val * m and b = gcd_val * n\n    // Condition gcd(a, b) = gcd_val implies gcd(m, n) = 1\n    // Condition lcm(a, b) = lcm_val implies m * n = lcm_val / gcd_val\n    \n    target_product = lcm_val / gcd_val\n    count = 0\n    \n    // Algorithmic Pattern: Iterate divisors up to square root to find pairs (m, n)\n    For m from 1 to floor(sqrt(target_product)):\n        If target_product % m == 0:\n            n = target_product / m\n            \n            // Check Properties: Coprimality and Order (a < b => m < n)\n            If gcd(m, n) == 1 AND m < n:\n                count = count + 1\n                \n    Return count",
+    "summary": "Parameterize $a$ and $b$ via GCD to reduce the problem to counting ordered coprime factor pairs of the quotient $\\text{lcm}/\\gcd$."
+  },
+  "cmath_11055": {
+    "pseudocode": "Simplify congruence: Subtract r^2 and combine terms to get 2r ≡ -3 (mod 55)\nNormalize residue: Convert -3 to 52 mod 55, yielding 2r ≡ 52 (mod 55)\nSolve linear congruence: Divide by 2 (valid since gcd(2, 55)=1) to get r ≡ 26 (mod 55)\nFormulate general solution: r = 26 + 55 * k for integer k\nApply range constraint: Set inequality 26 + 55 * k ≥ 1000 for least four-digit number\nDetermine minimal k: Solve k ≥ (1000 - 26) / 55 and take ceiling integer\nCompute final solution: Substitute minimal k back into general solution formula",
+    "summary": "Simplify the modular equation to a linear congruence, derive the general solution, and calculate the smallest value meeting the digit constraint."
+  },
+  "cmath_11079": {
+    "pseudocode": "FUNCTION count_pages_with_digit_sum(target_sum, max_page):\n    INITIALIZE count = 0\n    FOR page FROM 1 TO max_page INCLUSIVE:\n        COMPUTE sum_of_digits = SUM of integer values of each character in string representation of page\n        IF sum_of_digits EQUALS target_sum:\n            INCREMENT count\n    RETURN count\n\nEXECUTE count_pages_with_digit_sum(4, 1000)",
+    "summary": "Iterate through the specified page range, compute the digit sum for each page number, and count instances where the sum equals the target value."
+  },
+  "cmath_1776": {
+    "pseudocode": "FUNCTION CalculateProbabilityRatio\n    // Define Problem Parameters\n    num_categories <- 10\n    items_per_category <- 4\n    draw_size <- 4\n    \n    // Calculate Total Sample Space (Cancels out in ratio)\n    total_ways <- COMB(num_categories * items_per_category, draw_size)\n    \n    // Calculate Favorable Ways for Event P (Four of a Kind)\n    // Choose 1 category, select all 4 items from that category\n    ways_P <- COMB(num_categories, 1) * COMB(items_per_category, 4)\n    \n    // Calculate Favorable Ways for Event Q (Two Pairs)\n    // Choose 2 distinct categories, select 2 items from each\n    ways_Q <- COMB(num_categories, 2) * [COMB(items_per_category, 2)]^2\n    \n    // Compute Ratio q/p\n    // Probabilities share the same denominator, so ratio equals ratio of favorable ways\n    ratio <- ways_Q / ways_P\n    \n    RETURN ratio\nEND FUNCTION",
+    "summary": "Compute the ratio of probabilities by comparing combinatorial counts of favorable outcomes for specific number distribution patterns."
+  },
+  "cmath_1854": {
+    "pseudocode": "FUNCTION count_non_empty_selections(item_counts):\n    total_combinations = 1\n    FOR count IN item_counts:\n        // For identical items, possible choices range from 0 to count\n        choices_per_type = count + 1\n        // Apply multiplication principle for independent choices\n        total_combinations = total_combinations * choices_per_type\n    // Apply exclusion principle to remove the empty set case (all zeros)\n    RETURN total_combinations - 1",
+    "summary": "Calculate the product of possible quantities for each identical item type and subtract the empty selection case."
+  },
+  "cmath_1970": {
+    "pseudocode": "FUNCTION Solve(RangeMin, RangeMax):\n    // Step 1: Calculate Total Integers in Range\n    TotalCount = RangeMax - RangeMin + 1\n    \n    // Step 2: Calculate Integers with All Distinct Digits (Complementary Set)\n    // Using Multiplication Principle for Permutations\n    HundredsChoices = CountValidDigitsForPlace(Place=100, Constraint=RangeMax) // e.g., 1-4\n    TensChoices = 10 - 1 // Any digit 0-9 except Hundreds digit\n    UnitsChoices = 10 - 2 // Any digit 0-9 except Hundreds and Tens digits\n    \n    DistinctCount = HundredsChoices * TensChoices * UnitsChoices\n    \n    // Step 3: Apply Complementary Counting\n    // Target = Total - (Count where condition is NOT met)\n    ResultCount = TotalCount - DistinctCount\n    \n    RETURN ResultCount\nEND FUNCTION",
+    "summary": "Apply complementary counting by subtracting the combinatorial count of integers with distinct digits from the total number of integers in the specified range."
+  },
+  "cmath_1988": {
+    "pseudocode": "count <- 0\nDEFINE domain D = {n | 100 <= n <= 999}\nFOR each n IN D:\n    (d1, d2, d3) <- decimal_digits(n)\n    IF d2 > d1 AND d2 > d3:\n        count <- count + 1\nRETURN count",
+    "summary": "Exhaustively iterate through all 3-digit numbers and count those where the middle digit is strictly greater than the outer digits."
+  },
+  "cmath_2027": {
+    "pseudocode": "FUNCTION count_distributions(distinct_elements, identical_containers):\n    n = size(distinct_elements)\n    k = size(identical_containers)\n    IF containers are identical AND elements are distinct:\n        IF k >= n:\n            # Sufficient containers allow all set partitions\n            RETURN Bell_Number(n)\n        ELSE:\n            # Limit partitions to at most k non-empty subsets\n            RETURN SUM(Stirling_Second_Kind(n, i) for i in 1 to k)\n    RETURN 0",
+    "summary": "Model the distribution of distinct items into identical containers as a set partition problem solved using Bell numbers."
+  },
+  "cmath_2077": {
+    "pseudocode": "IDENTIFY restricted_items and non_restricted_items with their respective counts\nCOMPUTE total_permutations using multinomial coefficient for all items combined\nARRANGE non_restricted_items and compute their distinct permutations\nGENERATE gaps from non_restricted_arrangement equal to (count + 1)\nSELECT positions for restricted_items from gaps using combinations to ensure non-adjacency\nCOMPUTE valid_permutations = non_restricted_permutations * selection_ways\nDERIVE probability = valid_permutations / total_permutations\nSIMPLIFY probability to lowest terms m/n\nOUTPUT m + n",
+    "summary": "Use the gap method by arranging non-restricted items to create slots for restricted items to ensure non-adjacency, then calculate the probability ratio."
+  },
+  "cmath_2100": {
+    "pseudocode": "1. Precompute the set of all valid rows satisfying the local row sum constraint.\n2. Initialize a counter for valid matrices to 0.\n3. Iterate through all possible matrices formed by combining valid rows (Cartesian product).\n4. For each matrix, verify if it satisfies the global column sum constraints.\n5. If constraints are met, increment the counter.\n6. Return the final count.",
+    "summary": "Generate candidates satisfying local constraints and filter by global constraints."
+  },
+  "cmath_2102": {
+    "pseudocode": "Function SolveOddSumPartition(TargetSum S, NumVariables k):\n    // Step 1: Transform Constraints\n    // Each x_i is a positive odd integer, so let x_i = 2*y_i + 1 where y_i >= 0\n    // Substitute into equation: sum(2*y_i + 1) = S\n    // Simplify: 2 * sum(y_i) + k = S\n    \n    // Step 2: Determine New Target Sum\n    If (S - k) is odd or (S - k) < 0:\n        Return 0 // No valid integer solution\n    NewSum N = (S - k) / 2\n    \n    // Step 3: Count Non-Negative Solutions\n    // Apply Stars and Bars theorem for sum(y_i) = N with k variables\n    // Count = C(N + k - 1, k - 1)\n    n = BinomialCoefficient(N + k - 1, k - 1)\n    \n    // Step 4: Final Computation\n    Return n / 100\nEnd Function\n\n// Execute for specific problem\nResult = SolveOddSumPartition(98, 4)\nPrint Result",
+    "summary": "Transform positive odd integer variables into non-negative integers via linear substitution, then apply the stars and bars combinatorial theorem to count the solutions."
+  },
+  "cmath_2104": {
+    "pseudocode": "FUNCTION CalculateLog2Denominator(num_teams):\n    // 1. Determine total games in a round-robin tournament\n    total_games <- num_teams * (num_teams - 1) / 2\n    \n    // 2. Identify probability structure: P = num_teams! / 2^(total_games)\n    // The denominator n in simplified form m/n depends on factors of 2\n    \n    // 3. Calculate the exponent of 2 in num_teams! using Legendre's Formula\n    v2_factorial <- 0\n    divisor <- 2\n    WHILE divisor <= num_teams:\n        v2_factorial <- v2_factorial + FLOOR(num_teams / divisor)\n        divisor <- divisor * 2\n    END WHILE\n    \n    // 4. Compute log2(n) by subtracting cancelled factors from total games\n    log2_n <- total_games - v2_factorial\n    \n    RETURN log2_n\nEND FUNCTION",
+    "summary": "Calculate total games to determine the probability space, treat unique win distributions as team permutations, and use Legendre's formula to compute the exponent of 2 in the simplified denominator."
+  },
+  "cmath_2114": {
+    "pseudocode": "function solve_triangle_property_limit(min_val, subset_size):\n    # Initialize the smallest possible triangle-free sequence\n    # To avoid triangles, each element must be >= sum of previous two\n    sequence = [min_val, min_val + 1]\n    \n    # Extend the sequence until it reaches the target subset size\n    while length(sequence) < subset_size:\n        next_val = sequence[-1] + sequence[-2]\n        append next_val to sequence\n    \n    # The largest n is the value just before a triangle-free subset of size k can exist\n    # This corresponds to the largest element of the minimal triangle-free sequence minus 1\n    max_n = sequence[-1] - 1\n    \n    return max_n\n\n# Problem parameters\nstart_integer = 4\ntarget_subset_size = 10\n\n# Compute and return result\nresult = solve_triangle_property_limit(start_integer, target_subset_size)\nprint(result)",
+    "summary": "Construct the minimal triangle-free sequence starting from the lower bound to identify the threshold where a triangle-free subset of the target size becomes possible."
+  },
+  "cmath_2147": {
+    "pseudocode": "Set n = 12\nInitialize total_count = 0\nFor k from 1 to n - 1:\n    size_A = k\n    size_B = n - k\n    // Constraint 1: size_A is not an element of A\n    // Constraint 2: size_B is not an element of B (implies size_B is in A)\n    If size_A == size_B:\n        Continue // Impossible to satisfy both constraints simultaneously\n    // Count subsets A of size k that contain size_B but not size_A\n    // Fix 2 elements (include size_B, exclude size_A), choose remaining k-1 from n-2\n    ways = Combinations(n - 2, k - 1)\n    total_count = total_count + ways\nReturn total_count",
+    "summary": "Iterate over partition sizes and sum the counts of subsets satisfying cardinality exclusion constraints."
+  },
+  "cmath_2163": {
+    "pseudocode": "Define prior probabilities for selecting Fair and Biased dice\nDefine probability of rolling a six for each die type\nCalculate likelihood of observing two consecutive sixes for each die type\nCompute total probability of observing two sixes using Law of Total Probability\nApply Bayes' Theorem to determine posterior probability of each die type given the evidence\nCalculate predictive probability of third roll being six using posterior weights\nSimplify the resulting fraction p/q and return p + q",
+    "summary": "Use Bayes' theorem to find the posterior probabilities of each die given two sixes, then calculate the total probability of a third six."
+  },
+  "cmath_2167": {
+    "pseudocode": "Function ComputeHitProbability(N):\n    Initialize DP table of size (N+1) x (N+1)\n    Set DP[0][0] = 1\n    Set DP[i][0] = 0 and DP[0][i] = 0 for i from 1 to N\n    For i from 1 to N:\n        For j from 1 to N:\n            DP[i][j] = (1/3) * (DP[i-1][j] + DP[i][j-1] + DP[i-1][j-1])\n    Return DP[N][N]\n\nFunction Solve():\n    Probability = ComputeHitProbability(4)\n    Express Probability as m / 3^n where m is not divisible by 3\n    Return m + n",
+    "summary": "Apply dynamic programming with axis boundary conditions to compute the probability fraction, then extract and sum the numerator and denominator's exponent of 3."
+  },
+  "cmath_2182": {
+    "pseudocode": "DEFINE reference_block attributes:\n    material_options = 2 (plastic, wood) -> alternatives = 1\n    size_options = 3 (small, medium, large) -> alternatives = 2\n    color_options = 4 (blue, green, red, yellow) -> alternatives = 3\n    shape_options = 4 (circle, hexagon, square, triangle) -> alternatives = 3\n\nSTORE alternative_counts = [1, 2, 3, 3] corresponding to [material, size, color, shape]\n\nINITIALIZE total_count = 0\n\nFOR each unique pair of indices (i, j) from the 4 attributes:\n    // Calculate combinations where exactly these two attributes differ\n    // The other two attributes must match the reference block (1 way each)\n    ways_to_differ_i = alternative_counts[i]\n    ways_to_differ_j = alternative_counts[j]\n    \n    pair_combinations = ways_to_differ_i * ways_to_differ_j\n    ADD pair_combinations to total_count\n\nRETURN total_count",
+    "summary": "Sum the products of the number of alternative values for every distinct pair of attributes to count blocks differing in exactly those two properties."
+  },
+  "cmath_2185": {
+    "pseudocode": "FUNCTION MinSocksForPairs(color_counts, target_pairs):\n    num_colors = COUNT(color_counts)\n    \n    # Verify supply is sufficient for the target (e.g., min(40) >= 2*10)\n    IF MIN(color_counts) < 2 * target_pairs:\n        RETURN \"Insufficient Socks\"\n    \n    # Worst-case analysis: Maximize socks held while having only (target_pairs - 1) pairs\n    # Each complete pair consumes 2 socks\n    socks_from_pairs = 2 * (target_pairs - 1)\n    \n    # To maximize count without forming extra pairs, keep 1 unpaired sock per color\n    max_unpaired_socks = num_colors\n    \n    # Maximum socks one can draw without guaranteeing the target number of pairs\n    threshold = socks_from_pairs + max_unpaired_socks\n    \n    # Drawing one additional sock forces the completion of the target_pairs\n    RETURN threshold + 1\nEND FUNCTION",
+    "summary": "Use the Pigeonhole Principle to calculate the worst-case selection by maximizing unpaired socks across all colors before completing the target number of pairs."
+  },
+  "cmath_2190": {
+    "pseudocode": "DEFINE dp[i] AS number of binary sequences of length i with no consecutive 1s\nSET BASE CASES: dp[1] = 2, dp[2] = 3\nFOR i FROM 3 TO 10:\n    dp[i] = dp[i-1] + dp[i-2]\n    // Derivation: Append '0' to valid seqs of length i-1 OR append '01' to valid seqs of length i-2\nvalid_sequences = dp[10]\ntotal_sequences = 2^10\nprobability = valid_sequences / total_sequences\nREDUCE probability TO irreducible fraction m/n\nRETURN m + n",
+    "summary": "Count valid sequences using a Fibonacci-like recurrence relation, compute the simplified probability fraction, and sum its numerator and denominator."
+  },
+  "cmath_2272": {
+    "pseudocode": "1. Define digit domains based on place value constraints:\n   - Hundreds digit (h): {1, 2, ..., 9}\n   - Tens digit (t): {0, 1, ..., 9}\n   - Units digit (u): {0, 1, ..., 9}\n2. Initialize valid_count = 0\n3. For each h in Hundreds domain:\n4.   For each t in Tens domain:\n5.     For each u in Units domain:\n6.       If u >= 2 * t:\n7.         Increment valid_count\n8. Return valid_count",
+    "summary": "Exhaustively count 3-digit numbers by iterating through valid digit domains and filtering based on the units-tens inequality."
+  },
+  "cmath_2286": {
+    "pseudocode": "Identify daily stopping condition (outcome != 1)\nCalculate probability of stopping p = 5/6\nCompute expected rolls per day E_day = 1 / p using geometric distribution mean\nCompute total expected rolls E_total = 365 * E_day using linearity of expectation\nReturn E_total",
+    "summary": "Model the daily rolling process as a geometric distribution to find the expected rolls per day, then multiply by the number of days in a year."
+  },
+  "cmath_2385": {
+    "pseudocode": "Function CountDistinctOddThreeDigitNumbers():\n    Define Constraints:\n        1. Structure: 3 digits (Hundreds, Tens, Units)\n        2. Parity: Units digit must be Odd {1, 3, 5, 7, 9}\n        3. Leading Zero: Hundreds digit cannot be 0\n        4. Distinctness: All digits must be unique\n\n    // Constructive Counting Strategy (Multiplication Principle)\n    // Order selection by strictness of constraints to manage dependencies\n    \n    Step 1: Determine choices for Units digit\n        Options = Count({1, 3, 5, 7, 9}) = 5\n    \n    Step 2: Determine choices for Hundreds digit\n        Options = Count({1..9} excluding chosen Units digit) = 8\n    \n    Step 3: Determine choices for Tens digit\n        Options = Count({0..9} excluding chosen Units and Hundreds digits) = 8\n    \n    Total Count = Step 1 Options * Step 2 Options * Step 3 Options\n    Return Total Count",
+    "summary": "Apply the multiplication principle by sequentially counting valid digit choices for each position while satisfying parity, distinctness, and leading non-zero constraints."
+  },
+  "cmath_2428": {
+    "pseudocode": "FUNCTION CountDistributions(identical_items, distinct_bins):\n    // Identify Combinatorial Model: Distributing identical items into distinct bins\n    // Constraint: All items must be distributed, bins may be empty (non-negative integers)\n    // Technique: Stars and Bars Theorem\n    \n    n <- identical_items\n    k <- distinct_bins\n    \n    // Theorem Application: Number of ways is given by choosing positions for bars among stars\n    // Formula: BinomialCoefficient(n + k - 1, k - 1)\n    ways <- BinomialCoefficient(n + k - 1, k - 1)\n    \n    RETURN ways\nEND FUNCTION",
+    "summary": "Apply the stars and bars theorem to calculate the number of ways to distribute n identical items into k distinct bins using the combination formula C(n + k - 1, k - 1)."
+  },
+  "cmath_2432": {
+    "pseudocode": "SET count_E = 5, cost_E = 2\nSET count_M = 6, cost_M = 1\nSET total_budget = 12\nINITIALIZE total_ways = 0\n\nFOR num_E FROM 0 TO count_E:\n    required_cost_M = total_budget - (num_E * cost_E)\n    num_M = required_cost_M / cost_M\n    \n    IF num_M is integer AND 0 <= num_M <= count_M:\n        ways_E = BINOMIAL(count_E, num_E)\n        ways_M = BINOMIAL(count_M, num_M)\n        total_ways += ways_E * ways_M\n\nRETURN total_ways",
+    "summary": "Iterate through feasible counts of the higher-cost item, derive the corresponding count of the lower-cost item from the budget constraint, and sum the products of their respective binomial coefficients."
+  },
+  "cmath_2462": {
+    "pseudocode": "Function MinHandshakes(n_people):\n    Model people as Vertices V and handshakes as Edges E in Graph G\n    Constraint: degree(v) >= 2 for all v in V\n    Objective: Minimize |E|\n    Strategy: Construct a 2-regular graph (Cycle Graph) to satisfy constraint minimally\n    Property: A cycle graph with n vertices has exactly n edges\n    min_handshakes = n_people\n    Return min_handshakes",
+    "summary": "Model the scenario as a graph and minimize edges by constructing a 2-regular cycle graph satisfying the minimum degree constraint."
+  },
+  "cmath_2476": {
+    "pseudocode": "Initialize total_count = 0\nDefine valid_last_digits = {2, 4, 6, 8}\nFor each last_digit in valid_last_digits:\n    // Preceding digits must be strictly smaller and non-zero (to ensure 3-digit number)\n    // Available pool for first two digits is {1, ..., last_digit - 1}\n    // Order is fixed by strictly increasing constraint, so use combinations\n    ways_to_choose_prefix = Binomial_Coefficient(last_digit - 1, 2)\n    total_count = total_count + ways_to_choose_prefix\nReturn total_count",
+    "summary": "Iterate over valid even last digits and sum the combinations of choosing two strictly smaller preceding digits."
+  },
+  "cmath_2489": {
+    "pseudocode": "Initialize total_even_count = 0\nFor each row index n from 0 to 9:\n    For each element index k from 0 to n:\n        // Apply Lucas' Theorem mod 2: C(n, k) is odd iff (n & k) == k\n        // Therefore, C(n, k) is even iff (n & k) != k\n        If (n bitwise_AND k) != k:\n            Increment total_even_count\nReturn total_even_count",
+    "summary": "Count even binomial coefficients in specified rows by applying Lucas' Theorem mod 2 to check bitwise subset relationships between indices."
+  },
+  "cmath_4681": {
+    "pseudocode": "Function FindSmallestSquareMultiplier(ProductExpression):\n    // Concept: Aggregate total exponents for each prime base\n    Initialize prime_exponent_map\n    \n    For each term (base, exponent) in ProductExpression:\n        prime_factors = PrimeFactorize(base)\n        For each (prime, power) in prime_factors:\n            prime_exponent_map[prime] += power * exponent\n            \n    // Concept: Perfect square condition requires all exponents to be even\n    multiplier = 1\n    For each (prime, total_exponent) in prime_exponent_map:\n        If total_exponent is Odd:\n            // Multiply by prime once to make exponent even\n            multiplier *= prime\n            \n    Return multiplier",
+    "summary": "Decompose the number into prime factorization, sum exponents for each prime, and multiply the primes with odd total exponents to make all exponents even."
+  },
+  "cmath_4689": {
+    "pseudocode": "Function FindSmallestN():\n    Initialize n = 1\n    Loop:\n        Compute value = 1 / 5^n\n        Extract digits D from the fractional part of the decimal expansion of value\n        Calculate digit_sum = Sum(D)\n        If digit_sum > 10:\n            Return n\n        Increment n",
+    "summary": "Iteratively compute the sum of the decimal digits of $1/5^n$ for increasing $n$ until the sum exceeds 10."
+  },
+  "cmath_4694": {
+    "pseudocode": "Function SolveModularBaseProblem(Digits, Base, Modulus):\n    // Represent number N = Σ (digit_i * Base^i)\n    // Goal: Find a such that N ≡ a (mod Modulus)\n    \n    1. Compute base_residue = Base % Modulus\n    2. If base_residue == Modulus - 1:\n           effective_base = -1  // Leverage B ≡ -1 (mod M) property\n       Else:\n           effective_base = base_residue\n           \n    3. Initialize remainder_sum = 0\n    4. Initialize current_power = 1\n    5. For each digit d in Digits (from least significant to most):\n           term = d * current_power\n           remainder_sum = remainder_sum + term\n           current_power = current_power * effective_base\n           \n    6. a = remainder_sum % Modulus\n    7. Return a",
+    "summary": "Compute the remainder of a base-B number modulo M by evaluating its polynomial representation using modular arithmetic, optimizing via B ≡ -1 (mod M) to reduce powers to an alternating sum of digits."
+  },
+  "cmath_4733": {
+    "pseudocode": "Define Target_LCM ← 60\nDefine Base_Number ← 20\nInitialize Total_Sum ← 0\nFor each integer ν from 1 to Target_LCM:\n    If LCM(ν, Base_Number) == Target_LCM:\n        Total_Sum ← Total_Sum + ν\nReturn Total_Sum",
+    "summary": "Bounded iteration to sum all integers satisfying a specific least common multiple constraint with a base number."
+  },
+  "cmath_4759": {
+    "pseudocode": "condition <- (2n - 1) must divide 20\ndivisors <- all_integer_divisors(20)\nvalid_divisors <- filter(divisors, is_odd)  // Enforce parity constraint of 2n - 1\nsolutions <- map(valid_divisors, d -> solve(2n - 1 = d))\nreturn sum(solutions)",
+    "summary": "Filter integer divisors of the numerator by the denominator's parity constraint to determine valid variable values and compute their sum."
+  },
+  "cmath_4766": {
+    "pseudocode": "Input: Coefficient A, Upper Bound L\nCompute square-free part S of A such that A * S is a perfect square\nParameterize valid n as n = S * k^2 for integer k >= 1\nSolve inequality S * k^2 <= L for k\nReturn floor(sqrt(L / S))",
+    "summary": "Characterize valid integers using the coefficient's square-free part to satisfy the perfect square condition and count parameters within the bound."
+  },
+  "cmath_4771": {
+    "pseudocode": "Function has_prime_factors_other_than_2_or_5(num):\n    // Remove all factors of 2 and 5 from the number\n    While num is divisible by 2:\n        num = num / 2\n    While num is divisible by 5:\n        num = num / 5\n    // If remaining value > 1, other prime factors exist\n    Return num != 1\n\nInitialize count = 0\nFor n from 1 to 100:\n    denominator = n + 1\n    // Fraction n/(n+1) is irreducible since gcd(n, n+1) = 1\n    // A simplified fraction has a repeating decimal iff denominator has prime factors other than 2 or 5\n    If has_prime_factors_other_than_2_or_5(denominator):\n        count = count + 1\nReturn count",
+    "summary": "Count integers $n$ where the denominator $n+1$ contains prime factors other than 2 or 5, as this condition ensures the irreducible fraction $\\frac{n}{n+1}$ produces a repeating decimal."
+  },
+  "cmath_4806": {
+    "pseudocode": "Define sequence a(n) = n! + n\nCompute terms a(n) and a(n+1) for small n\nCalculate g = gcd(a(n), a(n+1)) for each pair\nTrack the maximum g encountered\nApply algebraic simplification to gcd(a(n), a(n+1)) to bound possible values\nConclude maximum based on empirical evidence and theoretical bound",
+    "summary": "Compute consecutive GCDs for small n and verify maximum via algebraic simplification of factorial terms."
+  },
+  "cmath_4818": {
+    "pseudocode": "n <- 1\nwhile true:\n    D <- {k : 1 <= k <= n and k divides (n^2 - n)}\n    if 0 < |D| < n:\n        return n\n    n <- n + 1",
+    "summary": "Iterative search for the minimal integer $n$ where $n^2-n$ is divisible by a proper non-empty subset of $\\{1, \\dots, n\\}$."
+  },
+  "cmath_4830": {
+    "pseudocode": "1. Compute the sum of all known fixed digits in the number.\n2. Initialize a set to store unique valid values for the sum of the unknown digits.\n3. Iterate through all possible single-digit values (0-9) for each unknown digit variable.\n4. Check if the total sum (fixed sum + unknown digits) is divisible by 9.\n5. If the condition holds, add the sum of the unknown digits to the set.\n6. Return the sum of all unique values stored in the set.",
+    "summary": "Apply the divisibility rule for 9 to constrain the total digit sum, exhaustively search valid digit assignments, and aggregate the unique possible values of the unknown digit sum."
+  },
+  "cmath_4835": {
+    "pseudocode": "count = 0\nFOR n FROM 1 TO 474:\n    # Reduce fraction n/475 to lowest terms\n    d = 475 / GCD(n, 475)\n    \n    # Check Terminating Decimal Condition:\n    # Denominator must be of the form 2^a * 5^b\n    WHILE d is divisible by 2: d = d / 2\n    WHILE d is divisible by 5: d = d / 5\n    \n    IF d == 1:\n        count = count + 1\nRETURN count",
+    "summary": "Iterate through numerators, reduce fractions via GCD, and count cases where the simplified denominator's prime factors are restricted to 2 and 5."
+  },
+  "cmath_4845": {
+    "pseudocode": "Set modulus p = 11\nInitialize set quadratic_residues = {}\nFor n from 1 to p - 1:\n    Compute residue r = (n^2) mod p\n    Add r to quadratic_residues\nCalculate m = sum of elements in quadratic_residues\nReturn floor(m / p)",
+    "summary": "Compute the sum of distinct quadratic residues modulo 11 generated by integers 1 to 10 and determine the integer quotient when divided by 11."
+  },
+  "cmath_4855": {
+    "pseudocode": "function count_divisors_multiple(N, k):\n    if N % k != 0:\n        return 0\n    \n    # A divisor d of N is a multiple of k iff d = k * m, where m divides N/k\n    M = N / k\n    \n    # Get prime factorization of M: M = p1^e1 * p2^e2 * ...\n    factors = prime_factorize(M)\n    \n    # Apply divisor counting formula: product of (exponent + 1)\n    count = 1\n    for exponent in factors.values():\n        count *= (exponent + 1)\n        \n    return count",
+    "summary": "Count divisors of N divisible by k by calculating the total number of divisors of N/k using prime factorization."
+  },
+  "cmath_4869": {
+    "pseudocode": "Derive combinatorial formula for count of distinct 3-digit numbers in base b:\n    First digit choices: b - 1 (cannot be 0)\n    Second digit choices: b - 1 (cannot match first)\n    Third digit choices: b - 2 (cannot match first or second)\n    Total Count N(b) = (b - 1) * (b - 1) * (b - 2)\n\nSet equation N(b) = 100\nIterate integer b starting from 3\nReturn b where N(b) equals 100",
+    "summary": "Derive a combinatorial formula for the count of distinct-digit numbers in base $b$ and solve the resulting polynomial equation for the integer base."
+  },
+  "cmath_4875": {
+    "pseudocode": "Initialize valid_count <- 0\nInitialize current_multiple <- 3\nWhile valid_count < 50:\n    If string_representation(current_multiple) contains digit '1':\n        Increment valid_count\n    If valid_count == 50:\n        Return current_multiple\n    Increment current_multiple by 3",
+    "summary": "Iteratively enumerate multiples of 3 and filter based on digit composition to find the nth term."
+  },
+  "cmath_4885": {
+    "pseudocode": "ITERATE candidate FROM 1000 TO 9999 IN INCREASING ORDER:\n    DECOMPOSE candidate INTO digits\n    CHECK Digit Parity Property: Exactly 2 even digits AND 2 odd digits\n    CHECK Divisibility Property: Sum of digits is divisible by 9\n    IF Both Properties Hold:\n        RETURN candidate AS Solution",
+    "summary": "Iterate through four-digit numbers in ascending order checking for specific digit parity distribution and divisibility by 9 via digit sum."
+  },
+  "cmath_4928": {
+    "pseudocode": "1. Identify the repeating pattern of units digits for squares of consecutive odd integers: [1, 9, 5, 9, 1]\n2. Calculate the sum of units digits in one full period (period_sum = 25) and the period length (L = 5)\n3. Determine the number of full periods (cycles = N // L) and remaining terms (remainder = N % L)\n4. Compute total sum of units digits = (cycles * period_sum) + sum of first 'remainder' terms in pattern\n5. Return total sum modulo 10",
+    "summary": "Exploit the periodicity of units digits in odd integer squares to compute the aggregate units digit using cycle decomposition and modular arithmetic."
+  },
+  "cmath_4934": {
+    "pseudocode": "Procedure FindPrimesWithNoSolution(congruence):\n    1. Simplify the congruence to the standard linear form: a*x ≡ b (mod p)\n    2. Apply the linear congruence solvability theorem: \n       Solution exists if and only if gcd(a, p) divides b\n    3. Invert condition for no solution: gcd(a, p) does not divide b\n    4. For the specific case where b = 1:\n       Condition becomes gcd(a, p) > 1\n    5. Since p is prime, gcd(a, p) > 1 implies p divides a\n    6. Identify all distinct prime factors of a\n    7. Return the sum of these prime factors\nEnd Procedure",
+    "summary": "Simplify the linear congruence and sum the prime factors of the coefficient that prevent the existence of a modular inverse."
+  },
+  "cmath_4949": {
+    "pseudocode": "Function CountOrderedPairs(n):\n    count <- 0\n    For a from 1 to floor(sqrt(n)):\n        b_squared <- n - a^2\n        If b_squared is a perfect square:\n            b <- sqrt(b_squared)\n            If b > 0:\n                If a == b:\n                    count <- count + 1  // (a, a) is unique\n                Else:\n                    count <- count + 2  // (a, b) and (b, a) are distinct\n    Return count\n\nn <- 1\nWhile True:\n    If CountOrderedPairs(n) == 3:\n        Return n\n    n <- n + 1",
+    "summary": "Iteratively search for the smallest positive integer n by counting its representations as a sum of two positive squares until the target count is met."
+  },
+  "cmath_4950": {
+    "pseudocode": "# Represent the sum of factorials\nexpression = 12! + 14!\n\n# Algebraic Simplification: Factor out the smaller factorial\n# 12! + 14! = 12! * (1 + 14 * 13)\ncommon_factor = 12!\nresidual_integer = 1 + (14 * 13)\n\n# Analyze prime factors of the common factorial component\n# The prime factors of n! are all primes <= n\nmax_prime_from_factorial = largest_prime_less_than_or_equal(12)\n\n# Analyze prime factors of the residual integer component\nresidual_prime_factors = prime_factorization(residual_integer)\nmax_prime_from_residual = max(residual_prime_factors)\n\n# The greatest prime factor of the total sum is the maximum of the components\ngreatest_prime = max(max_prime_from_factorial, max_prime_from_residual)\nreturn greatest_prime",
+    "summary": "Factor out the smaller factorial to simplify the sum into a product, then determine the largest prime factor by comparing the factorial's prime limit with the residual term's factors."
+  },
+  "cmath_4961": {
+    "pseudocode": "Input: List of exponents E from the prime factorization of N\ntotal_count <- 1\nFor each exponent e in E:\n    // A factor is a perfect square iff all prime exponents are even\n    // Count valid even exponents k where 0 <= k <= e\n    choices <- floor(e / 2) + 1\n    total_count <- total_count * choices\nReturn total_count",
+    "summary": "Calculate the number of perfect square factors by multiplying the count of valid even exponents for each prime base."
+  },
+  "cmath_4974": {
+    "pseudocode": "Define Polynomial P(n) = 2n^5 + 3n^4 + 5n^3 + 2n^2 + 3n + 6\nInitialize count = 0\nFor n from 2 to 100:\n    If P(n) ≡ 0 (mod 7):\n        count = count + 1\nReturn count",
+    "summary": "Iterate through candidate bases, evaluate the base-n polynomial representation, and count instances satisfying the modular divisibility condition."
+  },
+  "cmath_5031": {
+    "pseudocode": "FUNCTION find_ones_digit_of_largest_power(n, p):\n    // Step 1: Calculate the exponent of prime p in n! using Legendre's Formula\n    exponent <- 0\n    power_of_p <- p\n    WHILE power_of_p <= n:\n        exponent <- exponent + FLOOR(n / power_of_p)\n        power_of_p <- power_of_p * p\n    \n    // Step 2: Determine the cycle length of ones digits for powers of p\n    // For p=2, the cycle of ones digits [2, 4, 8, 6] has length 4\n    cycle_length <- 4 \n    \n    // Step 3: Map the large exponent to the corresponding position in the cycle\n    // Note: If exponent % cycle_length == 0, it corresponds to the last element of the cycle\n    effective_exponent <- exponent MOD cycle_length\n    IF effective_exponent == 0:\n        effective_exponent <- cycle_length\n        \n    // Step 4: Compute the ones digit\n    result <- (p ^ effective_exponent) MOD 10\n    \n    RETURN result\nEND FUNCTION\n\n// Application to specific problem\nn_val <- 2^4  // 16\np_val <- 2\nanswer <- find_ones_digit_of_largest_power(n_val, p_val)",
+    "summary": "Apply Legendre's Formula to find the exponent of 2 in 16!, then use the cyclic pattern of powers of 2 modulo 10 to determine the final ones digit."
+  },
+  "cmath_5075": {
+    "pseudocode": "FUNCTION SolveBaseConversionDigitSum():\n    // 1. Determine the decimal range for a 4-digit base-8 integer\n    // Smallest 4-digit base-8 number is 1000_8 = 8^3\n    min_val <- 8^(4 - 1)\n    // Largest 4-digit base-8 number is 7777_8 = 8^4 - 1\n    max_val <- 8^4 - 1\n    \n    // 2. Calculate the number of base-2 digits (d) for the bounds\n    // Formula: digits = floor(log_base(value)) + 1\n    min_d <- floor(log_2(min_val)) + 1\n    max_d <- floor(log_2(max_val)) + 1\n    \n    // 3. Sum all possible integer values for d within the calculated range\n    total_sum <- 0\n    FOR d FROM min_d TO max_d INCLUSIVE:\n        total_sum <- total_sum + d\n        \n    RETURN total_sum\nEND FUNCTION",
+    "summary": "Convert the base-8 digit constraint into a decimal value range, compute the minimum and maximum base-2 digit counts for this range, and sum all integers between these counts."
+  },
+  "cmath_5084": {
+    "pseudocode": "Function FindMaxN(Polynomial P, Prime Modulus p, Integer Limit):\n    1. Reduce all coefficients of P modulo p\n    2. Apply Fermat's Little Theorem: replace terms of form x^p with x mod p\n    3. Simplify P to a reduced polynomial Q(n) modulo p\n    4. Solve the congruence Q(n) ≡ 0 (mod p) to find valid residues R\n    5. For each residue r in R:\n        Calculate candidate = Largest integer < Limit such that candidate ≡ r (mod p)\n    6. Return the maximum candidate found",
+    "summary": "Simplify the polynomial modulo 5 using Fermat's Little Theorem, solve the resulting congruence for valid residues, and determine the largest integer below the limit satisfying the condition."
+  },
+  "cmath_5175": {
+    "pseudocode": "// Concept: Inverse Divisor Counting\n// Given d(n) = 11 and 11 is prime, deduce n = p^(11-1)\nSET exponent_n = 11 - 1\n\n// Concept: Parity Constraint\n// Given n is odd, prime base p != 2\nASSERT prime_base_p != 2\n\n// Concept: Exponent Propagation\n// Target expression is 8 * n^3 = 2^3 * (p^exponent_n)^3\nSET exponent_2 = 3\nSET exponent_p_final = 3 * exponent_n\n\n// Concept: Divisor Counting Formula\n// Since bases 2 and p are distinct, multiply (exponent + 1) for each\nSET result = (exponent_2 + 1) * (exponent_p_final + 1)\n\nRETURN result",
+    "summary": "Infer the prime factorization of $n$ from its divisor count, derive the factorization of $8n^3$ using exponent rules and parity constraints, and apply the divisor counting formula."
+  },
+  "cmath_5177": {
+    "pseudocode": "Function Solve():\n    Define base = 19, exponent = 1999, modulus = 25\n    \n    // Concept: Euler's Totient Theorem Application\n    // Requires gcd(base, modulus) == 1\n    phi = Calculate_Euler_Totient(modulus)\n    \n    // Concept: Exponent Reduction\n    reduced_exponent = exponent % phi\n    \n    // Concept: Binary Modular Exponentiation\n    result = Modular_Exponentiation(base, reduced_exponent, modulus)\n    \n    Return result",
+    "summary": "Apply Euler's Totient Theorem to reduce the exponent modulo $\\phi(25)$, then compute the result using binary modular exponentiation."
+  },
+  "cmath_5178": {
+    "pseudocode": "Function FindLeastConstrainedSolution(LinearCongruences, LowerBound):\n    SimplifiedPairs = []\n    For each (coeff, constant, modulus) in LinearCongruences:\n        // Step 1: Simplify ax ≡ b (mod m) to x ≡ r (mod m')\n        g = GCD(coeff, modulus)\n        modulus_reduced = modulus / g\n        coeff_reduced = coeff / g\n        constant_reduced = constant / g\n        inverse = ModularInverse(coeff_reduced, modulus_reduced)\n        residue = (constant_reduced * inverse) % modulus_reduced\n        Add (residue, modulus_reduced) to SimplifiedPairs\n    \n    // Step 2: Combine congruences using Chinese Remainder Theorem\n    M_total = Product of all modulus_reduced in SimplifiedPairs\n    x_0 = 0\n    For each (residue, modulus_reduced) in SimplifiedPairs:\n        N_i = M_total / modulus_reduced\n        y_i = ModularInverse(N_i, modulus_reduced)\n        x_0 = (x_0 + residue * N_i * y_i) % M_total\n    \n    // Step 3: Adjust base solution to meet range constraint\n    k = Ceiling((LowerBound - x_0) / M_total)\n    Return x_0 + k * M_total",
+    "summary": "Simplify linear congruences to standard residue form, combine using the Chinese Remainder Theorem, and shift by the modulus period to satisfy the minimum value constraint."
+  },
+  "cmath_5195": {
+    "pseudocode": "Function ModularInverse(a, m):\n    // Problem: Find x such that a * x ≡ 1 (mod m)\n    // Equivalent to solving Diophantine equation: a * x + m * y = 1\n    \n    // 1. Apply Extended Euclidean Algorithm to find gcd(a, m) and coefficients x, y\n    (g, x, y) = ExtendedEuclidean(a, m)\n    \n    // 2. Check existence condition: inverse exists iff gcd(a, m) = 1\n    If g != 1:\n        Return \"No Inverse\"\n    \n    // 3. The coefficient x satisfies a * x ≡ 1 (mod m)\n    // 4. Normalize x to the canonical range [0, m-1]\n    result = (x % m + m) % m\n    \n    Return result",
+    "summary": "Apply the Extended Euclidean Algorithm to solve the Bezout identity for the modular inverse and normalize the resulting coefficient."
+  },
+  "cmath_5214": {
+    "pseudocode": "Function Solve(N):\n    1. Compute prime factorization of N: N = p1^e1 * p2^e2 * ... * pk^ek\n    2. Calculate sum of divisors S using multiplicative property: S = Product((pi^(ei+1) - 1) / (pi - 1)) for all i\n    3. Compute prime factorization of S\n    4. Return count of distinct prime factors in S",
+    "summary": "Compute the sum of divisors using the prime power formula, then factorize the sum to count distinct prime factors."
+  },
+  "cmath_5230": {
+    "pseudocode": "Function FindMinimumUniqueScore():\n    Define Score(c, w) = 30 + 4c - w\n    Define Constraints(c, w): c >= 0, w >= 0, c + w <= 30\n    \n    // Iterate scores starting just above the threshold\n    For s from 81 upwards:\n        valid_configurations = Empty List\n        \n        // Check all possible correct answer counts\n        For c from 0 to 30:\n            Derive w from Score equation: w = 30 + 4c - s\n            If Constraints(c, w) are satisfied:\n                Add (c, w) to valid_configurations\n        \n        // Check for uniqueness of the configuration\n        If Size(valid_configurations) == 1:\n            Return s",
+    "summary": "Iterate through integer scores above 80 to find the smallest value that yields exactly one valid pair of correct and wrong answers under the problem constraints."
+  },
+  "cmath_5235": {
+    "pseudocode": "Define polynomial f(n) = n^3 + 100\nDefine divisor term d = n + 10\nApply Polynomial Remainder Theorem: evaluate f(-10) to determine constant remainder C\nCalculate C = -900\nReformulate divisibility condition: d must divide C (equivalently d divides |C|)\nTo maximize n, maximize d by setting d = |C|\nSolve linear equation n + 10 = 900 for n\nReturn n",
+    "summary": "Apply the Polynomial Remainder Theorem to reduce the divisibility condition to a constant divisor constraint, then maximize the divisor to solve for n."
+  },
+  "cmath_5236": {
+    "pseudocode": "Input: index n\n// Key Insight: Sequence elements are sums of distinct powers of 3.\n// This implies their base-3 representation contains only digits 0 and 1.\n// There is an order-preserving bijection between binary integers and this sequence.\n\n1. Obtain the binary representation of n: n = Σ(b_i * 2^i) where b_i ∈ {0, 1}\n2. Map the binary coefficients to powers of 3 to find the nth term: T_n = Σ(b_i * 3^i)\n3. Calculate the sum of 3^i for every position i where the ith bit of n is 1\nOutput: T_n",
+    "summary": "Interpret the binary representation of the index as a base-3 number to compute the term."
+  },
+  "cmath_5240": {
+    "pseudocode": "Initialize empty list nice_numbers\nSet candidate n = 2\nWhile length(nice_numbers) < 10:\n    Determine set D of proper divisors of n (divisors d where 1 < d < n)\n    Compute product P = ∏_{d in D} d\n    If P == n:\n        Append n to nice_numbers\n    Increment n\nReturn sum of elements in nice_numbers",
+    "summary": "Iteratively search for integers satisfying the nice number definition by enumerating proper divisors and verifying their product equals the number."
+  },
+  "cmath_5246": {
+    "pseudocode": "Define LOG_9 = log10(9)\nInitialize count = 0\nFor k from 0 to 4000:\n    // Calculate fractional part of the logarithm of 9^k\n    fractional_part = {k * LOG_9}\n    // Determine leading digit from the fractional part\n    leading_digit = floor(10 ^ fractional_part)\n    If leading_digit == 9:\n        Increment count\nReturn count",
+    "summary": "Count powers of 9 with leading digit 9 by evaluating the fractional part of their base-10 logarithms."
+  },
+  "cmath_5260": {
+    "pseudocode": "FUNCTION CountDifferenceOfSquares(upper_bound):\n    // Step 1: Algebraic Characterization\n    // Express n = a^2 - b^2 as n = (a+b)(a-b)\n    // Let x = a+b, y = a-b. Note x and y must have same parity.\n    \n    // Step 2: Derive Modular Constraint\n    // If x, y both odd => n is odd\n    // If x, y both even => n is divisible by 4\n    // Therefore, n cannot be congruent to 2 modulo 4\n    \n    // Step 3: Complementary Counting\n    total_count ← upper_bound\n    \n    // Count integers k in [1, upper_bound] where k ≡ 2 (mod 4)\n    // Sequence forms arithmetic progression: 2, 6, 10, ...\n    excluded_count ← FLOOR((upper_bound - 2) / 4) + 1\n    \n    valid_count ← total_count - excluded_count\n    \n    RETURN valid_count",
+    "summary": "Characterize integers expressible as a difference of squares using parity arguments to exclude numbers congruent to 2 modulo 4, then apply complementary counting."
+  },
+  "cmath_5264": {
+    "pseudocode": "FUNCTION solve():\n    // Part 1: Perfect Square Quadratic Analysis\n    // Set expression n^2 - 19n + 99 equal to k^2\n    // Treat as quadratic equation in n: n^2 - 19n + (99 - k^2) = 0\n    // Enforce integer solution constraint: Discriminant must be perfect square m^2\n    COMPUTE discriminant = 19^2 - 4(99 - k^2) = 4k^2 - 35\n    SET 4k^2 - 35 = m^2\n    // Solve Diophantine Equation using Difference of Squares\n    REARRANGE to (2k - m)(2k + m) = 35\n    INITIALIZE valid_n = []\n    FOR each factor pair (a, b) of 35 such that a * b = 35:\n        SOLVE linear system (2k - m = a, 2k + m = b) for k\n        SUBSTITUTE k back into original quadratic to solve for n\n        IF n is a positive integer:\n            ADD n to valid_n\n    COMPUTE sum1 = SUM(valid_n)\n\n    // Part 2: Integer Divisibility Analysis\n    // Condition: 12/n is integer implies n is a divisor of 12\n    FIND all integer divisors of 12 (including negative divisors)\n    COMPUTE sum2 = SUM(divisors)\n\n    RETURN sum1 + sum2",
+    "summary": "Transform the perfect square constraint into a discriminant condition to solve a Diophantine equation via factorization, then sum the integer divisors of a constant."
+  },
+  "cmath_5271": {
+    "pseudocode": "1. Let n be the number of elements and S be the sum of elements in set S.\n2. From the condition that (S - x) / (n - 1) is an integer for all x, deduce that all elements are congruent modulo (n - 1).\n3. Since 1 and 2002 are in the set, require (2002 - 1) to be divisible by (n - 1).\n4. Find all divisors of 2001 and sort them in descending order.\n5. For each divisor d:\n    a. Set candidate size n = d + 1.\n    b. Verify if a valid set of size n exists (checking if a constructed sum S is divisible by n).\n    c. If verification passes, return n as the maximum size.",
+    "summary": "Use the integer mean property to establish modular congruence among elements, constrain the set size using divisors of the difference between known elements, and validate the maximum size via sum divisibility."
+  },
+  "cmath_5274": {
+    "pseudocode": "Define S(k) = k(k + 1)(2k + 1) / 6\nInitialize k = 1\nWhile S(k) ≢ 0 (mod 200):\n    k ← k + 1\nReturn k",
+    "summary": "Exhaustively search integers k starting from 1 until the sum of squares formula yields a multiple of 200."
+  },
+  "cmath_5279": {
+    "pseudocode": "Initialize total_sum = 0\nDetermine valid range for leading digit d such that last digit >= 0 (d from 3 to 9)\nFor each d in valid range:\n    Construct integer n using consecutive decreasing digits starting with d\n    Compute remainder r = n mod 37\n    Add r to total_sum\nReturn total_sum",
+    "summary": "Enumerate all integers satisfying the consecutive decreasing digit constraint, compute each modulo 37, and sum the resulting remainders."
+  },
+  "cmath_5280": {
+    "pseudocode": "Set N = 40, Divisor = 9\nTotal_Cases = Binomial_Coefficient(N, 2)\nFavorable_Cases = 0\n\nFor each pair of distinct bit indices (i, j) with 0 <= i < j < N:\n    Number = 2^i + 2^j\n    If Number modulo Divisor == 0:\n        Favorable_Cases += 1\n\nProbability = Reduce_Fraction(Favorable_Cases, Total_Cases)\nReturn Probability.Numerator + Probability.Denominator",
+    "summary": "Compute probability by counting pairs of bit positions that satisfy a modular arithmetic condition on the sum of powers of 2."
+  },
+  "cmath_5283": {
+    "pseudocode": "1. Define variables x, y, z for the quantity of bananas taken by the first, second, and third monkey respectively.\n2. Formulate linear expressions for the final holdings of each monkey based on the fractions kept and distributed at each step.\n3. Set the final holdings proportional to the given ratio using a common scaling factor k.\n4. Substitute the ratio-based holdings into the distribution expressions to generate a system of linear equations.\n5. Solve the system to express the taken quantities x, y, z in terms of the scaling factor k.\n6. Determine the least positive integer k such that x, y, z and all intermediate shared amounts are integers.\n7. Compute the total bananas B = x + y + z using the minimal valid k.\n8. Return the minimum total B.",
+    "summary": "Model the sequential distribution as a linear system linking initial takes to final holdings, then minimize the total subject to integer constraints derived from the target ratio."
+  },
+  "cmath_5291": {
+    "pseudocode": "FUNCTION count_geometric_log_pairs(n_terms, log_sum, log_base):\n    // 1. Derive exponents from the product of geometric sequence terms\n    // Product = a^n * r^(0+1+...+n-1) = a^n * r^(n*(n-1)/2)\n    exp_a <- n_terms\n    exp_r <- n_terms * (n_terms - 1) / 2\n    \n    // 2. Simplify logarithmic equation to linear form\n    // log_base(a^exp_a * r^exp_r) = log_sum\n    // exp_a * log_base(a) + exp_r * log_base(r) = log_sum\n    \n    // 3. Convert to prime base p (where log_base = p^k) to enforce integer constraints\n    // log_base(x) = log_p(x) / k\n    k <- log_p(log_base)\n    coeff_a <- exp_a / k\n    coeff_r <- exp_r / k\n    target <- log_sum\n    \n    // 4. Form Linear Diophantine Equation: coeff_a * x + coeff_r * y = target\n    // where x = log_p(a), y = log_p(r) must be non-negative integers\n    \n    // 5. Determine valid integer solutions\n    // Analyze parity/modulo to parameterize one variable (e.g., y = step * k_param + offset)\n    // Calculate bounds for k_param such that x >= 0 and y >= 0\n    max_k <- floor((target - coeff_r * offset) / (coeff_r * step))\n    min_k <- 0\n    \n    // 6. Return count of valid parameters\n    RETURN max_k - min_k + 1\nEND FUNCTION",
+    "summary": "Transform the logarithmic sum of a geometric sequence into a linear Diophantine equation on the exponents of the base's prime factor and count the non-negative integer solutions."
+  },
+  "cmath_5295": {
+    "pseudocode": "Function CountPrimeValuation(n, p):\n    exponent <- 0\n    While n is divisible by p:\n        n <- n / p\n        exponent <- exponent + 1\n    Return exponent\n\nFunction Solve():\n    total_k <- 0\n    Sequence <- GenerateFirstNOddIntegers(100)  // Yields 1, 3, 5, ..., 199\n    For each number n in Sequence:\n        total_k <- total_k + CountPrimeValuation(n, 3)\n    Return total_k",
+    "summary": "Sum the 3-adic valuations of each integer in the sequence of the first 100 positive odd numbers to find the total exponent of 3 in their product."
+  },
+  "cmath_5306": {
+    "pseudocode": "FUNCTION solve_modular_inverse(n):\n    // Step 1: Simplify the exponential term modulo 9\n    // Property: 3^2 = 9 ≡ 0 (mod 9), implies 3^(2n) ≡ 0 for n ≥ 1\n    exponential_term ← 0\n    \n    // Step 2: Evaluate the expression inside the inverse modulo 9\n    base_value ← (exponential_term + 4) MOD 9\n    \n    // Step 3: Compute the modular inverse a such that (base_value * a) ≡ 1 (mod 9)\n    a ← FIND_MODULAR_INVERSE(base_value, modulus=9)\n    \n    RETURN a\nEND FUNCTION",
+    "summary": "Simplify the exponential term modulo 9 to reduce the expression to a constant, then compute the modular inverse of that constant."
+  },
+  "cmath_5330": {
+    "pseudocode": "FUNCTION CountBalancedRepresentation(powers_count, base):\n    // Calculate the maximum magnitude representable with coefficients {-1, 0, 1}\n    max_val = 0\n    FOR i FROM 0 TO powers_count - 1:\n        max_val += base^i\n    \n    // Mathematical Property: A balanced base system uniquely represents \n    // all integers in the continuous range [-max_val, max_val]\n    \n    // Count the non-negative integers in the range [0, max_val]\n    count = max_val + 1\n    \n    RETURN count",
+    "summary": "Calculate the maximum representable value in the balanced ternary system and count the non-negative integers up to that limit."
+  },
+  "cmath_5334": {
+    "pseudocode": "function find_valid_digit_sum(S_n, options):\n    # When incrementing n by 1, the digit sum changes based on trailing 9s.\n    # If there are k trailing 9s, S(n+1) = S(n) + 1 - 9*k.\n    # This implies S(n+1) <= S(n) + 1 and (S(n) + 1 - S(n+1)) is divisible by 9.\n    \n    base_sum = S_n + 1\n    \n    for option in options:\n        difference = base_sum - option\n        \n        # Check if the difference corresponds to a valid number of carries (k >= 0)\n        if difference >= 0 AND difference is divisible by 9:\n            return option\n            \n    return None",
+    "summary": "Check which candidate value satisfies the digit sum transition property $S(n+1) = S(n) + 1 - 9k$ for some non-negative integer $k$."
+  },
+  "cmath_5342": {
+    "pseudocode": "FUNCTION count_integer_solutions():\n    Initialize solution_count = 0\n    # Concept: Limit search space based on exponential growth relative to the constant\n    DETERMINE bounds for x and y such that 2^(2x) and 3^(2y) do not excessively exceed 55\n    FOR x FROM 1 TO bound_x:\n        FOR y FROM 1 TO bound_y:\n            # Concept: Direct verification of the Diophantine condition\n            IF 2^(2*x) - 3^(2*y) == 55:\n                INCREMENT solution_count\n    RETURN solution_count\nEND FUNCTION",
+    "summary": "Apply bounded exhaustive search to identify integer pairs satisfying the exponential Diophantine equation."
+  },
+  "cmath_5344": {
+    "pseudocode": "FUNCTION FindLargestCommonDivisor():\n    // Define variables based on problem constraints\n    LET m, n BE odd integers SUCH THAT n < m\n    \n    // Step 1: Algebraic Factorization\n    LET expr = m^2 - n^2\n    FACTOR expr INTO (m - n) * (m + n)\n    \n    // Step 2: Parameter Substitution for Parity Analysis\n    REPRESENT m AS 2k + 1\n    REPRESENT n AS 2l + 1\n    \n    // Step 3: Simplify and Group Terms\n    SUBSTITUTE INTO expr: (2k + 1)^2 - (2l + 1)^2\n    SIMPLIFY TO: 4 * (k^2 + k - l^2 - l)\n    REWRITE AS: 4 * [k(k + 1) - l(l + 1)]\n    \n    // Step 4: Apply Number Theory Property\n    // Concept: Product of consecutive integers is always even\n    ASSERT k(k + 1) IS DIVISIBLE BY 2\n    ASSERT l(l + 1) IS DIVISIBLE BY 2\n    DEDUCE [k(k + 1) - l(l + 1)] IS DIVISIBLE BY 2\n    \n    // Step 5: Calculate Guaranteed Divisor\n    LET common_divisor = 4 * 2 = 8\n    \n    // Step 6: Verify Maximality with Base Case\n    TEST CASE (m=3, n=1) YIELDS 3^2 - 1^2 = 8\n    IF result == common_divisor:\n        RETURN common_divisor\n    ELSE:\n        RETURN GCD(common_divisor, result)\nEND FUNCTION",
+    "summary": "Factor the difference of squares, substitute odd integer forms to prove divisibility by 8 using consecutive integer properties, and verify maximality with a base case."
+  },
+  "cmath_5349": {
+    "pseudocode": "Define digit set D = {0, 1, ..., 9}\nInitialize total_sum = 0\nFor each ordered triple (d1, d2, d3) from Permutations(D, 3):\n    If d1 != 0:  // Constraint: leading digit cannot be zero\n        value = 100 * d1 + 10 * d2 + d3  // Place value construction\n        total_sum = total_sum + value\nReturn total_sum mod 1000",
+    "summary": "Enumerate all valid distinct-digit permutations, construct integers via place value expansion, accumulate the sum, and compute the remainder modulo 1000."
+  },
+  "cmath_5421": {
+    "pseudocode": "Define prime modulus P = 11\nDefine base A = 333, exponent B = 333\nReduce base: A_reduced = A mod P\nReduce exponent: B_reduced = B mod (P - 1) using Fermat's Little Theorem\nCompute result: Result = (A_reduced ^ B_reduced) mod P\nReturn Result",
+    "summary": "Utilizes Fermat's Little Theorem to reduce the base modulo 11 and exponent modulo 10 before calculating the final modular exponentiation."
+  },
+  "cmath_5475": {
+    "pseudocode": "1. Calculate total divisors D = restricted_count + 2 (accounting for exclusions of 1 and N)\n2. Generate all multiplicative partitions of D (sets of integers whose product is D)\n3. For each partition, derive prime exponents E = [factor - 1 for factor in partition]\n4. Construct candidate number by assigning smallest distinct primes to largest exponents in E\n5. Return the minimum value across all constructed candidates",
+    "summary": "Convert restricted divisor count to total divisors, decompose into multiplicative factors for exponent structures, and minimize by assigning smallest primes to largest exponents."
+  },
+  "cmath_5477": {
+    "pseudocode": "SET limit = 1000\nSET multiplier = 20\nSET modulus = 26\nSET remainder = 4\nCALCULATE max_n = floor(limit / multiplier)\nFOR n FROM max_n DOWN TO 1:\n    candidate = n * multiplier\n    IF candidate < limit AND candidate % modulus == remainder:\n        RETURN candidate",
+    "summary": "Find the maximum value satisfying an upper bound and modular congruence by iterating downwards from the theoretical maximum."
+  },
+  "cmath_5532": {
+    "pseudocode": "FUNCTION solve_factor_count():\n    IDENTIFY property: natural number has exactly 3 factors iff it is square of a prime (p^2)\n    REPRESENT x, y, z as squares of distinct primes: p1^2, p2^2, p3^2\n    SUBSTITUTE into target expression: E = (p1^2)^2 * (p2^2)^3 * (p3^2)^4\n    SIMPLIFY exponents: E = p1^4 * p2^6 * p3^8\n    APPLY divisor counting formula: product of (exponent + 1) for each prime factor\n    COMPUTE result: (4 + 1) * (6 + 1) * (8 + 1)\n    RETURN result",
+    "summary": "Characterize inputs as squares of distinct primes to determine the prime factorization of the target expression, then apply the divisor counting formula."
+  },
+  "cmath_5540": {
+    "pseudocode": "Function FindLargestUniversalDivisor():\n    // 1. Algebraic Factorization\n    Expression <- n^3 - n\n    FactoredForm <- (n - 1) * n * (n + 1)\n    \n    // 2. Establish Theoretical Baseline\n    // Product of k consecutive integers is divisible by k!\n    // Here k=3, so divisible by 3! = 6 for all integers n\n    BaselineDivisor <- 6\n    \n    // 3. Empirical Verification on Domain\n    // Evaluate expression for the smallest composite integers to find constraints\n    Values <- []\n    For n in SmallestCompositeIntegers:\n        Values.append(Evaluate(Expression, n))\n    \n    // 4. Compute Tight Bound\n    // The largest integer dividing all cases is the GCD of the generated values\n    MaxDivisor <- GCD(Values)\n    \n    Return MaxDivisor\nEnd Function",
+    "summary": "Factor the polynomial to establish a baseline divisor, then compute the GCD of the expression evaluated at small composite integers to find the largest universal divisor."
+  },
+  "cmath_5543": {
+    "pseudocode": "FUNCTION find_Fermat_units_digit(n):\n    // Goal: Compute (2^(2^n) + 1) mod 10\n    modulus = 10\n    base = 2\n    cycle_length = 4  // Periodicity of 2^k mod 10\n\n    // Reduce the tower exponent (2^n) modulo the cycle length\n    // Mathematical Property: 2^n is divisible by 4 for all n >= 2\n    IF n >= 2:\n        reduced_exponent = cycle_length\n    ELSE:\n        reduced_exponent = (2^n) mod cycle_length\n\n    // Compute units digit of the power term using the reduced exponent\n    power_units_digit = (base^reduced_exponent) mod modulus\n\n    // Apply Fermat number definition offset\n    result = (power_units_digit + 1) mod modulus\n\n    RETURN result",
+    "summary": "Compute the units digit by reducing the exponent tower modulo the periodicity of powers of 2 modulo 10."
+  },
+  "cmath_5545": {
+    "pseudocode": "Function CountTrailingZeroes(n):\n    // A trailing zero is produced by a factor of 10 = 2 * 5\n    // In n!, factors of 2 are more abundant than factors of 5\n    // Thus, the count of zeroes equals the exponent of 5 in the prime factorization of n!\n    // Apply Legendre's Formula for prime p = 5\n    count = 0\n    power_of_5 = 5\n    While power_of_5 <= n:\n        // Add the number of multiples of 5^k in the range [1, n]\n        count += floor(n / power_of_5)\n        power_of_5 *= 5\n    Return count",
+    "summary": "Determine the number of trailing zeroes in n! by calculating the total multiplicity of the prime factor 5 using Legendre's Formula."
+  },
+  "cmath_8702": {
+    "pseudocode": "Set target_sum = 9\nSet total_ways = 0\n\nFor count_4 from 0 to floor(target_sum / 4):\n    For count_2 from 0 to floor(target_sum / 2):\n        count_1 = target_sum - 4 * count_4 - 2 * count_2\n        \n        If count_1 >= 0:\n            total_elements = count_4 + count_2 + count_1\n            distinct_permutations = total_elements! / (count_4! * count_2! * count_1!)\n            total_ways = total_ways + distinct_permutations\n\nReturn total_ways",
+    "summary": "Iterate over valid counts of larger denominations, compute the required unit count, and accumulate the multinomial coefficients for each composition."
+  },
+  "cmath_8735": {
+    "pseudocode": "Function MinTrialsForSuccess(p_success, target_probability):\n    // Step 1: Use Complementary Probability\n    // P(at least one success) = 1 - P(all failures)\n    p_failure <- 1 - p_success\n    max_allowed_failure_prob <- 1 - target_probability\n    \n    // Step 2: Model Independent Events\n    // P(all failures in n trials) = (p_failure)^n\n    // Inequality: (p_failure)^n <= max_allowed_failure_prob\n    \n    // Step 3: Solve Exponential Inequality using Logarithms\n    n_real <- log(max_allowed_failure_prob) / log(p_failure)\n    \n    // Step 4: Discretize to Minimum Integer\n    n_min <- ceiling(n_real)\n    \n    Return n_min\nEnd Function",
+    "summary": "Transform the \"at least one success\" condition into a complementary \"all failures\" probability inequality and solve for the minimum integer $n$ using logarithms."
+  },
+  "cmath_8896": {
+    "pseudocode": "IDENTIFY n = 6 // number of identical items\nIDENTIFY k = 3 // number of distinct bins\n// Recognize combinatorial pattern: distributing identical items into distinct bins\n// Equivalent to finding non-negative integer solutions to x_1 + ... + x_k = n\nAPPLY Stars_and_Bars_Theorem\nCALCULATE result = BinomialCoefficient(n + k - 1, k - 1)\nRETURN result",
+    "summary": "Apply the stars and bars theorem to count distributions of identical items into distinct bins."
+  },
+  "cmath_9094": {
+    "pseudocode": "Let S be the input set of numbers\nInitialize U as an empty set to store unique sums\nFor each cardinality k from 2 to |S|:\n    For each subset C ⊆ S where |C| = k:\n        Compute s = Σ_{x ∈ C} x\n        Insert s into U\nReturn |U|",
+    "summary": "Enumerate all subsets of size at least 2, calculate their sums, and count the number of unique results."
+  },
+  "cmath_9112": {
+    "pseudocode": "function count_surjective_mappings(num_elements, num_targets):\n    total_ways = 0\n    for i from 0 to num_targets:\n        # Apply Principle of Inclusion-Exclusion\n        # i is the number of targets excluded (forced to be empty)\n        sign = (-1) ^ i\n        ways_to_choose_excluded = binomial_coefficient(num_targets, i)\n        ways_to_assign_to_remaining = (num_targets - i) ^ num_elements\n        term = sign * ways_to_choose_excluded * ways_to_assign_to_remaining\n        total_ways += term\n    return total_ways",
+    "summary": "Calculate the number of surjective functions from the set of cars to the set of lanes using the Principle of Inclusion-Exclusion."
+  },
+  "cmath_9126": {
+    "pseudocode": "Function Legendre_Count(n, prime):\n    count <- 0\n    power <- prime\n    While power <= n:\n        count <- count + floor(n / power)\n        power <- power * prime\n    Return count\n\nTotal_Zeros <- 0\nFor each N in [100, 200, 300]:\n    // Trailing zeros determined by exponent of 5 in prime factorization\n    Total_Zeros <- Total_Zeros + Legendre_Count(N, 5)\n\nReturn Total_Zeros",
+    "summary": "Determine trailing zeros by summing the counts of factor 5 in each factorial using Legendre's Formula."
+  }
+}

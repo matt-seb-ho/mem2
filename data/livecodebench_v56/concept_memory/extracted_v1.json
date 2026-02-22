@@ -1,0 +1,252 @@
+{
+  "concepts": {
+    "binary search": {
+      "name": "binary search",
+      "kind": "algorithm",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Efficiently search sorted/monotonic space by halving",
+      "cues": [
+        "Problem suggests binary search",
+        "Pattern in abc377_a"
+      ],
+      "implementation": [
+        "Applied binary search",
+        "Used for abc377_a"
+      ],
+      "used_in": [
+        "3676",
+        "abc377_a"
+      ]
+    },
+    "prefix sum": {
+      "name": "prefix sum",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Precompute cumulative sums for O(1) range queries",
+      "cues": [
+        "Problem suggests prefix sum",
+        "Pattern in abc378_d"
+      ],
+      "implementation": [
+        "Applied prefix sum",
+        "Used for abc378_d"
+      ],
+      "used_in": [
+        "3723",
+        "abc378_d"
+      ]
+    },
+    "greedy": {
+      "name": "greedy",
+      "kind": "algorithm",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Make locally optimal choices leading to global optimum",
+      "cues": [
+        "Problem suggests greedy",
+        "Pattern in abc378_a"
+      ],
+      "implementation": [
+        "Applied greedy",
+        "Used for abc378_a"
+      ],
+      "used_in": [
+        "3747",
+        "abc378_a"
+      ]
+    },
+    "dynamic programming": {
+      "name": "dynamic programming",
+      "kind": "dp pattern",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Break into overlapping subproblems with optimal substructure",
+      "cues": [
+        "Problem suggests dynamic programming",
+        "Pattern in abc377_b"
+      ],
+      "implementation": [
+        "Applied dynamic programming",
+        "Used for abc377_b"
+      ],
+      "used_in": [
+        "abc374_a",
+        "abc377_b"
+      ]
+    },
+    "hash map": {
+      "name": "hash map",
+      "kind": "data structure",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "O(1) key-value lookups",
+      "cues": [
+        "Problem suggests hash map",
+        "Pattern in abc378_c"
+      ],
+      "implementation": [
+        "Applied hash map",
+        "Used for abc378_c"
+      ],
+      "used_in": [
+        "abc374_c",
+        "abc378_c"
+      ]
+    },
+    "sorting": {
+      "name": "sorting",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Sort elements for efficient processing",
+      "cues": [
+        "Pattern in abc377_a"
+      ],
+      "implementation": [
+        "Used for abc377_a"
+      ],
+      "used_in": [
+        "abc377_a"
+      ]
+    },
+    "memoization": {
+      "name": "memoization",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Cache subproblem results",
+      "cues": [
+        "Pattern in abc377_b"
+      ],
+      "implementation": [
+        "Used for abc377_b"
+      ],
+      "used_in": [
+        "abc377_b"
+      ]
+    },
+    "two pointers": {
+      "name": "two pointers",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Use two pointers for pair/window problems",
+      "cues": [
+        "Pattern in abc378_a"
+      ],
+      "implementation": [
+        "Used for abc378_a"
+      ],
+      "used_in": [
+        "abc378_a"
+      ]
+    },
+    "string matching": {
+      "name": "string matching",
+      "kind": "algorithm",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Find pattern occurrences in text",
+      "cues": [
+        "Pattern in abc378_c"
+      ],
+      "implementation": [
+        "Used for abc378_c"
+      ],
+      "used_in": [
+        "abc378_c"
+      ]
+    },
+    "sliding window": {
+      "name": "sliding window",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Maintain window over array",
+      "cues": [
+        "Pattern in abc378_d"
+      ],
+      "implementation": [
+        "Used for abc378_d"
+      ],
+      "used_in": [
+        "abc378_d"
+      ]
+    }
+  },
+  "solutions": {
+    "3676": {
+      "problem_id": "3676",
+      "solution": null,
+      "summary": "Approach for 3676",
+      "pseudocode": "Steps for 3676"
+    },
+    "3723": {
+      "problem_id": "3723",
+      "solution": null,
+      "summary": "Approach for 3723",
+      "pseudocode": "Steps for 3723"
+    },
+    "3747": {
+      "problem_id": "3747",
+      "solution": null,
+      "summary": "Approach for 3747",
+      "pseudocode": "Steps for 3747"
+    },
+    "abc374_a": {
+      "problem_id": "abc374_a",
+      "solution": null,
+      "summary": "Approach for abc374_a",
+      "pseudocode": "Steps for abc374_a"
+    },
+    "abc374_c": {
+      "problem_id": "abc374_c",
+      "solution": null,
+      "summary": "Approach for abc374_c",
+      "pseudocode": "Steps for abc374_c"
+    },
+    "abc377_a": {
+      "problem_id": "abc377_a",
+      "solution": null,
+      "summary": "Approach for abc377_a",
+      "pseudocode": "Steps for abc377_a"
+    },
+    "abc377_b": {
+      "problem_id": "abc377_b",
+      "solution": null,
+      "summary": "Approach for abc377_b",
+      "pseudocode": "Steps for abc377_b"
+    },
+    "abc378_a": {
+      "problem_id": "abc378_a",
+      "solution": null,
+      "summary": "Approach for abc378_a",
+      "pseudocode": "Steps for abc378_a"
+    },
+    "abc378_c": {
+      "problem_id": "abc378_c",
+      "solution": null,
+      "summary": "Approach for abc378_c",
+      "pseudocode": "Steps for abc378_c"
+    },
+    "abc378_d": {
+      "problem_id": "abc378_d",
+      "solution": null,
+      "summary": "Approach for abc378_d",
+      "pseudocode": "Steps for abc378_d"
+    }
+  },
+  "custom_types": {}
+}

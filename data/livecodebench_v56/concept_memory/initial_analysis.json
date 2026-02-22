@@ -1,0 +1,250 @@
+{
+  "3676": {
+    "pseudocode": "function smallestNumber(n):\n    // Count the number of bits required to represent n\n    bits_needed = 0\n    temp = n\n    while temp > 0:\n        temp = temp >> 1\n        bits_needed = bits_needed + 1\n    \n    // Construct the number with 'bits_needed' ones (2^bits_needed - 1)\n    result = (1 << bits_needed) - 1\n    \n    return result",
+    "summary": "Calculate the bit length of n and return the corresponding Mersenne number (2^bits - 1)."
+  },
+  "3723": {
+    "pseudocode": "Initialize total_sum = 0\nFor each index i from 0 to n-1:\n    is_good = true\n    \n    If i - k >= 0:\n        If nums[i] <= nums[i - k]:\n            is_good = false\n    \n    If i + k < n:\n        If nums[i] <= nums[i + k]:\n            is_good = false\n    \n    If is_good:\n        total_sum += nums[i]\n\nReturn total_sum",
+    "summary": "Iterate through all indices and check if each element is strictly greater than its k-distance neighbors (if they exist), summing all qualifying elements."
+  },
+  "3747": {
+    "pseudocode": "function maxCircularAdjacentDiff(nums):\n    n = length(nums)\n    max_diff = 0\n    for i from 0 to n-1:\n        next_idx = (i + 1) % n\n        current_diff = abs(nums[i] - nums[next_idx])\n        max_diff = max(max_diff, current_diff)\n    return max_diff",
+    "summary": "Iterate through the array using modulo arithmetic to handle circular adjacency and maintain the maximum absolute difference between neighbors."
+  },
+  "abc374_a": {
+    "pseudocode": "READ string S\nIF S ends_with \"san\" THEN\n    PRINT \"Yes\"\nELSE\n    PRINT \"No\"\nEND IF",
+    "summary": "Check if the input string ends with a specific suffix using string manipulation methods."
+  },
+  "abc374_c": {
+    "pseudocode": "INPUT N, array K\nmin_ans = INFINITY\n\nFOR mask FROM 0 TO 2^N - 1:\n    sum_a = 0\n    sum_b = 0\n    FOR i FROM 0 TO N - 1:\n        IF (mask >> i) & 1:\n            sum_a += K[i]\n        ELSE:\n            sum_b += K[i]\n    \n    min_ans = MIN(min_ans, MAX(sum_a, sum_b))\n\nOUTPUT min_ans",
+    "summary": "Brute-force all $2^N$ department assignments using bitmasking to minimize the maximum sum of the two resulting groups."
+  },
+  "abc377_a": {
+    "pseudocode": "READ string S\nLET sorted_S = SORT characters of S\nIF sorted_S EQUALS ['A', 'B', 'C'] THEN\n    OUTPUT \"Yes\"\nELSE\n    OUTPUT \"No\"\nEND IF",
+    "summary": "Determine if a string is a permutation of a target by sorting its characters and comparing against the sorted target sequence."
+  },
+  "abc377_b": {
+    "pseudocode": "Initialize occupied_rows and occupied_cols as empty sets\nFor each cell (r, c) in the grid:\n    If cell contains a piece:\n        Add r to occupied_rows\n        Add c to occupied_cols\n\nInitialize safe_count to 0\nFor each cell (r, c) in the grid:\n    If cell is empty AND r not in occupied_rows AND c not in occupied_cols:\n        Increment safe_count\n\nOutput safe_count",
+    "summary": "Precompute sets of occupied rows and columns, then count empty cells that do not belong to any occupied row or column."
+  },
+  "abc378_a": {
+    "pseudocode": "INPUT colors[4]\nfreq_map = EMPTY_HASH_MAP\nFOR c IN colors:\n    freq_map[c] = freq_map[c] + 1\n\ntotal_operations = 0\nFOR count IN freq_map.values():\n    total_operations = total_operations + (count DIV 2)\n\nOUTPUT total_operations",
+    "summary": "Calculate color frequencies and sum the integer division of each frequency by 2 to find the maximum number of pairs."
+  },
+  "abc378_c": {
+    "pseudocode": "Initialize map last_pos\nInitialize list result\nFor i from 0 to N-1:\n    val = A[i]\n    If val in last_pos:\n        Append (last_pos[val] + 1) to result\n    Else:\n        Append -1 to result\n    Set last_pos[val] = i\nPrint result elements separated by spaces",
+    "summary": "Track the most recent index of each element using a hash map during a single pass to identify previous occurrences."
+  },
+  "abc378_d": {
+    "pseudocode": "Function CountPaths(H, W, K, Grid):\n    total_count = 0\n    directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n\n    Function DFS(r, c, steps, visited):\n        If steps == K:\n            Return 1\n        paths = 0\n        For (dr, dc) in directions:\n            nr, nc = r + dr, c + dc\n            If 0 <= nr < H AND 0 <= nc < W AND Grid[nr][nc] == '.' AND (nr, nc) NOT IN visited:\n                visited.ADD((nr, nc))\n                paths += DFS(nr, nc, steps + 1, visited)\n                visited.REMOVE((nr, nc))\n        Return paths\n\n    For i from 0 to H-1:\n        For j from 0 to W-1:\n            If Grid[i][j] == '.':\n                visited = {(i, j)}\n                total_count += DFS(i, j, 0, visited)\n    \n    Return total_count",
+    "summary": "Exhaustively count all simple paths of length K by running DFS with backtracking from every valid starting cell."
+  },
+  "abc379_b": {
+    "pseudocode": "FUNCTION solve(N, K, S):\n    teeth = CONVERT S to mutable array\n    strawberries = 0\n    i = 0\n    \n    WHILE i <= N - K:\n        IF segment teeth[i..i+K-1] all equal 'O':\n            strawberries = strawberries + 1\n            MARK teeth[i..i+K-1] as 'X'\n            i = i + K\n        ELSE:\n            i = i + 1\n    \n    RETURN strawberries",
+    "summary": "Greedy left-to-right scan that consumes K consecutive healthy teeth whenever found, marking them as used to prevent overlap."
+  },
+  "abc379_e": {
+    "pseudocode": "Read N and string S\nInitialize current_ending_sum = 0\nInitialize total_sum = 0\nFor i from 0 to N-1:\n    digit = integer value of S[i]\n    // DP Recurrence: Sum of substrings ending at i\n    // = 10 * (Sum of substrings ending at i-1) + digit * (number of substrings ending at i)\n    current_ending_sum = current_ending_sum * 10 + digit * (i + 1)\n    total_sum = total_sum + current_ending_sum\nPrint total_sum",
+    "summary": "Compute the total sum of all substrings by maintaining a running sum of substrings ending at each index via a linear DP recurrence."
+  },
+  "abc380_a": {
+    "pseudocode": "read N as string\ncount_1 = count occurrences of '1' in N\ncount_2 = count occurrences of '2' in N\ncount_3 = count occurrences of '3' in N\nif count_1 == 1 AND count_2 == 2 AND count_3 == 3:\n    print \"Yes\"\nelse:\n    print \"No\"",
+    "summary": "Count digit frequencies and validate against target counts (1→1, 2→2, 3→3)."
+  },
+  "abc380_b": {
+    "pseudocode": "Input: String S\npipe_indices = collect all indices i where S[i] == '|'\nresult = empty list\nfor i from 0 to length(pipe_indices) - 2:\n    count = pipe_indices[i+1] - pipe_indices[i] - 1\n    append count to result\nprint elements of result separated by spaces",
+    "summary": "Reconstruct the integer sequence by counting the dash characters between consecutive pipe delimiters in the generated string."
+  },
+  "abc380_c": {
+    "pseudocode": "function solve(N, K, S):\n    blocks = []\n    i = 0\n    while i < N:\n        if S[i] == '1':\n            start = i\n            while i < N and S[i] == '1':\n                i += 1\n            blocks.append((start, i - 1))\n        else:\n            i += 1\n            \n    prev_end = blocks[K-2].end\n    curr_start = blocks[K-1].start\n    curr_end = blocks[K-1].end\n    \n    result = S[0 : prev_end + 1] \n           + S[curr_start : curr_end + 1] \n           + S[prev_end + 1 : curr_start] \n           + S[curr_end + 1 : N]\n    print result",
+    "summary": "Identify 1-block boundaries via linear scan and reconstruct the string by splicing the K-th block to immediately follow the (K-1)-th block."
+  },
+  "abc381_a": {
+    "pseudocode": "function validate_11_22_string(N, S):\n    // Check length parity constraint\n    if N % 2 == 0:\n        return \"No\"\n    \n    // Calculate middle index (0-based)\n    mid = (N + 1) // 2 - 1\n    \n    // Validate center character\n    if S[mid] != '/':\n        return \"No\"\n    \n    // Validate prefix uniformity (all '1')\n    for i from 0 to mid - 1:\n        if S[i] != '1':\n            return \"No\"\n    \n    // Validate suffix uniformity (all '2')\n    for i from mid + 1 to N - 1:\n        if S[i] != '2':\n            return \"No\"\n    \n    return \"Yes\"",
+    "summary": "Validate string structure by verifying odd length, specific center delimiter, and uniform character requirements for prefix and suffix segments."
+  },
+  "abc381_c": {
+    "pseudocode": "function find_max_1122_length(S):\n    max_len = 1\n    N = length(S)\n    for i from 0 to N-1:\n        if S[i] == '/':\n            left_ones = 0\n            j = i - 1\n            while j >= 0 and S[j] == '1':\n                left_ones += 1\n                j -= 1\n            \n            right_twos = 0\n            j = i + 1\n            while j < N and S[j] == '2':\n                right_twos += 1\n                j += 1\n            \n            k = min(left_ones, right_twos)\n            max_len = max(max_len, 2 * k + 1)\n    return max_len",
+    "summary": "Iterate through each '/' as a center, expand left counting '1's and right counting '2's, and track the maximum symmetric length derived from the minimum of both sides."
+  },
+  "abc381_d": {
+    "pseudocode": "max_len = 0\nleft = 0\ncount = empty frequency map\n\nfor right from 0 to N-1:\n    # Only consider positions that complete a pair (odd indices, 0-indexed)\n    if right is odd and A[right] == A[right-1]:\n        value = A[right]\n        count[value] += 1\n        \n        # Shrink window from left while current value appears more than once as a pair\n        while count[value] > 1:\n            old_value = A[left]\n            count[old_value] -= 1\n            if count[old_value] == 0:\n                remove old_value from count\n            left += 2\n        \n        # Update maximum length with current valid window\n        current_len = right - left + 1\n        max_len = max(max_len, current_len)\n    else:\n        # Invalid pair boundary - reset window\n        clear count\n        left = right + 1\n\nprint max_len",
+    "summary": "Sliding window over consecutive equal pairs, tracking pair-value frequencies to ensure each value appears in at most one pair within the window."
+  },
+  "abc382_a": {
+    "pseudocode": "function solve(N, D, S):\n    cookie_count = count occurrences of '@' in S\n    originally_empty = N - cookie_count\n    newly_emptied = D\n    total_empty = originally_empty + newly_emptied\n    return total_empty",
+    "summary": "Calculate empty boxes as D (cookies eaten) plus originally empty boxes (N minus cookie count)."
+  },
+  "abc382_b": {
+    "pseudocode": "Read N, D, and string S\nConvert S to mutable array\nRepeat D times:\n    Identify the largest index i such that S[i] == '@'\n    Set S[i] = '.'\nOutput S as string",
+    "summary": "Simulate the cookie consumption by iteratively removing the rightmost cookie D times."
+  },
+  "abc384_a": {
+    "pseudocode": "Input N, c1, c2, S\nresult = empty string\nFor each character ch in S:\n    If ch == c1:\n        Append ch to result\n    Else:\n        Append c2 to result\nOutput result",
+    "summary": "Iterate through the string and conditionally replace characters not equal to c1 with c2."
+  },
+  "abc384_c": {
+    "pseudocode": "READ scores[5]\nlabels = ['A', 'B', 'C', 'D', 'E']\nparticipants = empty list\n\nFOR mask FROM 1 TO 31:\n    score_sum = 0\n    name_str = \"\"\n    FOR i FROM 0 TO 4:\n        IF (mask >> i) AND 1:\n            score_sum += scores[i]\n            name_str += labels[i]\n    APPEND (score_sum, name_str) TO participants\n\nSORT participants BY primary key: -score_sum, secondary key: name_str\n\nFOR EACH p IN participants:\n    PRINT p.name_str",
+    "summary": "Enumerate all non-empty subsets of problems using bitmasking to calculate scores, then sort participants by score descending and name lexicographically."
+  },
+  "abc384_d": {
+    "pseudocode": "function solve(N, S, A):\n    // Calculate the sum of one full period\n    period_sum = sum(A)\n    \n    // Generate all possible contiguous subarray sums within one period\n    possible_sub_sums = empty set\n    for i from 0 to N-1:\n        current_sum = 0\n        for j from i to N-1:\n            current_sum = current_sum + A[j]\n            possible_sub_sums.add(current_sum)\n    \n    // Check if S can be formed by k full periods + one subarray sum\n    // Condition: S = k * period_sum + sub_sum  =>  S >= sub_sum AND (S - sub_sum) % period_sum == 0\n    for sub_sum in possible_sub_sums:\n        if S >= sub_sum and (S - sub_sum) % period_sum == 0:\n            return \"Yes\"\n            \n    return \"No\"",
+    "summary": "Decompose the target sum into a multiple of the period sum plus a single-period subarray sum, verifying existence via modulo congruence and magnitude constraints."
+  },
+  "abc385_a": {
+    "pseudocode": "FUNCTION Solve():\n    READ A, B, C\n    \n    // Case 1: Three groups, each containing one number\n    // Requires all numbers to be equal\n    IF A == B AND B == C:\n        PRINT \"Yes\"\n        RETURN\n    \n    // Case 2: Two groups, one containing two numbers, one containing one number\n    // Requires one number to equal the sum of the other two\n    IF A + B == C OR A + C == B OR B + C == A:\n        PRINT \"Yes\"\n        RETURN\n    \n    // No valid partition found\n    PRINT \"No\"",
+    "summary": "Validate partition possibility by checking if all three values are identical or if the largest value equals the sum of the other two."
+  },
+  "abc385_b": {
+    "pseudocode": "Read H, W, start_row, start_col\nRead grid H x W\nRead command_string T\n\ncurr_row = start_row - 1  // Convert to 0-indexed\ncurr_col = start_col - 1\nvisited_houses = Empty Set\n\nFor each command in T:\n    next_row = curr_row\n    next_col = curr_col\n    \n    // Determine candidate position based on direction\n    If command is 'U': next_row -= 1\n    If command is 'D': next_row += 1\n    If command is 'L': next_col -= 1\n    If command is 'R': next_col += 1\n    \n    // Validate move: within bounds and not a wall\n    If 0 <= next_row < H AND 0 <= next_col < W AND grid[next_row][next_col] != '#':\n        curr_row = next_row\n        curr_col = next_col\n    \n    // Track house if current cell contains one\n    If grid[curr_row][curr_col] == '@':\n        Add (curr_row, curr_col) to visited_houses\n\nPrint curr_row + 1, curr_col + 1, Size(visited_houses)",
+    "summary": "Simulate grid movement step-by-step, validating bounds and obstacles, while tracking unique house coordinates visited using a set."
+  },
+  "abc385_c": {
+    "pseudocode": "1. Input N and array H\n2. Group indices by height value: groups[val] = list of indices where H[i] == val\n3. max_len = 1\n4. For each list of indices in groups:\n    a. If size <= 1, continue\n    b. index_set = set(indices) for O(1) lookup\n    c. possible_diffs = set of (indices[j] - indices[i]) for all pairs i < j\n    d. For each diff in possible_diffs:\n        i. For each start_index in indices:\n            - count = 0, curr = start_index\n            - While curr in index_set:\n                count++, curr += diff\n            - max_len = max(max_len, count)\n5. Output max_len",
+    "summary": "Group indices by building height and find the longest arithmetic progression of indices within each group."
+  },
+  "abc385_d": {
+    "pseudocode": "Function Main:\n    Read N, M, StartX, StartY\n    Houses = Set of coordinates (X, Y) for all N houses\n    Visited = Empty Set\n    CurrX, CurrY = StartX, StartY\n\n    For i from 1 to M:\n        Read Direction, Distance\n        NextX, NextY = CalculateEndpoint(CurrX, CurrY, Direction, Distance)\n        \n        // Check all houses for inclusion in the current line segment\n        For each (Hx, Hy) in Houses:\n            If IsOnSegment(Hx, Hy, CurrX, CurrY, NextX, NextY):\n                Visited.Add((Hx, Hy))\n        \n        CurrX, CurrY = NextX, NextY\n\n    Print CurrX, CurrY, Visited.Size()\n\nFunction IsOnSegment(Hx, Hy, X1, Y1, X2, Y2):\n    If Y1 == Y2:  // Horizontal Segment\n        Return Hy == Y1 AND Min(X1, X2) <= Hx <= Max(X1, X2)\n    If X1 == X2:  // Vertical Segment\n        Return Hx == X1 AND Min(Y1, Y2) <= Hy <= Max(Y1, Y2)\n    Else:         // Diagonal Segment\n        CrossProd = (X2 - X1) * (Hy - Y1) - (Y2 - Y1) * (Hx - X1)\n        Return CrossProd == 0 AND Min(X1, X2) <= Hx <= Max(X1, X2) AND Min(Y1, Y2) <= Hy <= Max(Y1, Y2)",
+    "summary": "Simulate the movement path step-by-step and count unique houses that lie geometrically on any traversed segment."
+  },
+  "abc386_a": {
+    "pseudocode": "FUNCTION can_form_full_house(A, B, C, D):\n    cards = [A, B, C, D]\n    freq_map = COUNT_FREQUENCIES(cards)\n    freq_values = SORT_DESCENDING(VALUES(freq_map))\n    \n    // Analyze the distribution of counts among the 4 cards\n    IF freq_values == [4]:\n        RETURN False  // 4 identical cards -> adding 1 makes 5 identical (not Full House)\n    ELSE IF freq_values == [3, 1]:\n        RETURN True   // Add the singleton to make (3, 2)\n    ELSE IF freq_values == [2, 2]:\n        RETURN True   // Add one of the pairs to make (3, 2)\n    ELSE IF freq_values == [2, 1, 1]:\n        RETURN False  // Adding to pair makes (3,1,1); adding to singleton makes (2,2,1)\n    ELSE IF freq_values == [1, 1, 1, 1]:\n        RETURN False  // Adding any makes (2,1,1,1)\n    \n    RETURN False\nEND FUNCTION",
+    "summary": "Determine if the frequency distribution of four cards is either (3,1) or (2,2), as these are the only configurations that can become a (3,2) Full House by adding exactly one card."
+  },
+  "abc386_b": {
+    "pseudocode": "function minButtonPresses(S):\n    n = length(S)\n    dp = array of size (n + 1) initialized to infinity\n    dp[0] = 0\n    \n    for i from 1 to n:\n        // Transition 1: Press single digit button for character S[i-1]\n        dp[i] = dp[i-1] + 1\n        \n        // Transition 2: Press \"00\" button if last two characters form \"00\"\n        if i >= 2 and S[i-2:i] == \"00\":\n            dp[i] = min(dp[i], dp[i-2] + 1)\n    \n    return dp[n]",
+    "summary": "Use dynamic programming where dp[i] tracks minimum button presses to form the first i characters, with transitions for single-digit presses and optimized \"00\" button presses for consecutive zeros."
+  },
+  "abc386_d": {
+    "pseudocode": "Function Solve(N, M, constraints):\n    Initialize row_limit[1..N] to undefined\n    Initialize col_limit[1..N] to undefined\n\n    // Step 1: Propagate constraints from pre-colored cells to row/col boundaries\n    For each (r, c, color) in constraints:\n        If color is 'B':\n            // Black cell implies row/col black-prefix must extend at least to this cell\n            row_limit[r] = max(row_limit[r], c)\n            col_limit[c] = max(col_limit[c], r)\n        Else:\n            // White cell implies row/col black-prefix must end before this cell\n            row_limit[r] = min(row_limit[r], c - 1)\n            col_limit[c] = min(col_limit[c], r - 1)\n\n    // Step 2: Validate local consistency (e.g., lower bound <= upper bound)\n    For each i in 1..N:\n        If row_limit[i] is contradictory: return \"No\"\n        If col_limit[i] is contradictory: return \"No\"\n\n    // Step 3: Validate cross-consistency between row and column boundaries\n    // If row i is black up to column k, column k must be black up to at least row i\n    For each i in 1..N where row_limit[i] is defined:\n        k = row_limit[i]\n        If k > 0 and col_limit[k] is defined and col_limit[k] < i:\n            return \"No\"\n\n    // If column j is black up to row k, row k must be black up to at least column j\n    For each j in 1..N where col_limit[j] is defined:\n        k = col_limit[j]\n        If k > 0 and row_limit[k] is defined and row_limit[k] < j:\n            return \"No\"\n\n    Return \"Yes\"",
+    "summary": "Derive row and column black-prefix limits from constraints and validate their mutual consistency."
+  },
+  "abc387_b": {
+    "pseudocode": "TOTAL_SUM = (SUM(1 to 9))^2\nexcluded_sum = 0\nFOR i FROM 1 TO 9:\n    IF X MOD i == 0:\n        j = X DIV i\n        IF 1 <= j <= 9:\n            excluded_sum = excluded_sum + X\nRESULT = TOTAL_SUM - excluded_sum\nPRINT RESULT",
+    "summary": "Calculate the total sum of all cells in the 9x9 multiplication table and subtract the value X for every valid cell coordinate (i, j) where the product i*j equals X."
+  },
+  "abc388_a": {
+    "pseudocode": "READ string S\nhead ← S[0]\nresult ← head + \"UPC\"\nPRINT result",
+    "summary": "Extract the first character via string indexing and concatenate it with a constant suffix."
+  },
+  "abc388_b": {
+    "pseudocode": "read N, D\nread N pairs (T_i, L_i) into snakes list\n\nfor k from 1 to D:\n    max_weight = 0\n    for each (T, L) in snakes:\n        weight = T * (L + k)\n        max_weight = max(max_weight, weight)\n    output max_weight",
+    "summary": "Brute-force iteration over all length increases k, computing T_i × (L_i + k) for each snake and tracking the maximum weight."
+  },
+  "abc388_c": {
+    "pseudocode": "Read integer N\nRead sorted array A of size N\nInitialize count = 0\n\nFor i from 0 to N-1:\n    threshold = 2 * A[i]\n    // Find first index j in range [i+1, N) such that A[j] >= threshold\n    j = LowerBound(A, threshold, start_index = i + 1)\n    \n    // All elements from index j to N-1 are valid bottom mochi\n    count += (N - j)\n\nPrint count",
+    "summary": "Iterate each element as the top mochi and use binary search on the sorted suffix to count valid bottom mochi satisfying the half-size condition."
+  },
+  "abc389_g": {
+    "pseudocode": "FUNCTION Solve(N, P):\n    // Precompute binomial coefficients and powers modulo P\n    PRECOMPUTE Combinations AND Powers UP TO N*N\n    \n    // DP state: dp[v][e][p] = Polynomial where coeff of x^m is #ways\n    // v: vertices placed in layers (excluding root)\n    // e: count of vertices at even distance (excluding root)\n    // p: parity of the last added layer (0=even, 1=odd)\n    INITIALIZE dp[N][N][2] AS Polynomials OF DEGREE N*(N-1)/2\n    \n    // Base case: Root is layer 0 (even), 0 vertices placed, 0 edges\n    dp[0][0][0][0] = 1 \n    \n    FOR v FROM 0 TO N-1:\n        FOR e FROM 0 TO N/2:\n            FOR p IN {0, 1}:\n                IF dp[v][e][p] IS EMPTY: CONTINUE\n                \n                // Try adding a new layer of size k\n                FOR k FROM 1 TO N - 1 - v:\n                    new_v = v + k\n                    new_p = 1 - p\n                    new_e = e + (k IF new_p == 0 ELSE 0)\n                    \n                    IF new_e > N/2: CONTINUE\n                    \n                    // Calculate polynomial for edges added by this layer\n                    // 1. Internal edges within new layer: any subset of k*(k-1)/2\n                    poly_internal = POLY_SUBSETS(k*(k-1)/2)\n                    \n                    // 2. Edges between previous layer (size prev_k) and new layer (size k)\n                    // Each of k nodes must connect to at least one of prev_k nodes\n                    // We need to track prev_k size, so add prev_k to DP state or iterate carefully\n                    // Simplified: Iterate prev_k in outer loop or store in state\n                    poly_connect = POLY_CONNECT(prev_k, k) \n                    \n                    layer_poly = CONVOLVE(poly_internal, poly_connect)\n                    \n                    // Update DP\n                    dp[new_v][new_e][new_p] += CONVOLVE(dp[v][e][p], layer_poly)\n    \n    // Sum results for full graph with balanced parity\n    // Root is even, so we need N/2 - 1 even vertices in layers, N/2 odd vertices\n    result_poly = dp[N-1][N/2 - 1][1] // Last layer must be odd to balance? \n    // Actually sum over last parity that satisfies total counts\n    \n    OUTPUT COEFFICIENTS OF result_poly FOR M FROM N-1 TO N*(N-1)/2\nEND FUNCTION",
+    "summary": "Dynamic programming over BFS layers with polynomial multiplication to count connected graphs with balanced distance parity."
+  },
+  "abc390_a": {
+    "pseudocode": "function solve(A):\n    target = sorted(A)\n    if A == target:\n        return \"No\"\n    \n    for i from 0 to length(A) - 2:\n        swap(A[i], A[i+1])\n        if A == target:\n            return \"Yes\"\n        swap(A[i], A[i+1])  // revert to original state\n    \n    return \"No\"",
+    "summary": "Check if the array is unsorted and becomes sorted after exactly one adjacent swap by brute-forcing all possible adjacent transpositions."
+  },
+  "abc390_b": {
+    "pseudocode": "READ N\nREAD sequence A of length N\nIF N <= 2 THEN\n    PRINT \"Yes\"\n    RETURN\nEND IF\nFOR i FROM 1 TO N-2 DO\n    // Check geometric property using cross-multiplication to avoid floats\n    IF A[i] * A[i] != A[i-1] * A[i+1] THEN\n        PRINT \"No\"\n        RETURN\n    END IF\nEND FOR\nPRINT \"Yes\"",
+    "summary": "Validate geometric progression by verifying A[i]^2 = A[i-1]*A[i+1] for all internal elements using integer arithmetic to avoid floating-point precision issues."
+  },
+  "abc391_a": {
+    "pseudocode": "Initialize dictionary MAP mapping each direction string to its opposite direction\nRead input string D\nRetrieve opposite_direction = MAP[D]\nPrint opposite_direction",
+    "summary": "Uses a precomputed hash map to perform constant-time lookup of the opposite direction."
+  },
+  "abc391_d": {
+    "pseudocode": "Function Solve():\n    Read N, W\n    Initialize Map block_pos mapping block_id to (x, y)\n    Initialize Array disappear_time of size N+1 to NULL\n    Read Queries list of (T, block_id)\n    \n    time = 0\n    max_T = maximum T in Queries\n    \n    While time <= max_T + buffer:\n        // 1. Check Row Clearing Condition\n        bottom_blocks = list of block_ids where block_pos[id].y == 1\n        If size(bottom_blocks) == W:\n            For id in bottom_blocks:\n                disappear_time[id] = time + 1\n                Remove id from block_pos\n        \n        // 2. Apply Gravity (Bottom-Up Processing)\n        occupied_cells = Set of all (x, y) in block_pos values\n        sorted_blocks = sort block_pos items by y coordinate descending\n        For each (id, (x, y)) in sorted_blocks:\n            If y > 1 and (x, y-1) not in occupied_cells:\n                block_pos[id] = (x, y-1)\n        \n        time += 1\n        \n        // 3. Early Termination Check\n        If all queries can be resolved using current disappear_time:\n            Break\n    \n    // 4. Answer Queries\n    For each (T, id) in Queries:\n        If disappear_time[id] is NULL or disappear_time[id] > T:\n            Print \"Yes\"\n        Else:\n            Print \"No\"",
+    "summary": "Simulate the grid dynamics step-by-step to track block removal times, then determine existence by comparing removal times against query timestamps."
+  },
+  "abc391_f": {
+    "pseudocode": "Function FindKthLargestValue(N, K, A, B, C):\n    Initialize MinHeap H\n    \n    For i from 0 to N-1:\n        For j from 0 to N-1:\n            For k from 0 to N-1:\n                value = A[i] * B[j] + B[j] * C[k] + C[k] * A[i]\n                \n                If H.size < K:\n                    H.push(value)\n                Else If value > H.min():\n                    H.replace_min(value)\n    \n    Return H.min()",
+    "summary": "Iterate all triplet combinations to compute values and maintain the K largest using a min-heap to identify the K-th largest."
+  },
+  "abc392_a": {
+    "pseudocode": "INPUT three integers A1, A2, A3\nIF (A1 * A2 == A3) OR (A1 * A3 == A2) OR (A2 * A3 == A1) THEN\n    PRINT \"Yes\"\nELSE\n    PRINT \"No\"\nEND IF",
+    "summary": "Check if any of the three integers equals the product of the other two integers."
+  },
+  "abc392_b": {
+    "pseudocode": "INPUT N, M, sequence A\npresent_set ← CREATE_HASH_SET(A)\nmissing_list ← EMPTY_LIST\nFOR i FROM 1 TO N DO\n    IF i NOT IN present_set THEN\n        APPEND i TO missing_list\n    END IF\nEND FOR\nOUTPUT LENGTH(missing_list)\nOUTPUT ELEMENTS(missing_list)",
+    "summary": "Store existing elements in a hash set for constant-time lookup, then iterate through the range [1, N] to collect missing values."
+  },
+  "abc392_f": {
+    "pseudocode": "Initialize empty array A\nFor i from 1 to N:\n    Insert value i at index (P[i] - 1) in A\nOutput all elements of A",
+    "summary": "Construct the final array by sequentially inserting each element i at its specified position P[i] using incremental list insertions."
+  },
+  "abc392_g": {
+    "pseudocode": "Store elements of S in a Hash Set for O(1) lookup\nInitialize count = 0\nFor each unique pair (a, b) from S where a < b:\n    Compute c = 2 * b - a\n    If c is present in Hash Set:\n        Increment count\nReturn count",
+    "summary": "Enumerate all pairs as the first two terms of an arithmetic progression and verify the third term's existence via hash set lookup."
+  },
+  "abc394_b": {
+    "pseudocode": "Store input strings in list S\nSort S by length ascending\nConcatenate elements of S into result string\nOutput result",
+    "summary": "Sort strings by length ascending and concatenate the sorted sequence."
+  },
+  "abc394_c": {
+    "pseudocode": "function solve(S):\n    target = \"WA\"\n    replacement = \"AC\"\n    \n    while target is substring of S:\n        idx = find_first_occurrence(S, target)\n        S = replace_substring(S, idx, target, replacement)\n        \n    return S",
+    "summary": "Repeatedly replace the leftmost occurrence of the substring 'WA' with 'AC' until no such substring exists."
+  },
+  "abc394_d": {
+    "pseudocode": "function is_colorful_bracket_sequence(S):\n    stack = empty stack\n    matching = {')': '(', ']': '[', '>': '<'}\n    \n    for char in S:\n        if char is opening bracket:\n            stack.push(char)\n        else:\n            if stack is empty or stack.top() != matching[char]:\n                return False\n            stack.pop()\n            \n    return stack is empty",
+    "summary": "Use a stack to validate bracket sequence well-formedness by ensuring every closing bracket matches the most recent opening bracket."
+  },
+  "abc395_c": {
+    "pseudocode": "Initialize last_seen_map as empty dictionary\nInitialize min_len to infinity\n\nFor each index i from 0 to N-1:\n    current_val = A[i]\n    If current_val exists in last_seen_map:\n        span = i - last_seen_map[current_val] + 1\n        min_len = min(min_len, span)\n    Update last_seen_map[current_val] = i\n\nIf min_len is infinity:\n    Return -1\nElse:\n    Return min_len",
+    "summary": "Track the most recent index of each value to find the minimum span between any two occurrences of the same element."
+  },
+  "abc396_a": {
+    "pseudocode": "Input N, sequence A\nfound ← False\nFor i from 0 to N - 3:\n    If A[i] == A[i+1] AND A[i+1] == A[i+2]:\n        found ← True\n        Break\nIf found:\n    Output \"Yes\"\nElse:\n    Output \"No\"",
+    "summary": "Linear scan checking for the existence of three consecutive identical elements."
+  },
+  "abc396_g": {
+    "pseudocode": "function solve():\n    read H, W\n    read grid A as H rows of W bits\n    \n    min_total_ones = infinity\n    \n    // Enumerate all possible subsets of columns to flip (2^W combinations)\n    for mask from 0 to (2^W - 1):\n        current_total_ones = 0\n        \n        // For each row, calculate the minimum 1s achievable given the column flips\n        for i from 0 to H - 1:\n            row_ones = 0\n            for j from 0 to W - 1:\n                val = A[i][j]\n                // If j-th bit of mask is set, the column is flipped\n                if (mask >> j) & 1:\n                    val = 1 - val\n                row_ones += val\n            \n            // Greedily decide whether to flip the row itself\n            // If 1s > 0s, flipping the row reduces the count of 1s\n            current_total_ones += min(row_ones, W - row_ones)\n        \n        min_total_ones = min(min_total_ones, current_total_ones)\n    \n    print min_total_ones",
+    "summary": "Exhaustively enumerate all $2^W$ column flip combinations and greedily minimize each row's contribution by flipping rows where 1s exceed 0s."
+  },
+  "abc397_a": {
+    "pseudocode": "Read temperature X\nIf X >= 38.0 then\n    Output 1\nElse If X >= 37.5 then\n    Output 2\nElse\n    Output 3\nEnd If",
+    "summary": "Categorize a numerical input using sequential conditional checks against defined thresholds."
+  },
+  "abc397_b": {
+    "pseudocode": "insertions = 0\nn = length(S)\n\nfor i from 0 to n-1:\n    expected = 'i' if (i+1) is odd else 'o'\n    if S[i] != expected:\n        insertions += 1\n\nif (n + insertions) is odd:\n    insertions += 1\n\nreturn insertions",
+    "summary": "Count position mismatches against the alternating i-o pattern and ensure final length is even."
+  },
+  "abc397_f": {
+    "pseudocode": "Function MaximizeThreePartDistinctSum(A, N):\n    // Precompute distinct counts for all prefixes\n    prefix_dist = Array of size N\n    seen = Empty Set\n    For i from 0 to N-1:\n        seen.Add(A[i])\n        prefix_dist[i] = seen.Size()\n\n    // Precompute distinct counts for all suffixes\n    suffix_dist = Array of size N\n    seen = Empty Set\n    For i from N-1 down to 0:\n        seen.Add(A[i])\n        suffix_dist[i] = seen.Size()\n\n    max_total = 0\n\n    // Iterate over all valid first split positions i\n    For i from 0 to N-3:\n        middle_seen = Empty Set\n        \n        // Iterate over all valid second split positions j > i\n        For j from i+1 to N-2:\n            // Incrementally update distinct count for middle subarray A[i+1...j]\n            middle_seen.Add(A[j])\n            middle_dist = middle_seen.Size()\n            \n            // Calculate total distinct count for the three partitions\n            current_total = prefix_dist[i] + middle_dist + suffix_dist[j+1]\n            max_total = Max(max_total, current_total)\n\n    Return max_total",
+    "summary": "Precompute prefix and suffix distinct counts, then iterate all split pairs while incrementally maintaining the middle segment's distinct count to maximize the total sum."
+  },
+  "abc398_a": {
+    "pseudocode": "function construct_palindrome_string(N):\n    initialize result array of length N with '-'\n    \n    if N is odd:\n        // Place single '=' at center for odd length\n        center = N // 2\n        result[center] = '='\n    else:\n        // Place two adjacent '=' at center for even length\n        left_center = N // 2 - 1\n        right_center = N // 2\n        result[left_center] = '='\n        result[right_center] = '='\n    \n    return join characters in result",
+    "summary": "Construct palindrome by placing '=' at center position(s) determined by N's parity, filling remaining positions with '-'."
+  },
+  "abc399_a": {
+    "pseudocode": "INPUT N, S, T\ncount ← 0\nFOR i FROM 0 TO N-1 DO\n    IF S[i] ≠ T[i] THEN\n        count ← count + 1\n    END IF\nEND FOR\nOUTPUT count",
+    "summary": "Compute Hamming distance by linearly scanning both strings and counting index-wise character mismatches."
+  },
+  "abc399_c": {
+    "pseudocode": "function solve():\n    read N, M\n    dsu = new UnionFind(N)\n    for i from 1 to M:\n        read u, v\n        dsu.union(u, v)\n    k = dsu.get_component_count()\n    // Property: A forest with N vertices and k components has exactly N - k edges\n    max_forest_edges = N - k\n    edges_to_remove = M - max_forest_edges\n    print edges_to_remove",
+    "summary": "Use Union-Find to count connected components and compute excess edges as total edges minus the maximum edges allowed in a forest (N - components)."
+  },
+  "abc399_d": {
+    "pseudocode": "FUNCTION solve_test_case():\n    INPUT N\n    INPUT Array A of size 2N\n    \n    // Map each value to its two positions\n    positions = Map<value, List<index>>\n    FOR i FROM 0 TO 2N-1:\n        positions[A[i]].APPEND(i)\n    \n    valid_pairs_count = 0\n    \n    // Iterate over all unique pairs of couples (a, b)\n    FOR a FROM 1 TO N:\n        FOR b FROM a+1 TO N:\n            pos_a = positions[a]\n            pos_b = positions[b]\n            \n            // Condition 1 & 2: Neither couple is originally adjacent\n            IF is_adjacent(pos_a[0], pos_a[1]) OR is_adjacent(pos_b[0], pos_b[1]):\n                CONTINUE\n            \n            // Condition 3: Can form two adjacent pairs by swapping\n            // Combine all 4 positions and sort them\n            combined_positions = SORT([pos_a[0], pos_a[1], pos_b[0], pos_b[1]])\n            p1, p2, p3, p4 = combined_positions\n            \n            // Check if the 4 positions form two disjoint adjacent blocks\n            // i.e., (p1, p2) are adjacent AND (p3, p4) are adjacent\n            IF (p2 == p1 + 1) AND (p4 == p3 + 1):\n                valid_pairs_count += 1\n                \n    RETURN valid_pairs_count\n\nFUNCTION is_adjacent(i, j):\n    RETURN ABS(i - j) == 1\n\nMAIN:\n    INPUT T\n    FOR each test case:\n        PRINT solve_test_case()",
+    "summary": "Count pairs of couples that are initially non-adjacent but whose combined four positions form two disjoint adjacent index blocks."
+  },
+  "abc399_f": {
+    "pseudocode": "MOD = 998244353\nInput N, K, Sequence A\ntotal_sum = 0\nFor l from 0 to N-1:\n    current_subarray_sum = 0\n    For r from l to N-1:\n        current_subarray_sum = (current_subarray_sum + A[r]) % MOD\n        term = power(current_subarray_sum, K) % MOD\n        total_sum = (total_sum + term) % MOD\nOutput total_sum",
+    "summary": ""
+  },
+  "abc400_g": {
+    "pseudocode": "function solve_test_case():\n    read N, K\n    cakes = array of N tuples (X, Y, Z)\n    \n    // Generate all possible pairs with their prices\n    pairs = empty list\n    for i from 0 to N-1:\n        for j from i+1 to N-1:\n            price = max(cakes[i].X + cakes[j].X, \n                       cakes[i].Y + cakes[j].Y, \n                       cakes[i].Z + cakes[j].Z)\n            pairs.append((price, i, j))\n    \n    // Sort pairs by price in descending order\n    sort pairs by price descending\n    \n    // Greedy selection of K non-overlapping pairs\n    used = boolean array of size N, initialized to false\n    total_price = 0\n    pairs_selected = 0\n    \n    for each (price, i, j) in pairs:\n        if not used[i] and not used[j]:\n            used[i] = true\n            used[j] = true\n            total_price += price\n            pairs_selected += 1\n            if pairs_selected == K:\n                break\n    \n    return total_price\n\n// Main driver\nread T\nfor each test case from 1 to T:\n    print solve_test_case()",
+    "summary": "Generate all cake pairs with their max-attribute-sum prices, sort descending, and greedily select K non-overlapping pairs."
+  },
+  "arc192_a": {
+    "pseudocode": "FUNCTION Solve():\n    READ N\n    READ A (array of length N)\n    \n    // Check trivial success case\n    IF ALL elements in A ARE 1 THEN\n        PRINT \"Yes\"\n        RETURN\n    END IF\n    \n    // Check specific impossible case\n    IF N == 3 AND ALL elements in A ARE 0 THEN\n        PRINT \"No\"\n    ELSE\n        PRINT \"Yes\"\n    END IF\nEND FUNCTION",
+    "summary": "Checks if the binary array is already all ones or avoids the specific impossible configuration of length 3 with all zeros."
+  },
+  "arc194_e": {
+    "pseudocode": "Function Solve():\n    Input N, X, Y\n    Input String S\n    Input String T\n    \n    // Calculate character frequencies for source string S\n    count_S_0 <- Count occurrences of '0' in S\n    count_S_1 <- Count occurrences of '1' in S\n    \n    // Calculate character frequencies for target string T\n    count_T_0 <- Count occurrences of '0' in T\n    count_T_1 <- Count occurrences of '1' in T\n    \n    // Check invariant: operations preserve the total count of 0s and 1s\n    If count_S_0 == count_T_0 AND count_S_1 == count_T_1:\n        Output \"Yes\"\n    Else:\n        Output \"No\"",
+    "summary": "Determine reachability by verifying the invariant that the source and target strings must have identical counts of '0's and '1's since operations preserve character frequencies."
+  },
+  "arc195_b": {
+    "pseudocode": "function solve(N, A, B):\n    fixed_sums = [A[i] + B[i] for i in 0..N-1 if A[i] != -1 and B[i] != -1]\n    \n    if fixed_sums is not empty:\n        target = fixed_sums[0]\n        if any(s != target for s in fixed_sums):\n            return \"No\"\n    else:\n        target = 0\n        for i in 0..N-1:\n            if A[i] == -1 and B[i] != -1:\n                target = max(target, B[i])\n            else if A[i] != -1 and B[i] == -1:\n                target = max(target, A[i])\n    \n    for i in 0..N-1:\n        if A[i] != -1 and B[i] != -1 and A[i] + B[i] != target:\n            return \"No\"\n        if A[i] == -1 and B[i] != -1 and target < B[i]:\n            return \"No\"\n        if A[i] != -1 and B[i] == -1 and target < A[i]:\n            return \"No\"\n            \n    return \"Yes\"",
+    "summary": "Determine a consistent target sum from fully known pairs or lower-bound constraints, then verify all pairs can satisfy this sum with non-negative fillers."
+  }
+}
