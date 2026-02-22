@@ -142,6 +142,9 @@ MODEL_REGISTRY: dict[Provider, ProviderMeta] = {
             "qwen/qwen3-coder-next": ModelMeta(
                 "qwen/qwen3-coder-next",
             ),
+            "qwen/qwen3.5-397b-a17b": ModelMeta(
+                "qwen/qwen3.5-397b-a17b",
+            ),
         },
     ),
     Provider.ANTHROPIC: ProviderMeta(

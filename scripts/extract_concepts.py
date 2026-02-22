@@ -30,6 +30,8 @@ import logging
 import sys
 from pathlib import Path
 
+import orjson
+
 # Ensure project src is importable
 _REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(_REPO_ROOT / "src"))
@@ -72,8 +74,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument(
         "--model",
         type=str,
-        default="qwen/qwen3-coder-30b-a3b-instruct",
-        help="LLM model for extraction (default: qwen/qwen3-coder-30b-a3b-instruct)",
+        default="qwen/qwen3.5-397b-a17b",
+        help="LLM model for extraction (default: qwen/qwen3.5-397b-a17b)",
     )
     p.add_argument(
         "--output",
@@ -195,6 +197,19 @@ async def main() -> None:
     if not pseudocode_map:
         logger.error("No Stage 1 results. Exiting.")
         sys.exit(1)
+
+    # Save Stage 1 output as initial_analysis.json (matches ARC pipeline)
+    analysis = {
+        uid: {
+            "pseudocode": pseudocode_map[uid],
+            "summary": summary_map.get(uid, ""),
+        }
+        for uid in sorted(pseudocode_map.keys())
+    }
+    analysis_path = output_path.parent / "initial_analysis.json"
+    analysis_path.parent.mkdir(parents=True, exist_ok=True)
+    analysis_path.write_bytes(orjson.dumps(analysis, option=orjson.OPT_INDENT_2))
+    logger.info(f"Stage 1 output saved to {analysis_path}")
 
     # ---------------------------------------------------------------
     # Stage 2: Pseudocode → Concepts  (batched, with concept repo)
