@@ -118,4 +118,17 @@ def to_primitive(value: Any) -> Any:
         return [to_primitive(v) for v in value]
     if isinstance(value, tuple):
         return [to_primitive(v) for v in value]
+    # Handle non-native numeric types (e.g. sympy.Integer, numpy int64)
+    if isinstance(value, (str, int, float, bool, type(None))):
+        return value
+    if hasattr(value, "__int__"):
+        try:
+            return int(value)
+        except (TypeError, ValueError):
+            pass
+    if hasattr(value, "__float__"):
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            pass
     return value
