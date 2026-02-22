@@ -121,7 +121,7 @@ class MathPsExecutionEvaluator:
             # Attempt integer comparison
             try:
                 is_correct = int(output) == int(expected)
-            except (TypeError, ValueError):
+            except (TypeError, ValueError, OverflowError):
                 is_correct = str(output).strip() == str(expected).strip()
 
             records.append(EvalRecord(
