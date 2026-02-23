@@ -1,0 +1,8 @@
+_base_: concept_lcb_eval.yaml
+run:
+  run_type: concept_lcb_opt2_cues
+components:
+  memory_retriever:
+    domain: code
+    prompt_info_file: data/livecodebench_v56/concept_memory/selection_v2/prompt_info.json
+    render_mode: cues_only

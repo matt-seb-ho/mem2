@@ -1,0 +1,10 @@
+_base_: concept_lcb_eval.yaml
+run:
+  run_type: concept_lcb_opt1_filtered
+components:
+  memory_retriever:
+    domain: code
+    prompt_info_file: data/livecodebench_v56/concept_memory/selection_v2/prompt_info.json
+    max_frequency: 0.3
+    max_concepts_per_problem: 3
+    concept_frequency_file: data/livecodebench_v56/concept_memory/selection_v2/concept_frequencies.json
