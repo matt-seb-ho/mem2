@@ -5,6 +5,7 @@ from mem2.core.entities import AttemptRecord, MemoryState, ProblemSpec, Retrieva
 
 class NoneMemoryRetriever:
     name = "none"
+    COMPATIBLE_SCHEMAS = {"none", "arcmemo_oe", "arcmemo_ps"}
 
     def retrieve(
         self,

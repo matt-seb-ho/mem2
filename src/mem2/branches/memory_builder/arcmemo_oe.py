@@ -16,6 +16,7 @@ from mem2.core.entities import (
 
 class ArcMemoOeMemoryBuilder:
     name = "arcmemo_oe"
+    SCHEMA_NAME = "arcmemo_oe"
 
     def __init__(
         self,
@@ -141,26 +142,6 @@ class ArcMemoOeMemoryBuilder:
                 "seeded_entry_count": len(seed_entries),
             },
         )
-
-    def reflect(
-        self,
-        ctx: RunContext,
-        problem: ProblemSpec,
-        attempts: list[AttemptRecord],
-        feedback: list[FeedbackRecord],
-    ) -> list[dict]:
-        items = []
-        for idx, att in enumerate(attempts):
-            fb_txt = feedback[idx].content if idx < len(feedback) else ""
-            items.append(
-                {
-                    "problem_uid": problem.uid,
-                    "attempt_idx": idx,
-                    "attempt_preview": att.completion[:200],
-                    "feedback": fb_txt[:200],
-                }
-            )
-        return items
 
     def update(
         self,

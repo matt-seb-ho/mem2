@@ -32,6 +32,7 @@ class ArcMemoPsMemoryBuilder:
     """
 
     name = "arcmemo_ps"
+    SCHEMA_NAME = "arcmemo_ps"
 
     def __init__(
         self,
@@ -89,26 +90,6 @@ class ArcMemoPsMemoryBuilder:
                 "solution_count": len(concept_mem.solutions),
             },
         )
-
-    def reflect(
-        self,
-        ctx: RunContext,
-        problem: ProblemSpec,
-        attempts: list[AttemptRecord],
-        feedback: list[FeedbackRecord],
-    ) -> list[dict]:
-        items = []
-        for idx, att in enumerate(attempts):
-            fb_txt = feedback[idx].content if idx < len(feedback) else ""
-            items.append(
-                {
-                    "problem_uid": problem.uid,
-                    "attempt_idx": idx,
-                    "attempt_preview": att.completion[:200],
-                    "feedback": fb_txt[:200],
-                }
-            )
-        return items
 
     def update(
         self,

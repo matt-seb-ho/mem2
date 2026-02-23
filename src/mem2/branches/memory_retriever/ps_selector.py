@@ -5,6 +5,8 @@ Supports two modes:
    by the offline ``scripts/select_concepts.py`` pipeline.
 2. **Inline LLM (legacy)**: Per-problem LLM selection at runtime. Kept for
    backward compat but not recommended — offline selection is more debuggable.
+
+Internal pipeline: select → filter → route → render
 """
 from __future__ import annotations
 
@@ -32,6 +34,21 @@ logger = logging.getLogger(__name__)
 
 _YAML_BLOCK_RE = re.compile(r"```yaml\s*(.*?)```", flags=re.DOTALL | re.IGNORECASE)
 
+_RENDER_PROFILES = {
+    "full": dict(
+        skip_cues=False, skip_implementation=False, skip_parameters=False,
+        skip_parameter_description=True, include_description=True,
+    ),
+    "cues_only": dict(
+        skip_cues=False, skip_implementation=True, skip_parameters=True,
+        skip_parameter_description=True, include_description=True,
+    ),
+    "name_only": dict(
+        skip_cues=True, skip_implementation=True, skip_parameters=True,
+        skip_parameter_description=True, include_description=True,
+    ),
+}
+
 
 class PsSelectorRetriever:
     """PS (Program Synthesis) concept selection retriever.
@@ -41,9 +58,12 @@ class PsSelectorRetriever:
 
     When ``prompt_info_file`` is not set, falls back to inline LLM selection
     (legacy behavior).
+
+    Internal pipeline: select → filter → route → render
     """
 
     name = "ps_selector"
+    COMPATIBLE_SCHEMAS = {"arcmemo_ps"}
 
     def __init__(
         self,
@@ -54,6 +74,12 @@ class PsSelectorRetriever:
         selector_gen_cfg: dict[str, Any] | None = None,
         hint_template_key: str = "op3",
         prompt_info_file: str = "",
+        render_mode: str = "full",
+        max_frequency: float = 0.0,
+        max_concepts_per_problem: int = 0,
+        routing_strategy: str = "none",
+        routing_max_hint_chars: int = 0,
+        concept_frequency_file: str = "",
         **kwargs,
     ):
         self.top_k = int(top_k)
@@ -64,6 +90,11 @@ class PsSelectorRetriever:
             selector_gen_cfg or {"n": 1, "temperature": 0.0, "max_tokens": 1024}
         )
         self.hint_template_key = hint_template_key
+        self.render_mode = render_mode
+        self.max_frequency = float(max_frequency)
+        self.max_concepts_per_problem = int(max_concepts_per_problem)
+        self.routing_strategy = routing_strategy
+        self.routing_max_hint_chars = int(routing_max_hint_chars)
 
         # Precomputed hints
         self._prompt_info: dict[str, dict] | None = None
@@ -79,6 +110,18 @@ class PsSelectorRetriever:
                 )
             else:
                 logger.warning(f"prompt_info_file not found: {path}")
+
+        # Concept frequencies
+        self._concept_frequencies: dict[str, float] = {}
+        if concept_frequency_file:
+            path = Path(concept_frequency_file)
+            if not path.is_absolute():
+                path = Path.cwd() / path
+            if path.exists():
+                self._concept_frequencies = json.loads(path.read_text())
+                logger.info(
+                    f"Loaded concept frequencies for {len(self._concept_frequencies)} concepts"
+                )
 
     # ------------------------------------------------------------------ #
     #  Helpers                                                             #
@@ -108,6 +151,58 @@ class PsSelectorRetriever:
             section_headers={k: f"## {k}" for k in kinds},
         )
 
+    # ------------------------------------------------------------------ #
+    #  Internal pipeline: select → filter → route → render                 #
+    # ------------------------------------------------------------------ #
+    def _select_concepts(
+        self, concept_mem: ConceptMemory, problem: ProblemSpec
+    ) -> list[str] | None:
+        """Return selected concept names, or None for 'all concepts'."""
+        # In sync mode without LLM, return None (all concepts)
+        return None
+
+    def _filter_concepts(self, selected_names: list[str]) -> list[str]:
+        """Apply frequency filter and max cap."""
+        filtered = selected_names
+        if self.max_frequency > 0.0 and self._concept_frequencies:
+            filtered = [
+                n for n in filtered
+                if self._concept_frequencies.get(n, 0.0) <= self.max_frequency
+            ]
+        if self.max_concepts_per_problem > 0:
+            filtered = filtered[:self.max_concepts_per_problem]
+        return filtered
+
+    def _should_include_hints(
+        self, selected_names: list[str] | None, hint_text: str | None
+    ) -> bool:
+        """Routing gate: decide whether to include hints for this problem."""
+        if self.routing_strategy == "none":
+            return True
+
+        if self.routing_strategy == "selection_confidence":
+            if not selected_names or not self._concept_frequencies:
+                return True
+            # Skip hints if all selected concepts are high-frequency (generic)
+            if self.max_frequency > 0.0:
+                threshold = self.max_frequency
+            else:
+                threshold = 0.5
+            all_generic = all(
+                self._concept_frequencies.get(n, 0.0) > threshold
+                for n in selected_names
+            )
+            return not all_generic
+
+        if self.routing_strategy == "hint_length":
+            if not hint_text:
+                return True
+            if self.routing_max_hint_chars > 0 and len(hint_text) > self.routing_max_hint_chars:
+                return False
+            return True
+
+        return True
+
     def _render_hint_text(
         self, concept_mem: ConceptMemory, selected_names: list[str] | None
     ) -> str:
@@ -117,15 +212,29 @@ class PsSelectorRetriever:
         template at prompt-build time — matching arc_memo's pattern.
         """
         profile = self._build_profile(concept_mem)
+        render_flags = _RENDER_PROFILES.get(self.render_mode, _RENDER_PROFILES["full"])
+
         if selected_names:
             return concept_mem.to_string(
                 concept_names=selected_names,
-                skip_parameter_description=False,
+                skip_parameter_description=render_flags["skip_parameter_description"],
+                skip_cues=render_flags["skip_cues"],
+                skip_implementation=render_flags["skip_implementation"],
+                skip_parameters=render_flags["skip_parameters"],
+                include_description=render_flags["include_description"],
                 usage_threshold=0,
                 show_other_concepts=True,
                 profile=profile,
             )
-        return concept_mem.to_string(usage_threshold=0, profile=profile)
+        return concept_mem.to_string(
+            skip_parameter_description=render_flags["skip_parameter_description"],
+            skip_cues=render_flags["skip_cues"],
+            skip_implementation=render_flags["skip_implementation"],
+            skip_parameters=render_flags["skip_parameters"],
+            include_description=render_flags["include_description"],
+            usage_threshold=0,
+            profile=profile,
+        )
 
     def _parse_concept_selection(
         self, completion: str, valid_names: set[str]
@@ -181,6 +290,56 @@ class PsSelectorRetriever:
         )
 
     # ------------------------------------------------------------------ #
+    #  Shared pipeline: filter → route → render                            #
+    # ------------------------------------------------------------------ #
+    def _apply_pipeline(
+        self,
+        *,
+        concept_mem: ConceptMemory,
+        selected_names: list[str] | None,
+        problem: ProblemSpec,
+        selector_mode: str,
+        extra_metadata: dict[str, Any] | None = None,
+    ) -> RetrievalBundle:
+        """Apply filter → route → render after selection."""
+        # Filter
+        if selected_names is not None:
+            filtered = self._filter_concepts(selected_names)
+        else:
+            filtered = None
+
+        # Render
+        hint_text = self._render_hint_text(concept_mem, filtered)
+
+        # Route
+        if not self._should_include_hints(filtered, hint_text):
+            hint_text = None
+
+        metadata: dict[str, Any] = {
+            "selector_mode": selector_mode,
+            "concept_count": len(concept_mem.concepts),
+            "render_mode": self.render_mode,
+        }
+        if filtered is not None:
+            metadata["selected_count"] = len(filtered)
+            metadata["selected_names"] = filtered
+        if extra_metadata:
+            metadata.update(extra_metadata)
+
+        retrieved_items = (
+            [{"concept": n} for n in filtered]
+            if filtered is not None
+            else [{"concept": n} for n in concept_mem.concepts]
+        )
+
+        return RetrievalBundle(
+            problem_uid=problem.uid,
+            hint_text=hint_text,
+            retrieved_items=retrieved_items,
+            metadata=metadata,
+        )
+
+    # ------------------------------------------------------------------ #
     #  Public API                                                          #
     # ------------------------------------------------------------------ #
     def retrieve(
@@ -194,12 +353,21 @@ class PsSelectorRetriever:
         if self._prompt_info is not None:
             return self._retrieve_precomputed(problem)
 
-        # Legacy fallback: no hints
-        return RetrievalBundle(
-            problem_uid=problem.uid,
-            hint_text=None,
-            retrieved_items=[],
-            metadata={"selector_mode": "sync_no_hints"},
+        # Reconstruct ConceptMemory from payload
+        concept_mem = self._reconstruct_memory(memory)
+        if not concept_mem.concepts:
+            return RetrievalBundle(
+                problem_uid=problem.uid,
+                hint_text=None,
+                retrieved_items=[],
+                metadata={"selector_mode": "empty", "concept_count": 0},
+            )
+
+        return self._apply_pipeline(
+            concept_mem=concept_mem,
+            selected_names=None,
+            problem=problem,
+            selector_mode="all_concepts",
         )
 
     async def async_retrieve(
@@ -228,15 +396,11 @@ class PsSelectorRetriever:
             )
 
         if not self.use_llm_selector:
-            hint_text = self._render_hint_text(concept_mem, None)
-            return RetrievalBundle(
-                problem_uid=problem.uid,
-                hint_text=hint_text,
-                retrieved_items=[{"concept": n} for n in concept_mem.concepts],
-                metadata={
-                    "selector_mode": "all_concepts",
-                    "concept_count": len(concept_mem.concepts),
-                },
+            return self._apply_pipeline(
+                concept_mem=concept_mem,
+                selected_names=None,
+                problem=problem,
+                selector_mode="all_concepts",
             )
 
         profile = self._build_profile(concept_mem)
@@ -295,14 +459,9 @@ class PsSelectorRetriever:
                 },
             )
 
-        hint_text = self._render_hint_text(concept_mem, selected_names)
-        return RetrievalBundle(
-            problem_uid=problem.uid,
-            hint_text=hint_text,
-            retrieved_items=[{"concept": n} for n in selected_names],
-            metadata={
-                "selector_mode": "llm_selected",
-                "selected_count": len(selected_names),
-                "selected_names": selected_names,
-            },
+        return self._apply_pipeline(
+            concept_mem=concept_mem,
+            selected_names=selected_names,
+            problem=problem,
+            selector_mode="llm_selected",
         )

@@ -36,14 +36,6 @@ class MemoryBuilder(Protocol):
 
     def initialize(self, ctx: RunContext, problems: dict[str, ProblemSpec]) -> MemoryState: ...
 
-    def reflect(
-        self,
-        ctx: RunContext,
-        problem: ProblemSpec,
-        attempts: list[AttemptRecord],
-        feedback: list[FeedbackRecord],
-    ) -> list[dict[str, Any]]: ...
-
     def update(
         self,
         ctx: RunContext,

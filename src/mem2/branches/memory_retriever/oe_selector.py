@@ -160,6 +160,7 @@ class OeSelectorRetriever:
     """
 
     name = "oe_selector"
+    COMPATIBLE_SCHEMAS = {"arcmemo_oe", "none"}
 
     def __init__(
         self,

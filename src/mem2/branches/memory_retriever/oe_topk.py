@@ -5,6 +5,7 @@ from mem2.core.entities import AttemptRecord, MemoryState, ProblemSpec, Retrieva
 
 class OeTopKRetriever:
     name = "oe_topk"
+    COMPATIBLE_SCHEMAS = {"arcmemo_oe", "none"}
 
     def __init__(self, top_k: int = 2):
         self.top_k = int(top_k)

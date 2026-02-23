@@ -47,6 +47,18 @@ class PipelineComponents:
 
 
 
+def _validate_memory_pairing(builder, retriever) -> None:
+    builder_schema = getattr(builder, "SCHEMA_NAME", None)
+    retriever_schemas = getattr(retriever, "COMPATIBLE_SCHEMAS", None)
+    if builder_schema is None or retriever_schemas is None:
+        return  # backward-compatible
+    if builder_schema not in retriever_schemas:
+        raise ConfigurationError(
+            f"Memory builder '{builder.name}' produces schema '{builder_schema}', "
+            f"but retriever '{retriever.name}' only supports {retriever_schemas}."
+        )
+
+
 def _build_component(registry: dict[str, Any], key: str, cfg: dict[str, Any]) -> Any:
     if key not in registry:
         known = ", ".join(sorted(registry.keys()))
@@ -64,11 +76,15 @@ def resolve_components(config: dict[str, Any]) -> PipelineComponents:
     pipe = config.get("pipeline", {})
     comp_cfg = config.get("components", {})
 
+    memory_builder = _build_component(MEMORY_BUILDERS, pipe["memory_builder"], comp_cfg.get("memory_builder", {}))
+    memory_retriever = _build_component(MEMORY_RETRIEVERS, pipe["memory_retriever"], comp_cfg.get("memory_retriever", {}))
+    _validate_memory_pairing(memory_builder, memory_retriever)
+
     return PipelineComponents(
         task_adapter=_build_component(TASK_ADAPTERS, pipe["task_adapter"], comp_cfg.get("task_adapter", {})),
         benchmark=_build_component(BENCHMARKS, pipe["benchmark"], comp_cfg.get("benchmark", {})),
-        memory_builder=_build_component(MEMORY_BUILDERS, pipe["memory_builder"], comp_cfg.get("memory_builder", {})),
-        memory_retriever=_build_component(MEMORY_RETRIEVERS, pipe["memory_retriever"], comp_cfg.get("memory_retriever", {})),
+        memory_builder=memory_builder,
+        memory_retriever=memory_retriever,
         trajectory_policy=_build_component(TRAJECTORY_POLICIES, pipe["trajectory_policy"], comp_cfg.get("trajectory_policy", {})),
         provider=_build_component(PROVIDERS, pipe["provider"], comp_cfg.get("provider", {})),
         inference_engine=_build_component(INFERENCE_ENGINES, pipe["inference_engine"], comp_cfg.get("inference_engine", {})),
