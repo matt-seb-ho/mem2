@@ -181,6 +181,12 @@ returns all concepts (not recommended — causes -9% to -15% degradation).
 | `selector_gen_cfg` | null | Gen config for selector. Default: `{n:1, temperature:0.0, max_tokens:1024}`. Use `max_tokens: 16384`+ for thinking models. |
 | `hint_template_key` | "op3" | Hint template variant (legacy inline mode). |
 | `top_k` | 10 | Max concepts in inline LLM mode. |
+| `render_mode` | "full" | Hint rendering verbosity: `full` (cues + impl + params), `cues_only` (cues, no impl/params), `name_only` (names + descriptions only). |
+| `max_frequency` | 0.0 | Drop concepts selected in more than this fraction of problems. 0 = disabled. Requires `concept_frequency_file`. |
+| `max_concepts_per_problem` | 0 | Cap the number of selected concepts per problem. 0 = no limit. |
+| `routing_strategy` | "none" | Per-problem routing gate: `none` (always include hints), `selection_confidence` (skip if all selected concepts are high-frequency), `hint_length` (skip if hint exceeds `routing_max_hint_chars`). |
+| `routing_max_hint_chars` | 0 | Max hint chars for `hint_length` routing strategy. 0 = disabled. |
+| `concept_frequency_file` | "" | Path to JSON mapping concept names to selection fractions. Produced by `scripts/compute_concept_frequencies.py`. |
 
 **Prompt templates by domain** (in `src/mem2/concepts/prompts/`):
 
@@ -240,6 +246,7 @@ different lessons based on what went wrong.
 | `arcmemo_oe` | `oe_selector` | ARC with lesson bank + LLM selection |
 | `arcmemo_ps` | `ps_selector` | Any domain with offline concept extraction |
 
-Mismatched combinations (e.g., `arcmemo_ps` + `oe_topk`) will not crash
-but will produce empty or nonsensical retrievals because the memory payload
-schemas are different.
+Mismatched combinations (e.g., `arcmemo_ps` + `oe_topk`) are now caught
+at startup via schema validation. Builders declare `SCHEMA_NAME` and
+retrievers declare `COMPATIBLE_SCHEMAS`; `wiring.py` raises
+`ConfigurationError` for incompatible pairs.

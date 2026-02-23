@@ -112,6 +112,12 @@ components:
   #   selector_gen_cfg: null           # e.g. {n: 1, temperature: 0.0, max_tokens: 16384}
   #   hint_template_key: op3
   #   top_k: 10                        # max concepts in inline mode
+  #   render_mode: full                # Options: full, cues_only, name_only
+  #   max_frequency: 0.0              # drop concepts above this selection freq (0=disabled)
+  #   max_concepts_per_problem: 0     # cap selected concepts (0=no limit)
+  #   routing_strategy: none          # Options: none, selection_confidence, hint_length
+  #   routing_max_hint_chars: 0       # max hint chars for hint_length router (0=disabled)
+  #   concept_frequency_file: ''      # JSON: {concept_name: fraction}
 
   # oe_selector:
   # memory_retriever:
