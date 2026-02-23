@@ -1,0 +1,672 @@
+{
+  "3502": [
+    "Sliding Window",
+    "Frequency Map",
+    "Complementary Counting",
+    "Conditional Summation",
+    "Index Boundary Check"
+  ],
+  "3566": [
+    "Linear Scan",
+    "String Concatenation",
+    "Circular Indexing",
+    "String Index Access"
+  ],
+  "3588": [
+    "Dynamic Programming Running State",
+    "Modular Exponentiation",
+    "Linear Scan",
+    "Index Boundary Check",
+    "Conditional Summation",
+    "Direct Value Mapping"
+  ],
+  "3591": [
+    "Linear Scan",
+    "Circular Indexing",
+    "Direct Value Mapping",
+    "Prefix Dynamic Programming",
+    "Dynamic Programming Running State",
+    "Conditional Summation"
+  ],
+  "3604": [
+    "Prefix Dynamic Programming",
+    "Modular Exponentiation",
+    "Linear Scan",
+    "Combinatorial Precomputation"
+  ],
+  "3607": [
+    "Prefix Dynamic Programming",
+    "Dynamic Programming Running State",
+    "Linear Scan",
+    "Running Minimum",
+    "Index Boundary Check",
+    "Constraint Consistency Check",
+    "Combinatorial Precomputation"
+  ],
+  "3608": [
+    "Modular Exponentiation",
+    "Combinatorial Precomputation",
+    "Frequency Map",
+    "Complementary Counting",
+    "Brute Force Enumeration",
+    "Conditional Summation",
+    "Index Boundary Check"
+  ],
+  "3616": [
+    "Brute Force Enumeration",
+    "Linear Scan",
+    "Index Grouping by Value",
+    "Sliding Window",
+    "Index Boundary Check"
+  ],
+  "3621": [
+    "Linear Scan",
+    "Set Data Structure",
+    "Running Minimum",
+    "Sorting",
+    "Threshold Classification"
+  ],
+  "3631": [
+    "Combinatorial Precomputation",
+    "Linear Scan",
+    "Conditional Summation",
+    "Modular Exponentiation",
+    "Dynamic Programming Running State"
+  ],
+  "3632": [
+    "Linear Scan",
+    "Running Maximum",
+    "Fixed Offset Comparison",
+    "Index Boundary Check"
+  ],
+  "3636": [
+    "Linear Scan",
+    "Parity Check",
+    "Conditional Summation",
+    "String Index Access",
+    "Yes/No Output Pattern"
+  ],
+  "3638": [
+    "Frequency Map",
+    "Prefix Dynamic Programming",
+    "Brute Force Enumeration",
+    "Running Minimum",
+    "Conditional Summation",
+    "Linear Scan"
+  ],
+  "3646": [
+    "Dynamic Programming Running State",
+    "Hash Map",
+    "Linear Scan",
+    "Index Boundary Check"
+  ],
+  "3647": [
+    "Binary Search",
+    "Greedy Disjoint Selection",
+    "Sorting",
+    "Linear Scan",
+    "Hash Map",
+    "Index Boundary Check"
+  ],
+  "3648": [
+    "Grid Graph Modeling",
+    "Prefix Dynamic Programming",
+    "Dynamic Programming Running State",
+    "Index Boundary Check",
+    "Running Maximum",
+    "Conditional Summation",
+    "Linear Scan"
+  ],
+  "3653": [
+    "Linear Scan",
+    "Running Minimum",
+    "Running Maximum",
+    "Dynamic Programming Running State",
+    "Index Boundary Check"
+  ],
+  "3654": [
+    "Prefix Dynamic Programming",
+    "Sorting",
+    "Index Boundary Check",
+    "Running Minimum",
+    "Conditional Summation",
+    "Linear Scan"
+  ],
+  "3656": [
+    "Brute Force Enumeration",
+    "Frequency Map",
+    "Set Data Structure",
+    "Linear Scan",
+    "Index Boundary Check"
+  ],
+  "3680": [
+    "Union-Find",
+    "Hash Map",
+    "Linear Scan",
+    "Index Boundary Check",
+    "Brute Force Enumeration",
+    "Conditional Summation"
+  ],
+  "3684": [
+    "Brute Force Enumeration",
+    "Linear Scan",
+    "String Index Access",
+    "Index Boundary Check",
+    "String Suffix Check",
+    "Yes/No Output Pattern"
+  ],
+  "3699": [
+    "Frequency Map",
+    "Brute Force Enumeration",
+    "Index Boundary Check",
+    "Conditional Summation",
+    "Multiplicative Relationship Check",
+    "Linear Scan"
+  ],
+  "3705": [
+    "Sliding Window",
+    "Frequency Map",
+    "Set Data Structure",
+    "Running Maximum",
+    "Brute Force Enumeration"
+  ],
+  "3709": [
+    "Contiguous Block Extraction",
+    "Linear Scan",
+    "Index Boundary Check",
+    "Yes/No Output Pattern",
+    "Brute Force Enumeration",
+    "String Index Access",
+    "Sliding Window"
+  ],
+  "3714": [
+    "Sorting",
+    "Combinatorial Precomputation",
+    "Modular Exponentiation",
+    "Position-Weighted Contribution",
+    "Linear Scan"
+  ],
+  "3715": [
+    "Sorting",
+    "Binary Search",
+    "Sliding Window",
+    "Running Maximum",
+    "Prefix Dynamic Programming",
+    "Index Boundary Check"
+  ],
+  "3731": [
+    "Linear Scan",
+    "Brute Force Enumeration",
+    "Index Boundary Check"
+  ],
+  "3736": [
+    "Frequency Map",
+    "Linear Scan",
+    "Fixed Offset Comparison",
+    "String Index Access",
+    "String Concatenation",
+    "Index Boundary Check"
+  ],
+  "3743": [
+    "Sliding Window",
+    "Linear Scan",
+    "Running Maximum",
+    "Index Boundary Check",
+    "Prefix Dynamic Programming"
+  ],
+  "3748": [
+    "Sorting",
+    "Hash Map",
+    "Linear Scan",
+    "Brute Force Enumeration",
+    "Index Boundary Check"
+  ],
+  "3759": [
+    "Sorting",
+    "Linear Scan",
+    "Dynamic Programming Running State",
+    "Index Grouping by Value"
+  ],
+  "3760": [
+    "Hash Map",
+    "Factor Pair Enumeration",
+    "Linear Scan",
+    "Running Minimum"
+  ],
+  "3763": [
+    "Binary Search",
+    "Sorting",
+    "Linear Scan",
+    "Conditional Summation"
+  ],
+  "3764": [
+    "Sorting",
+    "Greedy Disjoint Selection",
+    "Linear Scan",
+    "Conditional Summation"
+  ],
+  "3778": [
+    "Sorting",
+    "Linear Scan",
+    "Parity Check"
+  ],
+  "3781": [
+    "Binary Search",
+    "Minimax Optimization",
+    "Sorting",
+    "Linear Scan",
+    "Greedy Disjoint Selection"
+  ],
+  "3785": [
+    "Linear Scan",
+    "Running Maximum",
+    "Running Minimum",
+    "Constraint Consistency Check",
+    "Dynamic Programming Running State"
+  ],
+  "3786": [
+    "Prefix Dynamic Programming",
+    "Running Maximum",
+    "Index Boundary Check",
+    "String Index Access",
+    "Running Minimum",
+    "Center Index Calculation"
+  ],
+  "3789": [
+    "Sorting",
+    "Linear Scan",
+    "Running Maximum",
+    "Running Minimum",
+    "Index Grouping by Value",
+    "Index Boundary Check",
+    "Conditional Summation",
+    "Dynamic Programming Running State"
+  ],
+  "3794": [
+    "Grid Graph Modeling",
+    "Dynamic Programming Running State",
+    "Running Maximum",
+    "Linear Scan",
+    "Index Boundary Check"
+  ],
+  "3809": [
+    "Union-Find",
+    "Brute Force Enumeration",
+    "Set Data Structure"
+  ],
+  "3817": [
+    "Grid Graph Modeling",
+    "Binary Search",
+    "Greedy Disjoint Selection"
+  ],
+  "3832": [
+    "Linear Scan",
+    "Running Minimum",
+    "Prefix Dynamic Programming"
+  ],
+  "abc374_e": [
+    "Binary Search",
+    "Minimax Optimization",
+    "Linear Scan",
+    "Brute Force Enumeration",
+    "Conditional Summation",
+    "Constraint Consistency Check"
+  ],
+  "abc375_a": [
+    "Linear Scan",
+    "String Index Access",
+    "Index Boundary Check",
+    "Fixed Offset Comparison",
+    "Conditional Summation"
+  ],
+  "abc375_c": [
+    "Grid Graph Modeling",
+    "Linear Scan",
+    "Index Boundary Check",
+    "String Concatenation"
+  ],
+  "abc375_d": [
+    "Linear Scan",
+    "Hash Map",
+    "Dynamic Programming Running State",
+    "Index Grouping by Value",
+    "Position-Weighted Contribution"
+  ],
+  "abc376_a": [
+    "Linear Scan",
+    "Conditional Summation",
+    "Dynamic Programming Running State"
+  ],
+  "abc376_b": [
+    "Circular Indexing",
+    "Linear Scan",
+    "Conditional Summation",
+    "Index Boundary Check"
+  ],
+  "abc376_d": [
+    "Graph Layering",
+    "Depth First Search",
+    "Running Minimum",
+    "Set Data Structure",
+    "Index Boundary Check",
+    "Linear Scan"
+  ],
+  "abc376_f": [
+    "Dynamic Programming Running State",
+    "Circular Indexing",
+    "Running Minimum",
+    "Linear Scan",
+    "Index Boundary Check"
+  ],
+  "abc376_g": [
+    "Depth First Search",
+    "Sorting",
+    "Modular Exponentiation",
+    "Greedy Disjoint Selection",
+    "Linear Scan"
+  ],
+  "abc377_d": [
+    "Complementary Counting",
+    "Sorting",
+    "Linear Scan",
+    "Running Minimum"
+  ],
+  "abc378_b": [
+    "Linear Scan",
+    "Direct Value Mapping",
+    "Circular Indexing",
+    "Binary Search"
+  ],
+  "abc378_f": [
+    "Linear Scan",
+    "Depth First Search",
+    "Union-Find",
+    "Frequency Map",
+    "Conditional Summation",
+    "Index Boundary Check"
+  ],
+  "abc380_d": [
+    "Linear Scan",
+    "String Index Access",
+    "Parity Check",
+    "Bit Length Calculation",
+    "Conditional String Construction"
+  ],
+  "abc380_f": [
+    "Bitmask Enumeration",
+    "Backtracking",
+    "Depth First Search",
+    "Hash Map",
+    "Yes/No Output Pattern"
+  ],
+  "abc381_b": [
+    "Parity Check",
+    "Fixed Offset Comparison",
+    "Frequency Map",
+    "Yes/No Output Pattern",
+    "Linear Scan"
+  ],
+  "abc382_c": [
+    "Binary Search",
+    "Prefix Dynamic Programming",
+    "Linear Scan",
+    "Index Boundary Check"
+  ],
+  "abc382_f": [
+    "Sorting",
+    "Grid Graph Modeling",
+    "Running Minimum",
+    "Linear Scan",
+    "Index Boundary Check"
+  ],
+  "abc383_a": [
+    "Linear Scan",
+    "Dynamic Programming Running State"
+  ],
+  "abc383_c": [
+    "Grid Graph Modeling",
+    "Index Boundary Check",
+    "Linear Scan",
+    "Set Data Structure",
+    "Depth First Search",
+    "Conditional Summation"
+  ],
+  "abc383_e": [
+    "Minimax Optimization",
+    "Sorting",
+    "Union-Find",
+    "Linear Scan",
+    "Conditional Summation",
+    "Greedy Disjoint Selection"
+  ],
+  "abc384_b": [
+    "Linear Scan",
+    "Threshold Classification",
+    "Dynamic Programming Running State"
+  ],
+  "abc384_e": [
+    "Grid Graph Modeling",
+    "Greedy Disjoint Selection",
+    "Set Data Structure",
+    "Index Boundary Check",
+    "Conditional Summation",
+    "Sorting"
+  ],
+  "abc384_f": [
+    "Hash Map",
+    "Frequency Map",
+    "Linear Scan",
+    "Conditional Summation",
+    "Bit Length Calculation",
+    "Pair Counting from Frequencies"
+  ],
+  "abc386_c": [
+    "Linear Scan",
+    "Index Boundary Check",
+    "Yes/No Output Pattern",
+    "Conditional Summation",
+    "Constraint Consistency Check"
+  ],
+  "abc390_c": [
+    "Grid Graph Modeling",
+    "Linear Scan",
+    "Running Minimum",
+    "Running Maximum",
+    "Constraint Consistency Check",
+    "Yes/No Output Pattern",
+    "Index Boundary Check"
+  ],
+  "abc390_f": [
+    "Index Grouping by Value",
+    "Complementary Counting",
+    "Position-Weighted Contribution",
+    "Index Boundary Check",
+    "Linear Scan"
+  ],
+  "abc391_b": [
+    "Grid Graph Modeling",
+    "Brute Force Enumeration",
+    "Index Boundary Check",
+    "Fixed Offset Comparison",
+    "String Index Access"
+  ],
+  "abc391_g": [
+    "Prefix Dynamic Programming",
+    "Bitmask Enumeration",
+    "Dynamic Programming Running State",
+    "Direct Value Mapping",
+    "Modular Exponentiation",
+    "String Index Access",
+    "Conditional Summation"
+  ],
+  "abc392_c": [
+    "Direct Value Mapping",
+    "Hash Map",
+    "Linear Scan"
+  ],
+  "abc392_d": [
+    "Frequency Map",
+    "Brute Force Enumeration",
+    "Running Maximum",
+    "Hash Map",
+    "Conditional Summation"
+  ],
+  "abc393_a": [
+    "Direct Value Mapping",
+    "Brute Force Enumeration",
+    "Constraint Consistency Check",
+    "Set Data Structure"
+  ],
+  "abc393_b": [
+    "Brute Force Enumeration",
+    "Arithmetic Progression Check",
+    "Index Boundary Check",
+    "String Index Access",
+    "Conditional Summation"
+  ],
+  "abc393_d": [
+    "Index Grouping by Value",
+    "Sorting",
+    "Linear Scan",
+    "Running Minimum",
+    "Conditional Summation"
+  ],
+  "abc395_a": [
+    "Linear Scan",
+    "Fixed Offset Comparison",
+    "Yes/No Output Pattern",
+    "Index Boundary Check"
+  ],
+  "abc396_b": [
+    "Stack",
+    "Linear Scan"
+  ],
+  "abc396_c": [
+    "Sorting",
+    "Linear Scan",
+    "Running Maximum",
+    "Dynamic Programming Running State"
+  ],
+  "abc397_e": [
+    "Depth First Search",
+    "Sorting",
+    "Greedy Disjoint Selection",
+    "Yes/No Output Pattern"
+  ],
+  "abc397_g": [
+    "Minimax Optimization",
+    "Binary Search",
+    "Graph Layering",
+    "Constraint Consistency Check"
+  ],
+  "abc398_b": [
+    "Frequency Map",
+    "Frequency Pattern Matching",
+    "Sorting",
+    "Yes/No Output Pattern"
+  ],
+  "abc398_f": [
+    "String Concatenation",
+    "Linear Scan",
+    "String Suffix Check"
+  ],
+  "abc400_e": [
+    "Linear Scan",
+    "Running Maximum",
+    "Binary Search",
+    "Index Boundary Check",
+    "Direct Value Mapping"
+  ],
+  "arc184_c": [
+    "Bitmask Enumeration",
+    "Conditional Summation",
+    "Running Maximum",
+    "Linear Scan",
+    "Fixed Offset Comparison",
+    "Brute Force Enumeration"
+  ],
+  "arc184_e": [
+    "Hash Map",
+    "Sorting",
+    "Bit Length Calculation",
+    "Linear Scan",
+    "Conditional Summation",
+    "Bitmask Enumeration",
+    "Running Maximum",
+    "Index Boundary Check"
+  ],
+  "arc185_c": [
+    "Polynomial Convolution",
+    "Frequency Map",
+    "Index Grouping by Value",
+    "Hash Map",
+    "Linear Scan",
+    "Yes/No Output Pattern",
+    "Index Boundary Check"
+  ],
+  "arc185_e": [
+    "Dynamic Programming Running State",
+    "Frequency Map",
+    "Combinatorial Precomputation",
+    "Conditional Summation",
+    "Modular Exponentiation"
+  ],
+  "arc188_c": [
+    "Constraint Consistency Check",
+    "Union-Find",
+    "Index Grouping by Value",
+    "Conditional String Construction",
+    "Linear Scan",
+    "Parity Check"
+  ],
+  "arc188_d": [
+    "Dynamic Programming Running State",
+    "Combinatorial Precomputation",
+    "Modular Exponentiation",
+    "Depth First Search",
+    "Frequency Map",
+    "Linear Scan",
+    "Index Boundary Check",
+    "Parity Check"
+  ],
+  "arc189_c": [
+    "Depth First Search",
+    "Set Data Structure",
+    "Running Maximum",
+    "Linear Scan",
+    "Index Boundary Check",
+    "Yes/No Output Pattern"
+  ],
+  "arc190_d": [
+    "Modular Exponentiation",
+    "Linear Scan",
+    "Conditional Summation",
+    "Parity Check"
+  ],
+  "arc192_b": [
+    "Parity Check",
+    "Yes/No Output Pattern",
+    "Linear Scan"
+  ],
+  "arc193_d": [
+    "Linear Scan",
+    "Greedy Disjoint Selection",
+    "Minimax Optimization",
+    "Constraint Consistency Check"
+  ],
+  "arc194_c": [
+    "Sorting",
+    "Greedy Disjoint Selection",
+    "Linear Scan",
+    "Conditional Summation",
+    "Dynamic Programming Running State"
+  ],
+  "arc195_a": [
+    "Linear Scan",
+    "Yes/No Output Pattern",
+    "Last Position Tracking",
+    "Index Grouping by Value",
+    "Binary Search",
+    "Index Boundary Check"
+  ]
+}
