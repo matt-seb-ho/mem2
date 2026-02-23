@@ -1,0 +1,21 @@
+from __future__ import annotations
+
+from mem2.core.entities import AttemptRecord, MemoryState, ProblemSpec, RetrievalBundle, RunContext
+
+
+class NoneMemoryRetriever:
+    name = "none"
+
+    def retrieve(
+        self,
+        ctx: RunContext,
+        memory: MemoryState,
+        problem: ProblemSpec,
+        previous_attempts: list[AttemptRecord],
+    ) -> RetrievalBundle:
+        return RetrievalBundle(
+            problem_uid=problem.uid,
+            hint_text=None,
+            retrieved_items=[],
+            metadata={"selector_mode": "none"},
+        )

@@ -1,4 +1,4 @@
-"""ConceptSelectorRetriever: concept selection retriever using pre-computed hints.
+"""PsSelectorRetriever: PS (Program Synthesis) concept selection retriever.
 
 Supports two modes:
 1. **Precomputed (preferred)**: Loads hints from a prompt_info.json file produced
@@ -33,8 +33,8 @@ logger = logging.getLogger(__name__)
 _YAML_BLOCK_RE = re.compile(r"```yaml\s*(.*?)```", flags=re.DOTALL | re.IGNORECASE)
 
 
-class ConceptSelectorRetriever:
-    """Concept selection retriever.
+class PsSelectorRetriever:
+    """PS (Program Synthesis) concept selection retriever.
 
     When ``prompt_info_file`` is set (recommended), loads pre-computed hints
     produced by ``scripts/select_concepts.py``.  No LLM calls at runtime.
@@ -43,7 +43,7 @@ class ConceptSelectorRetriever:
     (legacy behavior).
     """
 
-    name = "concept_selector"
+    name = "ps_selector"
 
     def __init__(
         self,
@@ -90,7 +90,9 @@ class ConceptSelectorRetriever:
         return DOMAIN_PROMPT_MAP.get(self.domain, DOMAIN_PROMPT_MAP["arc"])
 
     def _format_problem_for_selection(self, problem: ProblemSpec) -> str:
-        if self.domain in ("math", "code"):
+        if self.domain == "code":
+            return problem.metadata.get("question_content", problem.metadata.get("problem_text", str(problem.metadata)))
+        if self.domain == "math":
             return problem.metadata.get("problem_text", str(problem.metadata))
         return format_problem_for_prompt(problem)
 

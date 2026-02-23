@@ -151,15 +151,15 @@ def _flatten_lesson_bank(payload: Any) -> list[dict[str, Any]]:
     return rows
 
 
-class ArcMemoStyleSelectorRetriever:
+class OeSelectorRetriever:
     """
-    ArcMemo-style selector:
+    OE selector (ArcMemo Open-Ended formulation):
     - Candidate lessons come from a large lesson bank (parsed lessons).
     - Selection is query-based (problem description + optional previous completion),
       returning top-k hints formatted as situation/suggestion bullets.
     """
 
-    name = "arcmemo_selector"
+    name = "oe_selector"
 
     def __init__(
         self,

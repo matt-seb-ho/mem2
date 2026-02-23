@@ -27,7 +27,7 @@ def _worker_exec_stdin(code: str, stdin_data: str, queue: mp.Queue) -> None:
         sys.stdin = io.StringIO(stdin_data)
 
         try:
-            exec(code, {"__builtins__": __builtins__}, {})
+            exec(code, {"__builtins__": __builtins__, "__name__": "__main__"})
         finally:
             output = captured_out.getvalue()
             sys.stdout = old_stdout

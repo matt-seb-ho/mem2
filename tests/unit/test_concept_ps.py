@@ -1,4 +1,4 @@
-"""Tests for ConceptPsMemoryBuilder and ConceptSelectorRetriever."""
+"""Tests for ArcMemoPsMemoryBuilder and PsSelectorRetriever."""
 from __future__ import annotations
 
 import asyncio
@@ -75,19 +75,19 @@ def _sample_annotations():
 
 
 # ---------------------------------------------------------------------------
-# ConceptPsMemoryBuilder
+# ArcMemoPsMemoryBuilder
 # ---------------------------------------------------------------------------
-class TestConceptPsMemoryBuilder:
+class TestArcMemoPsMemoryBuilder:
     def test_initialize_empty(self):
-        from mem2.branches.memory_builder.concept_ps import ConceptPsMemoryBuilder
+        from mem2.branches.memory_builder.arcmemo_ps import ArcMemoPsMemoryBuilder
 
-        builder = ConceptPsMemoryBuilder()
+        builder = ArcMemoPsMemoryBuilder()
         state = builder.initialize(_ctx(), {"p1": _arc_problem("p1")})
-        assert state.schema_name == "concept_ps"
+        assert state.schema_name == "arcmemo_ps"
         assert state.payload.get("concepts") == {}
 
     def test_initialize_from_memory_file(self):
-        from mem2.branches.memory_builder.concept_ps import ConceptPsMemoryBuilder
+        from mem2.branches.memory_builder.arcmemo_ps import ArcMemoPsMemoryBuilder
 
         mem = ConceptMemory()
         mem.initialize_from_annotations(_sample_annotations())
@@ -96,30 +96,30 @@ class TestConceptPsMemoryBuilder:
             path = Path(tmpdir) / "memory.json"
             mem.save_to_file(path)
 
-            builder = ConceptPsMemoryBuilder(seed_memory_file=str(path))
+            builder = ArcMemoPsMemoryBuilder(seed_memory_file=str(path))
             state = builder.initialize(_ctx(), {"p1": _arc_problem("p1")})
             assert "tiling" in state.payload["concepts"]
             assert state.metadata["concept_count"] == 2
 
     def test_initialize_from_annotations_file(self):
-        from mem2.branches.memory_builder.concept_ps import ConceptPsMemoryBuilder
+        from mem2.branches.memory_builder.arcmemo_ps import ArcMemoPsMemoryBuilder
 
         with tempfile.TemporaryDirectory() as tmpdir:
             path = Path(tmpdir) / "annotations.json"
             path.write_text(json.dumps(_sample_annotations()))
 
-            builder = ConceptPsMemoryBuilder(seed_annotations_file=str(path))
+            builder = ArcMemoPsMemoryBuilder(seed_annotations_file=str(path))
             state = builder.initialize(_ctx(), {"p1": _arc_problem("p1")})
             assert "tiling" in state.payload["concepts"]
 
     def test_update_stores_correct_solutions(self):
-        from mem2.branches.memory_builder.concept_ps import ConceptPsMemoryBuilder
+        from mem2.branches.memory_builder.arcmemo_ps import ArcMemoPsMemoryBuilder
 
-        builder = ConceptPsMemoryBuilder()
+        builder = ArcMemoPsMemoryBuilder()
         mem = ConceptMemory()
         mem.initialize_from_annotations(_sample_annotations())
         state = MemoryState(
-            schema_name="concept_ps",
+            schema_name="arcmemo_ps",
             schema_version="v1",
             payload=mem.to_payload(),
         )
@@ -141,9 +141,9 @@ class TestConceptPsMemoryBuilder:
         assert "p1" in updated.payload["solutions"]
 
     def test_reflect(self):
-        from mem2.branches.memory_builder.concept_ps import ConceptPsMemoryBuilder
+        from mem2.branches.memory_builder.arcmemo_ps import ArcMemoPsMemoryBuilder
 
-        builder = ConceptPsMemoryBuilder()
+        builder = ArcMemoPsMemoryBuilder()
         problem = _arc_problem("p1")
         attempts = [
             AttemptRecord(problem_uid="p1", pass_idx=0, branch_id="test",
@@ -159,22 +159,22 @@ class TestConceptPsMemoryBuilder:
 
 
 # ---------------------------------------------------------------------------
-# ConceptSelectorRetriever
+# PsSelectorRetriever
 # ---------------------------------------------------------------------------
-class TestConceptSelectorRetriever:
+class TestPsSelectorRetriever:
     def _make_memory_state(self):
         mem = ConceptMemory()
         mem.initialize_from_annotations(_sample_annotations())
         return MemoryState(
-            schema_name="concept_ps",
+            schema_name="arcmemo_ps",
             schema_version="v1",
             payload=mem.to_payload(),
         )
 
     def test_retrieve_sync_fallback(self):
-        from mem2.branches.memory_retriever.concept_selector import ConceptSelectorRetriever
+        from mem2.branches.memory_retriever.ps_selector import PsSelectorRetriever
 
-        retriever = ConceptSelectorRetriever(use_llm_selector=False)
+        retriever = PsSelectorRetriever(use_llm_selector=False)
         state = self._make_memory_state()
         problem = _arc_problem()
 
@@ -184,11 +184,11 @@ class TestConceptSelectorRetriever:
         assert "Concepts from Previously Solved" in bundle.hint_text
 
     def test_retrieve_empty_memory(self):
-        from mem2.branches.memory_retriever.concept_selector import ConceptSelectorRetriever
+        from mem2.branches.memory_retriever.ps_selector import PsSelectorRetriever
 
-        retriever = ConceptSelectorRetriever()
+        retriever = PsSelectorRetriever()
         state = MemoryState(
-            schema_name="concept_ps",
+            schema_name="arcmemo_ps",
             schema_version="v1",
             payload=ConceptMemory().to_payload(),
         )
@@ -197,9 +197,9 @@ class TestConceptSelectorRetriever:
         assert bundle.metadata["selector_mode"] == "empty"
 
     def test_async_retrieve_no_llm(self):
-        from mem2.branches.memory_retriever.concept_selector import ConceptSelectorRetriever
+        from mem2.branches.memory_retriever.ps_selector import PsSelectorRetriever
 
-        retriever = ConceptSelectorRetriever(use_llm_selector=False)
+        retriever = PsSelectorRetriever(use_llm_selector=False)
         state = self._make_memory_state()
         problem = _arc_problem()
 
@@ -216,9 +216,9 @@ class TestConceptSelectorRetriever:
         assert "tiling" in bundle.hint_text
 
     def test_parse_concept_selection(self):
-        from mem2.branches.memory_retriever.concept_selector import ConceptSelectorRetriever
+        from mem2.branches.memory_retriever.ps_selector import PsSelectorRetriever
 
-        retriever = ConceptSelectorRetriever()
+        retriever = PsSelectorRetriever()
         valid = {"tiling", "color_region", "helper"}
 
         # Valid YAML block
@@ -239,9 +239,9 @@ class TestConceptSelectorRetriever:
 
     def test_hint_text_contains_rich_fields(self):
         """Verify that concept selector output contains rich concept fields."""
-        from mem2.branches.memory_retriever.concept_selector import ConceptSelectorRetriever
+        from mem2.branches.memory_retriever.ps_selector import PsSelectorRetriever
 
-        retriever = ConceptSelectorRetriever(use_llm_selector=False)
+        retriever = PsSelectorRetriever(use_llm_selector=False)
         state = self._make_memory_state()
         problem = _arc_problem()
 

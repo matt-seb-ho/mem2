@@ -3,8 +3,8 @@ from __future__ import annotations
 from mem2.core.entities import AttemptRecord, MemoryState, ProblemSpec, RetrievalBundle, RunContext
 
 
-class LessonTopKRetriever:
-    name = "lesson_topk"
+class OeTopKRetriever:
+    name = "oe_topk"
 
     def __init__(self, top_k: int = 2):
         self.top_k = int(top_k)
