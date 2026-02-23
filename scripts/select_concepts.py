@@ -79,7 +79,9 @@ def build_profile(mem: ConceptMemory, domain: str) -> DomainProfile | None:
 def format_problem_text(problem: dict, domain: str) -> str:
     """Extract problem text for the selection prompt."""
     metadata = problem.get("metadata", {})
-    if domain in ("math", "code"):
+    if domain == "code":
+        return metadata.get("question_content", metadata.get("problem_text", str(metadata)))
+    if domain == "math":
         return metadata.get("problem_text", str(metadata))
     # ARC: would need grid formatting — not implemented here
     return metadata.get("problem_text", "")
