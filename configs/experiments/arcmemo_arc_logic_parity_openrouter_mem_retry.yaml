@@ -2,7 +2,7 @@ _base_: ../base.yaml
 
 pipeline:
   provider: llmplus_openrouter
-  memory_retriever: arcmemo_selector
+  memory_retriever: oe_selector
 
 run:
   run_type: arcmemo_arc_logic_parity_openrouter_mem_retry

@@ -3,8 +3,8 @@ _base_: ../base.yaml
 pipeline:
   task_adapter: arc_grid
   benchmark: arc_agi
-  memory_builder: concept_ps
-  memory_retriever: concept_selector
+  memory_builder: arcmemo_ps
+  memory_retriever: ps_selector
   trajectory_policy: single_path
   provider: mock
   inference_engine: python_transform_retry

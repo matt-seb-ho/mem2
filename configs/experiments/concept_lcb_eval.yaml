@@ -2,8 +2,8 @@ _base_: ../base.yaml
 pipeline:
   task_adapter: livecodebench
   benchmark: livecodebench
-  memory_builder: none
-  memory_retriever: none
+  memory_builder: arcmemo_ps
+  memory_retriever: ps_selector
   trajectory_policy: single_path
   provider: llmplus_openrouter
   inference_engine: lcb_solve
@@ -11,7 +11,7 @@ pipeline:
   evaluator: lcb_exec
   artifact_sink: json_local
 run:
-  run_type: baseline_lcb_eval
+  run_type: concept_lcb_eval
   seed: 42
   max_passes: 2
   execution_mode: arc_batch
@@ -129,8 +129,13 @@ components:
     - arc195_a
     - arc196_b
     - arc196_c
-  memory_builder: {}
-  memory_retriever: {}
+  memory_builder:
+    seed_memory_file: data/livecodebench_v56/concept_memory/compressed_v2.json
+    domain: code
+    max_concepts: 500
+  memory_retriever:
+    domain: code
+    prompt_info_file: data/livecodebench_v56/concept_memory/selection_v2/prompt_info.json
   trajectory_policy:
     retry_paths: 1
   provider:

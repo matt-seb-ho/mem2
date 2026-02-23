@@ -1,0 +1,164 @@
+# options.yaml — Quick reference for all pipeline configuration options.
+#
+# NOT meant to be run directly. Copy sections into experiment configs.
+# See configs/components.md for detailed documentation.
+
+pipeline:
+  task_adapter: arc_grid
+  # Options: arc_grid, livecodebench, math_ps
+
+  benchmark: arc_agi
+  # Options: arc_agi, competition_math_ps, livecodebench
+
+  memory_builder: none
+  # Options: none           — no-op (empty memory, no updates)
+  #          arcmemo_oe    — OE lesson-based (situation/suggestion entries)
+  #          arcmemo_ps     — PS concept-based (typed annotations with cues/impl)
+
+  memory_retriever: none
+  # Options: none              — no-op (always returns hint_text=None)
+  #          oe_topk           — recency-based, no LLM calls
+  #          ps_selector       — precomputed or inline LLM concept selection
+  #          oe_selector       — LLM lesson selection with description queries
+
+  trajectory_policy: single_path
+  # Options: single_path
+
+  provider: mock
+  # Options: mock, llmplus_openrouter, llmplus_openai, llmplus_arcmemo_gpt41,
+  #          llmplus_xai, llmplus_openrouter_gemini25_flash_lite
+
+  inference_engine: python_transform_retry
+  # Options: python_transform_retry (ARC), math_ps_solve (Math), lcb_solve (LCB)
+
+  feedback_engine: gt_check
+  # Options: gt_check (ARC), math_ps_gt (Math), lcb_gt (LCB)
+
+  evaluator: arc_exec
+  # Options: arc_exec (ARC), math_ps_exec (Math), lcb_exec (LCB)
+
+  artifact_sink: json_local
+  # Options: json_local
+
+run:
+  run_type: smoke
+  seed: 88
+  execution_mode: sequential       # Options: sequential, arc_batch
+  max_passes: 1
+  retry_criterion: train           # Options: train, test, all
+  retry_policy:
+    max_passes: 1
+    criterion: train               # Options: train, test, all
+    error_feedback: all            # Options: first, all
+    num_feedback_passes: 1         # -1 = all previous attempts
+    include_past_outcomes: true
+  strict_arcmemo_compat: false
+  strict_arcmemo_logic_compat: false
+  lockstep_replay:
+    enabled: false
+    source_run_dir: null
+    replay_initial_completions: true
+    replay_reselected_lessons: true
+  output_root: outputs/_runs
+
+components:
+
+  task_adapter:
+    task_name: arc_grid
+
+  benchmark:
+    data_root: data/arc_agi/training
+    limit: 1                       # 0 = no limit
+    include_ids: null              # list of UIDs, or null for all
+    # split: train                 # Math/LCB only. Options: train, test
+    # types: null                  # Math only. e.g. ['Number Theory']
+    # levels: null                 # Math only. e.g. [5]
+    # require_integer_answer: true # Math only
+    # difficulties: null           # LCB only
+
+  # ── memory_builder ────────────────────────────────────────────
+
+  # none:
+  memory_builder: {}
+
+  # arcmemo_oe:
+  # memory_builder:
+  #   max_entries: 100
+  #   seed_lessons_file: null          # path to lessons JSON
+  #   seed_lessons_per_problem: 5
+
+  # arcmemo_ps:
+  # memory_builder:
+  #   seed_memory_file: null           # path to compressed concept memory JSON
+  #   seed_annotations_file: null      # alternative: raw annotations JSON
+  #   domain: arc                      # Options: arc, math, code
+  #   max_concepts: 0                  # 0 = no limit
+
+  # ── memory_retriever ──────────────────────────────────────────
+
+  # none:
+  memory_retriever: {}
+
+  # oe_topk:
+  # memory_retriever:
+  #   top_k: 2
+
+  # ps_selector:
+  # memory_retriever:
+  #   domain: arc                      # Options: arc, math, code
+  #   prompt_info_file: ''             # precomputed hints JSON (preferred, no LLM)
+  #   use_llm_selector: true           # inline LLM selection (legacy)
+  #   selector_model: ''               # model for inline selection
+  #   selector_gen_cfg: null           # e.g. {n: 1, temperature: 0.0, max_tokens: 16384}
+  #   hint_template_key: op3
+  #   top_k: 10                        # max concepts in inline mode
+
+  # oe_selector:
+  # memory_retriever:
+  #   top_k: 5
+  #   lesson_file: null                # path to lesson bank JSON
+  #   description_file: null           # path to puzzle descriptions JSON
+  #   description_variant_key: gpt41_img
+  #   include_prev_attempt: true       # reselect on retry using prev attempt
+  #   fallback_to_memory_entries: true
+  #   use_llm_selector: true
+  #   selector_model: ''
+  #   selector_gen_cfg: null           # default: {n: 1, temperature: 0.0, max_tokens: 512}
+  #   max_candidates_for_prompt: 200
+
+  trajectory_policy:
+    retry_paths: 1
+
+  provider:
+    profile_name: mock
+    dotenv_path: .env.example
+    default_max_concurrency: 32
+
+  inference_engine:
+    model: mock-grid-echo
+    gen_cfg:
+      n: 1
+      temperature: 0.0
+      # max_tokens: 4096
+      # top_p: 1.0
+      # seed: 42
+      # batch_size: 32
+      # ignore_cache: false
+    prompt_options:                 # python_transform_retry (ARC) only
+      include_hint: false
+      hint_template_key: selected
+      require_hint_citations: false
+      instruction_key: default
+      system_prompt_key: default   # Options: default, arcmemo
+    error_feedback: all            # Options: first, all
+    num_feedback_passes: 1         # -1 = all
+    include_past_outcomes: true
+    include_reselected_lessons: false
+
+  feedback_engine: {}
+
+  evaluator:
+    require_all_tests: true        # ARC only
+    timeout_s: 2.0                 # ARC: 2.0, Math: 10.0, LCB: 30.0
+
+  artifact_sink: {}

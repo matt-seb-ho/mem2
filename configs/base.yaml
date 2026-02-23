@@ -1,8 +1,8 @@
 pipeline:
   task_adapter: arc_grid
   benchmark: arc_agi
-  memory_builder: arcmemo_ps
-  memory_retriever: lesson_topk
+  memory_builder: none
+  memory_retriever: none
   trajectory_policy: single_path
   provider: mock
   inference_engine: python_transform_retry
@@ -37,10 +37,8 @@ components:
   benchmark:
     data_root: /root/workspace/data/benchmarks/ARC-AGI/data/training
     limit: 1
-  memory_builder:
-    max_entries: 100
-  memory_retriever:
-    top_k: 2
+  memory_builder: {}
+  memory_retriever: {}
   trajectory_policy:
     retry_paths: 1
   provider:

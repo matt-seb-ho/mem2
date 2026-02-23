@@ -3,8 +3,8 @@ _base_: ../base.yaml
 pipeline:
   task_adapter: livecodebench
   benchmark: livecodebench
-  memory_builder: arcmemo_ps
-  memory_retriever: lesson_topk
+  memory_builder: none
+  memory_retriever: none
   trajectory_policy: single_path
   provider: llmplus_openrouter
   inference_engine: lcb_solve
@@ -32,10 +32,8 @@ components:
     data_root: /root/workspace/data/hf/livecodebench
     split: test
     limit: 10
-  memory_builder:
-    max_entries: 50
-  memory_retriever:
-    top_k: 2
+  memory_builder: {}
+  memory_retriever: {}
   trajectory_policy:
     retry_paths: 1
   provider:

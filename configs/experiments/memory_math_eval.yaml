@@ -2,8 +2,8 @@ _base_: ../base.yaml
 pipeline:
   task_adapter: math_ps
   benchmark: competition_math_ps
-  memory_builder: arcmemo_ps
-  memory_retriever: lesson_topk
+  memory_builder: arcmemo_oe
+  memory_retriever: oe_topk
   trajectory_policy: single_path
   provider: llmplus_openrouter
   inference_engine: math_ps_solve
