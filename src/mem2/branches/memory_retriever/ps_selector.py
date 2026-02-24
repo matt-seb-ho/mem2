@@ -85,6 +85,8 @@ class PsSelectorRetriever:
         max_concepts_per_problem: int = 0,
         routing_strategy: str = "none",
         routing_max_hint_chars: int = 0,
+        routing_max_concept_count: int = 0,
+        routing_max_pre_filter_count: int = 0,
         concept_frequency_file: str = "",
     ):
         self.top_k = int(top_k)
@@ -109,6 +111,8 @@ class PsSelectorRetriever:
                 float(max_frequency) if float(max_frequency) > 0.0 else 0.5
             ),
             max_hint_chars=int(routing_max_hint_chars),
+            max_concept_count=int(routing_max_concept_count),
+            max_pre_filter_count=int(routing_max_pre_filter_count),
             frequencies=self._filter.frequencies,
         )
 
@@ -288,6 +292,7 @@ class PsSelectorRetriever:
     ) -> RetrievalBundle:
         """Apply filter → route → render after selection."""
         # Filter (delegated to format-independent ConceptFilter)
+        pre_filter_count = len(selected_names) if selected_names is not None else 0
         if selected_names is not None:
             filtered = self._filter.filter(selected_names)
         else:
@@ -297,14 +302,21 @@ class PsSelectorRetriever:
         hint_text = self._render_hint_text(concept_mem, filtered)
 
         # Route (delegated to format-independent RetrievalRouter)
-        if not self._router.should_include(filtered, hint_text):
+        decision = self._router.should_include(
+            filtered, hint_text, pre_filter_count=pre_filter_count
+        )
+        if not decision:
             hint_text = None
 
         metadata: dict[str, Any] = {
             "selector_mode": selector_mode,
             "concept_count": len(concept_mem.concepts),
             "render_mode": self.render_mode,
+            "routing_included": decision.include,
+            "pre_filter_count": pre_filter_count,
         }
+        if decision.reasons:
+            metadata["routing_skip_reasons"] = decision.reasons
         if filtered is not None:
             metadata["selected_count"] = len(filtered)
             metadata["selected_names"] = filtered
