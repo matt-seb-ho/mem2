@@ -9,6 +9,7 @@ from mem2.core.errors import DataValidationError
 
 class ArcAgiBenchmarkAdapter:
     name = "arc_agi"
+    DOMAIN_NAME = "arc"
 
     def __init__(
         self,

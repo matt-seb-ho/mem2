@@ -71,6 +71,7 @@ class LcbSolveInferenceEngine:
     """Inference engine for LiveCodeBench problems."""
 
     name = "lcb_solve"
+    DOMAIN_NAME = "code"
 
     def __init__(
         self,
@@ -80,7 +81,6 @@ class LcbSolveInferenceEngine:
         error_feedback: str = "all",
         num_feedback_passes: int = 1,
         include_past_outcomes: bool = True,
-        **kwargs,
     ):
         self.model = model
         self.gen_cfg = gen_cfg or {"n": 1, "temperature": 0.2}

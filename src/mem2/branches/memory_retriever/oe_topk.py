@@ -34,3 +34,15 @@ class OeTopKRetriever:
                 "scoped_to_problem": bool(problem_entries),
             },
         )
+
+    async def async_retrieve(
+        self,
+        *,
+        ctx: RunContext,
+        provider,
+        memory: MemoryState,
+        problem: ProblemSpec,
+        previous_attempts: list[AttemptRecord],
+        selector_model: str = "",
+    ) -> RetrievalBundle:
+        return self.retrieve(ctx, memory, problem, previous_attempts)

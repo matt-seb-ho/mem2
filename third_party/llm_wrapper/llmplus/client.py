@@ -2,6 +2,7 @@ import asyncio
 import dataclasses
 import logging
 import random
+import warnings
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -221,9 +222,9 @@ class LLMClient:
                 try:
                     results.extend(await coro)
                 except Exception as e:
-                    # logger.error("one sub‑request failed: %s", e, exc_info=False)
-                    msg = f"one sub‑request failed. type: {type(e)}, message: {e}"
+                    msg = f"one sub‑request failed. type: {type(e).__name__}, message: {e}"
                     logger.exception(msg, exc_info=True)
+                    warnings.warn(msg, stacklevel=2)
             return results
         else:
             try:
@@ -234,7 +235,9 @@ class LLMClient:
                     request_sem=request_sem,
                 )
             except Exception as e:
-                logger.error("one request failed: %s", e, exc_info=False)
+                msg = f"LLM request failed: {type(e).__name__}: {e}"
+                logger.error(msg, exc_info=False)
+                warnings.warn(msg, stacklevel=2)
                 return []
 
     async def _async_request(

@@ -59,6 +59,17 @@ class MemoryRetriever(Protocol):
         previous_attempts: list[AttemptRecord],
     ) -> RetrievalBundle: ...
 
+    async def async_retrieve(
+        self,
+        *,
+        ctx: RunContext,
+        provider: ProviderClient,
+        memory: MemoryState,
+        problem: ProblemSpec,
+        previous_attempts: list[AttemptRecord],
+        selector_model: str = "",
+    ) -> RetrievalBundle: ...
+
 
 class TrajectoryPolicy(Protocol):
     name: str
@@ -98,6 +109,10 @@ class ProviderClient(Protocol):
 
 class InferenceEngine(Protocol):
     name: str
+    model: str
+    include_reselected_lessons: bool
+
+    def set_retry_policy(self, policy: Any) -> None: ...
 
     async def initial_attempt(
         self,

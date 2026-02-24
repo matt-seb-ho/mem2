@@ -152,7 +152,9 @@ components:
     num_feedback_passes: 1
     include_past_outcomes: true
     include_reselected_lessons: false
+    prompt_options: null
   feedback_engine: {}
   evaluator:
     timeout_s: 30.0
+    require_all_tests: null
   artifact_sink: {}

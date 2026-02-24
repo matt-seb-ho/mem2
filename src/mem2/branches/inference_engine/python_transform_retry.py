@@ -15,6 +15,7 @@ from mem2.prompting.render import make_initial_prompt, make_retry_prompt, prompt
 
 class PythonTransformRetryInferenceEngine:
     name = "python_transform_retry"
+    DOMAIN_NAME = "arc"
 
     def __init__(
         self,

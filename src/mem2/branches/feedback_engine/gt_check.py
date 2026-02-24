@@ -5,6 +5,7 @@ from mem2.core.entities import AttemptRecord, EvalRecord, FeedbackRecord, Proble
 
 class GroundTruthFeedbackEngine:
     name = "gt_check"
+    DOMAIN_NAME = "arc"
 
     def __init__(self, positive_msg: str = "Correct", negative_msg: str = "Incorrect"):
         self.positive_msg = positive_msg

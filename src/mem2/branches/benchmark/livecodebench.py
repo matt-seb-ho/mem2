@@ -52,6 +52,7 @@ class LiveCodeBenchAdapter:
     """
 
     name = "livecodebench"
+    DOMAIN_NAME = "code"
 
     def __init__(
         self,

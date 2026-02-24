@@ -65,8 +65,9 @@ class LcbExecutionEvaluator:
     """Evaluate LCB attempts by executing code with stdin and comparing stdout."""
 
     name = "lcb_exec"
+    DOMAIN_NAME = "code"
 
-    def __init__(self, timeout_s: float = 30.0, **kwargs):
+    def __init__(self, timeout_s: float = 30.0):
         self.timeout_s = float(timeout_s)
 
     def evaluate(

@@ -4,6 +4,7 @@ run:
 components:
   memory_retriever:
     domain: code
+    selected_concepts_file: data/livecodebench_v56/concept_memory/selection_v2/selected_concepts.json
     prompt_info_file: data/livecodebench_v56/concept_memory/selection_v2/prompt_info.json
     render_mode: cues_only
     max_frequency: 0.3

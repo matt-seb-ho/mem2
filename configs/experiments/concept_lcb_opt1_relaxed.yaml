@@ -1,9 +1,11 @@
 _base_: concept_lcb_eval.yaml
 run:
-  run_type: concept_lcb_opt2_cues
+  run_type: concept_lcb_opt1_relaxed
 components:
   memory_retriever:
     domain: code
     selected_concepts_file: data/livecodebench_v56/concept_memory/selection_v2/selected_concepts.json
     prompt_info_file: data/livecodebench_v56/concept_memory/selection_v2/prompt_info.json
-    render_mode: cues_only
+    max_frequency: 0.5
+    max_concepts_per_problem: 5
+    concept_frequency_file: data/livecodebench_v56/concept_memory/selection_v2/concept_frequencies.json

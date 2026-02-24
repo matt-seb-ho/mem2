@@ -63,8 +63,9 @@ class MathPsExecutionEvaluator:
     """Evaluate math-PS attempts by executing ``solve()`` and comparing to ground truth."""
 
     name = "math_ps_exec"
+    DOMAIN_NAME = "math"
 
-    def __init__(self, timeout_s: float = 10.0, **kwargs):
+    def __init__(self, timeout_s: float = 10.0):
         self.timeout_s = float(timeout_s)
 
     def evaluate(

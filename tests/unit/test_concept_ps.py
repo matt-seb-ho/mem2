@@ -324,12 +324,8 @@ class TestPsSelectorRetriever:
             use_llm_selector=False,
             max_concepts_per_problem=1,
         )
-        state = self._make_memory_state()
-        # In all_concepts mode (selected_names=None), cap is not applied
-        # Need to test via async with LLM selection or precomputed
-        # Test via precomputed path is not affected by max_concepts
-        # The filtering is internal — verify it via _filter_concepts directly
-        filtered = retriever._filter_concepts(["a", "b", "c"])
+        # Test via the composed ConceptFilter
+        filtered = retriever._filter.filter(["a", "b", "c"])
         assert len(filtered) == 1
         assert filtered == ["a"]
 
@@ -350,8 +346,8 @@ class TestPsSelectorRetriever:
                 max_frequency=0.5,
                 concept_frequency_file=str(freq_file),
             )
-            # Test _should_include_hints directly
-            result = retriever._should_include_hints(
+            # Test via the composed RetrievalRouter
+            result = retriever._router.should_include(
                 ["tiling", "color_region"], "some hint text"
             )
             assert result is False
@@ -382,3 +378,122 @@ class TestPsSelectorRetriever:
 
         # Should not raise
         _validate_memory_pairing(builder, retriever)
+
+    # ------------------------------------------------------------------ #
+    #  Precomputed-names path tests                                        #
+    # ------------------------------------------------------------------ #
+    def test_precomputed_names_through_pipeline(self):
+        """selected_concepts_file activates filter/route/render pipeline."""
+        from mem2.branches.memory_retriever.ps_selector import PsSelectorRetriever
+
+        state = self._make_memory_state()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            sc_file = Path(tmpdir) / "selected.json"
+            sc_file.write_text(json.dumps({"puzzle_001": ["tiling"]}))
+
+            retriever = PsSelectorRetriever(
+                use_llm_selector=False,
+                selected_concepts_file=str(sc_file),
+                render_mode="cues_only",
+            )
+            bundle = retriever.retrieve(_ctx(), state, _arc_problem(), [])
+            assert bundle.hint_text is not None
+            assert bundle.metadata["selector_mode"] == "precomputed"
+            assert bundle.metadata["render_mode"] == "cues_only"
+            # cues_only: cues present, implementation absent
+            assert "cues" in bundle.hint_text
+            assert "implementation" not in bundle.hint_text
+
+    def test_precomputed_names_with_filtering(self):
+        """High-frequency concept filtered via pipeline."""
+        from mem2.branches.memory_retriever.ps_selector import PsSelectorRetriever
+
+        state = self._make_memory_state()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            sc_file = Path(tmpdir) / "selected.json"
+            sc_file.write_text(json.dumps({
+                "puzzle_001": ["tiling", "color_region"]
+            }))
+            freq_file = Path(tmpdir) / "freq.json"
+            freq_file.write_text(json.dumps({
+                "tiling": 0.8,
+                "color_region": 0.1,
+            }))
+
+            retriever = PsSelectorRetriever(
+                use_llm_selector=False,
+                selected_concepts_file=str(sc_file),
+                max_frequency=0.5,
+                concept_frequency_file=str(freq_file),
+            )
+            bundle = retriever.retrieve(_ctx(), state, _arc_problem(), [])
+            assert bundle.hint_text is not None
+            # tiling (0.8) should be filtered out
+            selected = bundle.metadata.get("selected_names", [])
+            assert "tiling" not in selected
+            assert "color_region" in selected
+
+    def test_precomputed_names_priority_over_rendered(self):
+        """selected_concepts_file takes priority over prompt_info_file."""
+        from mem2.branches.memory_retriever.ps_selector import PsSelectorRetriever
+
+        state = self._make_memory_state()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            sc_file = Path(tmpdir) / "selected.json"
+            sc_file.write_text(json.dumps({"puzzle_001": ["tiling"]}))
+            pi_file = Path(tmpdir) / "prompt_info.json"
+            pi_file.write_text(json.dumps({
+                "puzzle_001": {"hint": "LEGACY RENDERED TEXT"}
+            }))
+
+            retriever = PsSelectorRetriever(
+                use_llm_selector=False,
+                selected_concepts_file=str(sc_file),
+                prompt_info_file=str(pi_file),
+            )
+            bundle = retriever.retrieve(_ctx(), state, _arc_problem(), [])
+            # Should use names path, not rendered path
+            assert bundle.metadata["selector_mode"] == "precomputed"
+            assert "LEGACY RENDERED TEXT" not in (bundle.hint_text or "")
+            assert "tiling" in (bundle.hint_text or "")
+
+    def test_precomputed_names_miss(self):
+        """Returns hint_text=None for unknown problem uid."""
+        from mem2.branches.memory_retriever.ps_selector import PsSelectorRetriever
+
+        state = self._make_memory_state()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            sc_file = Path(tmpdir) / "selected.json"
+            sc_file.write_text(json.dumps({"other_puzzle": ["tiling"]}))
+
+            retriever = PsSelectorRetriever(
+                use_llm_selector=False,
+                selected_concepts_file=str(sc_file),
+            )
+            bundle = retriever.retrieve(_ctx(), state, _arc_problem(), [])
+            assert bundle.hint_text is None
+            assert bundle.metadata["selector_mode"] == "precomputed_miss"
+
+    def test_legacy_rendered_preserved(self):
+        """prompt_info_file without selected_concepts_file uses legacy path."""
+        from mem2.branches.memory_retriever.ps_selector import PsSelectorRetriever
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            pi_file = Path(tmpdir) / "prompt_info.json"
+            pi_file.write_text(json.dumps({
+                "puzzle_001": {"hint": "LEGACY HINT TEXT"}
+            }))
+
+            retriever = PsSelectorRetriever(
+                use_llm_selector=False,
+                prompt_info_file=str(pi_file),
+            )
+            # No memory state needed — legacy path doesn't deserialize
+            state = self._make_memory_state()
+            bundle = retriever.retrieve(_ctx(), state, _arc_problem(), [])
+            assert bundle.hint_text == "LEGACY HINT TEXT"
+            assert bundle.metadata["selector_mode"] == "precomputed"

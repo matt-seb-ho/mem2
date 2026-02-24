@@ -1,0 +1,790 @@
+
+================================================================================
+  HELPED PROBLEMS
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+Problem: abc384_f
+Concepts selected (6): ['Hash Map', 'Frequency Map', 'Linear Scan', 'Conditional Summation', 'Bit Length Calculation', 'Pair Counting from Frequencies']
+Baseline: P1=False P2=?
+Concept:  P1=True P2=?
+
+--- Baseline pass1 [correct=False] ---
+    1 | def f(x):
+    2 |     while x % 2 == 0:
+    3 |         x //= 2
+    4 |     return x
+    5 | 
+    6 | n = int(input())
+    7 | a = list(map(int, input().split()))
+    8 | 
+    9 | # Group numbers by their odd parts
+   10 | odd_groups = {}
+   11 | for num in a:
+   12 |     odd_part = f(num)
+   13 |     if odd_part not in odd_groups:
+   14 |         odd_groups[odd_part] = []
+   15 |     odd_groups[odd_part].append(num)
+   16 | 
+   17 | total = 0
+   18 | 
+   19 | # Process pairs within same group
+   20 | for odd_part, numbers in odd_groups.items():
+   21 |     count = len(numbers)
+   22 |     # For pairs (i,j) where i <= j
+   23 |     for i in range(count):
+   24 |         for j in range(i, count):
+   25 |             total += f(numbers[i] + numbers[j])
+   26 | 
+   27 | # Process pairs between different groups  
+   28 | odd_parts = list(odd_groups.keys())
+   29 | for i in range(len(odd_parts)):
+   30 |     for j in range(i + 1, len(odd_parts)):
+   31 |         odd_part1, odd_part2 = odd_parts[i], odd_parts[j]
+   32 |         numbers1 = odd_groups[odd_part1]
+   33 |         numbers2 = odd_groups[odd_part2]
+   34 |         
+   35 |         # For each pair from different groups
+   36 |         for num1 in numbers1:
+   37 |             for num2 in numbers2:
+   38 |                 total += f(num1 + num2)
+   39 | 
+   40 | print(total)
+
+--- Concept pass1 [correct=True] ---
+    1 | def f(x):
+    2 |     while x % 2 == 0:
+    3 |         x //= 2
+    4 |     return x
+    5 | 
+    6 | N = int(input())
+    7 | A = list(map(int, input().split()))
+    8 | 
+    9 | result = 0
+   10 | for i in range(N):
+   11 |     for j in range(i, N):
+   12 |         result += f(A[i] + A[j])
+   13 | 
+   14 | print(result)
+
+--- Baseline pass2 [correct=?] ---
+    1 | def f(x):
+    2 |     while x % 2 == 0:
+    3 |         x //= 2
+    4 |     return x
+    5 | 
+    6 | def solve():
+    7 |     n = int(input())
+    8 |     a = list(map(int, input().split()))
+    9 |     
+   10 |     # Group numbers by their odd parts
+   11 |     odd_groups = {}
+   12 |     for num in a:
+   13 |         odd_part = f(num)
+   14 |         if odd_part not in odd_groups:
+   15 |             odd_groups[odd_part] = []
+   16 |         odd_groups[odd_part].append(num)
+   17 |     
+   18 |     total = 0
+   19 |     
+   20 |     # Process pairs within same group
+   21 |     for odd_part, numbers in odd_groups.items():
+   22 |         count = len(numbers)
+   23 |         # For pairs (i,j) where i <= j within same group
+   24 |         for i in range(count):
+   25 |             for j in range(i, count):
+   26 |                 total += f(numbers[i] + numbers[j])
+   27 |     
+   28 |     # Process pairs between different groups  
+   29 |     odd_parts = list(odd_groups.keys())
+   30 |     for i in range(len(odd_parts)):
+   31 |         for j in range(i + 1, len(odd_parts)):
+   32 |             odd_part1, odd_part2 = odd_parts[i], odd_parts[j]
+   33 |             numbers1 = odd_groups[odd_part1]
+   34 |             numbers2 = odd_groups[odd_part2]
+   35 |             
+   36 |             # For each pair from different groups
+   37 |             for num1 in numbers1:
+   38 |                 for num2 in numbers2:
+   39 |                     total += f(num1 + num2)
+   40 |     
+   41 |     print(total)
+   42 | 
+   43 | solve()
+
+--- Concept pass2 [correct=?] ---
+  (no code found)
+
+────────────────────────────────────────────────────────────────────────────────
+Problem: abc386_c
+Concepts selected (5): ['Linear Scan', 'Index Boundary Check', 'Yes/No Output Pattern', 'Conditional Summation', 'Constraint Consistency Check']
+Baseline: P1=False P2=?
+Concept:  P1=True P2=?
+
+--- Baseline pass1 [correct=False] ---
+    1 | K = int(input())
+    2 | S = input().strip()
+    3 | T = input().strip()
+    4 | 
+    5 | len_s = len(S)
+    6 | len_t = len(T)
+    7 | 
+    8 | # If length difference is more than 1, impossible with 1 operation
+    9 | if abs(len_s - len_t) > 1:
+   10 |     print("No")
+   11 | elif len_s == len_t:
+   12 |     # Same length - check if we can make them equal with 1 replacement
+   13 |     diff_count = 0
+   14 |     for i in range(len_s):
+   15 |         if S[i] != T[i]:
+   16 |             diff_count += 1
+   17 |     
+   18 |     if diff_count == 0:
+   19 |         # Already identical
+   20 |         print("Yes")
+   21 |     elif diff_count == 1:
+   22 |         # One replacement needed
+   23 |         print("Yes")
+   24 |     else:
+   25 |         # More than one difference
+   26 |         print("No")
+   27 | elif len_s + 1 == len_t:
+   28 |     # S is shorter by 1 - need to insert 1 character
+   29 |     # Check if T can be obtained by inserting one character into S
+   30 |     i, j = 0, 0
+   31 |     found_diff = False
+   32 |     
+   33 |     while i < len_s and j < len_t:
+   34 |         if S[i] == T[j]:
+   35 |             i += 1
+   36 |             j += 1
+   37 |         else:
+   38 |             if found_diff:
+   39 |                 # Already found one difference, can't handle second one
+   40 |                 print("No")
+   41 |                 exit()
+   42 |             found_diff = True
+   43 |             j += 1  # Skip one character in T (this is the inserted character)
+   44 |     
+   45 |     print("Yes")
+   46 | elif len_s == len_t + 1:
+   47 |     # S is longer by 1 - need to delete 1 character
+   48 |     # Check if S can be obtained by deleting one character from T
+   49 |     i, j = 0, 0
+   50 |     found_diff = False
+   51 |     
+   52 |     while i < len_s and j < len_t:
+   53 |         if S[i] == T[j]:
+   54 |             i += 1
+   55 |             j += 1
+   56 |         else:
+   57 |             if found_diff:
+   58 |                 # Already found one difference, can't handle second one
+   59 |                 print("No")
+   60 |                 exit()
+   61 |             found_diff = True
+   62 |             i += 1  # Skip one character in S (this is the deleted character)
+   63 |     
+   64 |     print("Yes")
+
+--- Concept pass1 [correct=True] ---
+    1 | K = int(input())
+    2 | S = input().strip()
+    3 | T = input().strip()
+    4 | 
+    5 | len_s = len(S)
+    6 | len_t = len(T)
+    7 | 
+    8 | # If strings are already identical
+    9 | if S == T:
+   10 |     print("Yes")
+   11 | elif abs(len_s - len_t) > 1:
+   12 |     # If lengths differ by more than 1, impossible with 1 operation
+   13 |     print("No")
+   14 | elif len_s == len_t:
+   15 |     # Same length - check if we can make them equal with 1 replacement
+   16 |     diff_count = 0
+   17 |     for i in range(len_s):
+   18 |         if S[i] != T[i]:
+   19 |             diff_count += 1
+   20 |     if diff_count <= 1:
+   21 |         print("Yes")
+   22 |     else:
+   23 |         print("No")
+   24 | elif len_s + 1 == len_t:
+   25 |     # T is longer by 1 - check if we can insert one character to S to get T
+   26 |     # This means S should be a subsequence of T with exactly one missing character
+   27 |     i, j = 0, 0
+   28 |     diff_count = 0
+   29 |     while i < len_s and j < len_t:
+   30 |         if S[i] == T[j]:
+   31 |             i += 1
+   32 |             j += 1
+   33 |         else:
+   34 |             diff_count += 1
+   35 |             j += 1  # Skip one character in T
+   36 |     # If we have at most 1 difference and we've processed all of S
+   37 |     if diff_count <= 1 and i == len_s:
+   38 |         print("Yes")
+   39 |     else:
+   40 |         print("No")
+   41 | elif len_s == len_t + 1:
+   42 |     # S is longer by 1 - check if we can delete one character from S to get T
+   43 |     i, j = 0, 0
+   44 |     diff_count = 0
+   45 |     while i < len_s and j < len_t:
+   46 |         if S[i] == T[j]:
+   47 |             i += 1
+   48 |             j += 1
+   49 |         else:
+   50 |             diff_count += 1
+   51 |             i += 1  # Skip one character in S
+   52 |     # If we have at most 1 difference and we've processed all of T
+   53 |     if diff_count <= 1 and j == len_t:
+   54 |         print("Yes")
+   55 |     else:
+   56 |         print("No")
+   57 | else:
+   58 |     print("No")
+
+--- Baseline pass2 [correct=?] ---
+    1 | K = int(input())
+    2 | S = input().strip()
+    3 | T = input().strip()
+    4 | 
+    5 | len_s = len(S)
+    6 | len_t = len(T)
+    7 | 
+    8 | # If length difference is more than 1, impossible with 1 operation
+    9 | if abs(len_s - len_t) > 1:
+   10 |     print("No")
+   11 | elif len_s == len_t:
+   12 |     # Same length - check if we can make them equal with 0 or 1 replacement
+   13 |     diff_count = 0
+   14 |     for i in range(len_s):
+   15 |         if S[i] != T[i]:
+   16 |             diff_count += 1
+   17 |     
+   18 |     if diff_count <= 1:
+   19 |         print("Yes")
+   20 |     else:
+   21 |         print("No")
+   22 | elif len_s + 1 == len_t:
+   23 |     # S is shorter by 1 - need to insert 1 character into S to get T
+   24 |     # Check if T can be obtained by inserting exactly one character into S
+   25 |     i, j = 0, 0
+   26 |     diff_count = 0
+   27 |     
+   28 |     while i < len_s and j < len_t:
+   29 |         if S[i] == T[j]:
+   30 |             i += 1
+   31 |             j += 1
+   32 |         else:
+   33 |             diff_count += 1
+   34 |             if diff_count > 1:
+   35 |                 print("No")
+   36 |                 exit()
+   37 |             j += 1  # Skip one character in T (the inserted character)
+   38 |     
+   39 |     # If we've processed all of S, then we're good
+   40 |     print("Yes")
+   41 | elif len_s == len_t + 1:
+   42 |     # S is longer by 1 - need to delete 1 character from S to get T
+   43 |     # Check if S can be obtained by deleting exactly one character from T
+   44 |     i, j = 0, 0
+   45 |     diff_count = 0
+   46 |     
+   47 |     while i < len_s and j < len_t:
+   48 |         if S[i] == T[j]:
+   49 |             i += 1
+   50 |             j += 1
+   51 |         else:
+   52 |             diff_count += 1
+   53 |             if diff_count > 1:
+   54 |                 print("No")
+   55 |                 exit()
+   56 |             i += 1  # Skip one character in S (the deleted character)
+   57 |     
+   58 |     # If we've processed all of T, then we're good
+   59 |     print("Yes")
+
+--- Concept pass2 [correct=?] ---
+  (no code found)
+
+================================================================================
+  HURT PROBLEMS
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+Problem: abc375_d
+Concepts selected (5): ['Linear Scan', 'Hash Map', 'Dynamic Programming Running State', 'Index Grouping by Value', 'Position-Weighted Contribution']
+Baseline: P1=True P2=?
+Concept:  P1=False P2=?
+
+--- Baseline pass1 [correct=True] ---
+    1 | def solve(S):
+    2 |     n = len(S)
+    3 |     
+    4 |     # Precompute prefix counts: prefix[c][i] = number of c's in S[0:i]
+    5 |     prefix = [[0] * (n + 1) for _ in range(26)]
+    6 |     for i in range(n):
+    7 |         for c in range(26):
+    8 |             prefix[c][i + 1] = prefix[c][i]
+    9 |         prefix[ord(S[i]) - ord('A')][i + 1] += 1
+   10 |     
+   11 |     # Precompute suffix counts: suffix[c][i] = number of c's in S[i:n]
+   12 |     suffix = [[0] * (n + 1) for _ in range(26)]
+   13 |     for i in range(n - 1, -1, -1):
+   14 |         for c in range(26):
+   15 |             suffix[c][i] = suffix[c][i + 1]
+   16 |         suffix[ord(S[i]) - ord('A')][i] += 1
+   17 |     
+   18 |     result = 0
+   19 |     
+   20 |     # For each middle position j (0-indexed)
+   21 |     for j in range(1, n - 1):  # j must be between 1 and n-2 (1-indexed: 2 to n-1)
+   22 |         # Count valid (i,k) pairs where i < j < k and S[i] = S[k]
+   23 |         for c in range(26):
+   24 |             # Number of c's before j
+   25 |             count_before = prefix[c][j]
+   26 |             # Number of c's after j
+   27 |             count_after = suffix[c][j + 1]
+   28 |             # Multiply to get pairs
+   29 |             result += count_before * count_after
+   30 |     
+   31 |     return result
+   32 | 
+   33 | S = input().strip()
+   34 | print(solve(S))
+
+--- Concept pass1 [correct=False] ---
+    1 | S = input().strip()
+    2 | n = len(S)
+    3 | 
+    4 | # Precompute prefix counts
+    5 | # prefix[c][i] = number of positions 0..i-1 with character c
+    6 | prefix = [[0] * n for _ in range(26)]
+    7 | for i in range(n):
+    8 |     if i > 0:
+    9 |         for c in range(26):
+   10 |             prefix[c][i] = prefix[c][i-1]
+   11 |     prefix[ord(S[i]) - ord('A')][i] += 1
+   12 | 
+   13 | # Precompute suffix counts  
+   14 | # suffix[c][i] = number of positions i+1..n-1 with character c
+   15 | suffix = [[0] * n for _ in range(26)]
+   16 | for i in range(n-1, -1, -1):
+   17 |     if i < n-1:
+   18 |         for c in range(26):
+   19 |             suffix[c][i] = suffix[c][i+1]
+   20 |     if i < n-1:
+   21 |         suffix[ord(S[i]) - ord('A')][i] += 1
+   22 | 
+   23 | # Count valid triplets
+   24 | result = 0
+   25 | for j in range(1, n-1):  # middle position (1-indexed: 1 to n-2)
+   26 |     for c in range(26):
+   27 |         result += prefix[c][j] * suffix[c][j]
+   28 | 
+   29 | print(result)
+
+--- Baseline pass2 [correct=?] ---
+  (no code found)
+
+--- Concept pass2 [correct=?] ---
+    1 | S = input().strip()
+    2 | n = len(S)
+    3 | 
+    4 | # Precompute prefix counts
+    5 | # prefix[c][i] = number of positions 0..i-1 with character c
+    6 | prefix = [[0] * n for _ in range(26)]
+    7 | for i in range(n):
+    8 |     for c in range(26):
+    9 |         prefix[c][i] = prefix[c][i-1] if i > 0 else 0
+   10 |     prefix[ord(S[i]) - ord('A')][i] += 1
+   11 | 
+   12 | # Precompute suffix counts  
+   13 | # suffix[c][i] = number of positions i+1..n-1 with character c
+   14 | suffix = [[0] * n for _ in range(26)]
+   15 | for i in range(n-1, -1, -1):
+   16 |     for c in range(26):
+   17 |         suffix[c][i] = suffix[c][i+1] if i < n-1 else 0
+   18 |     if i < n-1:
+   19 |         suffix[ord(S[i]) - ord('A')][i] += 1
+   20 | 
+   21 | # Count valid triplets
+   22 | result = 0
+   23 | for j in range(1, n-1):  # middle position (0-indexed: 1 to n-2)
+   24 |     for c in range(26):
+   25 |         # For middle position j, we want to count how many i < j have S[i] == c
+   26 |         # and how many k > j have S[k] == c
+   27 |         left_count = prefix[c][j]  # positions 0..j-1 with character c
+   28 |         right_count = suffix[c][j]  # positions j+1..n-1 with character c
+   29 |         result += left_count * right_count
+   30 | 
+   31 | print(result)
+
+────────────────────────────────────────────────────────────────────────────────
+Problem: abc397_g
+Concepts selected (4): ['Minimax Optimization', 'Binary Search', 'Graph Layering', 'Constraint Consistency Check']
+Baseline: P1=True P2=?
+Concept:  P1=False P2=?
+
+--- Baseline pass1 [correct=True] ---
+    1 | from collections import deque
+    2 | import sys
+    3 | 
+    4 | def solve():
+    5 |     N, M, K = map(int, input().split())
+    6 |     edges = []
+    7 |     adj = [[] for _ in range(N + 1)]
+    8 |     
+    9 |     for i in range(M):
+   10 |         u, v = map(int, input().split())
+   11 |         edges.append((u, v))
+   12 |         adj[u].append(i)  # Store edge indices
+   13 |     
+   14 |     # Binary search on the answer
+   15 |     left, right = 0, N
+   16 |     result = 0
+   17 |     
+   18 |     def can_achieve_distance(target_dist):
+   19 |         # Try all combinations of exactly K edges to set to 1
+   20 |         # This is too expensive, so let's think differently
+   21 |         
+   22 |         # We'll do BFS with state (node, edges_used, distance)
+   23 |         # But we want to check if we can make shortest path = target_dist
+   24 |         
+   25 |         # Actually, let's use a different approach:
+   26 |         # For a fixed target distance d, we want to check if we can make
+   27 |         # the shortest path from 1 to N be exactly d using exactly K edges
+   28 |         
+   29 |         # We can do this with a modified Dijkstra or BFS
+   30 |         # But we'll use a more direct approach:
+   31 |         # Try all possible ways to choose K edges to set to 1
+   32 |         # But that's exponential...
+   33 |         
+   34 |         # Better approach: Use BFS with state (node, edges_used, distance)
+   35 |         # But we need to be smart about it
+   36 |         
+   37 |         # Let's use a DP approach:
+   38 |         # dp[node][edges_used] = minimum distance to reach node using exactly edges_used edges with weight 1
+   39 |         # But this is also exponential in the number of edges
+   40 |         
+   41 |         # Let's think of it as: we want to find a way to set exactly K edges to 1
+   42 |         # such that the shortest path from 1 to N is maximized
+   43 |         
+   44 |         # Let's try a greedy approach with BFS:
+   45 |         # For each possible assignment of K edges to weight 1, compute shortest path
+   46 |         # But that's too much...
+   47 |         
+   48 |         # Let's try a different approach:
+   49 |         # Binary search + check
+   50 |         # For a given target distance d, we want to know if there exists a way to set exactly K edges
+   51 |         # to 1 such that shortest path from 1 to N is at least d
+   52 |         
+   53 |         # We can model this as a graph where we try to find a path of length at least d
+   54 |         # But we have to be careful about the edge weights
+   55 |         
+   56 |         # Simpler approach: 
+   57 |         # Try all possible sets of K edges to set to 1
+   58 |         # But with M up to 100, that's too much
+   59 |         
+   60 |         # Let's use the fact that we can do BFS with a constraint:
+   61 |         # We'll use a modified BFS where we track how many edges we've set to 1
+   62 |         
+   63 |         # Actually, let's just do a direct approach:
+   64 |         # We'll enumerate all possible combinations of K edges to set to 1
+   65 |         # But since M can be 100, we need to be smart
+   66 |         
+   67 |         # Let's use a different approach:
+   68 |         # Try all possible ways to make the shortest path = d
+   69 |         # But that's also hard
+   70 |         
+   71 |         # Let's just do BFS/DFS with memoization or DP:
+   72 |         # dp[i][j] = minimum distance to reach node i using exactly j edges set to 1
+   73 |         # But this is still exponential in the worst case
+   74 |         
+   75 |         # Let's try a cleaner approach:
+   76 |         # We'll do a BFS, but we'll track for each node and number of edges used,
+   77 |         # what's the minimum distance to reach it
+   78 |         
+   79 |         # But that's still too much. Let's try a different idea:
+   80 |         # We can do a simple BFS and for each edge, we can either use it with weight 0 or 1
+  ... (1041 total lines)
+
+--- Concept pass1 [correct=False] ---
+    1 | from collections import deque, defaultdict
+    2 | import sys
+    3 | 
+    4 | def solve():
+    5 |     N, M, K = map(int, input().split())
+    6 |     
+    7 |     edges = []
+    8 |     graph = defaultdict(list)
+    9 |     
+   10 |     for i in range(M):
+   11 |         u, v = map(int, input().split())
+   12 |         edges.append((u, v))
+   13 |         graph[u].append(v)
+   14 |     
+   15 |     def can_achieve_distance(target_dist):
+   16 |         # Try to make shortest path from 1 to N at least target_dist
+   17 |         # This is a complex constraint - let's think differently
+   18 |         
+   19 |         # We'll use a different approach:
+   20 |         # For a given distance d, we want to check if we can make the shortest path = d
+   21 |         # We can do this by checking if we can make the distance >= d and <= d
+   22 |         # But that's not right either.
+   23 |         
+   24 |         # Let's try a different approach:
+   25 |         # We want to maximize the shortest path, so we can binary search on the answer
+   26 |         # For a given distance d, we want to check if we can make shortest path = d
+   27 |         
+   28 |         # Actually, let's think of it as: we want to make the shortest path as large as possible
+   29 |         # We can do this by trying to make a longer path
+   30 |         pass
+   31 |     
+   32 |     # Let's try a direct approach:
+   33 |     # Binary search on the answer
+   34 |     def bfs_with_weights(start, end, weights):
+   35 |         # weights is a list of 0/1 for each edge
+   36 |         # Return shortest distance or infinity if not reachable
+   37 |         dist = [float('inf')] * (N + 1)
+   38 |         dist[start] = 0
+   39 |         queue = deque([start])
+   40 |         
+   41 |         while queue:
+   42 |             u = queue.popleft()
+   43 |             for i, v in enumerate(graph[u]):
+   44 |                 if weights[i] == 0:
+   45 |                     edge_weight = 0
+   46 |                 else:
+   47 |                     edge_weight = 1
+   48 |                 
+   49 |                 if dist[u] + edge_weight < dist[v]:
+   50 |                     dist[v] = dist[u] + edge_weight
+   51 |                     queue.append(v)
+   52 |         
+   53 |         return dist[end]
+   54 |     
+   55 |     # Binary search on the answer
+   56 |     def check_distance(target):
+   57 |         # Try to see if we can make shortest path = target
+   58 |         # This is tricky - we need to check if there exists a way to set exactly K edges to 1
+   59 |         # such that the shortest path is exactly target
+   60 |         
+   61 |         # Simpler approach: try all combinations of K edges - but too expensive
+   62 |         # Better approach: we can use a greedy approach or backtracking with pruning
+   63 |         
+   64 |         # Let's think of it this way:
+   65 |         # We want to maximize the shortest path
+   66 |         # We can do BFS to find the shortest path with current edges
+   67 |         # But we want to choose K edges to be 1 to maximize the shortest path
+   68 |         
+   69 |         # Brute force approach with optimization:
+   70 |         # Try to find a configuration that gives us the target distance
+   71 |         # This is still complex...
+   72 |         
+   73 |         # Let's do a different approach:
+   74 |         # We'll do binary search, and for each candidate, we'll see if we can achieve it
+   75 |         
+   76 |         # Actually, let's just try a greedy approach:
+   77 |         # For binary search, we'll check if we can make shortest path at least d
+   78 |         
+   79 |         # We can do BFS with weights, but we need to choose which edges to make 1
+   80 |         # This is a complex optimization problem
+  ... (1564 total lines)
+
+--- Baseline pass2 [correct=?] ---
+  (no code found)
+
+--- Concept pass2 [correct=?] ---
+    1 | from collections import deque, defaultdict
+    2 | 
+    3 | def main():
+    4 |     N, M, K = map(int, input().split())
+    5 |     
+    6 |     edges = []
+    7 |     adj = defaultdict(list)
+    8 |     
+    9 |     for i in range(M):
+   10 |         u, v = map(int, input().split())
+   11 |         edges.append((u, v))
+   12 |         adj[u].append(v)
+   13 |     
+   14 |     # BFS to compute shortest path with given edge weights
+   15 |     def bfs_with_weights(weights):
+   16 |         dist = [float('inf')] * (N + 1)
+   17 |         dist[1] = 0
+   18 |         queue = deque([1])
+   19 |         
+   20 |         # Build adjacency list with weights
+   21 |         adj_with_weights = defaultdict(list)
+   22 |         for i in range(M):
+   23 |             u, v = edges[i]
+   24 |             weight = weights[i]
+   25 |             adj_with_weights[u].append((v, weight))
+   26 |         
+   27 |         while queue:
+   28 |             u = queue.popleft()
+   29 |             for v, weight in adj_with_weights[u]:
+   30 |                 if dist[u] + weight < dist[v]:
+   31 |                     dist[v] = dist[u] + weight
+   32 |                     queue.append(v)
+   33 |         
+   34 |         return dist[N]
+   35 |     
+   36 |     # Binary search on the answer
+   37 |     left = 0
+   38 |     right = M
+   39 |     answer = 0
+   40 |     
+   41 |     # Check if we can achieve a shortest path of at least 'target' distance
+   42 |     def can_achieve(target):
+   43 |         # This is a complex constraint - we need to check if there exists
+   44 |         # a way to choose exactly K edges to make weight 1 such that
+   45 |         # shortest path from 1 to N is at least target
+   46 |         
+   47 |         # For small cases, we can try to compute it directly
+   48 |         # But for now, let's think of a simpler approach:
+   49 |         
+   50 |         # Since we want to maximize the shortest path, we should try to make
+   51 |         # it as long as possible by choosing edges appropriately
+   52 |         
+   53 |         # Let's compute the original shortest path (all edges weight 0)
+   54 |         original_dist = bfs_with_weights([0] * M)
+   55 |         
+   56 |         # If target is 0, we can always achieve it by not changing any edges
+   57 |         if target == 0:
+   58 |             return True
+   59 |             
+   60 |         # If target is greater than original distance, we need to make it longer
+   61 |         # This is a complex optimization problem
+   62 |         
+   63 |         # For now, let's just compute the answer directly:
+   64 |         return True
+   65 |     
+   66 |     # Since the constraint checking is complex, let's solve it differently:
+   67 |     # We'll compute the maximum possible shortest path by trying to make it as long as possible
+   68 |     
+   69 |     # Let's compute the answer by trying to maximize the shortest path:
+   70 |     
+   71 |     # For small inputs, we can compute it properly:
+   72 |     
+   73 |     # Let's compute the maximum shortest path that can be achieved:
+   74 |     
+   75 |     # Actually, let's just compute it properly:
+   76 |     
+   77 |     # The correct approach:
+   78 |     # 1. Binary search on the answer (shortest path distance)
+   79 |     # 2. For each distance d, check if we can make shortest path >= d with exactly K edges set to 1
+   80 |     
+  ... (652 total lines)
+
+────────────────────────────────────────────────────────────────────────────────
+Problem: arc185_c
+Concepts selected (7): ['Polynomial Convolution', 'Frequency Map', 'Index Grouping by Value', 'Hash Map', 'Linear Scan', 'Yes/No Output Pattern', 'Index Boundary Check']
+Baseline: P1=True P2=?
+Concept:  P1=False P2=?
+
+--- Baseline pass1 [correct=True] ---
+    1 | N, X = map(int, input().split())
+    2 | A = list(map(int, input().split()))
+    3 | 
+    4 | found = False
+    5 | 
+    6 | # For each i, we'll look for j, k such that A[i] + A[j] + A[k] = X
+    7 | for i in range(N-2):
+    8 |     # For each j > i, we look for k > j such that A[j] + A[k] = X - A[i]
+    9 |     # We'll use a set to store elements from i+2 onwards
+   10 |     seen = {}
+   11 |     
+   12 |     # Process from right to left to build the set
+   13 |     for k in range(N-1, i+1, -1):
+   14 |         seen[A[k]] = k
+   15 |     
+   16 |     # Now for each j from i+1 to N-2
+   17 |     for j in range(i+1, N-1):
+   18 |         complement = X - A[i] - A[j]
+   19 |         if complement in seen and seen[complement] > j:
+   20 |             print(i+1, j+1, seen[complement]+1)
+   21 |             found = True
+   22 |             break
+   23 |     
+   24 |     if found:
+   25 |         break
+   26 | 
+   27 | if not found:
+   28 |     print(-1)
+
+--- Concept pass1 [correct=False] ---
+    1 | def main():
+    2 |     # Read input
+    3 |     N, X = map(int, input().split())
+    4 |     A = list(map(int, input().split()))
+    5 |     
+    6 |     # Create a hash map mapping values to list of indices
+    7 |     value_to_indices = {}
+    8 |     for i in range(N):
+    9 |         if A[i] not in value_to_indices:
+   10 |             value_to_indices[A[i]] = []
+   11 |         value_to_indices[A[i]].append(i)
+   12 |     
+   13 |     # Try all pairs (i, j) where i < j
+   14 |     for i in range(N - 2):
+   15 |         for j in range(i + 1, N - 1):
+   16 |             # Calculate what the third element should be
+   17 |             complement = X - A[i] - A[j]
+   18 |             
+   19 |             # Check if complement exists in the array
+   20 |             if complement in value_to_indices:
+   21 |                 # Look for an index k > j such that A[k] = complement
+   22 |                 for k in value_to_indices[complement]:
+   23 |                     if k > j:
+   24 |                         # Found a valid triplet
+   25 |                         print(i + 1, j + 1, k + 1)
+   26 |                         return
+   27 |     
+   28 |     # No triplet found
+   29 |     print(-1)
+   30 | 
+   31 | if __name__ == "__main__":
+   32 |     main()
+
+--- Baseline pass2 [correct=?] ---
+  (no code found)
+
+--- Concept pass2 [correct=?] ---
+    1 | def main():
+    2 |     # Read input
+    3 |     N, X = map(int, input().split())
+    4 |     A = list(map(int, input().split()))
+    5 |     
+    6 |     # Create a hash map mapping values to list of indices
+    7 |     value_to_indices = {}
+    8 |     for i in range(N):
+    9 |         if A[i] not in value_to_indices:
+   10 |             value_to_indices[A[i]] = []
+   11 |         value_to_indices[A[i]].append(i)
+   12 |     
+   13 |     # Try all pairs (i, j) where i < j
+   14 |     for i in range(N - 2):
+   15 |         for j in range(i + 1, N - 1):
+   16 |             # Calculate what the third element should be
+   17 |             complement = X - A[i] - A[j]
+   18 |             
+   19 |             # Check if complement exists in the array
+   20 |             if complement in value_to_indices:
+   21 |                 # Look for an index k > j such that A[k] = complement
+   22 |                 for k in value_to_indices[complement]:
+   23 |                     if k > j:
+   24 |                         # Found a valid triplet (1-indexed)
+   25 |                         print(i + 1, j + 1, k + 1)
+   26 |                         return
+   27 |     
+   28 |     # No triplet found
+   29 |     print(-1)
+   30 | 
+   31 | if __name__ == "__main__":
+   32 |     main()

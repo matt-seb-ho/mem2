@@ -18,6 +18,7 @@ class LcbGroundTruthFeedbackEngine:
     """Per-test-case feedback for LiveCodeBench attempts."""
 
     name = "lcb_gt"
+    DOMAIN_NAME = "code"
 
     def __init__(
         self,

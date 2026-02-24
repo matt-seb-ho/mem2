@@ -40,7 +40,6 @@ class ArcMemoPsMemoryBuilder:
         seed_annotations_file: str | None = None,
         domain: str = "arc",
         max_concepts: int = 0,
-        **kwargs,  # absorb extra keys from config inheritance (e.g. max_entries)
     ):
         self.seed_memory_file = seed_memory_file
         self.seed_annotations_file = seed_annotations_file

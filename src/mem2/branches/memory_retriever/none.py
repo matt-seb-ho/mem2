@@ -20,3 +20,15 @@ class NoneMemoryRetriever:
             retrieved_items=[],
             metadata={"selector_mode": "none"},
         )
+
+    async def async_retrieve(
+        self,
+        *,
+        ctx: RunContext,
+        provider,
+        memory: MemoryState,
+        problem: ProblemSpec,
+        previous_attempts: list[AttemptRecord],
+        selector_model: str = "",
+    ) -> RetrievalBundle:
+        return self.retrieve(ctx, memory, problem, previous_attempts)

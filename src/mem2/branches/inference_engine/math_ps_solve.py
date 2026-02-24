@@ -52,6 +52,7 @@ class MathPsSolveInferenceEngine:
     """
 
     name = "math_ps_solve"
+    DOMAIN_NAME = "math"
 
     def __init__(
         self,
@@ -61,7 +62,6 @@ class MathPsSolveInferenceEngine:
         error_feedback: str = "all",
         num_feedback_passes: int = 1,
         include_past_outcomes: bool = True,
-        **kwargs,  # absorb extra keys from config inheritance (e.g. prompt_options)
     ):
         self.model = model
         self.gen_cfg = gen_cfg or {"n": 1, "temperature": 0.2}

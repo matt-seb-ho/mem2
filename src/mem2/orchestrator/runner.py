@@ -43,7 +43,7 @@ class PipelineRunner:
         self.driver_log_lines: list[str] = []
         self.lockstep_replay = LockstepReplayArtifacts.from_config(config)
         self._reselect_hint_enabled = bool(
-            getattr(self.components.inference_engine, "include_reselected_lessons", False)
+            self.components.inference_engine.include_reselected_lessons
         )
         ok, err = self.retry_policy.is_valid()
         if not ok:
@@ -325,9 +325,12 @@ class PipelineRunner:
                 )
                 for i, md in enumerate(replay_feedback)
             ]
-        prompt_options = getattr(self.components.inference_engine, "prompt_options", None)
-        problem_data_enabled = bool(getattr(prompt_options, "problem_data", None))
-        retriever = self.components.memory_retriever
+        ie_prompt_opts = (
+            self.config.get("components", {})
+            .get("inference_engine", {})
+            .get("prompt_options") or {}
+        )
+        problem_data_enabled = bool(ie_prompt_opts.get("problem_data"))
         if not history and problem_data_enabled:
             retrieval = RetrievalBundle(
                 problem_uid=problem.uid,
@@ -335,10 +338,8 @@ class PipelineRunner:
                 retrieved_items=[],
                 metadata={"selector_mode": "disabled_problem_data"},
             )
-        elif hasattr(retriever, "async_retrieve"):
-            retrieval = None
         else:
-            retrieval = retriever.retrieve(ctx, memory, problem, history)
+            retrieval = None  # deferred to async_retrieve in _run_inference_job
         return {
             "problem": problem,
             "history": history,
@@ -372,22 +373,14 @@ class PipelineRunner:
 
         if retrieval is None:
             retriever = self.components.memory_retriever
-            if hasattr(retriever, "async_retrieve"):
-                retrieval = await retriever.async_retrieve(
-                    ctx=ctx,
-                    provider=self.components.provider,
-                    memory=job["memory_snapshot"],
-                    problem=job["problem"],
-                    previous_attempts=job["history"],
-                    selector_model=str(getattr(self.components.inference_engine, "model", "") or ""),
-                )
-            else:
-                retrieval = retriever.retrieve(
-                    ctx,
-                    job["memory_snapshot"],
-                    job["problem"],
-                    job["history"],
-                )
+            retrieval = await retriever.async_retrieve(
+                ctx=ctx,
+                provider=self.components.provider,
+                memory=job["memory_snapshot"],
+                problem=job["problem"],
+                previous_attempts=job["history"],
+                selector_model=self.components.inference_engine.model,
+            )
             job["retrieval"] = retrieval
 
         if job["is_retry"]:
@@ -615,8 +608,7 @@ class PipelineRunner:
         solved_problems: set[str] = set()
         prompt_fingerprints: list[dict] = []
 
-        if hasattr(self.components.inference_engine, "set_retry_policy"):
-            self.components.inference_engine.set_retry_policy(self.retry_policy)
+        self.components.inference_engine.set_retry_policy(self.retry_policy)
 
         max_passes = self.retry_policy.max_passes
         retry_criterion = self.retry_policy.criterion

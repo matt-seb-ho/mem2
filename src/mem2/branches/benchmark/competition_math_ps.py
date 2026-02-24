@@ -41,6 +41,7 @@ class CompetitionMathPsBenchmarkAdapter:
     """
 
     name = "competition_math_ps"
+    DOMAIN_NAME = "math"
 
     def __init__(
         self,

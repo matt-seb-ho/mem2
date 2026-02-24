@@ -2,6 +2,7 @@ _base_: ../base.yaml
 
 pipeline:
   provider: llmplus_openrouter
+  memory_builder: arcmemo_oe
   memory_retriever: oe_selector
 
 run:

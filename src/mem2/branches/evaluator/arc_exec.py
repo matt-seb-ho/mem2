@@ -13,6 +13,7 @@ from mem2.utils.code_execution import execute_transform, extract_python_block
 
 class ArcExecutionEvaluator:
     name = "arc_exec"
+    DOMAIN_NAME = "arc"
 
     def __init__(self, require_all_tests: bool = True, timeout_s: float = 2.0):
         self.require_all_tests = bool(require_all_tests)

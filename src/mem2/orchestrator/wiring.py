@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import inspect
 from dataclasses import dataclass
 from typing import Any
 
@@ -59,12 +60,56 @@ def _validate_memory_pairing(builder, retriever) -> None:
         )
 
 
+def _validate_domain_components(benchmark, inference_engine, evaluator, feedback_engine) -> None:
+    """Validate that all domain-specific components share the same DOMAIN_NAME."""
+    domains: dict[str, str] = {}
+    for label, comp in [
+        ("benchmark", benchmark),
+        ("inference_engine", inference_engine),
+        ("evaluator", evaluator),
+        ("feedback_engine", feedback_engine),
+    ]:
+        domain = getattr(comp, "DOMAIN_NAME", None)
+        if domain is not None:
+            domains[label] = domain
+    if not domains:
+        return  # backward-compatible: no domain declarations
+    unique_domains = set(domains.values())
+    if len(unique_domains) > 1:
+        details = ", ".join(f"{k}='{v}'" for k, v in sorted(domains.items()))
+        raise ConfigurationError(
+            f"Domain mismatch across pipeline components: {details}. "
+            f"All domain-specific components must share the same DOMAIN_NAME."
+        )
+
+
 def _build_component(registry: dict[str, Any], key: str, cfg: dict[str, Any]) -> Any:
     if key not in registry:
         known = ", ".join(sorted(registry.keys()))
         raise ConfigurationError(f"Unknown component '{key}'. Known: [{known}]")
     cls = registry[key]
-    kwargs = dict(cfg)
+    # Strip None values — YAML null means "unset this inherited key"
+    kwargs = {k: v for k, v in cfg.items() if v is not None}
+    # Validate kwargs against constructor signature
+    sig = inspect.signature(cls.__init__)
+    has_var_keyword = any(
+        p.kind == inspect.Parameter.VAR_KEYWORD
+        for p in sig.parameters.values()
+    )
+    if not has_var_keyword:
+        accepted = {
+            name for name, p in sig.parameters.items()
+            if name != "self" and p.kind in (
+                inspect.Parameter.POSITIONAL_OR_KEYWORD,
+                inspect.Parameter.KEYWORD_ONLY,
+            )
+        }
+        unknown = set(kwargs.keys()) - accepted
+        if unknown:
+            raise ConfigurationError(
+                f"Unknown config params for '{key}': {sorted(unknown)}. "
+                f"Accepted: {sorted(accepted)}"
+            )
     return cls(**kwargs)
 
 
@@ -80,15 +125,21 @@ def resolve_components(config: dict[str, Any]) -> PipelineComponents:
     memory_retriever = _build_component(MEMORY_RETRIEVERS, pipe["memory_retriever"], comp_cfg.get("memory_retriever", {}))
     _validate_memory_pairing(memory_builder, memory_retriever)
 
+    benchmark = _build_component(BENCHMARKS, pipe["benchmark"], comp_cfg.get("benchmark", {}))
+    inference_engine = _build_component(INFERENCE_ENGINES, pipe["inference_engine"], comp_cfg.get("inference_engine", {}))
+    evaluator = _build_component(EVALUATORS, pipe["evaluator"], comp_cfg.get("evaluator", {}))
+    feedback_engine = _build_component(FEEDBACK_ENGINES, pipe["feedback_engine"], comp_cfg.get("feedback_engine", {}))
+    _validate_domain_components(benchmark, inference_engine, evaluator, feedback_engine)
+
     return PipelineComponents(
         task_adapter=_build_component(TASK_ADAPTERS, pipe["task_adapter"], comp_cfg.get("task_adapter", {})),
-        benchmark=_build_component(BENCHMARKS, pipe["benchmark"], comp_cfg.get("benchmark", {})),
+        benchmark=benchmark,
         memory_builder=memory_builder,
         memory_retriever=memory_retriever,
         trajectory_policy=_build_component(TRAJECTORY_POLICIES, pipe["trajectory_policy"], comp_cfg.get("trajectory_policy", {})),
         provider=_build_component(PROVIDERS, pipe["provider"], comp_cfg.get("provider", {})),
-        inference_engine=_build_component(INFERENCE_ENGINES, pipe["inference_engine"], comp_cfg.get("inference_engine", {})),
-        feedback_engine=_build_component(FEEDBACK_ENGINES, pipe["feedback_engine"], comp_cfg.get("feedback_engine", {})),
-        evaluator=_build_component(EVALUATORS, pipe["evaluator"], comp_cfg.get("evaluator", {})),
+        inference_engine=inference_engine,
+        feedback_engine=feedback_engine,
+        evaluator=evaluator,
         artifact_sink=_build_component(ARTIFACT_SINKS, pipe["artifact_sink"], comp_cfg.get("artifact_sink", {})),
     )

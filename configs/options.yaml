@@ -106,7 +106,8 @@ components:
   # ps_selector:
   # memory_retriever:
   #   domain: arc                      # Options: arc, math, code
-  #   prompt_info_file: ''             # precomputed hints JSON (preferred, no LLM)
+  #   selected_concepts_file: ''       # precomputed concept names JSON (preferred, goes through pipeline)
+  #   prompt_info_file: ''             # precomputed rendered hints JSON (legacy, bypasses pipeline)
   #   use_llm_selector: true           # inline LLM selection (legacy)
   #   selector_model: ''               # model for inline selection
   #   selector_gen_cfg: null           # e.g. {n: 1, temperature: 0.0, max_tokens: 16384}

@@ -14,6 +14,7 @@ class MathPsGroundTruthFeedbackEngine:
     """
 
     name = "math_ps_gt"
+    DOMAIN_NAME = "math"
 
     def __init__(
         self,
