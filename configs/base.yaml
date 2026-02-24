@@ -3,6 +3,7 @@ pipeline:
   benchmark: arc_agi
   memory_builder: none
   memory_retriever: none
+  router: none
   trajectory_policy: single_path
   provider: mock
   inference_engine: python_transform_retry

@@ -348,7 +348,9 @@ reused by any retriever regardless of memory format.
 | `max_frequency` | 0.0 | Drop concepts selected in more than this fraction of problems. 0 = disabled. Requires `concept_frequency_file`. |
 | `max_concepts_per_problem` | 0 | Cap the number of selected concepts per problem. 0 = no limit. |
 | `routing_strategy` | "none" | Per-problem routing gate: `none` (always include hints), `selection_confidence` (skip if all selected concepts are high-frequency), `hint_length` (skip if hint exceeds `routing_max_hint_chars`). |
-| `routing_max_hint_chars` | 0 | Max hint chars for `hint_length` routing strategy. 0 = disabled. |
+| `routing_max_hint_chars` | 0 | Max hint chars for routing. Skip hints exceeding this char count. 0 = disabled. Works as composite threshold (AND logic with other gates). |
+| `routing_max_concept_count` | 0 | Skip hints when the number of post-filter selected concepts exceeds this. 0 = disabled. Composite threshold (AND logic). |
+| `routing_max_pre_filter_count` | 0 | Skip hints when the pre-filter concept count exceeds this. 0 = disabled. Composite threshold (AND logic). |
 | `concept_frequency_file` | "" | Path to JSON mapping concept names to selection fractions. Produced by `scripts/compute_concept_frequencies.py`. |
 
 **Prompt templates by domain** (in `src/mem2/concepts/prompts/`):
@@ -414,6 +416,92 @@ different lessons based on what went wrong.
 Mismatched combinations (e.g., `arcmemo_ps` + `oe_topk`) raise
 `ConfigurationError` at startup. Builders declare `SCHEMA_NAME`, retrievers
 declare `COMPATIBLE_SCHEMAS`.
+
+---
+
+## Router
+
+**Protocol**: `Router` — `route()`.
+
+Pipeline-level gate that decides whether to keep or discard retrieval hints
+before they reach the inference engine. Inserted between memory retrieval and
+inference in `runner.py`. Returns a `RetrievalBundle` — either passed through
+or with `hint_text=None` and routing metadata added.
+
+The router is optional: defaults to `none` (pass-through) when `pipeline.router`
+is absent from the config. When using a pipeline router, set
+`routing_strategy: none` in `ps_selector` to avoid double-gating.
+
+### none — Pass-through (default)
+
+Returns the `RetrievalBundle` unchanged. No constructor params.
+
+---
+
+### threshold — Rule-based composite gating
+
+Wraps the existing `RetrievalRouter` from `src/mem2/retrieval/routers.py` as a
+pipeline-level component. Uses AND logic — any threshold exceeded nulls the hint.
+
+| Param | Default | Description |
+|-------|---------|-------------|
+| `strategy` | "none" | Routing strategy: `none`, `selection_confidence`, `hint_length`. |
+| `frequency_threshold` | 0.5 | For `selection_confidence`: concepts above this are generic. |
+| `max_hint_chars` | 0 | Skip hints exceeding this char count. 0 = disabled. |
+| `max_concept_count` | 0 | Skip if selected concept count exceeds this. 0 = disabled. |
+| `max_pre_filter_count` | 0 | Skip if pre-filter concept count exceeds this. 0 = disabled. |
+| `concept_frequency_file` | "" | Path to concept frequency JSON. |
+
+Reads `selected_names` and `pre_filter_count` from `retrieval.metadata`.
+
+---
+
+### llm — LLM-based per-item filtering
+
+Presents all retrieved hints as a numbered list and asks the LLM which ones
+are relevant to the problem. One LLM call per problem. Fail-open: on parse
+failure, keeps all items.
+
+The LLM response is parsed for numbers (e.g. "1, 3, 5") identifying relevant
+items. "NONE" drops all hints. Unparseable responses keep everything.
+
+| Param | Default | Description |
+|-------|---------|-------------|
+| `model` | "" | Model identifier for the routing LLM. |
+| `gen_cfg` | `{n:1, temperature:0, max_tokens:256}` | Generation config. |
+| `domain` | "arc" | Domain for problem text extraction: `arc`, `math`, `code`. |
+
+Adds `routing_model`, `routing_prompt`, `routing_completion`,
+`routing_included`, `routing_included_items`, `routing_excluded_items` to
+metadata. On parse failure, also adds `routing_parse_failure: true`.
+
+---
+
+### nli — Cross-encoder NLI per-item filtering
+
+Scores entailment between problem text and each retrieved hint **individually**,
+then keeps only items above the threshold. This is a "which hints to keep"
+filter, not a binary yes/no gate.
+
+Per-item text extraction:
+- **oe_selector** items: uses the `hint` field directly.
+- **ps_selector** items: splits `hint_text` on `- concept: {name}` boundaries
+  to recover per-concept blocks.
+
+Surviving items are reassembled into a new `hint_text`. Metadata records
+per-item scores (`routing_nli_scores`), included/excluded item lists, and
+updates `selected_names` / `selected_count` for ps_selector bundles.
+
+| Param | Default | Description |
+|-------|---------|-------------|
+| `model_name` | "cross-encoder/nli-deberta-v3-base" | Cross-encoder model. |
+| `entailment_threshold` | 0.5 | Minimum entailment probability to keep an item. |
+| `domain` | "arc" | Domain for problem text extraction: `arc`, `math`, `code`. |
+| `device` | "cuda" | Device for cross-encoder inference. |
+
+Cross-encoder is loaded lazily on first call. Adds `routing_nli_scores` (dict),
+`routing_included_items`, `routing_excluded_items`, `routing_included` to
+metadata.
 
 ---
 
