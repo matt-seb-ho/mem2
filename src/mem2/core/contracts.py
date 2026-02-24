@@ -161,6 +161,19 @@ class Evaluator(Protocol):
     def aggregate(self, ctx: RunContext, records: list[EvalRecord]) -> dict[str, Any]: ...
 
 
+class Router(Protocol):
+    name: str
+
+    async def route(
+        self,
+        *,
+        ctx: RunContext,
+        provider: ProviderClient,
+        problem: ProblemSpec,
+        retrieval: RetrievalBundle,
+    ) -> RetrievalBundle: ...
+
+
 class ArtifactSink(Protocol):
     name: str
 

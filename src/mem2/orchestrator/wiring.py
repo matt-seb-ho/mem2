@@ -17,6 +17,7 @@ from mem2.core.contracts import (
     MemoryBuilder,
     MemoryRetriever,
     ProviderClient,
+    Router,
     TaskAdapter,
     TrajectoryPolicy,
 )
@@ -30,6 +31,7 @@ from mem2.registry.memory_builder import MEMORY_BUILDERS
 from mem2.registry.memory_retriever import MEMORY_RETRIEVERS
 from mem2.registry.provider import PROVIDERS
 from mem2.registry.task_adapter import TASK_ADAPTERS
+from mem2.registry.router import ROUTERS
 from mem2.registry.trajectory_policy import TRAJECTORY_POLICIES
 
 
@@ -39,6 +41,7 @@ class PipelineComponents:
     benchmark: BenchmarkAdapter
     memory_builder: MemoryBuilder
     memory_retriever: MemoryRetriever
+    router: Router
     trajectory_policy: TrajectoryPolicy
     provider: ProviderClient
     inference_engine: InferenceEngine
@@ -131,11 +134,14 @@ def resolve_components(config: dict[str, Any]) -> PipelineComponents:
     feedback_engine = _build_component(FEEDBACK_ENGINES, pipe["feedback_engine"], comp_cfg.get("feedback_engine", {}))
     _validate_domain_components(benchmark, inference_engine, evaluator, feedback_engine)
 
+    router = _build_component(ROUTERS, pipe.get("router", "none"), comp_cfg.get("router", {}))
+
     return PipelineComponents(
         task_adapter=_build_component(TASK_ADAPTERS, pipe["task_adapter"], comp_cfg.get("task_adapter", {})),
         benchmark=benchmark,
         memory_builder=memory_builder,
         memory_retriever=memory_retriever,
+        router=router,
         trajectory_policy=_build_component(TRAJECTORY_POLICIES, pipe["trajectory_policy"], comp_cfg.get("trajectory_policy", {})),
         provider=_build_component(PROVIDERS, pipe["provider"], comp_cfg.get("provider", {})),
         inference_engine=inference_engine,

@@ -383,6 +383,14 @@ class PipelineRunner:
             )
             job["retrieval"] = retrieval
 
+        retrieval = await self.components.router.route(
+            ctx=ctx,
+            provider=self.components.provider,
+            problem=job["problem"],
+            retrieval=retrieval,
+        )
+        job["retrieval"] = retrieval
+
         if job["is_retry"]:
             return await self.components.inference_engine.retry_attempt(
                 ctx=ctx,
