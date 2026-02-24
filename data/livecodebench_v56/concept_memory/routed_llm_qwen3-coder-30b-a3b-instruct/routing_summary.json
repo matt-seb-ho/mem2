@@ -1,0 +1,24 @@
+{
+  "router": "llm",
+  "domain": "code",
+  "render_mode": "full",
+  "total_problems": 96,
+  "problems_with_hints": 96,
+  "problems_dropped_all": 0,
+  "elapsed_seconds": 18.9,
+  "original_concepts_per_problem": {
+    "min": 2,
+    "max": 8,
+    "mean": 4.98
+  },
+  "filtered_concepts_per_problem": {
+    "min": 1,
+    "max": 7,
+    "mean": 3.48
+  },
+  "total_items_included": 334,
+  "total_items_excluded": 144,
+  "include_rate": 0.699,
+  "llm_model": "qwen/qwen3-coder-30b-a3b-instruct",
+  "parse_failures": 0
+}

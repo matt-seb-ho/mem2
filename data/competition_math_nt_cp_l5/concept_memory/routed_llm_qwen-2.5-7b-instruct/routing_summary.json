@@ -1,0 +1,24 @@
+{
+  "router": "llm",
+  "domain": "math",
+  "render_mode": "full",
+  "total_problems": 100,
+  "problems_with_hints": 78,
+  "problems_dropped_all": 22,
+  "elapsed_seconds": 11.5,
+  "original_concepts_per_problem": {
+    "min": 1,
+    "max": 8,
+    "mean": 4.64
+  },
+  "filtered_concepts_per_problem": {
+    "min": 0,
+    "max": 5,
+    "mean": 1.98
+  },
+  "total_items_included": 198,
+  "total_items_excluded": 266,
+  "include_rate": 0.427,
+  "llm_model": "qwen/qwen-2.5-7b-instruct",
+  "parse_failures": 0
+}

@@ -1,0 +1,378 @@
+{
+  "cmath_10546": [],
+  "cmath_10571": [
+    "GCD Pair Parametrization"
+  ],
+  "cmath_10620": [
+    "Odd Integer Parametrization",
+    "GCD Computation"
+  ],
+  "cmath_10622": [
+    "Divisor Count Structure",
+    "Constructive Enumeration",
+    "Exponential Growth Bounding"
+  ],
+  "cmath_10646": [
+    "Prime Factorization",
+    "GCD Computation"
+  ],
+  "cmath_10677": [],
+  "cmath_10753": [
+    "GCD Pair Parametrization",
+    "Coprimality Check"
+  ],
+  "cmath_10821": [
+    "Linear Congruence Resolution",
+    "Extended Euclidean Algorithm",
+    "Arithmetic Progression Minimum Bound"
+  ],
+  "cmath_10854": [
+    "Modular Arithmetic",
+    "Divisibility Substitution"
+  ],
+  "cmath_10984": [
+    "Modular Arithmetic",
+    "Algebraic Substitution",
+    "Divisor Enumeration",
+    "Direct Enumeration"
+  ],
+  "cmath_10994": [],
+  "cmath_10997": [
+    "Base-b Polynomial Representation",
+    "Modular Arithmetic"
+  ],
+  "cmath_11021": [
+    "Binary-to-Base-k Digit Mapping",
+    "Digit Decomposition"
+  ],
+  "cmath_11032": [
+    "Prime Factorization",
+    "Valuation Analysis",
+    "Summation of Distinct Values"
+  ],
+  "cmath_11038": [
+    "Prime Factorization",
+    "Iterative Accumulation",
+    "Summation of Distinct Values"
+  ],
+  "cmath_1803": [
+    "Reverse Search for Maximum",
+    "Constraint-Ordered Counting"
+  ],
+  "cmath_1817": [
+    "Positional Digit Counting",
+    "Multiplication Principle",
+    "Constraint-Ordered Counting"
+  ],
+  "cmath_1882": [
+    "Graph Modeling",
+    "Conditional Counting"
+  ],
+  "cmath_1923": [
+    "Positional Digit Counting",
+    "Complementary Counting",
+    "Constraint-Ordered Counting"
+  ],
+  "cmath_1937": [
+    "Probability as Ratio of Counts",
+    "Multiplication Principle",
+    "Constraint-Ordered Counting"
+  ],
+  "cmath_1941": [
+    "Exponential Growth Bounding",
+    "Set Deduplication"
+  ],
+  "cmath_2000": [
+    "Multiplication Principle",
+    "Conditional Counting"
+  ],
+  "cmath_2078": [
+    "Linear Recurrence Counting",
+    "Independent Event Probability Product"
+  ],
+  "cmath_2084": [],
+  "cmath_2092": [
+    "Probability as Ratio of Counts",
+    "Conditional Counting",
+    "Multiplication Principle"
+  ],
+  "cmath_2096": [
+    "Linearity of Expectation",
+    "Ordered Pair Symmetry Counting",
+    "Sum of Squares Formula",
+    "Multiplication Principle",
+    "GCD Computation"
+  ],
+  "cmath_2098": [
+    "Cartesian Product Enumeration",
+    "Multiplication Principle",
+    "Direct Enumeration"
+  ],
+  "cmath_2103": [],
+  "cmath_2106": [
+    "Probability as Ratio of Counts",
+    "Multiplication Principle"
+  ],
+  "cmath_2115": [
+    "Probability as Ratio of Counts",
+    "Grid Dynamic Programming",
+    "Complementary Counting"
+  ],
+  "cmath_2116": [
+    "Complementary Probability",
+    "Probability as Ratio of Counts",
+    "Coprimality Check"
+  ],
+  "cmath_2119": [
+    "Multiplication Principle",
+    "Complementary Counting",
+    "Modular Arithmetic"
+  ],
+  "cmath_2123": [],
+  "cmath_2124": [
+    "Coprimality Check",
+    "Multiplication Principle",
+    "Divisibility Counting Formula"
+  ],
+  "cmath_2129": [
+    "Probability as Ratio of Counts",
+    "Multinomial Coefficient"
+  ],
+  "cmath_2131": [
+    "Linear Recurrence Counting",
+    "Multiplication Principle"
+  ],
+  "cmath_2132": [],
+  "cmath_2144": [
+    "Multiplication Principle",
+    "Modular Arithmetic"
+  ],
+  "cmath_2175": [
+    "Gap Method",
+    "Conditional Counting",
+    "Iterative Accumulation",
+    "Fixed Element Counting"
+  ],
+  "cmath_2180": [],
+  "cmath_2183": [
+    "Multiplication Principle"
+  ],
+  "cmath_2195": [
+    "Complementary Counting",
+    "Linear Recurrence Counting",
+    "Multiplication Principle",
+    "Direct Enumeration"
+  ],
+  "cmath_2238": [
+    "Multinomial Coefficient",
+    "Equating Coefficients"
+  ],
+  "cmath_2271": [],
+  "cmath_2305": [
+    "Pairwise Combination Formula",
+    "Conditional Counting"
+  ],
+  "cmath_2340": [
+    "Multiplication Principle"
+  ],
+  "cmath_2364": [
+    "Positional Digit Counting",
+    "Fixed Element Counting"
+  ],
+  "cmath_2373": [
+    "Set Partition Counting",
+    "Bell Number"
+  ],
+  "cmath_2444": [
+    "Positional Digit Counting",
+    "Direct Enumeration"
+  ],
+  "cmath_2460": [
+    "Set Partition Counting",
+    "Stirling Numbers of the Second Kind"
+  ],
+  "cmath_2481": [],
+  "cmath_2490": [
+    "Multiplication Principle",
+    "Conditional Counting"
+  ],
+  "cmath_4706": [
+    "Modular Arithmetic",
+    "Modular Power Cycle"
+  ],
+  "cmath_4730": [],
+  "cmath_4744": [
+    "base_digit_range_formula",
+    "Range Cardinality",
+    "Summation of Distinct Values",
+    "arithmetic_progression_mean"
+  ],
+  "cmath_4749": [
+    "GCD Computation",
+    "Polynomial Divisibility Reduction",
+    "Divisibility Substitution"
+  ],
+  "cmath_4758": [
+    "Modular Arithmetic",
+    "Linear Congruence Resolution",
+    "Reverse Search for Maximum"
+  ],
+  "cmath_4777": [
+    "Divisor Enumeration",
+    "Direct Enumeration",
+    "Prime Factorization"
+  ],
+  "cmath_4780": [],
+  "cmath_4786": [],
+  "cmath_4788": [],
+  "cmath_4828": [],
+  "cmath_4843": [
+    "Reverse Search for Maximum",
+    "Constraint-Ordered Counting"
+  ],
+  "cmath_4881": [
+    "Perfect Power Divisor Count"
+  ],
+  "cmath_4897": [],
+  "cmath_5024": [
+    "Legendre's Formula",
+    "Divisor Counting Formula"
+  ],
+  "cmath_5044": [
+    "Conditional Counting",
+    "Divisibility Counting Formula",
+    "Direct Enumeration"
+  ],
+  "cmath_5071": [
+    "Direct Enumeration",
+    "Conditional Counting"
+  ],
+  "cmath_5091": [
+    "Product of Divisors Formula",
+    "Proper Divisor Product Relation",
+    "Divisor Count Structure",
+    "Direct Enumeration",
+    "Conditional Counting"
+  ],
+  "cmath_5157": [],
+  "cmath_5170": [
+    "Conditional Counting",
+    "Coprimality Check"
+  ],
+  "cmath_5193": [
+    "Modular Arithmetic",
+    "Consecutive Digit Sum Relation",
+    "Conditional Counting"
+  ],
+  "cmath_5209": [
+    "Base-b Polynomial Representation",
+    "Direct Enumeration"
+  ],
+  "cmath_5237": [
+    "arithmetic_progression_mean",
+    "Divisor Enumeration"
+  ],
+  "cmath_5267": [
+    "Divisor Counting Formula",
+    "Divisor Count Structure",
+    "Constructive Enumeration"
+  ],
+  "cmath_5273": [
+    "Base-b Polynomial Representation",
+    "Range Cardinality",
+    "Set Deduplication"
+  ],
+  "cmath_5289": [
+    "Prime Factorization",
+    "Legendre's Formula",
+    "Iterative Accumulation",
+    "Modular Arithmetic"
+  ],
+  "cmath_5307": [],
+  "cmath_5310": [
+    "Modular Arithmetic",
+    "Modular Power Cycle",
+    "Summation of Distinct Values",
+    "Direct Enumeration"
+  ],
+  "cmath_5315": [
+    "Modular Arithmetic",
+    "Incremental Search for Minimum"
+  ],
+  "cmath_5322": [],
+  "cmath_5327": [],
+  "cmath_5331": [
+    "Algebraic Substitution",
+    "Exponential Growth Bounding"
+  ],
+  "cmath_5333": [],
+  "cmath_5335": [
+    "Prime Factorization",
+    "Divisor Counting Formula",
+    "Divisor Count Structure",
+    "Valuation Analysis"
+  ],
+  "cmath_5336": [
+    "Direct Enumeration",
+    "Summation of Distinct Values"
+  ],
+  "cmath_5338": [],
+  "cmath_5345": [
+    "Modular Arithmetic",
+    "Conditional Counting",
+    "Divisibility Counting Formula"
+  ],
+  "cmath_5347": [
+    "Fixed Divisor Determination",
+    "GCD Computation"
+  ],
+  "cmath_5353": [
+    "Leading Digit via Logarithmic Fractional Part",
+    "Conditional Counting"
+  ],
+  "cmath_5354": [
+    "Divisor Counting Formula",
+    "Modular Arithmetic",
+    "Terminating Decimal Criterion"
+  ],
+  "cmath_5375": [
+    "base_digit_range_formula",
+    "GCD Pair Parametrization",
+    "Algebraic Substitution",
+    "Base-b Digit Count Formula"
+  ],
+  "cmath_5403": [
+    "GCD Pair Parametrization"
+  ],
+  "cmath_5414": [
+    "Base-b Polynomial Representation",
+    "Valuation Analysis"
+  ],
+  "cmath_5426": [
+    "Base-b Polynomial Representation",
+    "GCD Computation"
+  ],
+  "cmath_5439": [
+    "Terminating Decimal Criterion",
+    "Divisibility Counting Formula"
+  ],
+  "cmath_5442": [
+    "Base-b Polynomial Representation",
+    "Integer Base Enumeration",
+    "Direct Enumeration",
+    "Algebraic Substitution"
+  ],
+  "cmath_8695": [
+    "Direct Enumeration",
+    "Multiplication Principle"
+  ],
+  "cmath_8980": [
+    "Complementary Counting",
+    "Conditional Counting"
+  ],
+  "cmath_9002": [
+    "Set Partition Counting",
+    "Multiplication Principle",
+    "Direct Enumeration"
+  ]
+}
