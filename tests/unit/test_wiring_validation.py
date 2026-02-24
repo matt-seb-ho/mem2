@@ -296,3 +296,35 @@ class TestBuildComponentValidation:
             {"timeout_s": 30.0, "require_all_tests": None},
         )
         assert comp.timeout_s == 30.0
+
+
+# ---------------------------------------------------------------------------
+# Router default wiring
+# ---------------------------------------------------------------------------
+class TestRouterDefaultWiring:
+    def test_router_defaults_to_none_without_key(self):
+        """resolve_components defaults to router='none' when pipeline has no router key."""
+        from mem2.orchestrator.wiring import resolve_components
+
+        config = {
+            "pipeline": {
+                "task_adapter": "arc_grid",
+                "benchmark": "arc_agi",
+                "memory_builder": "none",
+                "memory_retriever": "none",
+                "trajectory_policy": "single_path",
+                "provider": "mock",
+                "inference_engine": "python_transform_retry",
+                "feedback_engine": "gt_check",
+                "evaluator": "arc_exec",
+                "artifact_sink": "json_local",
+            },
+            "components": {
+                "task_adapter": {"task_name": "arc_grid"},
+                "benchmark": {"data_root": "/tmp/fake", "limit": 1},
+                "inference_engine": {"model": "mock"},
+                "provider": {"profile_name": "mock"},
+            },
+        }
+        components = resolve_components(config)
+        assert components.router.name == "none"

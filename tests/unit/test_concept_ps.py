@@ -350,7 +350,7 @@ class TestPsSelectorRetriever:
             result = retriever._router.should_include(
                 ["tiling", "color_region"], "some hint text"
             )
-            assert result is False
+            assert result.include is False
 
     # ------------------------------------------------------------------ #
     #  Schema validation tests                                             #
