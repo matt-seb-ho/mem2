@@ -1,0 +1,18 @@
+_base_: concept_math_eval.yaml
+run:
+  run_type: concept_math_opt_countgate
+components:
+  memory_builder:
+    seed_memory_file: data/competition_math_nt_cp_l5/concept_memory/compressed_v1.json
+    domain: math
+    max_concepts: 500
+  memory_retriever:
+    domain: math
+    selected_concepts_file: data/competition_math_nt_cp_l5/concept_memory/selection_v1/selected_concepts.json
+    prompt_info_file: data/competition_math_nt_cp_l5/concept_memory/selection_v1/prompt_info.json
+    render_mode: cues_only
+    max_frequency: 0.3
+    max_concepts_per_problem: 3
+    concept_frequency_file: data/competition_math_nt_cp_l5/concept_memory/selection_v1/concept_frequencies.json
+    routing_strategy: selection_confidence
+    routing_max_concept_count: 4
