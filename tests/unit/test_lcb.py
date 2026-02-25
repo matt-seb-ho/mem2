@@ -200,6 +200,7 @@ class TestLcbFeedback:
         assert records[0].metadata["is_correct"] is True
 
     def test_failed_tests_feedback(self):
+        """Only public (is_train=True) test failures are exposed."""
         from mem2.branches.feedback_engine.lcb_gt import LcbGroundTruthFeedbackEngine
 
         engine = LcbGroundTruthFeedbackEngine()
@@ -209,8 +210,9 @@ class TestLcbFeedback:
             problem_uid="lcb_0", attempt_idx=0, is_correct=False,
             train_details=[],
             test_details=[
-                {"correct": True, "pair_idx": 0},
-                {"correct": False, "pair_idx": 1, "output": "999", "expected": "30"},
+                {"correct": True, "pair_idx": 0, "is_train": True},
+                {"correct": False, "pair_idx": 1, "output": "999", "expected": "30", "is_train": True},
+                {"correct": False, "pair_idx": 2, "output": "0", "expected": "42", "is_train": False},
             ],
             metadata={"parsing_error": None},
         )
@@ -220,9 +222,38 @@ class TestLcbFeedback:
         ))
         fb = records[0]
         assert fb.metadata["is_correct"] is False
+        # Only the public test failure is exposed
         assert len(fb.metadata["test_failures"]) == 1
         assert "999" in fb.content
         assert "30" in fb.content
+        # Private test failure is NOT exposed
+        assert "42" not in fb.content
+
+    def test_private_only_failure_feedback(self):
+        """When only private tests fail, no details are leaked."""
+        from mem2.branches.feedback_engine.lcb_gt import LcbGroundTruthFeedbackEngine
+
+        engine = LcbGroundTruthFeedbackEngine()
+        problem = _lcb_problem()
+        attempt = _attempt("lcb_0", "code")
+        eval_rec = EvalRecord(
+            problem_uid="lcb_0", attempt_idx=0, is_correct=False,
+            train_details=[],
+            test_details=[
+                {"correct": True, "pair_idx": 0, "is_train": True},
+                {"correct": False, "pair_idx": 1, "output": "0", "expected": "42", "is_train": False},
+            ],
+            metadata={"parsing_error": None},
+        )
+        records = self._run(engine.generate(
+            ctx=_ctx(), provider=None, problem=problem,
+            attempts=[attempt], eval_records=[eval_rec],
+        ))
+        fb = records[0]
+        assert fb.metadata["is_correct"] is False
+        assert len(fb.metadata["test_failures"]) == 0
+        assert "hidden tests failed" in fb.content
+        assert "42" not in fb.content
 
     def test_parsing_error_feedback(self):
         from mem2.branches.feedback_engine.lcb_gt import LcbGroundTruthFeedbackEngine

@@ -209,6 +209,7 @@ class TestMathPsFeedback:
         assert records[0].metadata["is_correct"] is True
 
     def test_wrong_answer_feedback(self):
+        """Wrong answer should say 'Incorrect' without leaking the expected answer."""
         from mem2.branches.feedback_engine.math_ps_gt import MathPsGroundTruthFeedbackEngine
 
         engine = MathPsGroundTruthFeedbackEngine()
@@ -226,9 +227,10 @@ class TestMathPsFeedback:
         ))
         fb = records[0]
         assert fb.metadata["is_correct"] is False
-        assert len(fb.metadata["mismatches"]) == 1
-        assert "99" in fb.content
-        assert "5" in fb.content
+        assert "Incorrect" in fb.content
+        # Must NOT leak the expected answer or model output
+        assert "5" not in fb.content
+        assert "99" not in fb.content
 
     def test_parsing_error_feedback(self):
         from mem2.branches.feedback_engine.math_ps_gt import MathPsGroundTruthFeedbackEngine
