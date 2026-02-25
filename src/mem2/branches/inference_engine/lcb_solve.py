@@ -78,6 +78,7 @@ class LcbSolveInferenceEngine:
         model: str = "",
         gen_cfg: dict | None = None,
         include_reselected_lessons: bool = False,
+        include_initial_hints: bool = True,
         error_feedback: str = "all",
         num_feedback_passes: int = 1,
         include_past_outcomes: bool = True,
@@ -85,6 +86,7 @@ class LcbSolveInferenceEngine:
         self.model = model
         self.gen_cfg = gen_cfg or {"n": 1, "temperature": 0.2}
         self.include_reselected_lessons = bool(include_reselected_lessons)
+        self.include_initial_hints = bool(include_initial_hints)
         self.error_feedback = str(error_feedback)
         self.num_feedback_passes = int(num_feedback_passes)
         self.include_past_outcomes = bool(include_past_outcomes)
@@ -113,7 +115,7 @@ class LcbSolveInferenceEngine:
             starter_code_section=starter_code_section,
         )
 
-        if retrieval and retrieval.hint_text:
+        if self.include_initial_hints and retrieval and retrieval.hint_text:
             prompt += "\n" + LCB_HINT_TEMPLATE.format(hints=retrieval.hint_text)
 
         return prompt

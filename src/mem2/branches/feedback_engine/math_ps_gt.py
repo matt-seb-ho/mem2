@@ -9,7 +9,7 @@ class MathPsGroundTruthFeedbackEngine:
     Produces structured feedback from eval records:
     - Parsing errors → "No valid code block found"
     - Execution errors → error message
-    - Wrong answer → "Your code returned X, expected Y"
+    - Wrong answer → "Incorrect" (no ground-truth leak)
     - Correct → positive message
     """
 
@@ -33,7 +33,6 @@ class MathPsGroundTruthFeedbackEngine:
         eval_records: list[EvalRecord] | None,
     ) -> list[FeedbackRecord]:
         eval_records = eval_records or []
-        expected = problem.metadata.get("answer_int")
         out: list[FeedbackRecord] = []
 
         for idx, att in enumerate(attempts):
@@ -43,13 +42,11 @@ class MathPsGroundTruthFeedbackEngine:
             if is_correct:
                 content = self.positive_msg
                 errors: list[str] = []
-                mismatches: list[dict] = []
             elif rec is not None:
-                errors, mismatches = self._extract_outcomes(rec, expected)
-                content = self._format_feedback(errors, mismatches)
+                errors = self._extract_errors(rec)
+                content = self._format_feedback(errors)
             else:
                 errors = []
-                mismatches = []
                 content = self.negative_msg
 
             out.append(FeedbackRecord(
@@ -60,55 +57,34 @@ class MathPsGroundTruthFeedbackEngine:
                 metadata={
                     "is_correct": is_correct,
                     "errors": errors,
-                    "mismatches": mismatches,
                 },
             ))
         return out
 
     @staticmethod
-    def _extract_outcomes(
-        rec: EvalRecord, expected: int | None,
-    ) -> tuple[list[str], list[dict]]:
+    def _extract_errors(rec: EvalRecord) -> list[str]:
+        """Extract only parsing/execution errors. No ground-truth leak."""
         errors: list[str] = []
-        mismatches: list[dict] = []
 
         parsing_error = rec.metadata.get("parsing_error")
         if parsing_error:
             errors.append(str(parsing_error))
-            return errors, mismatches
+            return errors
 
         exec_error = rec.metadata.get("exec_error")
         if exec_error:
             errors.append(str(exec_error))
-            return errors, mismatches
+            return errors
 
-        # Wrong answer
-        for detail in rec.test_details:
-            if detail.get("correct"):
-                continue
-            err = detail.get("error")
-            if err:
-                errors.append(str(err))
-            else:
-                mismatches.append({
-                    "output": detail.get("output"),
-                    "expected": detail.get("expected", expected),
-                })
-        return errors, mismatches
+        # Wrong answer — no details, just "Incorrect"
+        return errors
 
     @staticmethod
-    def _format_feedback(errors: list[str], mismatches: list[dict]) -> str:
+    def _format_feedback(errors: list[str]) -> str:
         sections: list[str] = []
         if errors:
             sections.append("**Execution / Parsing Errors**")
             sections.extend(f"- {e}" for e in errors)
-        if mismatches:
-            sections.append("**Wrong Answer**")
-            for m in mismatches:
-                sections.append(
-                    f"- Your code returned {m.get('output')}, "
-                    f"but the expected answer is {m.get('expected')}"
-                )
-        if not sections:
+        else:
             sections.append("Incorrect")
         return "\n".join(sections)

@@ -1,6 +1,7 @@
 """Ground-truth feedback engine for LiveCodeBench.
 
-Produces per-test-case feedback showing which tests passed/failed.
+Produces per-test-case feedback showing which *public* tests passed/failed.
+Private test results are not exposed to avoid ground-truth leakage.
 """
 
 from __future__ import annotations
@@ -48,8 +49,8 @@ class LcbGroundTruthFeedbackEngine:
                 errors: list[str] = []
                 test_failures: list[dict] = []
             elif rec is not None:
-                errors, test_failures = self._extract_outcomes(rec)
-                content = self._format_feedback(errors, test_failures, rec.test_details)
+                errors, test_failures, pub_passed, pub_total = self._extract_outcomes(rec)
+                content = self._format_feedback(errors, test_failures, pub_passed, pub_total)
             else:
                 errors = []
                 test_failures = []
@@ -71,18 +72,28 @@ class LcbGroundTruthFeedbackEngine:
     @staticmethod
     def _extract_outcomes(
         rec: EvalRecord,
-    ) -> tuple[list[str], list[dict]]:
-        """Extract errors and test failures from eval record."""
+    ) -> tuple[list[str], list[dict], int, int]:
+        """Extract errors and test failures from public tests only.
+
+        Private test results are withheld to avoid ground-truth leakage.
+        Returns (errors, test_failures, public_passed, public_total).
+        """
         errors: list[str] = []
         test_failures: list[dict] = []
 
         parsing_error = rec.metadata.get("parsing_error")
         if parsing_error:
             errors.append(str(parsing_error))
-            return errors, test_failures
+            return errors, test_failures, 0, 0
 
+        public_total = 0
+        public_passed = 0
         for detail in rec.test_details:
+            if not detail.get("is_train", False):
+                continue  # skip private tests
+            public_total += 1
             if detail.get("correct"):
+                public_passed += 1
                 continue
             err = detail.get("error")
             if err:
@@ -94,23 +105,23 @@ class LcbGroundTruthFeedbackEngine:
                     "actual": detail.get("output", ""),
                 })
 
-        return errors, test_failures
+        return errors, test_failures, public_passed, public_total
 
     @staticmethod
     def _format_feedback(
         errors: list[str],
         test_failures: list[dict],
-        test_details: list[dict],
+        public_passed: int,
+        public_total: int,
     ) -> str:
-        total = len(test_details)
-        passed = sum(1 for d in test_details if d.get("correct"))
-
         sections: list[str] = []
         if errors:
             sections.append("**Execution / Parsing Errors**")
             sections.extend(f"- {e}" for e in errors)
         if test_failures:
-            sections.append(f"**Failed Test Cases** ({passed}/{total} passed)")
+            sections.append(
+                f"**Failed Example Test Cases** ({public_passed}/{public_total} passed)"
+            )
             for tf in test_failures:
                 sections.append(
                     f"- Test {tf.get('test_idx', '?')}: "
@@ -118,5 +129,11 @@ class LcbGroundTruthFeedbackEngine:
                     f"got {tf.get('actual', '?')!r}"
                 )
         if not sections:
-            sections.append(f"Incorrect ({passed}/{total} tests passed)")
+            if public_total > 0:
+                sections.append(
+                    f"Example tests passed ({public_passed}/{public_total}), "
+                    "but some hidden tests failed"
+                )
+            else:
+                sections.append("Incorrect")
         return "\n".join(sections)

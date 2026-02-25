@@ -59,6 +59,7 @@ class MathPsSolveInferenceEngine:
         model: str = "",
         gen_cfg: dict | None = None,
         include_reselected_lessons: bool = False,
+        include_initial_hints: bool = True,
         error_feedback: str = "all",
         num_feedback_passes: int = 1,
         include_past_outcomes: bool = True,
@@ -66,6 +67,7 @@ class MathPsSolveInferenceEngine:
         self.model = model
         self.gen_cfg = gen_cfg or {"n": 1, "temperature": 0.2}
         self.include_reselected_lessons = bool(include_reselected_lessons)
+        self.include_initial_hints = bool(include_initial_hints)
         self.error_feedback = str(error_feedback)
         self.num_feedback_passes = int(num_feedback_passes)
         self.include_past_outcomes = bool(include_past_outcomes)
@@ -83,7 +85,7 @@ class MathPsSolveInferenceEngine:
         problem_text = problem.metadata.get("problem_text", "")
         prompt = MATH_PS_INITIAL_TEMPLATE.format(problem_text=problem_text)
 
-        if retrieval and retrieval.hint_text:
+        if self.include_initial_hints and retrieval and retrieval.hint_text:
             prompt += "\n" + MATH_PS_HINT_TEMPLATE.format(hints=retrieval.hint_text)
 
         return prompt
