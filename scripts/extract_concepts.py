@@ -102,6 +102,21 @@ def parse_args() -> argparse.Namespace:
         help="Stage 2 batch size — memory grows between batches (default: 10)",
     )
     p.add_argument(
+        "--stage1-mode",
+        choices=["code", "reasoning", "passthrough"],
+        default="code",
+        help=(
+            "Stage 1 mode: 'code' (default) translates Python code to pseudocode, "
+            "'reasoning' summarizes mathematical reasoning into pseudocode, "
+            "'passthrough' skips Stage 1 and uses model output directly as pseudocode"
+        ),
+    )
+    p.add_argument(
+        "--no-thinking",
+        action="store_true",
+        help="Disable reasoning/thinking mode (for hybrid models like Qwen 3.5)",
+    )
+    p.add_argument(
         "--dry-run",
         action="store_true",
         help="Print prompts without calling LLM",
@@ -136,13 +151,43 @@ async def main() -> None:
     # Stage 1: Solution → Pseudocode + Summary
     # ---------------------------------------------------------------
     logger.info("=" * 60)
-    logger.info("STAGE 1: Solution → Pseudocode + Summary")
+    logger.info(f"STAGE 1: Solution → Pseudocode + Summary (mode={args.stage1_mode})")
     logger.info("=" * 60)
 
-    s1_prompts = [build_pseudocode_prompt(p, args.domain) for p in solved]
     uids = [p.uid for p in solved]
 
-    if args.dry_run:
+    # pseudocode_map: uid → pseudocode string
+    # summary_map: uid → summary string
+    pseudocode_map: dict[str, str] = {}
+    summary_map: dict[str, str] = {}
+    s1_failures = 0
+
+    # Create LLM client and gen_cfg (shared by both stages)
+    client = None
+    gen_cfg = None
+    if not args.dry_run:
+        client = LLMPlusProviderClient(profile_cfg={
+            "profile_name": "llmplus_openrouter",
+            "default_max_concurrency": args.concurrency,
+        })
+        gen_cfg = {"max_tokens": args.max_tokens, "temperature": 0.3, "n": 1}
+        if args.no_thinking:
+            gen_cfg["extra_kwargs"] = {
+                "extra_body": {"reasoning": {"effort": "none"}},
+            }
+
+    if args.stage1_mode == "passthrough":
+        # Reasoning-based completions are already mathematical reasoning text.
+        # Use them directly as pseudocode, skip the LLM call.
+        logger.info("Passthrough mode: using model completions directly as pseudocode")
+        for sp in solved:
+            pseudocode_map[sp.uid] = sp.solution_code  # "solution_code" holds the completion text
+            summary_map[sp.uid] = ""
+    elif args.dry_run:
+        s1_prompts = [
+            build_pseudocode_prompt(p, args.domain, stage1_mode=args.stage1_mode)
+            for p in solved
+        ]
         print(f"\n{'='*60}")
         print("STAGE 1 PROMPTS (first 2)")
         print(f"{'='*60}")
@@ -151,31 +196,21 @@ async def main() -> None:
             print(prompt[:1500])
             if len(prompt) > 1500:
                 print(f"... ({len(prompt)} chars total)")
+        # In dry-run, use solution code as pseudocode stand-in
+        for sp in solved:
+            pseudocode_map[sp.uid] = f"(pseudocode for {sp.uid})"
+            summary_map[sp.uid] = f"(summary for {sp.uid})"
     else:
-        client = LLMPlusProviderClient(profile_cfg={
-            "profile_name": "llmplus_openrouter",
-            "default_max_concurrency": args.concurrency,
-        })
-        gen_cfg = {"max_tokens": args.max_tokens, "temperature": 0.3, "n": 1}
+        s1_prompts = [
+            build_pseudocode_prompt(p, args.domain, stage1_mode=args.stage1_mode)
+            for p in solved
+        ]
 
         logger.info(f"Sending {len(s1_prompts)} Stage 1 prompts...")
         s1_results = await client.async_batch_generate(
             prompts=s1_prompts, model=args.model, gen_cfg=gen_cfg,
         )
 
-    # Parse Stage 1 results
-    # pseudocode_map: uid → pseudocode string
-    # summary_map: uid → summary string
-    pseudocode_map: dict[str, str] = {}
-    summary_map: dict[str, str] = {}
-    s1_failures = 0
-
-    if args.dry_run:
-        # In dry-run, use solution code as pseudocode stand-in
-        for sp in solved:
-            pseudocode_map[sp.uid] = f"(pseudocode for {sp.uid})"
-            summary_map[sp.uid] = f"(summary for {sp.uid})"
-    else:
         for uid, result_list in zip(uids, s1_results):
             if not result_list or result_list[0] is None:
                 logger.warning(f"[{uid}] Stage 1: no response")
@@ -286,7 +321,8 @@ async def main() -> None:
             total_concepts_added += added
 
     if args.dry_run:
-        print(f"\nTotal Stage 1 prompts: {len(s1_prompts)}")
+        s1_count = len(pseudocode_map) if args.stage1_mode == "passthrough" else len(s1_prompts)
+        print(f"\nTotal Stage 1 prompts: {s1_count}")
         print(f"Total Stage 2 batches: {(len(s2_uids) + batch_size - 1) // batch_size}")
         print(f"Batch size: {batch_size}")
         return

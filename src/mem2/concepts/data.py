@@ -109,6 +109,8 @@ class Concept:
 
     @staticmethod
     def _merge_lines(curr: list[str], new_lines: list[str]) -> list[str]:
+        if isinstance(new_lines, str):
+            new_lines = [new_lines]
         cleaned_new_lines = []
         for line in new_lines:
             if isinstance(line, dict):

@@ -68,18 +68,47 @@ that can more easily be abstracted into concepts, and write a one-liner summary 
 of the solution approach.
 
 A concept can encode any of:
-(a) a mathematical technique or theorem application
-(b) how certain parameters or values are determined
-(c) properties that are checked or leveraged
-(d) an algorithmic pattern used in the computation
+(a) a mathematical technique or theorem application (e.g. Chinese Remainder Theorem, \
+Vieta's Formulas, generating functions)
+(b) how certain parameters or values are determined (e.g. finding bounds via AM-GM)
+(c) properties that are checked or leveraged (e.g. divisibility, parity, symmetry)
+(d) a specific computational strategy (e.g. casework by residues, recursive enumeration)
 
 # Instructions
 Pseudocode:
 - write the pseudocode translation inside <pseudocode> and </pseudocode> tags
+- focus on the **mathematical reasoning** — name the theorems, identities, and \
+techniques used rather than describing Python operations
+- replace generic code patterns with their mathematical names \
+(e.g. "apply Euler's totient" not "loop and count coprimes")
 - be concise without compromising correctness
-- emphasize the mathematical reasoning steps and techniques over implementation details
 Summary:
 - write a one-liner summary of the solution approach inside <summary> and </summary> tags
+
+# Example
+
+Problem:
+How many positive integers less than 1000 are divisible by exactly one of 7 and 11?
+
+Solution:
+```python
+def solve():
+    count = 0
+    for n in range(1, 1000):
+        d7 = n % 7 == 0
+        d11 = n % 11 == 0
+        if d7 != d11:
+            count += 1
+    return count
+```
+
+<pseudocode>
+count = |multiples of 7 below 1000| + |multiples of 11 below 1000| - 2 * |multiples of 77 below 1000|
+Apply inclusion-exclusion: |A XOR B| = |A| + |B| - 2|A ∩ B|
+Each count via floor division: floor(999/k)
+</pseudocode>
+
+<summary>Inclusion-exclusion on divisibility sets with floor-division counting</summary>
 
 # Your Problem Solution
 Analyze, abstract into pseudocode, and summarize the following solution:
@@ -127,9 +156,59 @@ Solution:
 """
 
 
-def build_pseudocode_prompt(problem: SolvedProblem, domain: str) -> str:
-    """Stage 1: build prompt that converts solution → pseudocode + summary."""
-    template = _MATH_PSEUDOCODE_PROMPT if domain == "math" else _CODE_PSEUDOCODE_PROMPT
+_MATH_REASONING_PSEUDOCODE_PROMPT = """\
+# Introduction
+We are analyzing correctly solved competition math problems to build a reusable \
+concept library.  Your task is to analyze a mathematical reasoning solution, \
+extract its key steps as concise pseudocode, and write a one-liner summary.
+
+A concept can encode any of:
+(a) a mathematical technique or theorem application (e.g. Chinese Remainder Theorem, \
+Vieta's Formulas, generating functions)
+(b) how certain parameters or values are determined (e.g. finding bounds via AM-GM)
+(c) properties that are checked or leveraged (e.g. divisibility, parity, symmetry)
+(d) a specific computational strategy (e.g. casework by residues, complementary counting)
+
+# Instructions
+Pseudocode:
+- write the pseudocode translation inside <pseudocode> and </pseudocode> tags
+- focus on the **mathematical reasoning steps** — name the theorems, identities, \
+and techniques used
+- be concise without compromising correctness
+Summary:
+- write a one-liner summary of the solution approach inside <summary> and </summary> tags
+
+# Your Problem Solution
+Analyze, abstract into pseudocode, and summarize the following solution:
+
+Problem:
+{problem_text}
+
+Solution:
+{solution_code}
+"""
+
+
+def build_pseudocode_prompt(
+    problem: SolvedProblem,
+    domain: str,
+    stage1_mode: str = "code",
+) -> str:
+    """Stage 1: build prompt that converts solution → pseudocode + summary.
+
+    Args:
+        stage1_mode: "code" (default) — solution is Python code, translate to pseudocode.
+                     "reasoning" — solution is mathematical reasoning, summarize into pseudocode.
+                     "passthrough" — skip Stage 1, use solution text directly as pseudocode.
+    """
+    if stage1_mode == "passthrough":
+        raise ValueError("passthrough mode should skip Stage 1 entirely")
+    if domain == "math" and stage1_mode == "reasoning":
+        template = _MATH_REASONING_PSEUDOCODE_PROMPT
+    elif domain == "math":
+        template = _MATH_PSEUDOCODE_PROMPT
+    else:
+        template = _CODE_PSEUDOCODE_PROMPT
     return template.format(
         problem_text=problem.problem_text,
         solution_code=problem.solution_code,
@@ -160,33 +239,96 @@ concept library.  Your task is to analyze a solution (rendered as pseudocode) \
 and abstract out reusable concepts.
 
 A concept encodes one of the following:
-(a) a mathematical technique -- a method or approach for solving a class of problems
-(b) a theorem or identity -- a known result that can be applied
-(c) an algorithmic pattern -- a computational strategy (e.g. enumeration, recursion)
-(d) a definition -- a term for a recurring structure or phenomenon
+(a) a theorem or identity -- a named mathematical result (e.g. "Euler's Totient Theorem", \
+"Vieta's Formulas", "Hockey Stick Identity")
+(b) a technique -- a specific method for a class of problems (e.g. "Generating Functions", \
+"Roots of Unity Filter", "Simon's Favorite Factoring Trick")
+(c) a computational strategy -- a concrete approach to a calculation (e.g. "Casework by Residue Class", \
+"Complementary Counting", "Recursive Enumeration with Memoization")
+(d) a definition -- a term for a recurring structure (e.g. "Primitive Root", "Derangement")
 
-Programs can be viewed as a sequence of reasoning steps.  To construct a solution, \
-we compose steps and determine what parameters to use for each.
+Mathematical solutions are sequences of reasoning steps. Each step applies a technique \
+or theorem, possibly with problem-specific parameters.
+
+# Concept Naming Rules
+- **Be specific**: use the established mathematical name when one exists
+- **Avoid generic catch-alls**: concepts like "algorithm", "algebraic manipulation", \
+"constraint satisfaction", "system of equations", or "modular arithmetic" are too broad \
+to be useful — they match too many problems and provide no actionable guidance
+- A good concept name should suggest a *specific action* a solver should take, not \
+merely categorize the problem
+- Bad examples: "number theory tool", "optimization", "counting method"
+- Good examples: "Chicken McNugget Theorem", "Stars and Bars", "Burnside's Lemma", \
+"Binary Search on Answer", "Pigeonhole Principle"
+- If no standard name exists, create a descriptive 2-5 word name that captures \
+the specific technique (e.g. "Digit Sum Modular Reduction", "Greedy Interval Packing")
+- **Extract 2-4 concepts per problem** — only specific, actionable ones
 
 # Instructions
 - Format your final concept list inside a fenced yaml markdown block \
 (first line = "```yaml" and last line = "```")
 - Feel free to think before writing your final response
 - Each concept entry should have these fields:
-    concept: technique name / theorem name / pattern name
-    kind: discover organically (e.g. "technique", "theorem", "identity", \
-"counting method", "algebraic manipulation", "number theory tool", "algorithm", etc.)
-    description: (optional) elaborate if the name is not self-evident
-    parameters: list of {{name, typing, description}} if the concept has meaningful parameters
-    cues: list of problem features that suggest this concept is relevant
-    implementation: list of how this concept was applied in this specific solution
+    concept: the specific technique/theorem/pattern name
+    kind: one of "theorem", "technique", "strategy", "definition"
+    description: (optional) one-sentence elaboration if the name is not self-evident
+    parameters: (optional) list of {{name, typing, description}} — the variable aspects \
+of this concept that change across problems
+    cues: 2-4 specific problem features that suggest this concept is relevant \
+(these should be concrete and observable, not tautological)
+    implementation: 1-2 notes on how this concept was applied in this specific solution
 - **Reuse concepts whenever possible**
     - check existing concepts in the `Concept Repository` section below
     - if an existing concept matches what you see, reuse its exact name
-    - when reusing a concept, you may omit `kind` and `description` (only fill `concept`)
+    - when reusing, you may omit `kind`, `description`, and `parameters`
     - you can still add new `cues` and `implementation` entries when reusing
-- Distinct concepts must have different names
-- Extract 1-5 concepts per problem (only meaningful ones)
+- Cue quality guidelines:
+    - Good cue: "problem asks for count of integers with specific digit properties"
+    - Bad cue: "a mathematical technique is needed" (tautological)
+    - Good cue: "expression involves product of consecutive integers"
+    - Bad cue: "algebraic manipulation is required" (too vague)
+
+# Example
+
+Pseudocode:
+```
+Count lattice paths from (0,0) to (7,3) avoiding y=x+1
+Total unrestricted paths: C(10,3)
+Reflected bad paths: paths from (1,-1) to (7,3) = C(10,4) by reflection across y=x+1
+Answer = C(10,3) - C(10,4)
+```
+
+```yaml
+- concept: Lattice Path Counting
+  kind: technique
+  description: count paths on integer grid using binomial coefficients
+  parameters:
+    - name: grid dimensions
+      typing: tuple[int, int]
+      description: the (width, height) of the lattice to traverse
+    - name: step set
+      typing: list[tuple[int, int]]
+      description: allowed moves (e.g. right and up)
+  cues:
+    - problem involves moving on a grid with restricted steps
+    - answer expressible as binomial coefficient C(m+n, n)
+  implementation:
+    - total paths from (0,0) to (a,b) with unit steps = C(a+b, b)
+
+- concept: Reflection Principle for Lattice Paths
+  kind: technique
+  description: subtract reflected bad paths to enforce boundary constraints on lattice paths
+  parameters:
+    - name: boundary
+      typing: str
+      description: the line constraint that paths must not cross (e.g. y = x + 1)
+  cues:
+    - lattice path problem with a boundary that cannot be crossed
+    - problem mentions staying below/above a diagonal line
+  implementation:
+    - reflect start point across boundary, count unrestricted paths from reflected point
+    - bad paths biject to reflected paths via first-touch reflection
+```
 
 # Concept Repository
 Here is the current concept repository.  Check for reuse before creating new concepts:
@@ -206,33 +348,43 @@ reusable concept library.  Your task is to analyze a solution (rendered as \
 pseudocode) and abstract out reusable concepts.
 
 A concept encodes one of the following:
-(a) an algorithm -- a named algorithmic technique (e.g. binary search, BFS)
-(b) a data structure -- a data organization used (e.g. segment tree, union-find)
-(c) a technique -- an implementation pattern or optimization (e.g. two pointers, prefix sums)
-(d) a definition -- a term for a recurring problem structure
+(a) an algorithm -- a named algorithmic technique (e.g. "Dijkstra's Algorithm", \
+"KMP String Matching", "Tarjan's SCC")
+(b) a data structure -- a specific data organization (e.g. "Segment Tree with Lazy Propagation", \
+"DSU with Path Compression", "Monotonic Stack")
+(c) a technique -- a concrete optimization or pattern (e.g. "Coordinate Compression", \
+"Two Pointers on Sorted Array", "Bitmask DP over Subsets")
+(d) a definition -- a term for a recurring problem structure (e.g. "Euler Tour", "Bridge Edge")
 
-Programs can be viewed as a sequence of algorithmic steps.  To construct a solution, \
-we compose steps and determine what parameters to use for each.
+# Concept Naming Rules
+- **Be specific**: use the established algorithm/DS name when one exists
+- **Avoid generic catch-alls**: concepts like "dynamic programming", "graph traversal", \
+"greedy algorithm", or "sorting" are too broad — they match too many problems
+- A good concept name should suggest a *specific technique* to apply
+- Bad: "optimization", "data structure usage", "string processing"
+- Good: "Knuth's Optimization for 1D DP", "Centroid Decomposition", "Z-Algorithm"
+- **Extract 2-4 concepts per problem** — only specific, actionable ones
 
 # Instructions
 - Format your final concept list inside a fenced yaml markdown block \
 (first line = "```yaml" and last line = "```")
 - Feel free to think before writing your final response
 - Each concept entry should have these fields:
-    concept: algorithm name / data structure name / technique name
-    kind: discover organically (e.g. "algorithm", "data structure", "technique", \
-"optimization", "graph method", "dp pattern", "string algorithm", etc.)
-    description: (optional) elaborate if the name is not self-evident
-    parameters: list of {{name, typing, description}} if the concept has meaningful parameters
-    cues: list of problem features that suggest this concept is relevant
-    implementation: list of how this concept was applied in this specific solution
+    concept: the specific algorithm/data structure/technique name
+    kind: one of "algorithm", "data structure", "technique", "definition"
+    description: (optional) one-sentence elaboration if the name is not self-evident
+    parameters: (optional) list of {{name, typing, description}} — the variable aspects \
+of this concept that change across problems
+    cues: 2-4 specific problem features that suggest this concept is relevant
+    implementation: 1-2 notes on how this concept was applied in this specific solution
 - **Reuse concepts whenever possible**
     - check existing concepts in the `Concept Repository` section below
     - if an existing concept matches what you see, reuse its exact name
-    - when reusing a concept, you may omit `kind` and `description` (only fill `concept`)
+    - when reusing, you may omit `kind`, `description`, and `parameters`
     - you can still add new `cues` and `implementation` entries when reusing
-- Distinct concepts must have different names
-- Extract 1-5 concepts per problem (only meaningful ones)
+- Cue quality guidelines:
+    - Good cue: "problem asks for shortest path in weighted graph with non-negative edges"
+    - Bad cue: "a graph algorithm is needed" (tautological)
 
 # Concept Repository
 Here is the current concept repository.  Check for reuse before creating new concepts:
@@ -249,8 +401,8 @@ Abstract the following solution into a concept list:
 def render_concept_repo(mem: ConceptMemory) -> str:
     """Render the current concept memory as a text list for the Stage 2 prompt.
 
-    Follows the ARC pattern: list concepts grouped by kind with descriptions,
-    so the LLM can see what already exists and reuse names.
+    Shows concepts grouped by kind with descriptions and cues, so the LLM
+    can judge whether to reuse an existing concept or create a new one.
     """
     if not mem.concepts:
         return "(empty — no concepts extracted yet)"
@@ -266,6 +418,13 @@ def render_concept_repo(mem: ConceptMemory) -> str:
             line = f"- concept: {c.name}"
             if c.description:
                 line += f"\n  description: {c.description}"
+            if c.cues:
+                # Show up to 3 cues so LLM can judge reuse
+                shown = c.cues[:3]
+                cue_str = "; ".join(shown)
+                if len(c.cues) > 3:
+                    cue_str += f" (+{len(c.cues) - 3} more)"
+                line += f"\n  cues: {cue_str}"
             lines.append(line)
         lines.append("")  # spacer
     return "\n".join(lines).rstrip()
