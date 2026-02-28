@@ -1,0 +1,19 @@
+{
+  "cmath_10637": [
+    "Positional Base Expansion",
+    "Base Digit Validity Constraint",
+    "Congruence to Divisibility Conversion",
+    "Prime Factorization",
+    "Divisor Count Formula"
+  ],
+  "cmath_243": [
+    "Function Evaluation at Specific Points",
+    "Multi-valued Function Output Aggregation",
+    "Constraint Filtering for Solution Selection"
+  ],
+  "cmath_359": [
+    "Polynomial Evaluation via Expanded Form",
+    "Data Extraction from Discrete Plot Points",
+    "Function Evaluation at Specific Points"
+  ]
+}

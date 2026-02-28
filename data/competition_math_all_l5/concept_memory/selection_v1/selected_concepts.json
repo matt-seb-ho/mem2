@@ -1,0 +1,1376 @@
+{
+  "cmath_10098": [
+    "algebraic manipulation",
+    "system of equations",
+    "polynomial factorization",
+    "polynomial evaluation",
+    "coefficient comparison"
+  ],
+  "cmath_10143": [
+    "system of equations",
+    "algebraic manipulation",
+    "optimization under constraints",
+    "quadratic discriminant analysis",
+    "polynomial coefficient computation"
+  ],
+  "cmath_10170": [
+    "system of equations",
+    "polynomial coefficient computation",
+    "Vieta's formula",
+    "algebraic manipulation",
+    "polynomial root analysis"
+  ],
+  "cmath_10229": [
+    "algebraic manipulation",
+    "power sum identities",
+    "system of equations"
+  ],
+  "cmath_10265": [
+    "algebraic manipulation",
+    "system of equations",
+    "complex number arithmetic",
+    "verification through substitution",
+    "constraint satisfaction",
+    "quadratic formula",
+    "distance formula"
+  ],
+  "cmath_10274": [
+    "coordinate geometry",
+    "distance formula",
+    "system of equations"
+  ],
+  "cmath_1035": [
+    "algebraic manipulation",
+    "coefficient comparison",
+    "system of equations"
+  ],
+  "cmath_10404": [
+    "system of equations",
+    "polynomial remainder theorem",
+    "polynomial degree analysis",
+    "algebraic manipulation"
+  ],
+  "cmath_10424": [
+    "algebraic manipulation",
+    "system of equations",
+    "polynomial completion of square",
+    "verification through substitution"
+  ],
+  "cmath_10546": [
+    "modular inverse",
+    "extended Euclidean algorithm",
+    "modular arithmetic"
+  ],
+  "cmath_10547": [
+    "system of congruences",
+    "modular arithmetic",
+    "brute force enumeration",
+    "constraint satisfaction"
+  ],
+  "cmath_10564": [
+    "pattern recognition",
+    "summation",
+    "modular arithmetic"
+  ],
+  "cmath_10599": [
+    "modular arithmetic",
+    "range intersection"
+  ],
+  "cmath_10620": [
+    "algebraic manipulation",
+    "divisibility analysis",
+    "range intersection",
+    "summation"
+  ],
+  "cmath_10637": [
+    "divisor enumeration",
+    "modular arithmetic",
+    "base conversion"
+  ],
+  "cmath_10685": [
+    "prime factorization",
+    "factorial computation",
+    "modular arithmetic"
+  ],
+  "cmath_1073": [
+    "algebraic manipulation",
+    "system of equations",
+    "logarithmic computation"
+  ],
+  "cmath_10805": [
+    "digit sum analysis",
+    "constraint satisfaction",
+    "brute force enumeration"
+  ],
+  "cmath_10857": [
+    "algebraic manipulation",
+    "polynomial evaluation",
+    "modular arithmetic",
+    "fraction simplification"
+  ],
+  "cmath_10962": [
+    "modular arithmetic",
+    "modular exponentiation",
+    "Fermat's Little Theorem"
+  ],
+  "cmath_10967": [
+    "divisor enumeration",
+    "summation",
+    "algorithm"
+  ],
+  "cmath_11016": [
+    "divisor enumeration",
+    "prime factorization",
+    "system of equations",
+    "constraint satisfaction"
+  ],
+  "cmath_11303": [
+    "coordinate geometry",
+    "distance formula",
+    "arithmetic operation"
+  ],
+  "cmath_11338": [
+    "algebraic manipulation",
+    "system of equations"
+  ],
+  "cmath_11504": [
+    "brute force enumeration",
+    "digit analysis",
+    "divisibility analysis"
+  ],
+  "cmath_11575": [
+    "counting method",
+    "combinatorial coefficient extraction",
+    "divisor enumeration",
+    "arithmetic operation"
+  ],
+  "cmath_11628": [
+    "coordinate geometry",
+    "distance formula",
+    "quadratic discriminant analysis",
+    "polynomial degree analysis",
+    "geometric transformation",
+    "area calculation",
+    "triangle area computation",
+    "proportional reasoning",
+    "unit conversion"
+  ],
+  "cmath_12063": [
+    "coordinate geometry",
+    "distance formula",
+    "quadratic formula",
+    "algebraic manipulation",
+    "polynomial coefficient computation",
+    "polynomial root analysis"
+  ],
+  "cmath_12065": [
+    "algebraic manipulation",
+    "system of equations",
+    "polynomial coefficient computation"
+  ],
+  "cmath_12173": [
+    "algebraic manipulation",
+    "trigonometric identities"
+  ],
+  "cmath_12357": [
+    "polynomial root analysis",
+    "quadratic formula"
+  ],
+  "cmath_1273": [
+    "polynomial factorization",
+    "algebraic manipulation"
+  ],
+  "cmath_1359": [
+    "system of equations",
+    "verification through substitution",
+    "constraint satisfaction"
+  ],
+  "cmath_1391": [
+    "polynomial factorization",
+    "brute force enumeration",
+    "divisibility analysis",
+    "algebraic manipulation"
+  ],
+  "cmath_1468": [
+    "algebraic manipulation",
+    "system of equations",
+    "polynomial factorization"
+  ],
+  "cmath_1545": [
+    "system of equations",
+    "constraint satisfaction",
+    "iterative computation",
+    "pattern recognition"
+  ],
+  "cmath_1770": [
+    "combinatorial coefficient extraction",
+    "polynomial coefficient computation",
+    "counting method"
+  ],
+  "cmath_1815": [
+    "combinatorial coefficient extraction",
+    "divisor enumeration",
+    "counting method",
+    "polynomial coefficient computation"
+  ],
+  "cmath_1859": [
+    "counting method",
+    "modular arithmetic",
+    "inclusion-exclusion principle",
+    "range intersection",
+    "divisor enumeration"
+  ],
+  "cmath_2084": [
+    "modular arithmetic",
+    "constraint satisfaction",
+    "pattern recognition",
+    "combinatorial coefficient extraction",
+    "brute force enumeration"
+  ],
+  "cmath_2097": [
+    "pattern recognition",
+    "brute force enumeration",
+    "iterative computation",
+    "system of equations"
+  ],
+  "cmath_2115": [
+    "counting method",
+    "inclusion-exclusion principle",
+    "complementary counting",
+    "combinatorial coefficient extraction",
+    "system of equations"
+  ],
+  "cmath_2126": [
+    "brute force enumeration",
+    "digit analysis",
+    "combinatorial coefficient extraction",
+    "counting method",
+    "modular arithmetic"
+  ],
+  "cmath_2138": [
+    "dynamic programming",
+    "counting method",
+    "combinatorial coefficient extraction"
+  ],
+  "cmath_2146": [
+    "counting method",
+    "gcd computation",
+    "combinatorial coefficient extraction"
+  ],
+  "cmath_2149": [
+    "algebraic manipulation",
+    "inequality bounding",
+    "range intersection",
+    "case analysis",
+    "polynomial evaluation"
+  ],
+  "cmath_2154": [
+    "cycle graph",
+    "combinatorial coefficient extraction",
+    "graph theory modeling",
+    "modular arithmetic"
+  ],
+  "cmath_2182": [
+    "counting method",
+    "combinatorial coefficient extraction",
+    "digit analysis"
+  ],
+  "cmath_2193": [
+    "combinatorial coefficient extraction",
+    "polynomial coefficient computation",
+    "modular arithmetic"
+  ],
+  "cmath_2307": [
+    "palindrome detection",
+    "digit analysis",
+    "iterative computation",
+    "brute force enumeration",
+    "conditional reasoning"
+  ],
+  "cmath_2309": [
+    "algorithm",
+    "combinatorial coefficient extraction",
+    "counting method",
+    "constraint satisfaction",
+    "brute force enumeration",
+    "graph theory modeling"
+  ],
+  "cmath_2340": [
+    "combinatorial coefficient extraction",
+    "counting method",
+    "polynomial coefficient computation"
+  ],
+  "cmath_243": [
+    "arithmetic operation"
+  ],
+  "cmath_2691": [
+    "Pythagorean theorem",
+    "Angle Bisector Theorem",
+    "coordinate geometry",
+    "triangle area computation",
+    "proportional reasoning"
+  ],
+  "cmath_2924": [
+    "area calculation",
+    "trigonometric identities",
+    "law of cosines",
+    "geometric series",
+    "polynomial degree analysis",
+    "coordinate geometry",
+    "distance formula",
+    "Pythagorean theorem",
+    "similar triangles",
+    "slope calculation",
+    "midpoint formula",
+    "quadratic formula",
+    "Vieta's formula",
+    "polynomial root analysis",
+    "complex number arithmetic",
+    "algebraic manipulation",
+    "system of equations",
+    "modular arithmetic",
+    "prime factorization",
+    "divisor enumeration",
+    "factorial computation",
+    "combinatorial coefficient extraction",
+    "polynomial coefficient computation",
+    "polynomial factorization",
+    "partial fraction decomposition",
+    "polynomial evaluation",
+    "power sum identities",
+    "Euler's totient function",
+    "modular exponentiation",
+    "algorithm",
+    "counting method",
+    "constraint satisfaction",
+    "fractional part analysis",
+    "inequality bounding",
+    "optimization under constraints",
+    "approximation technique",
+    "system of linear equations",
+    "base conversion",
+    "digit sum analysis",
+    "palindrome detection",
+    "ceiling function",
+    "floor function",
+    "quadratic discriminant analysis",
+    "quadratic zero finding",
+    "polynomial inequality",
+    "set-based deduplication",
+    "factor pair generation",
+    "arithmetic operation",
+    "unit conversion",
+    "proportional reasoning",
+    "Heron's formula",
+    "inradius calculation",
+    "triangle area computation",
+    "area scaling by ratio",
+    "centroid property",
+    "piecewise function analysis",
+    "preimage computation",
+    "pattern recognition",
+    "exponential growth"
+  ],
+  "cmath_2931": [
+    "coordinate geometry",
+    "distance formula",
+    "geometric transformation",
+    "system of equations"
+  ],
+  "cmath_2939": [
+    "area calculation",
+    "trigonometric identities",
+    "law of cosines"
+  ],
+  "cmath_2973": [
+    "algebraic manipulation",
+    "system of equations",
+    "area calculation",
+    "polynomial coefficient computation",
+    "constraint satisfaction",
+    "ratio computation",
+    "polynomial degree analysis"
+  ],
+  "cmath_2985": [
+    "distance formula",
+    "coordinate geometry"
+  ],
+  "cmath_2989": [
+    "algebraic manipulation",
+    "quadratic discriminant analysis",
+    "distance formula",
+    "coordinate geometry",
+    "polynomial factorization"
+  ],
+  "cmath_3010": [
+    "coordinate geometry",
+    "circle intersection analysis",
+    "system of equations",
+    "optimization under constraints",
+    "algebraic manipulation"
+  ],
+  "cmath_3011": [
+    "coordinate geometry",
+    "distance formula",
+    "circle intersection analysis",
+    "Pythagorean theorem",
+    "algebraic manipulation",
+    "similar triangles",
+    "quadratic formula"
+  ],
+  "cmath_3022": [
+    "triangle area computation",
+    "Pythagorean theorem",
+    "coordinate geometry",
+    "geometric transformation",
+    "area calculation",
+    "distance formula",
+    "similar triangles",
+    "trigonometric identities",
+    "polynomial root analysis",
+    "algebraic manipulation"
+  ],
+  "cmath_3023": [
+    "Pythagorean theorem"
+  ],
+  "cmath_3059": [
+    "coordinate geometry",
+    "similar triangles",
+    "area calculation",
+    "proportional reasoning",
+    "polynomial coefficient computation"
+  ],
+  "cmath_3115": [
+    "combinatorial coefficient extraction",
+    "constraint satisfaction",
+    "system of equations",
+    "polynomial coefficient computation",
+    "algebraic manipulation"
+  ],
+  "cmath_3121": [
+    "system of equations",
+    "slope calculation",
+    "algebraic manipulation",
+    "constraint satisfaction"
+  ],
+  "cmath_3177": [
+    "area calculation",
+    "geometric transformation",
+    "circle intersection analysis",
+    "coordinate geometry"
+  ],
+  "cmath_3206": [
+    "volume scaling",
+    "geometric transformation",
+    "Pythagorean theorem",
+    "coordinate geometry",
+    "similar triangles",
+    "area calculation",
+    "scaling analysis"
+  ],
+  "cmath_3213": [
+    "area calculation",
+    "coordinate geometry"
+  ],
+  "cmath_3317": [
+    "coordinate geometry",
+    "area calculation",
+    "distance formula",
+    "algebraic manipulation",
+    "system of equations"
+  ],
+  "cmath_3436": [
+    "algebraic manipulation",
+    "summation",
+    "pattern recognition"
+  ],
+  "cmath_3442": [
+    "quadratic discriminant analysis",
+    "system of equations",
+    "piecewise function analysis",
+    "constraint satisfaction",
+    "verification through substitution"
+  ],
+  "cmath_3472": [
+    "algebraic manipulation",
+    "system of equations",
+    "constraint satisfaction",
+    "optimization under constraints"
+  ],
+  "cmath_3479": [
+    "quadratic formula",
+    "coordinate geometry",
+    "distance formula",
+    "system of equations",
+    "algebraic manipulation",
+    "polynomial coefficient computation"
+  ],
+  "cmath_3569": [
+    "complex number arithmetic",
+    "distance formula",
+    "algebraic manipulation",
+    "polynomial degree analysis"
+  ],
+  "cmath_359": [
+    "polynomial factorization",
+    "algebraic manipulation",
+    "polynomial coefficient computation",
+    "polynomial evaluation"
+  ],
+  "cmath_367": [
+    "optimization under constraints",
+    "quadratic formula",
+    "algebraic manipulation",
+    "system of equations",
+    "inequality bounding",
+    "polynomial coefficient computation"
+  ],
+  "cmath_3697": [
+    "quadratic formula",
+    "Vieta's formula",
+    "algebraic manipulation",
+    "system of equations",
+    "polynomial coefficient computation"
+  ],
+  "cmath_3719": [
+    "algebraic manipulation",
+    "optimization under constraints",
+    "system of equations"
+  ],
+  "cmath_3810": [
+    "polynomial root analysis",
+    "polynomial construction",
+    "system of equations"
+  ],
+  "cmath_3855": [
+    "algebraic manipulation",
+    "system of equations",
+    "constraint satisfaction",
+    "optimization under constraints"
+  ],
+  "cmath_3891": [
+    "constraint satisfaction",
+    "system of equations",
+    "range intersection",
+    "counting method",
+    "algebraic manipulation"
+  ],
+  "cmath_4005": [
+    "coordinate geometry",
+    "distance formula",
+    "algebraic manipulation",
+    "quadratic discriminant analysis",
+    "polynomial coefficient computation"
+  ],
+  "cmath_4051": [
+    "algebraic manipulation",
+    "system of equations",
+    "constraint satisfaction",
+    "range intersection",
+    "polynomial coefficient computation"
+  ],
+  "cmath_407": [
+    "system of equations",
+    "verification through substitution",
+    "algebraic manipulation",
+    "coefficient comparison"
+  ],
+  "cmath_4094": [
+    "algebraic manipulation",
+    "polynomial root analysis",
+    "complex number arithmetic",
+    "modular arithmetic",
+    "polynomial coefficient computation"
+  ],
+  "cmath_4161": [
+    "system of equations",
+    "algebraic manipulation",
+    "verification through substitution"
+  ],
+  "cmath_4174": [
+    "divisor enumeration",
+    "prime factorization",
+    "polynomial coefficient computation",
+    "constraint satisfaction"
+  ],
+  "cmath_4186": [
+    "polynomial construction",
+    "system of equations",
+    "polynomial evaluation",
+    "monic polynomial"
+  ],
+  "cmath_4190": [
+    "system of equations",
+    "algebraic manipulation",
+    "verification through substitution",
+    "constraint satisfaction"
+  ],
+  "cmath_4215": [
+    "polynomial root analysis",
+    "Vieta's formula",
+    "system of equations",
+    "optimization under constraints",
+    "quadratic discriminant analysis"
+  ],
+  "cmath_4292": [
+    "algebraic manipulation",
+    "quadratic discriminant analysis",
+    "coordinate geometry",
+    "distance formula",
+    "quadratic formula",
+    "optimization under constraints",
+    "polynomial completion of square"
+  ],
+  "cmath_433": [
+    "coordinate geometry",
+    "distance formula",
+    "quadratic formula",
+    "system of equations"
+  ],
+  "cmath_436": [
+    "algebraic manipulation",
+    "polynomial coefficient computation"
+  ],
+  "cmath_4416": [
+    "system of equations",
+    "polynomial coefficient computation",
+    "optimization under constraints",
+    "polynomial degree analysis",
+    "algebraic manipulation"
+  ],
+  "cmath_442": [
+    "quadratic formula",
+    "polynomial completion of square",
+    "optimization under constraints",
+    "quadratic discriminant analysis"
+  ],
+  "cmath_4501": [
+    "system of equations",
+    "algebraic manipulation",
+    "pattern recognition",
+    "verification through substitution"
+  ],
+  "cmath_456": [
+    "piecewise function analysis",
+    "iterative computation",
+    "pattern recognition",
+    "case analysis"
+  ],
+  "cmath_4596": [
+    "algebraic manipulation",
+    "polynomial coefficient computation",
+    "system of equations",
+    "quadratic formula",
+    "root analysis"
+  ],
+  "cmath_4613": [
+    "algebraic manipulation",
+    "summation",
+    "floor function"
+  ],
+  "cmath_4682": [
+    "base conversion",
+    "digit analysis"
+  ],
+  "cmath_4731": [
+    "system of linear equations",
+    "modular arithmetic",
+    "extended Euclidean algorithm",
+    "modular inverse"
+  ],
+  "cmath_4777": [
+    "divisor enumeration",
+    "factorial computation",
+    "modular arithmetic",
+    "prime factorization",
+    "combinatorial coefficient extraction",
+    "summation"
+  ],
+  "cmath_4804": [
+    "algorithm",
+    "modular arithmetic",
+    "gcd computation",
+    "arithmetic sequence"
+  ],
+  "cmath_4829": [
+    "modular arithmetic",
+    "modular exponentiation",
+    "pattern recognition"
+  ],
+  "cmath_4859": [
+    "base conversion",
+    "system of equations",
+    "constraint satisfaction",
+    "brute force enumeration"
+  ],
+  "cmath_4949": [
+    "algebraic manipulation",
+    "divisor enumeration",
+    "polynomial coefficient computation",
+    "case analysis",
+    "brute force enumeration"
+  ],
+  "cmath_4950": [
+    "prime factorization",
+    "factorial computation",
+    "algebraic manipulation",
+    "modular arithmetic"
+  ],
+  "cmath_4962": [
+    "system of congruences",
+    "gcd computation",
+    "modular arithmetic"
+  ],
+  "cmath_5196": [
+    "prime factorization",
+    "constraint satisfaction",
+    "combinatorial coefficient extraction"
+  ],
+  "cmath_5230": [
+    "system of equations",
+    "constraint satisfaction",
+    "optimization under constraints",
+    "algebraic manipulation",
+    "brute force enumeration"
+  ],
+  "cmath_5232": [
+    "algebraic manipulation",
+    "polynomial remainder theorem",
+    "modular arithmetic",
+    "divisor enumeration",
+    "prime factorization"
+  ],
+  "cmath_5243": [
+    "inequality bounding",
+    "range intersection",
+    "constraint satisfaction"
+  ],
+  "cmath_5246": [
+    "logarithmic computation",
+    "modular arithmetic",
+    "digit analysis"
+  ],
+  "cmath_5247": [
+    "system of equations",
+    "divisibility analysis",
+    "brute force enumeration",
+    "polynomial coefficient computation",
+    "factorial computation"
+  ],
+  "cmath_525": [
+    "algebraic manipulation",
+    "system of equations",
+    "divisor enumeration",
+    "modular arithmetic",
+    "constraint satisfaction"
+  ],
+  "cmath_5263": [
+    "prime factorization",
+    "gcd computation",
+    "divisor enumeration",
+    "system of equations",
+    "modular arithmetic",
+    "algebraic manipulation",
+    "polynomial degree analysis"
+  ],
+  "cmath_5268": [
+    "system of equations",
+    "modular arithmetic",
+    "constraint satisfaction",
+    "algebraic manipulation"
+  ],
+  "cmath_5274": [
+    "algebraic manipulation",
+    "modular arithmetic",
+    "divisor enumeration",
+    "constraint satisfaction",
+    "optimization under constraints",
+    "polynomial coefficient computation",
+    "summation"
+  ],
+  "cmath_5285": [
+    "divisor enumeration",
+    "summation",
+    "pattern recognition"
+  ],
+  "cmath_5298": [
+    "optimization under constraints",
+    "ceiling function",
+    "ratio computation",
+    "arithmetic operation",
+    "pattern recognition"
+  ],
+  "cmath_5313": [
+    "algebraic manipulation",
+    "system of equations",
+    "coefficient comparison",
+    "modular arithmetic"
+  ],
+  "cmath_5348": [
+    "prime factorization",
+    "divisor enumeration",
+    "modular arithmetic",
+    "combinatorial coefficient extraction",
+    "system of congruences"
+  ],
+  "cmath_536": [
+    "quadratic formula",
+    "Vieta's formula",
+    "divisor enumeration",
+    "prime number testing",
+    "system of equations",
+    "algebraic manipulation"
+  ],
+  "cmath_5388": [
+    "modular arithmetic",
+    "modular inverse",
+    "system of linear equations",
+    "extended Euclidean algorithm"
+  ],
+  "cmath_539": [
+    "arithmetic mean computation",
+    "summation",
+    "arithmetic sequence"
+  ],
+  "cmath_5398": [
+    "gcd computation",
+    "algebraic manipulation",
+    "system of equations",
+    "prime factorization"
+  ],
+  "cmath_5400": [
+    "gcd computation",
+    "modular arithmetic",
+    "algebraic manipulation"
+  ],
+  "cmath_5464": [
+    "digit sum analysis",
+    "modular arithmetic",
+    "brute force enumeration",
+    "divisibility analysis"
+  ],
+  "cmath_5497": [
+    "system of linear equations",
+    "modular arithmetic",
+    "brute force enumeration",
+    "constraint satisfaction"
+  ],
+  "cmath_5559": [
+    "counting method",
+    "set-based deduplication",
+    "inclusion-exclusion principle"
+  ],
+  "cmath_5615": [
+    "brute force enumeration",
+    "divisibility analysis",
+    "digit analysis",
+    "conditional reasoning"
+  ],
+  "cmath_5656": [
+    "Pythagorean theorem",
+    "distance formula",
+    "algebraic manipulation",
+    "quadratic formula",
+    "polynomial degree analysis",
+    "coordinate geometry",
+    "similar triangles",
+    "ratio computation",
+    "area calculation",
+    "circle intersection analysis",
+    "geometric transformation",
+    "formula application",
+    "polynomial remainder theorem",
+    "polynomial root analysis",
+    "polynomial factorization",
+    "polynomial evaluation",
+    "modular arithmetic",
+    "prime factorization",
+    "divisor enumeration",
+    "factorial computation",
+    "combinatorial coefficient extraction",
+    "polynomial coefficient computation",
+    "system of equations",
+    "system of linear equations",
+    "constraint satisfaction",
+    "optimization under constraints",
+    "inequality bounding",
+    "range intersection",
+    "ceiling function",
+    "floor function",
+    "logarithmic computation",
+    "compound interest",
+    "exponential growth",
+    "modular exponentiation",
+    "algorithm",
+    "brute force enumeration",
+    "dynamic programming",
+    "prime number testing",
+    "counting method",
+    "graph theory modeling",
+    "verification through substitution",
+    "fractional part analysis",
+    "approximation technique",
+    "partial fraction decomposition",
+    "system of congruences",
+    "base conversion",
+    "digit sum analysis",
+    "palindrome detection",
+    "midpoint formula",
+    "quadratic discriminant analysis",
+    "Vieta's formula",
+    "slope calculation",
+    "law of cosines",
+    "trigonometric identities",
+    "reflection principle",
+    "rounding",
+    "polynomial construction",
+    "complex number arithmetic",
+    "arithmetic sequence",
+    "alternating sum",
+    "logarithmic sum evaluation",
+    "cycle detection",
+    "iterative computation",
+    "Shoelace formula",
+    "case analysis",
+    "square root computation",
+    "angle calculation",
+    "acute angle computation",
+    "fraction simplification",
+    "trigonometric identity",
+    "sum-to-product identities",
+    "root analysis",
+    "geometric series",
+    "inradius calculation",
+    "triangle area computation",
+    "area scaling by ratio",
+    "centroid property",
+    "piecewise function analysis",
+    "preimage computation",
+    "pattern recognition"
+  ],
+  "cmath_5676": [
+    "base conversion",
+    "modular arithmetic",
+    "pattern recognition",
+    "digit sum analysis"
+  ],
+  "cmath_5686": [
+    "combinatorial coefficient extraction",
+    "counting method"
+  ],
+  "cmath_5702": [
+    "algebraic manipulation",
+    "polynomial coefficient computation",
+    "fraction simplification",
+    "pattern recognition"
+  ],
+  "cmath_5705": [
+    "coordinate geometry",
+    "distance formula",
+    "arithmetic operation"
+  ],
+  "cmath_592": [
+    "algebraic manipulation",
+    "polynomial evaluation",
+    "verification through substitution"
+  ],
+  "cmath_5996": [
+    "counting method",
+    "area calculation",
+    "system of equations"
+  ],
+  "cmath_601": [
+    "algebraic manipulation",
+    "polynomial evaluation",
+    "system of equations",
+    "verification through substitution"
+  ],
+  "cmath_606": [
+    "quadratic formula",
+    "fraction simplification"
+  ],
+  "cmath_6208": [
+    "divisor enumeration",
+    "prime factorization",
+    "gcd computation",
+    "modular arithmetic"
+  ],
+  "cmath_6310": [
+    "Pythagorean theorem",
+    "distance formula",
+    "arithmetic operation"
+  ],
+  "cmath_6389": [
+    "Pythagorean theorem",
+    "triangle area computation"
+  ],
+  "cmath_6403": [
+    "digit sum analysis",
+    "brute force enumeration",
+    "range intersection",
+    "digit analysis"
+  ],
+  "cmath_6591": [
+    "algebraic manipulation",
+    "inequality bounding",
+    "constraint satisfaction",
+    "brute force enumeration"
+  ],
+  "cmath_6595": [
+    "system of equations",
+    "constraint satisfaction",
+    "verification through substitution",
+    "algebraic manipulation"
+  ],
+  "cmath_6632": [
+    "counting method",
+    "system of equations"
+  ],
+  "cmath_676": [
+    "system of equations",
+    "algebraic manipulation",
+    "verification through substitution"
+  ],
+  "cmath_6775": [
+    "algebraic manipulation",
+    "trigonometric identities",
+    "inequality bounding",
+    "pattern recognition"
+  ],
+  "cmath_678": [
+    "polynomial completion of square",
+    "quadratic formula",
+    "algebraic manipulation",
+    "optimization under constraints"
+  ],
+  "cmath_6888": [
+    "algebraic manipulation",
+    "trigonometric identities",
+    "constraint satisfaction"
+  ],
+  "cmath_6998": [
+    "counting method",
+    "range intersection"
+  ],
+  "cmath_7354": [
+    "constraint satisfaction",
+    "verification through substitution",
+    "range intersection",
+    "trigonometric identities"
+  ],
+  "cmath_7520": [
+    "Vieta's formula",
+    "prime number testing",
+    "divisor enumeration",
+    "algebraic manipulation",
+    "constraint satisfaction",
+    "combinatorial coefficient extraction"
+  ],
+  "cmath_7630": [
+    "quadratic formula",
+    "Vieta's formula",
+    "algebraic manipulation",
+    "polynomial coefficient computation"
+  ],
+  "cmath_7636": [
+    "algebraic manipulation",
+    "inequality bounding",
+    "constraint satisfaction",
+    "verification through substitution"
+  ],
+  "cmath_7708": [
+    "algebraic manipulation",
+    "system of equations",
+    "constraint satisfaction",
+    "counting method",
+    "polynomial coefficient computation",
+    "divisibility analysis",
+    "range intersection",
+    "quadratic formula",
+    "Vieta's formula",
+    "polynomial degree analysis"
+  ],
+  "cmath_7784": [
+    "algebraic manipulation",
+    "polynomial completion of square"
+  ],
+  "cmath_7791": [
+    "algebraic manipulation",
+    "system of equations",
+    "coefficient comparison",
+    "quadratic formula",
+    "Vieta's formula",
+    "polynomial root analysis"
+  ],
+  "cmath_7854": [
+    "distance formula",
+    "quadratic formula",
+    "algebraic manipulation"
+  ],
+  "cmath_7871": [
+    "coordinate geometry",
+    "distance formula",
+    "system of equations",
+    "algebraic manipulation"
+  ],
+  "cmath_7927": [
+    "algebraic manipulation",
+    "polynomial coefficient computation",
+    "circle intersection analysis",
+    "coordinate geometry",
+    "system of equations"
+  ],
+  "cmath_795": [
+    "piecewise function analysis",
+    "polynomial root analysis",
+    "algebraic manipulation"
+  ],
+  "cmath_8012": [
+    "polynomial root analysis",
+    "system of equations",
+    "algebraic manipulation",
+    "Vieta's formula"
+  ],
+  "cmath_8095": [
+    "system of equations",
+    "constraint satisfaction",
+    "inequality bounding",
+    "optimization under constraints",
+    "polynomial degree analysis",
+    "slope calculation",
+    "piecewise function analysis"
+  ],
+  "cmath_8139": [
+    "system of equations",
+    "algebraic manipulation",
+    "polynomial evaluation"
+  ],
+  "cmath_8361": [
+    "algebraic manipulation",
+    "fraction simplification"
+  ],
+  "cmath_8427": [
+    "algebraic manipulation",
+    "polynomial coefficient computation"
+  ],
+  "cmath_8557": [
+    "system of equations",
+    "quadratic formula",
+    "divisor enumeration",
+    "constraint satisfaction"
+  ],
+  "cmath_8648": [
+    "algebraic manipulation",
+    "polynomial completion of square"
+  ],
+  "cmath_8649": [
+    "system of equations",
+    "algebraic manipulation",
+    "quadratic discriminant analysis",
+    "coefficient comparison"
+  ],
+  "cmath_8692": [
+    "combinatorial coefficient extraction",
+    "inclusion-exclusion principle",
+    "system of equations"
+  ],
+  "cmath_8695": [
+    "counting method",
+    "constraint satisfaction",
+    "divisor enumeration",
+    "combinatorial coefficient extraction"
+  ],
+  "cmath_9111": [
+    "graph theory modeling",
+    "combinatorial coefficient extraction",
+    "constraint satisfaction"
+  ],
+  "cmath_914": [
+    "system of equations",
+    "algebraic manipulation",
+    "constraint satisfaction",
+    "verification through substitution"
+  ],
+  "cmath_924": [
+    "algebraic manipulation",
+    "system of equations",
+    "coefficient comparison"
+  ],
+  "cmath_9421": [
+    "coordinate geometry",
+    "distance formula",
+    "geometric transformation",
+    "area calculation",
+    "circle intersection analysis",
+    "polynomial degree analysis",
+    "quadratic discriminant analysis",
+    "polynomial factorization",
+    "algebraic manipulation",
+    "system of equations",
+    "modular arithmetic",
+    "prime factorization",
+    "divisor enumeration",
+    "combinatorial coefficient extraction",
+    "polynomial coefficient computation",
+    "polynomial remainder theorem",
+    "polynomial root analysis",
+    "polynomial construction",
+    "complex number arithmetic",
+    "trigonometric identities",
+    "law of cosines",
+    "angle calculation",
+    "acute angle computation",
+    "logarithmic computation",
+    "compound interest",
+    "geometric series",
+    "formula application",
+    "square root computation",
+    "rounding",
+    "case analysis",
+    "iterative computation",
+    "pattern recognition",
+    "preimage computation",
+    "set-based deduplication",
+    "factor pair generation",
+    "arithmetic operation",
+    "unit conversion",
+    "proportional reasoning",
+    "Heron's formula",
+    "inradius calculation",
+    "triangle area computation",
+    "area scaling by ratio",
+    "centroid property",
+    "piecewise function analysis",
+    "exponential growth",
+    "modular exponentiation",
+    "algorithm",
+    "factorial computation",
+    "dynamic programming",
+    "prime number testing",
+    "counting method",
+    "constraint satisfaction",
+    "fractional part analysis",
+    "inequality bounding",
+    "optimization under constraints",
+    "approximation technique",
+    "partial fraction decomposition",
+    "system of linear equations",
+    "divisibility analysis",
+    "conditional reasoning",
+    "range intersection",
+    "modular inverse",
+    "brute force enumeration",
+    "Fermat's Little Theorem",
+    "gcd computation",
+    "extended Euclidean algorithm",
+    "system of congruences",
+    "base conversion",
+    "digit sum analysis",
+    "palindrome detection",
+    "Pythagorean theorem",
+    "ceiling function",
+    "floor function",
+    "quadratic formula",
+    "Vieta's formula",
+    "midpoint formula",
+    "slope calculation",
+    "reflection principle",
+    "similar triangles",
+    "graph theory modeling",
+    "inclusion-exclusion principle",
+    "complementary counting",
+    "summation",
+    "logarithmic sum evaluation",
+    "alternating sum",
+    "arithmetic sequence",
+    "trial division",
+    "cycle detection",
+    "Shoelace formula",
+    "fraction simplification",
+    "trigonometric identity",
+    "sum-to-product identities",
+    "root analysis",
+    "polynomial completion of square",
+    "polynomial transformation",
+    "quadratic zero finding",
+    "polynomial inequality"
+  ],
+  "cmath_9427": [
+    "Pythagorean theorem",
+    "coordinate geometry",
+    "distance formula",
+    "circle intersection analysis"
+  ],
+  "cmath_9599": [
+    "coordinate geometry",
+    "Pythagorean theorem",
+    "distance formula",
+    "similar triangles",
+    "quadratic formula",
+    "algebraic manipulation",
+    "polynomial coefficient computation"
+  ],
+  "cmath_9619": [
+    "coordinate geometry",
+    "similar triangles",
+    "area calculation",
+    "triangle area computation",
+    "trigonometric identities",
+    "law of cosines"
+  ],
+  "cmath_9733": [
+    "algebraic manipulation",
+    "inequality bounding",
+    "system of equations",
+    "constraint satisfaction",
+    "brute force enumeration"
+  ],
+  "cmath_9820": [
+    "Vieta's formula"
+  ],
+  "cmath_9867": [
+    "brute force enumeration",
+    "polynomial root analysis",
+    "constraint satisfaction",
+    "system of equations",
+    "algebraic manipulation",
+    "polynomial coefficient computation",
+    "modular arithmetic"
+  ],
+  "cmath_9932": [
+    "polynomial factorization",
+    "monic polynomial",
+    "algebraic manipulation",
+    "polynomial evaluation"
+  ],
+  "cmath_9948": [
+    "algebraic manipulation",
+    "polynomial coefficient computation",
+    "complex number arithmetic",
+    "system of equations",
+    "polynomial root analysis"
+  ],
+  "cmath_9955": [
+    "system of equations",
+    "polynomial root analysis",
+    "algebraic manipulation",
+    "verification through substitution"
+  ],
+  "cmath_9959": [
+    "polynomial construction",
+    "system of equations",
+    "algebraic manipulation",
+    "polynomial coefficient computation"
+  ],
+  "cmath_9982": [
+    "system of equations",
+    "algebraic manipulation",
+    "optimization under constraints"
+  ],
+  "cmath_9987": [
+    "system of equations",
+    "optimization under constraints",
+    "algebraic manipulation",
+    "constraint satisfaction"
+  ]
+}

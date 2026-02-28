@@ -1,0 +1,1044 @@
+{
+  "cmath_10098": [
+    "polynomial factorization",
+    "coefficient comparison",
+    "polynomial construction",
+    "system of linear equations"
+  ],
+  "cmath_10143": [
+    "system of linear equations",
+    "polynomial factorization",
+    "inequality bounding",
+    "quadratic discriminant analysis"
+  ],
+  "cmath_10170": [
+    "system of linear equations",
+    "polynomial construction",
+    "Vieta's formula"
+  ],
+  "cmath_10229": [
+    "polynomial root analysis",
+    "logarithmic computation"
+  ],
+  "cmath_10265": [
+    "complex number arithmetic",
+    "system of linear equations",
+    "polynomial factorization",
+    "quadratic formula"
+  ],
+  "cmath_10274": [
+    "coordinate geometry",
+    "distance formula",
+    "quadratic discriminant analysis",
+    "system of linear equations",
+    "polynomial root analysis",
+    "geometric transformation"
+  ],
+  "cmath_1035": [
+    "coefficient comparison",
+    "polynomial factorization"
+  ],
+  "cmath_10404": [
+    "polynomial remainder theorem",
+    "system of linear equations"
+  ],
+  "cmath_10424": [
+    "quadratic discriminant analysis",
+    "polynomial completion of square",
+    "system of linear equations"
+  ],
+  "cmath_10546": [
+    "Fermat's Little Theorem"
+  ],
+  "cmath_10547": [
+    "system of linear equations",
+    "modular exponentiation",
+    "Fermat's Little Theorem",
+    "extended Euclidean algorithm",
+    "gcd computation"
+  ],
+  "cmath_10564": [
+    "modular exponentiation",
+    "arithmetic sequence",
+    "digit sum analysis"
+  ],
+  "cmath_10599": [
+    "system of linear equations",
+    "modular exponentiation",
+    "extended Euclidean algorithm"
+  ],
+  "cmath_10620": [
+    "polynomial factorization",
+    "arithmetic sequence",
+    "divisor enumeration",
+    "conditional reasoning"
+  ],
+  "cmath_10637": [
+    "divisor enumeration",
+    "base conversion"
+  ],
+  "cmath_10685": [
+    "factorial computation",
+    "gcd computation",
+    "divisor enumeration"
+  ],
+  "cmath_1073": [
+    "base conversion",
+    "system of linear equations",
+    "exponential growth"
+  ],
+  "cmath_10857": [
+    "polynomial remainder theorem",
+    "fraction simplification",
+    "gcd computation"
+  ],
+  "cmath_10962": [
+    "modular exponentiation",
+    "Fermat's Little Theorem"
+  ],
+  "cmath_10967": [
+    "divisor enumeration",
+    "arithmetic operation"
+  ],
+  "cmath_11016": [
+    "divisor enumeration",
+    "prime number testing",
+    "arithmetic sequence",
+    "polynomial factorization"
+  ],
+  "cmath_11303": [
+    "coordinate geometry",
+    "distance formula"
+  ],
+  "cmath_11338": [
+    "system of linear equations"
+  ],
+  "cmath_11504": [
+    "digit analysis",
+    "conditional reasoning"
+  ],
+  "cmath_11575": [
+    "arithmetic operation"
+  ],
+  "cmath_11628": [
+    "distance formula",
+    "coordinate geometry",
+    "Pythagorean theorem"
+  ],
+  "cmath_11970": [
+    "reflection principle",
+    "geometric transformation"
+  ],
+  "cmath_12063": [
+    "coordinate geometry",
+    "distance formula",
+    "system of linear equations",
+    "polynomial factorization"
+  ],
+  "cmath_12065": [
+    "system of linear equations"
+  ],
+  "cmath_12173": [
+    "trigonometric identities",
+    "polynomial root analysis"
+  ],
+  "cmath_1273": [
+    "polynomial factorization",
+    "polynomial remainder theorem",
+    "quadratic formula",
+    "Vieta's formula"
+  ],
+  "cmath_1359": [
+    "system of linear equations",
+    "polynomial construction"
+  ],
+  "cmath_1391": [
+    "polynomial factorization",
+    "quadratic formula",
+    "conditional reasoning",
+    "inequality bounding"
+  ],
+  "cmath_1468": [
+    "polynomial factorization",
+    "system of linear equations"
+  ],
+  "cmath_1502": [
+    "coordinate geometry",
+    "area calculation",
+    "geometric transformation"
+  ],
+  "cmath_1545": [
+    "conditional reasoning",
+    "system of linear equations",
+    "polynomial root analysis",
+    "cycle detection"
+  ],
+  "cmath_1815": [
+    "set-based deduplication",
+    "arithmetic operation"
+  ],
+  "cmath_1859": [
+    "inclusion-exclusion principle",
+    "arithmetic mean computation",
+    "divisor enumeration"
+  ],
+  "cmath_2097": [
+    "conditional reasoning",
+    "arithmetic sequence"
+  ],
+  "cmath_2126": [
+    "digit analysis",
+    "case analysis",
+    "arithmetic sequence"
+  ],
+  "cmath_2133": [
+    "system of linear equations",
+    "coefficient comparison"
+  ],
+  "cmath_2138": [
+    "dynamic programming",
+    "modular exponentiation",
+    "system of linear equations",
+    "polynomial factorization",
+    "coefficient comparison"
+  ],
+  "cmath_2149": [
+    "floor function",
+    "case analysis",
+    "inequality bounding",
+    "square root computation"
+  ],
+  "cmath_2154": [
+    "cycle graph",
+    "graph theory modeling"
+  ],
+  "cmath_2307": [
+    "palindrome detection",
+    "digit analysis",
+    "conditional reasoning",
+    "arithmetic operation"
+  ],
+  "cmath_2309": [
+    "graph theory modeling"
+  ],
+  "cmath_2340": [
+    "arithmetic operation",
+    "set-based deduplication"
+  ],
+  "cmath_2691": [
+    "Pythagorean theorem",
+    "Angle Bisector Theorem",
+    "triangle area computation",
+    "ratio computation",
+    "arithmetic operation"
+  ],
+  "cmath_2920": [
+    "coordinate geometry",
+    "distance formula",
+    "quadratic formula"
+  ],
+  "cmath_2924": [
+    "area calculation",
+    "trigonometric identities",
+    "coordinate geometry",
+    "distance formula",
+    "law of cosines",
+    "triangle area computation",
+    "angle calculation",
+    "proportional reasoning"
+  ],
+  "cmath_2931": [
+    "coordinate geometry",
+    "distance formula",
+    "area calculation",
+    "triangle area computation",
+    "centroid property",
+    "geometric transformation",
+    "polynomial completion of square",
+    "quadratic formula",
+    "coefficient comparison",
+    "monic polynomial",
+    "polynomial factorization",
+    "system of linear equations",
+    "quadratic discriminant analysis",
+    "trigonometric identities",
+    "law of cosines",
+    "angle calculation",
+    "acute angle computation",
+    "geometric series",
+    "formula application",
+    "rounding",
+    "scaling analysis",
+    "volume scaling",
+    "Heron's formula",
+    "inradius calculation",
+    "area scaling by ratio",
+    "piecewise function analysis",
+    "case analysis",
+    "floor function",
+    "ceiling function"
+  ],
+  "cmath_2939": [
+    "area calculation",
+    "trigonometric identities",
+    "geometric transformation",
+    "formula application",
+    "triangle area computation",
+    "angle calculation",
+    "proportional reasoning"
+  ],
+  "cmath_2973": [
+    "coordinate geometry",
+    "area calculation",
+    "polynomial root analysis",
+    "system of linear equations",
+    "quadratic formula",
+    "Vieta's formula",
+    "polynomial factorization",
+    "fractional part analysis",
+    "inequality bounding",
+    "approximation technique",
+    "partial fraction decomposition",
+    "polynomial completion of square",
+    "polynomial transformation",
+    "quadratic discriminant analysis",
+    "distance formula",
+    "midpoint formula",
+    "slope calculation",
+    "law of cosines",
+    "trigonometric identities",
+    "Pythagorean theorem",
+    "similar triangles",
+    "circle intersection analysis",
+    "reflection principle",
+    "geometric transformation",
+    "formula application",
+    "geometric series",
+    "logarithmic computation",
+    "compound interest",
+    "exponential growth",
+    "scaling analysis",
+    "volume scaling",
+    "Euler's totient function",
+    "gcd computation",
+    "extended Euclidean algorithm",
+    "base conversion",
+    "digit sum analysis",
+    "palindrome detection",
+    "ceiling function",
+    "floor function",
+    "complementary counting",
+    "inclusion-exclusion principle",
+    "graph theory modeling",
+    "cycle graph",
+    "monic polynomial",
+    "power sum identities",
+    "conditional reasoning",
+    "Fermat's Little Theorem",
+    "digit analysis",
+    "alternating sum",
+    "logarithmic sum evaluation",
+    "set-based deduplication",
+    "factor pair generation",
+    "arithmetic operation",
+    "unit conversion",
+    "proportional reasoning",
+    "Heron's formula",
+    "inradius calculation",
+    "triangle area computation",
+    "area scaling by ratio",
+    "centroid property",
+    "piecewise function analysis",
+    "angle calculation",
+    "acute angle computation",
+    "fraction simplification",
+    "trigonometric identity",
+    "sum-to-product identities",
+    "root analysis"
+  ],
+  "cmath_2985": [
+    "distance formula",
+    "coordinate geometry",
+    "quadratic discriminant analysis"
+  ],
+  "cmath_2989": [
+    "coordinate geometry",
+    "distance formula",
+    "polynomial factorization"
+  ],
+  "cmath_3010": [
+    "coordinate geometry",
+    "circle intersection analysis",
+    "distance formula",
+    "system of linear equations",
+    "quadratic formula",
+    "polynomial remainder theorem"
+  ],
+  "cmath_3011": [
+    "coordinate geometry",
+    "distance formula",
+    "circle intersection analysis",
+    "similar triangles",
+    "quadratic formula",
+    "Pythagorean theorem",
+    "midpoint formula"
+  ],
+  "cmath_3022": [
+    "coordinate geometry",
+    "trigonometric identities",
+    "distance formula",
+    "angle calculation",
+    "geometric transformation"
+  ],
+  "cmath_3023": [
+    "Pythagorean theorem",
+    "coordinate geometry",
+    "distance formula"
+  ],
+  "cmath_3054": [
+    "power sum identities",
+    "circle intersection analysis",
+    "coordinate geometry",
+    "distance formula",
+    "quadratic formula"
+  ],
+  "cmath_3059": [
+    "coordinate geometry",
+    "similar triangles",
+    "area calculation",
+    "proportional reasoning",
+    "quadratic formula"
+  ],
+  "cmath_3115": [
+    "coordinate geometry"
+  ],
+  "cmath_3177": [
+    "area calculation",
+    "geometric transformation",
+    "circle intersection analysis",
+    "coordinate geometry"
+  ],
+  "cmath_3206": [
+    "volume scaling",
+    "geometric transformation",
+    "coordinate geometry",
+    "distance formula",
+    "Pythagorean theorem",
+    "area calculation",
+    "scaling analysis"
+  ],
+  "cmath_3213": [
+    "coordinate geometry"
+  ],
+  "cmath_3317": [
+    "coordinate geometry",
+    "area calculation",
+    "triangle area computation",
+    "distance formula"
+  ],
+  "cmath_3436": [
+    "fraction simplification",
+    "arithmetic sequence"
+  ],
+  "cmath_3442": [
+    "quadratic formula",
+    "system of linear equations",
+    "polynomial root analysis",
+    "coordinate geometry"
+  ],
+  "cmath_3472": [
+    "system of linear equations",
+    "quadratic discriminant analysis"
+  ],
+  "cmath_3479": [
+    "distance formula",
+    "coordinate geometry",
+    "system of linear equations",
+    "quadratic formula",
+    "polynomial root analysis"
+  ],
+  "cmath_3569": [
+    "complex number arithmetic",
+    "distance formula",
+    "square root computation",
+    "arithmetic operation"
+  ],
+  "cmath_359": [
+    "polynomial root analysis",
+    "coefficient comparison"
+  ],
+  "cmath_367": [
+    "quadratic formula",
+    "quadratic discriminant analysis",
+    "system of linear equations",
+    "inequality bounding"
+  ],
+  "cmath_3697": [
+    "quadratic formula",
+    "Vieta's formula",
+    "system of linear equations",
+    "polynomial root analysis"
+  ],
+  "cmath_3719": [
+    "square root computation",
+    "inequality bounding"
+  ],
+  "cmath_3810": [
+    "polynomial factorization",
+    "system of linear equations",
+    "polynomial remainder theorem"
+  ],
+  "cmath_3855": [
+    "system of linear equations",
+    "quadratic discriminant analysis"
+  ],
+  "cmath_3891": [
+    "ceiling function",
+    "floor function",
+    "case analysis",
+    "arithmetic sequence"
+  ],
+  "cmath_4005": [
+    "complex number arithmetic",
+    "distance formula",
+    "coordinate geometry"
+  ],
+  "cmath_4051": [
+    "system of linear equations",
+    "inequality bounding",
+    "conditional reasoning"
+  ],
+  "cmath_4094": [
+    "polynomial root analysis",
+    "coefficient comparison",
+    "complex number arithmetic",
+    "polynomial remainder theorem"
+  ],
+  "cmath_4161": [
+    "system of linear equations",
+    "polynomial factorization",
+    "coefficient comparison"
+  ],
+  "cmath_4186": [
+    "polynomial construction",
+    "system of linear equations",
+    "monic polynomial"
+  ],
+  "cmath_4190": [
+    "system of linear equations",
+    "polynomial factorization",
+    "coefficient comparison",
+    "polynomial construction",
+    "root analysis"
+  ],
+  "cmath_4292": [
+    "quadratic discriminant analysis",
+    "coordinate geometry",
+    "distance formula",
+    "polynomial completion of square",
+    "system of linear equations"
+  ],
+  "cmath_433": [
+    "coordinate geometry",
+    "distance formula",
+    "quadratic formula",
+    "system of linear equations"
+  ],
+  "cmath_436": [
+    "exponential growth",
+    "ratio computation"
+  ],
+  "cmath_442": [
+    "polynomial completion of square",
+    "quadratic formula",
+    "quadratic discriminant analysis",
+    "coordinate geometry",
+    "distance formula"
+  ],
+  "cmath_4501": [
+    "system of linear equations",
+    "polynomial factorization"
+  ],
+  "cmath_456": [
+    "case analysis",
+    "conditional reasoning"
+  ],
+  "cmath_4596": [
+    "polynomial factorization",
+    "system of linear equations",
+    "polynomial construction",
+    "root analysis"
+  ],
+  "cmath_4613": [
+    "partial fraction decomposition",
+    "polynomial factorization"
+  ],
+  "cmath_4682": [
+    "base conversion",
+    "digit analysis"
+  ],
+  "cmath_4731": [
+    "system of linear equations",
+    "extended Euclidean algorithm"
+  ],
+  "cmath_4777": [
+    "divisor enumeration",
+    "factorial computation",
+    "inequality bounding",
+    "gcd computation"
+  ],
+  "cmath_4804": [
+    "geometric series",
+    "ratio computation",
+    "proportional reasoning"
+  ],
+  "cmath_4829": [
+    "modular exponentiation",
+    "cycle detection"
+  ],
+  "cmath_4859": [
+    "base conversion",
+    "system of linear equations",
+    "digit analysis"
+  ],
+  "cmath_4949": [
+    "divisor enumeration",
+    "system of linear equations",
+    "polynomial factorization"
+  ],
+  "cmath_4950": [
+    "factorial computation",
+    "prime number testing",
+    "divisor enumeration"
+  ],
+  "cmath_4962": [
+    "system of linear equations",
+    "gcd computation",
+    "modular exponentiation"
+  ],
+  "cmath_5196": [
+    "divisor enumeration",
+    "prime number testing",
+    "arithmetic sequence",
+    "factorial computation"
+  ],
+  "cmath_5230": [
+    "system of linear equations",
+    "inequality bounding",
+    "conditional reasoning"
+  ],
+  "cmath_5243": [
+    "inequality bounding",
+    "floor function",
+    "ceiling function",
+    "system of linear equations"
+  ],
+  "cmath_5246": [
+    "logarithmic computation",
+    "fractional part analysis",
+    "inequality bounding"
+  ],
+  "cmath_5247": [
+    "system of linear equations",
+    "polynomial factorization",
+    "divisor enumeration"
+  ],
+  "cmath_525": [
+    "polynomial factorization",
+    "divisor enumeration",
+    "system of linear equations"
+  ],
+  "cmath_5259": [
+    "polynomial factorization",
+    "divisor enumeration",
+    "system of linear equations",
+    "inequality bounding"
+  ],
+  "cmath_5263": [
+    "Angle Bisector Theorem"
+  ],
+  "cmath_5268": [
+    "system of linear equations",
+    "coefficient comparison"
+  ],
+  "cmath_5274": [
+    "modular exponentiation",
+    "gcd computation",
+    "system of linear equations",
+    "polynomial factorization",
+    "arithmetic sequence"
+  ],
+  "cmath_5298": [
+    "ceiling function",
+    "inequality bounding",
+    "arithmetic mean computation"
+  ],
+  "cmath_5313": [
+    "coefficient comparison",
+    "fraction simplification",
+    "system of linear equations"
+  ],
+  "cmath_5348": [
+    "divisor enumeration",
+    "complementary counting",
+    "gcd computation",
+    "system of linear equations"
+  ],
+  "cmath_536": [
+    "system of linear equations",
+    "polynomial root analysis",
+    "Vieta's formula",
+    "prime number testing",
+    "coefficient comparison"
+  ],
+  "cmath_5388": [
+    "Fermat's Little Theorem",
+    "extended Euclidean algorithm"
+  ],
+  "cmath_539": [
+    "arithmetic mean computation",
+    "arithmetic sequence"
+  ],
+  "cmath_5464": [
+    "digit sum analysis",
+    "system of linear equations",
+    "divisor enumeration"
+  ],
+  "cmath_5559": [
+    "inclusion-exclusion principle",
+    "set-based deduplication",
+    "arithmetic operation"
+  ],
+  "cmath_5615": [
+    "digit analysis",
+    "arithmetic operation",
+    "conditional reasoning",
+    "complementary counting"
+  ],
+  "cmath_5656": [
+    "coordinate geometry",
+    "distance formula",
+    "circle intersection analysis",
+    "geometric transformation",
+    "formula application"
+  ],
+  "cmath_5676": [
+    "modular exponentiation",
+    "digit sum analysis",
+    "base conversion"
+  ],
+  "cmath_5686": [
+    "set-based deduplication"
+  ],
+  "cmath_5702": [
+    "fraction simplification",
+    "gcd computation"
+  ],
+  "cmath_5705": [
+    "coordinate geometry",
+    "area calculation",
+    "distance formula"
+  ],
+  "cmath_5996": [
+    "area calculation"
+  ],
+  "cmath_601": [
+    "system of linear equations",
+    "polynomial construction"
+  ],
+  "cmath_606": [
+    "quadratic formula",
+    "fraction simplification"
+  ],
+  "cmath_6208": [
+    "modular exponentiation",
+    "prime number testing",
+    "divisor enumeration",
+    "system of linear equations",
+    "conditional reasoning",
+    "Fermat's Little Theorem",
+    "gcd computation",
+    "extended Euclidean algorithm",
+    "base conversion",
+    "digit sum analysis",
+    "palindrome detection",
+    "Pythagorean theorem",
+    "ceiling function",
+    "floor function",
+    "quadratic discriminant analysis",
+    "coordinate geometry",
+    "midpoint formula",
+    "quadratic formula",
+    "Vieta's formula",
+    "distance formula",
+    "digit analysis",
+    "complementary counting",
+    "inclusion-exclusion principle",
+    "graph theory modeling",
+    "similar triangles",
+    "slope calculation",
+    "law of cosines",
+    "trigonometric identities",
+    "area calculation",
+    "ratio computation",
+    "reflection principle",
+    "rounding",
+    "polynomial construction",
+    "complex number arithmetic",
+    "arithmetic sequence",
+    "alternating sum",
+    "logarithmic sum evaluation",
+    "polynomial root analysis",
+    "circle intersection analysis",
+    "trial division",
+    "cycle detection",
+    "polynomial remainder theorem",
+    "Shoelace formula",
+    "case analysis",
+    "square root computation",
+    "angle calculation",
+    "acute angle computation",
+    "fraction simplification",
+    "trigonometric identity",
+    "sum-to-product identities",
+    "root analysis",
+    "geometric transformation",
+    "formula application",
+    "geometric series",
+    "logarithmic computation",
+    "compound interest",
+    "polynomial completion of square",
+    "polynomial transformation",
+    "quadratic zero finding",
+    "polynomial inequality",
+    "set-based deduplication",
+    "factor pair generation",
+    "arithmetic operation",
+    "unit conversion",
+    "proportional reasoning",
+    "Heron's formula",
+    "inradius calculation",
+    "triangle area computation",
+    "area scaling by ratio",
+    "centroid property",
+    "piecewise function analysis",
+    "exponential growth",
+    "algebraic number minimal polynomial",
+    "Angle Bisector Theorem"
+  ],
+  "cmath_6310": [
+    "coordinate geometry",
+    "distance formula"
+  ],
+  "cmath_6389": [
+    "Pythagorean theorem",
+    "area calculation"
+  ],
+  "cmath_6403": [
+    "digit sum analysis",
+    "digit analysis",
+    "case analysis"
+  ],
+  "cmath_6591": [
+    "inequality bounding",
+    "system of linear equations",
+    "conditional reasoning"
+  ],
+  "cmath_6595": [
+    "system of linear equations",
+    "conditional reasoning"
+  ],
+  "cmath_6632": [
+    "inclusion-exclusion principle",
+    "set-based deduplication"
+  ],
+  "cmath_676": [
+    "system of linear equations",
+    "polynomial factorization",
+    "coordinate geometry"
+  ],
+  "cmath_6775": [
+    "trigonometric identities",
+    "inequality bounding"
+  ],
+  "cmath_678": [
+    "polynomial completion of square",
+    "quadratic formula",
+    "quadratic discriminant analysis"
+  ],
+  "cmath_6888": [
+    "trigonometric identities",
+    "polynomial root analysis",
+    "case analysis",
+    "inequality bounding"
+  ],
+  "cmath_6998": [
+    "inequality bounding",
+    "fractional part analysis",
+    "case analysis"
+  ],
+  "cmath_7354": [
+    "trigonometric identities",
+    "case analysis",
+    "piecewise function analysis",
+    "coordinate geometry"
+  ],
+  "cmath_7520": [
+    "Vieta's formula"
+  ],
+  "cmath_7630": [
+    "quadratic formula",
+    "Vieta's formula",
+    "polynomial root analysis"
+  ],
+  "cmath_7636": [
+    "square root computation",
+    "inequality bounding",
+    "conditional reasoning"
+  ],
+  "cmath_7708": [
+    "system of linear equations",
+    "arithmetic sequence",
+    "inequality bounding"
+  ],
+  "cmath_7784": [
+    "polynomial completion of square"
+  ],
+  "cmath_7791": [
+    "system of linear equations",
+    "polynomial factorization",
+    "coefficient comparison",
+    "polynomial remainder theorem"
+  ],
+  "cmath_7854": [
+    "distance formula",
+    "quadratic formula"
+  ],
+  "cmath_7871": [
+    "coordinate geometry",
+    "distance formula",
+    "system of linear equations",
+    "polynomial construction"
+  ],
+  "cmath_7927": [
+    "coordinate geometry",
+    "coefficient comparison"
+  ],
+  "cmath_795": [
+    "polynomial factorization",
+    "quadratic formula",
+    "coordinate geometry",
+    "piecewise function analysis",
+    "system of linear equations"
+  ],
+  "cmath_8012": [
+    "polynomial root analysis",
+    "system of linear equations",
+    "coefficient comparison",
+    "Vieta's formula"
+  ],
+  "cmath_8139": [
+    "system of linear equations"
+  ],
+  "cmath_8361": [
+    "polynomial factorization",
+    "arithmetic operation"
+  ],
+  "cmath_8427": [
+    "polynomial factorization",
+    "monic polynomial"
+  ],
+  "cmath_8648": [
+    "polynomial completion of square"
+  ],
+  "cmath_8649": [
+    "system of linear equations",
+    "quadratic formula"
+  ],
+  "cmath_8692": [
+    "inclusion-exclusion principle"
+  ],
+  "cmath_8695": [
+    "divisor enumeration",
+    "conditional reasoning"
+  ],
+  "cmath_9111": [
+    "graph theory modeling",
+    "cycle graph"
+  ],
+  "cmath_914": [
+    "polynomial construction",
+    "system of linear equations",
+    "arithmetic sequence"
+  ],
+  "cmath_924": [
+    "polynomial factorization",
+    "system of linear equations"
+  ],
+  "cmath_9421": [
+    "coordinate geometry",
+    "midpoint formula",
+    "area calculation"
+  ],
+  "cmath_9427": [
+    "coordinate geometry",
+    "distance formula",
+    "circle intersection analysis"
+  ],
+  "cmath_9599": [
+    "coordinate geometry",
+    "distance formula",
+    "Pythagorean theorem",
+    "circle intersection analysis",
+    "quadratic discriminant analysis"
+  ],
+  "cmath_9619": [
+    "coordinate geometry",
+    "triangle area computation",
+    "area calculation"
+  ],
+  "cmath_9733": [
+    "inequality bounding",
+    "system of linear equations",
+    "arithmetic sequence"
+  ],
+  "cmath_9820": [
+    "polynomial factorization",
+    "system of linear equations",
+    "polynomial root analysis",
+    "coefficient comparison"
+  ],
+  "cmath_9867": [
+    "polynomial root analysis",
+    "system of linear equations",
+    "coefficient comparison"
+  ],
+  "cmath_9932": [
+    "polynomial factorization",
+    "monic polynomial",
+    "coefficient comparison"
+  ],
+  "cmath_9948": [
+    "polynomial root analysis",
+    "Vieta's formula",
+    "complex number arithmetic",
+    "polynomial construction"
+  ],
+  "cmath_9959": [
+    "polynomial factorization",
+    "polynomial remainder theorem",
+    "system of linear equations",
+    "monic polynomial"
+  ],
+  "cmath_9982": [
+    "system of linear equations",
+    "polynomial factorization",
+    "polynomial root analysis",
+    "polynomial construction",
+    "inequality bounding"
+  ],
+  "cmath_9987": [
+    "inequality bounding",
+    "system of linear equations"
+  ]
+}
