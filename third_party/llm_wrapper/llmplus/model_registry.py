@@ -60,6 +60,16 @@ MODEL_REGISTRY: dict[Provider, ProviderMeta] = {
                 param_renaming={"max_tokens": "max_completion_tokens"},
                 unsupported_kw=("temperature", "top_p"),
             ),
+            "gpt-5-mini": ModelMeta(
+                "gpt-5-mini",
+                param_renaming={"max_tokens": "max_completion_tokens"},
+                unsupported_kw=("temperature", "top_p"),
+            ),
+            "gpt-5-mini-2025-08-07": ModelMeta(
+                "gpt-5-mini-2025-08-07",
+                param_renaming={"max_tokens": "max_completion_tokens"},
+                unsupported_kw=("temperature", "top_p"),
+            ),
             "o3-mini-2025-01-31": ModelMeta(
                 "o3-mini-2025-01-31",
                 param_renaming={"max_tokens": "max_completion_tokens"},
@@ -144,6 +154,9 @@ MODEL_REGISTRY: dict[Provider, ProviderMeta] = {
             ),
             "qwen/qwen3.5-397b-a17b": ModelMeta(
                 "qwen/qwen3.5-397b-a17b",
+            ),
+            "qwen/qwen3.5-plus-02-15": ModelMeta(
+                "qwen/qwen3.5-plus-02-15",
             ),
         },
     ),

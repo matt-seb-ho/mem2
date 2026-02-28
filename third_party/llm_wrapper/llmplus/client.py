@@ -119,6 +119,7 @@ class LLMClient:
         gen_cfg: GenerationConfig | None = None,
         progress_file: str | Path = "batch_progress.json",
         show_progress: bool = True,
+        request_timeout: float | None = 300.0,
         **gen_kwargs,
     ) -> list[list[str | None]]:
         request_sem = asyncio.Semaphore(gen_cfg.batch_size)
@@ -135,14 +136,21 @@ class LLMClient:
             try:
                 if variable_num_samples:
                     gen_kwargs["n"] = num_samples[idx]
-                res = await self.async_generate(
+                coro = self.async_generate(
                     prm,
                     model=model,
                     gen_cfg=gen_cfg,
                     request_sem=request_sem,
                     **gen_kwargs,
                 )
+                if request_timeout:
+                    res = await asyncio.wait_for(coro, timeout=request_timeout)
+                else:
+                    res = await coro
                 results[idx] = res
+            except asyncio.TimeoutError:
+                logger.warning("prompt %s timed out after %.0fs", idx, request_timeout)
+                results[idx] = [None] * gen_kwargs.get("n", 1)
             except Exception as e:
                 msg = f"prompt {idx} failed: type: {type(e)}, message: {e}"
                 # logger.error("Prompt %s failed: %s", idx, e, exc_info=False)
