@@ -378,6 +378,10 @@ A concept encodes one of the following:
 - Format your final concept list inside a fenced yaml markdown block \
 (first line = "```yaml" and last line = "```")
 - Feel free to think before writing your final response
+- **CRITICAL: YAML formatting rules**: Do NOT use backtick characters (`) anywhere in your \
+YAML output. Use plain text descriptions instead of code formatting.
+    - BAD: "implementation: `dp[i]` stores the minimum cost"
+    - GOOD: "implementation: dp[i] stores the minimum cost"
 - Each concept entry should have these fields:
     concept: the specific algorithm/data structure/technique name
     kind: one of "algorithm", "data structure", "technique", "definition"
@@ -385,7 +389,14 @@ A concept encodes one of the following:
     parameters: (optional) list of {{name, typing, description}} — the variable aspects \
 of this concept that change across problems
     cues: 2-4 specific problem features that suggest this concept is relevant
-    implementation: 1-2 notes on how this concept was applied in this specific solution
+    implementation: 1-2 notes on the general procedure for applying this concept \
+(describe the method abstractly, not what happened in this particular problem)
+- **CRITICAL: No problem-specific values.** Strip ALL concrete numbers, array sizes, \
+variable names from cues and implementation. Write abstract patterns only.
+    - BAD cue: "array has 200000 elements and queries"
+    - GOOD cue: "large array with range queries requiring sublinear time"
+    - BAD implementation: "build segment tree over array a of size n"
+    - GOOD implementation: "build segment tree for point updates and range queries"
 - **Reuse concepts whenever possible**
     - check existing concepts in the `Concept Repository` section below
     - if an existing concept matches what you see, reuse its exact name

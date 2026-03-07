@@ -1,0 +1,100 @@
+{
+  "cmath_10098": [
+    "Factor Theorem",
+    "Undetermined Coefficients"
+  ],
+  "cmath_10170": [
+    "Vi\u00e8te's Formulas",
+    "Factor Theorem"
+  ],
+  "cmath_10229": [
+    "Vi\u00e8te's Formulas"
+  ],
+  "cmath_10265": [
+    "Vi\u00e8te's Formulas",
+    "Euclidean Distance Formula"
+  ],
+  "cmath_10805": [
+    "Intersection of Solution Sets",
+    "Casework by Residue Class",
+    "Integer Interval Counting"
+  ],
+  "cmath_2084": [
+    "Periodicity Reduction",
+    "Block Decomposition",
+    "Casework by Residue Class"
+  ],
+  "cmath_2138": [
+    "Stars and Bars",
+    "Casework by Residue Class"
+  ],
+  "cmath_2931": [
+    "Euclidean Distance Formula",
+    "Midpoint Formula",
+    "Axis-Aligned Base and Height",
+    "Coordinate Distance Calculation",
+    "Scalar Triple Product Volume Formula"
+  ],
+  "cmath_3059": [
+    "Coordinate System Alignment",
+    "Euclidean Distance Formula",
+    "Distance from Point to Line"
+  ],
+  "cmath_3121": [
+    "Circle Extremum Optimization",
+    "Intersection of Solution Sets",
+    "Coordinate System Alignment",
+    "Distance from Point to Line",
+    "Axis-Aligned Base and Height"
+  ],
+  "cmath_3177": [
+    "Coordinate System Alignment",
+    "Axis-Aligned Base and Height",
+    "Complementary Counting",
+    "Approximation of Irrational Bounds"
+  ],
+  "cmath_3719": [
+    "Nonnegative Radicand Condition",
+    "Algebraic Decomposition of Rational Terms",
+    "Approximation of Irrational Bounds"
+  ],
+  "cmath_4161": [
+    "Undetermined Coefficients",
+    "Vieta's Formulas"
+  ],
+  "cmath_5246": [
+    "Complementary Counting",
+    "Endpoint Value Identification",
+    "Integer Bounds from Base Digits",
+    "Ceiling and Floor Bounds"
+  ],
+  "cmath_5298": [
+    "Ceiling and Floor Bounds",
+    "Integer Interval Counting",
+    "Average Rate of Change"
+  ],
+  "cmath_6775": [
+    "Intersection of Solution Sets",
+    "Circle Extremum Optimization",
+    "Vi\u00e8te's Formulas"
+  ],
+  "cmath_7630": [
+    "Vi\u00e8te's Formulas"
+  ],
+  "cmath_9932": [
+    "Undetermined Coefficients",
+    "Vi\u00e8te's Formulas",
+    "Reciprocal Polynomial Factorization",
+    "Substitution for Even Powers"
+  ],
+  "cmath_9959": [
+    "Factor Theorem",
+    "Symmetry Orbit Decomposition",
+    "Undetermined Coefficients"
+  ],
+  "cmath_9987": [
+    "Intersection of Solution Sets",
+    "Vi\u00e8te's Formulas",
+    "Algebraic Decomposition of Rational Terms"
+  ]
+}
