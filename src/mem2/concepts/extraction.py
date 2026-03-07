@@ -276,7 +276,16 @@ the specific technique (e.g. "Digit Sum Modular Reduction", "Greedy Interval Pac
 of this concept that change across problems
     cues: 2-4 specific problem features that suggest this concept is relevant \
 (these should be concrete and observable, not tautological)
-    implementation: 1-2 notes on how this concept was applied in this specific solution
+    implementation: 1-2 notes on the general procedure for applying this concept \
+(describe the method abstractly, not what happened in this particular problem)
+- **CRITICAL: No problem-specific values.** Strip ALL concrete numbers, coordinates, \
+coefficients, and computed answers from cues and implementation. Write abstract patterns only.
+    - BAD cue: "center is at (4,4) for a 7×7 grid"
+    - GOOD cue: "problem has a grid with a natural center point"
+    - BAD implementation: "compute 160 miles ÷ 5 hours = 32 mph"
+    - GOOD implementation: "compute speed = distance ÷ time"
+    - BAD implementation: "ACM: base CM = 2, height = 8 → area = 8"
+    - GOOD implementation: "compute triangle area = ½ × base × height using perpendicular distance"
 - **Reuse concepts whenever possible**
     - check existing concepts in the `Concept Repository` section below
     - if an existing concept matches what you see, reuse its exact name
@@ -313,7 +322,7 @@ Answer = C(10,3) - C(10,4)
     - problem involves moving on a grid with restricted steps
     - answer expressible as binomial coefficient C(m+n, n)
   implementation:
-    - total paths from (0,0) to (a,b) with unit steps = C(a+b, b)
+    - total paths from origin to target with unit steps = C(width+height, height)
 
 - concept: Reflection Principle for Lattice Paths
   kind: technique

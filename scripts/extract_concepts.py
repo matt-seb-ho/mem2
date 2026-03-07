@@ -117,9 +117,26 @@ def parse_args() -> argparse.Namespace:
         help="Disable reasoning/thinking mode (for hybrid models like Qwen 3.5)",
     )
     p.add_argument(
+        "--provider",
+        default="llmplus_openrouter",
+        help="Provider profile name (default: llmplus_openrouter)",
+    )
+    p.add_argument(
         "--dry-run",
         action="store_true",
         help="Print prompts without calling LLM",
+    )
+    p.add_argument(
+        "--include-ids",
+        nargs="*",
+        default=None,
+        help="Only extract from these problem UIDs (space-separated)",
+    )
+    p.add_argument(
+        "--include-ids-file",
+        type=Path,
+        default=None,
+        help="File with problem UIDs to include, one per line",
     )
     return p.parse_args()
 
@@ -142,6 +159,20 @@ async def main() -> None:
     logger.info(f"Loading solved problems from {args.run_dir}")
     solved = load_solved_problems(args.run_dir, args.domain)
     logger.info(f"Found {len(solved)} solved problems")
+
+    # Filter to specific problem IDs if requested
+    include_ids: set[str] | None = None
+    if args.include_ids or args.include_ids_file:
+        include_ids = set(args.include_ids or [])
+        if args.include_ids_file:
+            include_ids |= {
+                line.strip()
+                for line in args.include_ids_file.read_text().splitlines()
+                if line.strip() and not line.strip().startswith("#")
+            }
+        before = len(solved)
+        solved = [s for s in solved if s.uid in include_ids]
+        logger.info(f"Filtered to {len(solved)}/{before} problems ({len(include_ids)} requested IDs)")
 
     if not solved:
         logger.error("No solved problems found. Exiting.")
@@ -167,7 +198,7 @@ async def main() -> None:
     gen_cfg = None
     if not args.dry_run:
         client = LLMPlusProviderClient(profile_cfg={
-            "profile_name": "llmplus_openrouter",
+            "profile_name": args.provider,
             "default_max_concurrency": args.concurrency,
         })
         gen_cfg = {"max_tokens": args.max_tokens, "temperature": 0.3, "n": 1}

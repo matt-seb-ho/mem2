@@ -1,0 +1,84 @@
+_base_: ../../base.yaml
+pipeline:
+  task_adapter: math_ps
+  benchmark: competition_math_ps
+  memory_builder: none
+  memory_retriever: none
+  trajectory_policy: single_path
+  provider: llmplus_openrouter
+  inference_engine: math_reason
+  feedback_engine: math_reason_gt
+  evaluator: math_reason_eval
+  artifact_sink: json_local
+run:
+  run_type: fastiter_baseline_flash
+  seed: 42
+  max_passes: 2
+  execution_mode: arc_batch
+  retry_criterion: test
+  retry_policy:
+    max_passes: 2
+    criterion: test
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+components:
+  task_adapter:
+    task_name: math_ps
+  benchmark:
+    data_root: data/competition_math_all_l5
+    types:
+    - Algebra
+    - Counting & Probability
+    - Geometry
+    - Intermediate Algebra
+    - Number Theory
+    - Prealgebra
+    - Precalculus
+    limit: 0
+    include_ids:
+    - cmath_10098
+    - cmath_10170
+    - cmath_10229
+    - cmath_10265
+    - cmath_10805
+    - cmath_2084
+    - cmath_2138
+    - cmath_2931
+    - cmath_3059
+    - cmath_3121
+    - cmath_3177
+    - cmath_3719
+    - cmath_4161
+    - cmath_5246
+    - cmath_5298
+    - cmath_6775
+    - cmath_7630
+    - cmath_9932
+    - cmath_9959
+    - cmath_9987
+  memory_builder: {}
+  memory_retriever: {}
+  trajectory_policy:
+    retry_paths: 1
+  provider:
+    profile_name: llmplus_openrouter
+    dotenv_path: .env.example
+    default_max_concurrency: 8
+  inference_engine:
+    model: qwen/qwen3.5-flash-02-23
+    gen_cfg:
+      n: 8
+      max_tokens: 16384
+      batch_size: 8
+      seed: 42
+      ignore_cache: true
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+    include_reselected_lessons: false
+    prompt_options: null
+  feedback_engine: {}
+  evaluator:
+    require_all_tests: null
+  artifact_sink: {}

@@ -331,12 +331,22 @@ class PipelineRunner:
             .get("prompt_options") or {}
         )
         problem_data_enabled = bool(ie_prompt_opts.get("problem_data"))
+        hybrid_concept = bool(
+            self.config.get("run", {}).get("hybrid_concept_mode", False)
+        )
         if not history and problem_data_enabled:
             retrieval = RetrievalBundle(
                 problem_uid=problem.uid,
                 hint_text=None,
                 retrieved_items=[],
                 metadata={"selector_mode": "disabled_problem_data"},
+            )
+        elif not history and hybrid_concept:
+            retrieval = RetrievalBundle(
+                problem_uid=problem.uid,
+                hint_text=None,
+                retrieved_items=[],
+                metadata={"selector_mode": "hybrid_skip_initial"},
             )
         else:
             retrieval = None  # deferred to async_retrieve in _run_inference_job

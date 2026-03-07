@@ -1,0 +1,23 @@
+# Concept helps (7)
+cmath_10805
+cmath_9932
+cmath_2084
+cmath_3121
+cmath_3177
+cmath_4161
+cmath_10098
+# Concept hurts (7)
+cmath_5298
+cmath_2931
+cmath_9959
+cmath_7630
+cmath_5246
+cmath_3719
+cmath_3059
+# Neutral (6)
+cmath_2138
+cmath_6775
+cmath_9987
+cmath_10170
+cmath_10229
+cmath_10265

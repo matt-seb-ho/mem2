@@ -54,6 +54,16 @@ MODEL_REGISTRY: dict[Provider, ProviderMeta] = {
                 param_renaming={"max_tokens": "max_completion_tokens"},
                 unsupported_kw=(),
             ),
+            "gpt-4.1-mini": ModelMeta(
+                "gpt-4.1-mini",
+                param_renaming={"max_tokens": "max_completion_tokens"},
+                unsupported_kw=(),
+            ),
+            "gpt-4.1-mini-2025-04-14": ModelMeta(
+                "gpt-4.1-mini-2025-04-14",
+                param_renaming={"max_tokens": "max_completion_tokens"},
+                unsupported_kw=(),
+            ),
             # OpenAI GPT-5 rejects temperature/top_p and expects max_completion_tokens.
             "gpt-5": ModelMeta(
                 "gpt-5",
@@ -67,6 +77,11 @@ MODEL_REGISTRY: dict[Provider, ProviderMeta] = {
             ),
             "gpt-5-mini-2025-08-07": ModelMeta(
                 "gpt-5-mini-2025-08-07",
+                param_renaming={"max_tokens": "max_completion_tokens"},
+                unsupported_kw=("temperature", "top_p"),
+            ),
+            "gpt-5-nano": ModelMeta(
+                "gpt-5-nano",
                 param_renaming={"max_tokens": "max_completion_tokens"},
                 unsupported_kw=("temperature", "top_p"),
             ),
@@ -157,6 +172,9 @@ MODEL_REGISTRY: dict[Provider, ProviderMeta] = {
             ),
             "qwen/qwen3.5-plus-02-15": ModelMeta(
                 "qwen/qwen3.5-plus-02-15",
+            ),
+            "qwen/qwen3.5-flash-02-23": ModelMeta(
+                "qwen/qwen3.5-flash-02-23",
             ),
         },
     ),

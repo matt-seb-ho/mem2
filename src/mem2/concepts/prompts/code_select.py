@@ -24,6 +24,7 @@ Identify which concepts could be relevant to the given problem.
 - Consider the problem's algorithmic domain (graphs, DP, greedy, math, string manipulation, etc.)
 - Look for concepts whose cues match the problem's structure, constraints, or input/output patterns
 - Think about which algorithms, data structures, or optimization techniques could help solve the problem
+- Select **1-5 concepts** — only those that are directly actionable for this problem. Do NOT list every vaguely related concept.
 - Write your final selection of concepts as a yaml formatted list of concept names
 - To allow us to match your selection to the concepts we have, please use the exact concept names as they appear in the above concept list
 - Write your answer inside a markdown yaml code block (i.e. be sure to have "```yaml" in the line before your code and "```" in the line after your list)

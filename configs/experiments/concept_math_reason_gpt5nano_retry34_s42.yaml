@@ -1,0 +1,103 @@
+_base_: ../base.yaml
+pipeline:
+  task_adapter: math_ps
+  benchmark: competition_math_ps
+  memory_builder: arcmemo_ps
+  memory_retriever: ps_selector
+  trajectory_policy: single_path
+  provider: llmplus_openai
+  inference_engine: math_reason
+  feedback_engine: math_reason_gt
+  evaluator: math_reason_eval
+  artifact_sink: json_local
+run:
+  run_type: concept_math_reason_gpt5nano_retry34
+  seed: 42
+  max_passes: 1
+  execution_mode: arc_batch
+  retry_criterion: test
+  retry_policy:
+    max_passes: 1
+    criterion: test
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+components:
+  task_adapter:
+    task_name: math_ps
+  benchmark:
+    data_root: data/competition_math_all_l5
+    types:
+    - Algebra
+    - Counting & Probability
+    - Geometry
+    - Intermediate Algebra
+    - Number Theory
+    - Prealgebra
+    - Precalculus
+    limit: 0
+    include_ids:
+    - cmath_10143
+    - cmath_10274
+    - cmath_12063
+    - cmath_1770
+    - cmath_2084
+    - cmath_2097
+    - cmath_2133
+    - cmath_2149
+    - cmath_2154
+    - cmath_2309
+    - cmath_2920
+    - cmath_2931
+    - cmath_3022
+    - cmath_3177
+    - cmath_3479
+    - cmath_3719
+    - cmath_4161
+    - cmath_4174
+    - cmath_4190
+    - cmath_4416
+    - cmath_4949
+    - cmath_5243
+    - cmath_5247
+    - cmath_5298
+    - cmath_6775
+    - cmath_6888
+    - cmath_8649
+    - cmath_9421
+    - cmath_9599
+    - cmath_9733
+    - cmath_9867
+    - cmath_9948
+    - cmath_9959
+    - cmath_9987
+  trajectory_policy:
+    retry_paths: 1
+  provider:
+    profile_name: llmplus_openai
+    dotenv_path: .env.example
+    default_max_concurrency: 8
+  inference_engine:
+    model: gpt-5-nano
+    gen_cfg:
+      n: 1
+      max_tokens: 16384
+      batch_size: 8
+      seed: 42
+      ignore_cache: true
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+    include_reselected_lessons: false
+    prompt_options: null
+  feedback_engine: {}
+  evaluator:
+    require_all_tests: null
+  artifact_sink: {}
+  memory_builder:
+    seed_memory_file: data/competition_math_all_l5/concept_memory_gpt5nano/extracted_v1.json
+    domain: math
+    max_concepts: 500
+  memory_retriever:
+    domain: math
+    prompt_info_file: data/competition_math_all_l5/concept_memory_gpt5nano/selection_v1/prompt_info.json

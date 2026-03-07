@@ -24,6 +24,15 @@ from mem2.concepts.data import (
 logger = logging.getLogger(__name__)
 
 
+def _stringify_keys(obj):
+    """Recursively convert all dict keys to strings (YAML can produce int keys)."""
+    if isinstance(obj, dict):
+        return {str(k): _stringify_keys(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [_stringify_keys(v) for v in obj]
+    return obj
+
+
 @dataclass
 class ProblemSolution:
     problem_id: str
@@ -516,7 +525,9 @@ class ConceptMemory:
             "custom_types": self.custom_types,
         }
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_bytes(orjson.dumps(blob, option=orjson.OPT_INDENT_2))
+        path.write_bytes(orjson.dumps(
+            _stringify_keys(blob), option=orjson.OPT_INDENT_2
+        ))
 
     def load_from_file(self, path: Path | str) -> None:
         path = Path(path)

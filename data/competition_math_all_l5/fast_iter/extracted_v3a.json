@@ -1,0 +1,1539 @@
+{
+  "concepts": {
+    "Solving Absolute Value Inequalities": {
+      "name": "Solving Absolute Value Inequalities",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "form",
+          "typing": "str",
+          "description": "the absolute-value inequality form, e.g., |x - c| < d"
+        },
+        {
+          "name": "variable",
+          "typing": "str",
+          "description": "the variable contained in the absolute value"
+        }
+      ],
+      "description": "Translate an inequality involving an absolute value into a simple interval bound for the variable.",
+      "cues": [
+        "problem involves an inequality with an absolute value",
+        "the solution set is a contiguous interval for the variable"
+      ],
+      "implementation": [
+        "rewrite |variable - center| < bound as -bound < variable - center < bound",
+        "deduce the solution interval for variable: (center - bound, center + bound)"
+      ],
+      "used_in": [
+        "cmath_1005"
+      ]
+    },
+    "Squaring Nonnegative Quantities to Compare": {
+      "name": "Squaring Nonnegative Quantities to Compare",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "left",
+          "typing": "str",
+          "description": "left-hand nonnegative expression"
+        },
+        {
+          "name": "right",
+          "typing": "str",
+          "description": "right-hand nonnegative expression"
+        }
+      ],
+      "description": "Use the monotonicity of the squaring function on nonnegative numbers to compare expressions and simplify inequalities.",
+      "cues": [
+        "comparing two nonnegative quantities (e.g., absolute values)",
+        "the problem reduces to an inequality that becomes linear after squaring"
+      ],
+      "implementation": [
+        "verify both sides are nonnegative",
+        "apply the equivalence a < b iff a^2 < b^2 for nonnegative a, b",
+        "simplify to obtain the resulting inequality or range"
+      ],
+      "used_in": [
+        "cmath_1005"
+      ]
+    },
+    "Arithmetic Series / Sum of Consecutive Integers": {
+      "name": "Arithmetic Series / Sum of Consecutive Integers",
+      "kind": "theorem",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "start",
+          "typing": "int",
+          "description": "first term in the consecutive range"
+        },
+        {
+          "name": "end",
+          "typing": "int",
+          "description": "last term in the consecutive range"
+        }
+      ],
+      "description": "The sum of a consecutive integer interval from start to end is (start + end) times the number of terms divided by 2.",
+      "cues": [
+        "the solution set forms a consecutive integer interval",
+        "you need the total sum of all integers in that interval"
+      ],
+      "implementation": [
+        "n = end - start + 1",
+        "sum = n * (start + end) / 2"
+      ],
+      "used_in": [
+        "cmath_1005"
+      ]
+    },
+    "Intersection of Constraint Solution Sets": {
+      "name": "Intersection of Constraint Solution Sets",
+      "kind": "strategy",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "constraints",
+          "typing": "list[str]",
+          "description": "list of individual inequality constraints"
+        }
+      ],
+      "description": "Solve multiple independent inequalities and take the intersection of their solution sets to obtain the final feasible set.",
+      "cues": [
+        "problem imposes several inequalities on the same variable",
+        "feasible solutions must satisfy all constraints simultaneously",
+        "multiple independent digit-length constraints are imposed on the same variable",
+        "the solution set is the intersection of two (or more) intervals",
+        "problem imposes multiple domain constraints from different radical expressions",
+        "domain equals the common feasible set satisfying all constraints"
+      ],
+      "implementation": [
+        "determine the solution set for each constraint",
+        "final solution set = intersection of all individual solution sets",
+        "translate each constraint into an interval",
+        "compute the intersection of these intervals to obtain the feasible range",
+        "Solve each constraint independently to obtain its domain",
+        "take the intersection of all per-constraint domains to obtain the final domain"
+      ],
+      "used_in": [
+        "cmath_1005",
+        "cmath_10590",
+        "cmath_8075"
+      ]
+    },
+    "Viète's Formulas": {
+      "name": "Viète's Formulas",
+      "kind": "theorem",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "polynomial",
+          "typing": "Polynomial",
+          "description": "monic polynomial whose roots are r_i"
+        },
+        {
+          "name": "degree",
+          "typing": "int",
+          "description": "the degree n of the polynomial"
+        },
+        {
+          "name": "constant_term",
+          "typing": "number",
+          "description": "the constant term of the polynomial"
+        }
+      ],
+      "description": "relate sums and products of the roots of a polynomial to its coefficients",
+      "cues": [
+        "problem involves a polynomial with known roots and asks for a sum over those roots",
+        "need to extract the sum of the roots from coefficients without solving for the roots",
+        "polynomial is monic",
+        "product of roots is tied to the constant term via Viète's relations"
+      ],
+      "implementation": [
+        "identify the coefficient corresponding to the x^{n-1} term to obtain sum of roots",
+        "compute sum of roots = - (leading coefficient's next coefficient) / (leading coefficient)",
+        "for a monic P of degree n, r_1 r_2 ... r_n = (−1)^n * constant_term",
+        "similarly, sums of roots correspond to coefficients with alternating signs"
+      ],
+      "used_in": [
+        "cmath_10055",
+        "cmath_10175"
+      ]
+    },
+    "Logarithmic derivative of a polynomial": {
+      "name": "Logarithmic derivative of a polynomial",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "P",
+          "typing": "Polynomial",
+          "description": "polynomial with roots r_i"
+        },
+        {
+          "name": "a",
+          "typing": "number",
+          "description": "shift value chosen to simplify the sum"
+        }
+      ],
+      "description": "use P'(a)/P(a) = sum_i 1/(a - r_i) to convert sums over roots into evaluations of P and its derivative",
+      "cues": [
+        "problem asks for a sum of terms of the form 1/(r_i + a)",
+        "desire to transform a root-sum into a computable ratio of derivatives"
+      ],
+      "implementation": [
+        "compute P(a) and P'(a)",
+        "apply P'(a)/P(a) = sum_i 1/(a - r_i)",
+        "rearrange to obtain sum_i 1/(r_i + a) as needed"
+      ],
+      "used_in": [
+        "cmath_10055"
+      ]
+    },
+    "Rational decomposition of functions of roots": {
+      "name": "Rational decomposition of functions of roots",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "f",
+          "typing": "function",
+          "description": "expression in r that needs summation"
+        }
+      ],
+      "description": "rewrite a function of a root as a sum of a polynomial part and a simple rational part to simplify summation",
+      "cues": [
+        "target expression in r can be split into parts easier to sum separately",
+        "enables applying different summation tools to each part"
+      ],
+      "implementation": [
+        "find an identity expressing f(r) = g(r) + h(r) where g is a polynomial in r and h is a simple term",
+        "sum g(r_i) using Viète's results or symmetric sums",
+        "sum h(r_i) using an appropriate technique (e.g., logarithmic derivative or direct evaluation)"
+      ],
+      "used_in": [
+        "cmath_10055"
+      ]
+    },
+    "Factor Theorem": {
+      "name": "Factor Theorem",
+      "kind": "theorem",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "If a polynomial evaluates to zero at a, then (x − a) is a factor; used to infer a product of linear factors from zeros.",
+      "cues": [
+        "the auxiliary polynomial has zeros at multiple distinct input values",
+        "the polynomial’s degree is bounded (e.g., not exceeding a given degree)"
+      ],
+      "implementation": [
+        "from the zeros, conclude the polynomial is divisible by the product of (x − r_i)",
+        "use the leading coefficient to fix any remaining constant factor and obtain the full factorization"
+      ],
+      "used_in": [
+        "cmath_10114"
+      ]
+    },
+    "Monic Root Factorization": {
+      "name": "Monic Root Factorization",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "roots",
+          "typing": "list[float]",
+          "description": "the roots of the polynomial"
+        },
+        {
+          "name": "degree",
+          "typing": "int",
+          "description": "the degree of the polynomial"
+        }
+      ],
+      "description": "A monic polynomial of a given degree with a prescribed set of roots equals the product ∏(x − root_i); used to reconstruct the polynomial from its roots.",
+      "cues": [
+        "the polynomial is known to be monic",
+        "the number of distinct roots matches the degree"
+      ],
+      "implementation": [
+        "write the polynomial as a product ∏(x − root_i)",
+        "since it is monic, no extra constant factor is needed; validate by checking the leading term"
+      ],
+      "used_in": [
+        "cmath_10114"
+      ]
+    },
+    "Auxiliary Polynomial Construction": {
+      "name": "Auxiliary Polynomial Construction",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Define an auxiliary polynomial Q(x) = P(x) − target(x) to force specified values to become zeros; then analyze Q to recover P.",
+      "cues": [
+        "given equalities P(k) = target(k) for several inputs",
+        "strategy involves forming Q(x) = P(x) − target(x) to induce zeros"
+      ],
+      "implementation": [
+        "form Q(x) = P(x) − target(x)",
+        "deduce zeros of Q at the specified inputs",
+        "factor Q using root-based reasoning and match leading coefficients to recover P"
+      ],
+      "used_in": [
+        "cmath_10114"
+      ]
+    },
+    "Im(AB) = 0 Real-Product Constraint": {
+      "name": "Im(AB) = 0 Real-Product Constraint",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "A",
+          "typing": "complex",
+          "description": "fixed complex constant multiplied by the variable part B"
+        }
+      ],
+      "description": "enforce that the product of two complex quantities is real by setting its imaginary part to zero and substituting known fixed parts.",
+      "cues": [
+        "AB is constrained to be real",
+        "A is a fixed nonzero complex constant"
+      ],
+      "implementation": [
+        "Let B be a variable complex expression; compute Im(A·B) and set it to 0.",
+        "Substitute real and imaginary parts of A and B; isolate a locus equation in the real variables defining z."
+      ],
+      "used_in": [
+        "cmath_10132"
+      ]
+    },
+    "Möbius Transformation Locus": {
+      "name": "Möbius Transformation Locus",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "z2",
+          "typing": "complex",
+          "description": "fixed complex point used in B's numerator"
+        },
+        {
+          "name": "z3",
+          "typing": "complex",
+          "description": "fixed complex point used in B's denominator"
+        }
+      ],
+      "description": "interpret the ratio B = (z − z2)/(z − z3) as a Möbius map and determine the preimage of a fixed line through the origin, which yields a circle or line in the z-plane.",
+      "cues": [
+        "B is defined as (z − z2)/(z − z3)",
+        "AB being real implies B lies on a line through the origin in the B-plane"
+      ],
+      "implementation": [
+        "Fix the target line in the B-plane (through the origin); invert the Möbius map to obtain the locus of z in the z-plane.",
+        "Identify whether the resulting locus is a circle or a line and determine its parameters."
+      ],
+      "used_in": [
+        "cmath_10132"
+      ]
+    },
+    "Completing the Square to Identify a Circle": {
+      "name": "Completing the Square to Identify a Circle",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "equation",
+          "typing": "str",
+          "description": "the general quadratic expression in x and y"
+        }
+      ],
+      "description": "transform a quadratic in x and y into the standard circle form by completing the square to read off the center and radius.",
+      "cues": [
+        "Equation begins with x^2 + y^2 plus linear terms",
+        "After rearrangement, a circle form (x−h)^2 + (y−k)^2 = R^2 emerges"
+      ],
+      "implementation": [
+        "Group x-terms and y-terms, complete the square for each, and identify the circle center (h, k) and radius R from the constant term."
+      ],
+      "used_in": [
+        "cmath_10132"
+      ]
+    },
+    "Extremum on a Circle (Topmost Point)": {
+      "name": "Extremum on a Circle (Topmost Point)",
+      "kind": "strategy",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "center",
+          "typing": "tuple[float, float]",
+          "description": "circle center coordinates (h, k)"
+        },
+        {
+          "name": "radius",
+          "typing": "float",
+          "description": "circle radius"
+        }
+      ],
+      "description": "to maximize the imaginary part on a circular locus, take the topmost point of the circle (align x with the center and add the radius to the y-coordinate).",
+      "cues": [
+        "Locus is a circle in the z-plane",
+        "Objective is to maximize the imaginary part (y-coordinate)"
+      ],
+      "implementation": [
+        "Set x = h and y = k + R to obtain the topmost point; read off the corresponding z = x + i y."
+      ],
+      "used_in": [
+        "cmath_10132"
+      ]
+    },
+    "Polynomial Resultant Trick": {
+      "name": "Polynomial Resultant Trick",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "polynomial",
+          "typing": "str",
+          "description": "the monic polynomial P with roots r_i"
+        },
+        {
+          "name": "shift",
+          "typing": "str",
+          "description": "the form of the shift in the second polynomial, e.g., P(u − x)"
+        },
+        {
+          "name": "evaluation_point",
+          "typing": "str",
+          "description": "the value(s) at which the resultant is specialized (e.g., u = 0)"
+        }
+      ],
+      "description": "Use the resultant of a polynomial with a shifted version to encode products over sums/differences of its roots; specialize the resultant to extract target symmetric products.",
+      "cues": [
+        "problem constructs Res_x(P(x), P(u − x))",
+        "the resultant is expressed as ∏ P(u − r_i) and also as ∏_{i,j} (u − (r_i + r_j))",
+        "specialization yields a product over all pairwise sums of roots"
+      ],
+      "implementation": [
+        "recall that if P is monic with roots r_i, then Res_x(P(x), Q(x)) = ∏ Q(r_i)",
+        "for Q(x) = P(u − x), obtain Res_x(P(x), P(u − x)) = ∏_{i,j} (u − (r_i + r_j))",
+        "specialize to the chosen evaluation_point to read off the desired symmetric product"
+      ],
+      "used_in": [
+        "cmath_10175"
+      ]
+    },
+    "Pairwise Sum Product Decomposition": {
+      "name": "Pairwise Sum Product Decomposition",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "roots",
+          "typing": "list[str]",
+          "description": "the set of roots {r_i}"
+        },
+        {
+          "name": "K",
+          "typing": "str",
+          "description": "the product over unordered pairs K = ∏_{i<j} (r_i + r_j)"
+        }
+      ],
+      "description": "Express the full product over all ordered pairs of sums of roots in terms of the product over unordered pair sums and the product over diagonal terms.",
+      "cues": [
+        "need to relate ∏_{i,j} (r_i + r_j) to K",
+        "there are diagonal terms (i = j) and off-diagonal terms (i ≠ j)"
+      ],
+      "implementation": [
+        "observe that for i ≠ j, (r_i + r_j) appears twice (as (i,j) and (j,i)); for i = j, term is 2 r_i",
+        "deduce the relation ∏_{i,j} (r_i + r_j) = K^2 · ∏_{i=1}^n (2 r_i)"
+      ],
+      "used_in": [
+        "cmath_10175"
+      ]
+    },
+    "Base-b Digit Count Range": {
+      "name": "Base-b Digit Count Range",
+      "kind": "definition",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "base",
+          "typing": "int",
+          "description": "the base b"
+        },
+        {
+          "name": "digits",
+          "typing": "int",
+          "description": "the number of digits k"
+        }
+      ],
+      "description": "The k-digit numbers in base b satisfy b^(k-1) ≤ n ≤ b^k − 1.",
+      "cues": [
+        "problem states a number has k digits in base b",
+        "bounds can be expressed via powers of b"
+      ],
+      "implementation": [
+        "set lower_bound = b^(digits − 1)",
+        "set upper_bound = b^digits − 1",
+        "feasible n lie in [lower_bound, upper_bound]"
+      ],
+      "used_in": [
+        "cmath_10590"
+      ]
+    },
+    "Midpoint of Consecutive Integer Interval": {
+      "name": "Midpoint of Consecutive Integer Interval",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "a",
+          "typing": "int",
+          "description": "left endpoint"
+        },
+        {
+          "name": "b",
+          "typing": "int",
+          "description": "right endpoint"
+        }
+      ],
+      "description": "For a consecutive integer interval [a, b], the midpoint is (a + b)/2 and often identifies the central value of the set",
+      "cues": [
+        "feasible set forms an inclusive range of consecutive integers"
+      ],
+      "implementation": [
+        "compute midpoint m = (a + b) / 2",
+        "if the number of terms is odd, m is the unique middle element",
+        "if even, m is the average of the two middle elements (used as center)"
+      ],
+      "used_in": [
+        "cmath_10590"
+      ]
+    },
+    "LCM-based Periodicity Reduction": {
+      "name": "LCM-based Periodicity Reduction",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "moduli",
+          "typing": "tuple[int, int]",
+          "description": "the two moduli governing the separate residue conditions"
+        }
+      ],
+      "description": "When two conditions depend on residues modulo different integers, combine them into a single period equal to the least common multiple to analyze once and scale.",
+      "cues": [
+        "problem has two independent residue conditions (mod a and mod b)",
+        "counting over a large range with a repeating pattern"
+      ],
+      "implementation": [
+        "compute L = lcm(a, b)",
+        "analyze the set of good indices within one period 1..L",
+        "total_good = floor(N / L) * good_per_period",
+        "handle remaining indices in the partial tail 1..(N mod L)"
+      ],
+      "used_in": [
+        "cmath_10691"
+      ]
+    },
+    "Single-Period Enumeration": {
+      "name": "Single-Period Enumeration",
+      "kind": "strategy",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "period_length",
+          "typing": "int",
+          "description": "length of the repeating block (the LCM of moduli)"
+        }
+      ],
+      "description": "Within one complete period, enumerate all indices that satisfy the combined condition to obtain the per-period count.",
+      "cues": [
+        "a period length has been identified",
+        "need the count of satisfying indices within a full period"
+      ],
+      "implementation": [
+        "for n = 1 to period_length, test the combined condition",
+        "count how many n satisfy C(n) = S(n) within the period",
+        "optionally record the residue classes that work for tail analysis"
+      ],
+      "used_in": [
+        "cmath_10691"
+      ]
+    },
+    "Residue Pair Mapping for Combined Conditions": {
+      "name": "Residue Pair Mapping for Combined Conditions",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "moduli",
+          "typing": "tuple[int, int]",
+          "description": "the two moduli governing the separate residue constraints"
+        }
+      ],
+      "description": "Build a cross-tabulation of residues modulo each modulus to identify which residue pairs satisfy the combined requirement.",
+      "cues": [
+        "combined condition depends on two independent residue properties",
+        "need to translate a global condition into local residue pairs"
+      ],
+      "implementation": [
+        "construct a table with rows representing residues mod a and columns residues mod b",
+        "mark cells where the pair (n mod a, n mod b) satisfies the target",
+        "translate good cells back to the global indices modulo L"
+      ],
+      "used_in": [
+        "cmath_10691"
+      ]
+    },
+    "Integer Interval Cardinality via Floor and Ceiling": {
+      "name": "Integer Interval Cardinality via Floor and Ceiling",
+      "kind": "strategy",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "a",
+          "typing": "real",
+          "description": "lower real endpoint of the interval"
+        },
+        {
+          "name": "b",
+          "typing": "real",
+          "description": "upper real endpoint of the interval"
+        }
+      ],
+      "description": "count integers in a real interval by converting endpoints to integer bounds using ceiling for the lower end and floor for the upper end",
+      "cues": [
+        "problem asks for the number of integers n with a ≤ n ≤ b",
+        "endpoints are real numbers and must be converted to integer bounds",
+        "the appropriate bounds are ⌈a⌉ for the lower end and ⌊b⌋ for the upper end"
+      ],
+      "implementation": [
+        "compute lower = ⌈a⌉",
+        "compute upper = ⌊b⌋",
+        "if lower ≤ upper, answer = upper − lower + 1",
+        "otherwise, answer = 0"
+      ],
+      "used_in": [
+        "cmath_1092"
+      ]
+    },
+    "Monochromatic Orbits under Group Action": {
+      "name": "Monochromatic Orbits under Group Action",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "group",
+          "typing": "Group",
+          "description": "symmetry group acting on the domain"
+        },
+        {
+          "name": "orbits",
+          "typing": "list[set]",
+          "description": "partition of the domain into orbits under the group action"
+        }
+      ],
+      "description": "Under a symmetry group acting on a grid, an invariant coloring must assign the same color to every element within each orbit; the count of invariant colorings equals 2^(number of orbits).",
+      "cues": [
+        "problem asks for colorings invariant under all symmetries of a square (D4)",
+        "the action partitions the cells into orbits",
+        "invariant colorings require monochromatic orbits"
+      ],
+      "implementation": [
+        "compute the orbits of the domain under the group's action",
+        "assign a color to each orbit independently",
+        "total invariant colorings = 2^(number_of_orbits)",
+        "to enforce additional color constraints, apply complementary counting on top"
+      ],
+      "used_in": [
+        "cmath_2171"
+      ]
+    },
+    "Complementary Counting for Enforcing Color Variety": {
+      "name": "Complementary Counting for Enforcing Color Variety",
+      "kind": "strategy",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "constraint",
+          "typing": "str",
+          "description": "the constraint (e.g., \"both colors appear\")"
+        }
+      ],
+      "description": "To ensure both colors appear, count all invariant colorings and subtract the colorings that violate the condition (e.g., monochromatic colorings).",
+      "cues": [
+        "there is a requirement that at least one square of each color",
+        "solution uses subtracting monochromatic cases"
+      ],
+      "implementation": [
+        "evaluate the total number of colorings that respect the symmetry",
+        "subtract the number of colorings that violate the constraint (commonly the all-one-color cases)"
+      ],
+      "used_in": [
+        "cmath_2171"
+      ]
+    },
+    "Orbit Classification under D4 on Centered Grid": {
+      "name": "Orbit Classification under D4 on Centered Grid",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "coordinate_basis",
+          "typing": "str",
+          "description": "center-relative coordinates (dx, dy)"
+        },
+        {
+          "name": "orbit_signature",
+          "typing": "str",
+          "description": "unordered pair of absolute magnitudes {abs(dx), abs(dy)}"
+        }
+      ],
+      "description": "Classify each cell by its orbit under the D4 symmetry group using center-relative coordinates; two cells share an orbit iff their center-relative absolute coordinate magnitudes form the same unordered pair.",
+      "cues": [
+        "orbit determined by (|dx|, |dy|) up to order",
+        "coordinates are taken relative to the grid center",
+        "D4 maps cells by rotations/reflections preserving center"
+      ],
+      "implementation": [
+        "for each cell, compute (dx, dy) relative to center",
+        "compute a and b as the nonnegative magnitudes |dx|, |dy| and form the unordered pair {a,b}",
+        "group cells by identical {a,b} to obtain the orbit partition",
+        "number_of_orbits = number of distinct unordered pairs",
+        "invariant colorings = 2^(number_of_orbits)"
+      ],
+      "used_in": [
+        "cmath_2171"
+      ]
+    },
+    "LCM Congruence Lifting": {
+      "name": "LCM Congruence Lifting",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "moduli",
+          "typing": "list[int]",
+          "description": "the two moduli (m1, m2) involved"
+        }
+      ],
+      "description": "if two congruences share the same remainder modulo two moduli, they combine to a single congruence modulo the lcm of the moduli",
+      "cues": [
+        "problem has two simultaneous congruences n ≡ s (mod m1) and n ≡ s (mod m2) with the same s"
+      ],
+      "implementation": [
+        "compute L = lcm(m1, m2)",
+        "conclude n ≡ s (mod L)"
+      ],
+      "used_in": [
+        "cmath_2508"
+      ]
+    },
+    "Residue-Block Counting in a Period": {
+      "name": "Residue-Block Counting in a Period",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "modulus",
+          "typing": "int",
+          "description": "period length"
+        },
+        {
+          "name": "allowed_residues",
+          "typing": "list[int]",
+          "description": "set of residues within a period that satisfy the condition"
+        }
+      ],
+      "description": "partition the integers into periods of length equal to the lcm of the moduli and count how many residues in each period satisfy the condition",
+      "cues": [
+        "counting reduces to complete periods plus a possible partial period",
+        "there is a fixed count of valid residues per full period"
+      ],
+      "implementation": [
+        "determine number of complete periods in the interval",
+        "multiply by the per-period count of valid residues",
+        "count valid residues in the leftover partial period and add"
+      ],
+      "used_in": [
+        "cmath_2508"
+      ]
+    },
+    "Partial-Block Handling in Periodic Counting": {
+      "name": "Partial-Block Handling in Periodic Counting",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "manage leading and trailing partial blocks when the counting interval does not align with period boundaries",
+      "cues": [
+        "interval boundaries do not align with period boundaries"
+      ],
+      "implementation": [
+        "count eligible numbers in the leading partial block",
+        "count eligible numbers in the trailing partial block",
+        "add the full-block counts in between"
+      ],
+      "used_in": [
+        "cmath_2508"
+      ]
+    },
+    "Median Slope Constraint": {
+      "name": "Median Slope Constraint",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "slope_of_median",
+          "typing": "float",
+          "description": "the given slope value of the median from the vertex to the opposite side"
+        }
+      ],
+      "description": "Use the slope from a vertex to the midpoint of the opposite side to derive a linear relation among vertex coordinates.",
+      "cues": [
+        "M is the midpoint of BC",
+        "slope of AM is specified"
+      ],
+      "implementation": [
+        "compute M as the midpoint of BC",
+        "set (y_A - y_M)/(x_A - x_M) equal to the given slope",
+        "solve the resulting equation to obtain a linear relation between the vertex coordinates"
+      ],
+      "used_in": [
+        "cmath_3005"
+      ]
+    },
+    "Triangle Area via Base-Height": {
+      "name": "Triangle Area via Base-Height",
+      "kind": "theorem",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "base_length",
+          "typing": "float",
+          "description": "length of the chosen base"
+        },
+        {
+          "name": "height",
+          "typing": "float",
+          "description": "perpendicular distance from the opposite vertex to the base"
+        }
+      ],
+      "description": "The area of a triangle equals one-half the product of a chosen base length and the corresponding height.",
+      "cues": [
+        "area of triangle is given",
+        "base length is computable from the base endpoints",
+        "Use base-height formula for triangle area; choose a base side and compute the perpendicular distance from the opposite vertex to the base line",
+        "The base is a side of the triangle lying on a known line, so the height is the distance from the opposite vertex to that line"
+      ],
+      "implementation": [
+        "height = (2 * area) / base_length",
+        "Select a base side and compute its length",
+        "Compute the height as the perpendicular distance from the opposite vertex to the line containing the base",
+        "Area = (1/2) * base * height"
+      ],
+      "used_in": [
+        "cmath_3005",
+        "cmath_6157"
+      ]
+    },
+    "Point-to-Line Distance Formula": {
+      "name": "Point-to-Line Distance Formula",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "line_A",
+          "typing": "float",
+          "description": "coefficient A in line equation"
+        },
+        {
+          "name": "line_B",
+          "typing": "float",
+          "description": "coefficient B"
+        },
+        {
+          "name": "line_C",
+          "typing": "float",
+          "description": "constant term"
+        },
+        {
+          "name": "line_coefficients",
+          "typing": "tuple[float, float, float]",
+          "description": "(A, B, C) in the line equation Ax + By + C = 0"
+        },
+        {
+          "name": "point",
+          "typing": "tuple[float, float]",
+          "description": "Coordinates (x0, y0) of the point whose distance to the line is sought"
+        }
+      ],
+      "description": "The perpendicular distance from a point to a line Ax + By + C = 0 is |Ax0 + By0 + C| / sqrt(A^2 + B^2).",
+      "cues": [
+        "need to relate a point's distance to a given line",
+        "the distance must equal a previously computed height",
+        "Height in a triangle can be obtained as the perpendicular distance from a vertex to the base line",
+        "The base line is given (or implicit) by a linear equation; compute the distance from the opposite vertex to this line"
+      ],
+      "implementation": [
+        "compute distance = |A*x0 + B*y0 + C| / sqrt(A^2 + B^2)",
+        "set distance equal to the height to generate an equation",
+        "Substitute the point into the distance formula to obtain the perpendicular distance",
+        "Use the result as the height in the base-height area computation"
+      ],
+      "used_in": [
+        "cmath_3005",
+        "cmath_6157"
+      ]
+    },
+    "Solving Absolute Value Equations": {
+      "name": "Solving Absolute Value Equations",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "expression",
+          "typing": "string",
+          "description": "the expression inside the absolute value"
+        },
+        {
+          "name": "value",
+          "typing": "float",
+          "description": "the nonnegative value on the right-hand side"
+        }
+      ],
+      "description": "If |E| = k with k ≥ 0, solve by splitting into E = k and E = -k, yielding up to two linear equations.",
+      "cues": [
+        "equation has an absolute value equated to a constant"
+      ],
+      "implementation": [
+        "form two equations: expression = value and expression = -value",
+        "solve each case, collect valid solutions"
+      ],
+      "used_in": [
+        "cmath_3005"
+      ]
+    },
+    "Reciprocal Polynomial Factorization (Palindromic Quartic)": {
+      "name": "Reciprocal Polynomial Factorization (Palindromic Quartic)",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "a",
+          "typing": "int",
+          "description": "the symmetric linear coefficient to be determined"
+        }
+      ],
+      "description": "Factor a reciprocal/palindromic polynomial by seeking a factorization into conjugate-linear-term quadratics that cancel odd-power terms.",
+      "cues": [
+        "polynomial in the substitution variable has only even-power terms",
+        "coefficients are symmetric (palindromic)",
+        "anticipate a factorization of the form (t^2 + a t + 1)(t^2 - a t + 1)"
+      ],
+      "implementation": [
+        "assume factorization of the palindromic quartic into two quadratics with opposite linear terms",
+        "expand and equate coefficients to solve for a"
+      ],
+      "used_in": [
+        "cmath_3946"
+      ]
+    },
+    "Power Substitution to Reduce Degree": {
+      "name": "Power Substitution to Reduce Degree",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "substitution",
+          "typing": "str",
+          "description": "the substitution relation (e.g., y = x^2)"
+        }
+      ],
+      "description": "Use a substitution to reduce the degree of a polynomial, turning a high-degree problem into a lower-degree one.",
+      "cues": [
+        "original polynomial in x has only even-power terms",
+        "you replace x^2 by a new variable to get a lower-degree polynomial"
+      ],
+      "implementation": [
+        "perform the substitution to obtain a lower-degree polynomial in the new variable",
+        "solve or factor the resulting polynomial"
+      ],
+      "used_in": [
+        "cmath_3946"
+      ]
+    },
+    "Coefficient Matching to Determine Factorization Parameters": {
+      "name": "Coefficient Matching to Determine Factorization Parameters",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "unknowns",
+          "typing": "list[str]",
+          "description": "the variables/parameters to solve for in the factorization"
+        }
+      ],
+      "description": "Determine unknown coefficients in a factorization by expanding and matching coefficients term-by-term.",
+      "cues": [
+        "you expand a proposed factorization and compare coefficients to derive equations for the unknowns",
+        "there is a small number of unknown parameters"
+      ],
+      "implementation": [
+        "write the product of proposed factors",
+        "equate coefficients of like powers to form a system of equations",
+        "solve for the unknown parameters"
+      ],
+      "used_in": [
+        "cmath_3946"
+      ]
+    },
+    "Squarefree Kernel of n": {
+      "name": "Squarefree Kernel of n",
+      "kind": "definition",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "n",
+          "typing": "int",
+          "description": "a positive integer"
+        }
+      ],
+      "description": "The squarefree part k in the unique factorization n = s^2 * k, where k is squarefree (no prime appears with exponent ≥ 2 in k).",
+      "cues": [
+        "factor n into a square factor and a squarefree remainder",
+        "the squarefree part encodes which primes appear to odd exponent in n"
+      ],
+      "implementation": [
+        "Compute k by taking the product of primes appearing to an odd exponent in n (i.e., n = s^2 * k with k squarefree)",
+        "Note: k is zero if n = 0; otherwise k > 0"
+      ],
+      "used_in": [
+        "cmath_4766"
+      ]
+    },
+    "Even Exponent Criterion for Perfect Squares": {
+      "name": "Even Exponent Criterion for Perfect Squares",
+      "kind": "theorem",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "An integer is a perfect square iff every prime's exponent in its prime factorization is even.",
+      "cues": [
+        "to check if a product is a square, ensure all prime exponents are even"
+      ],
+      "implementation": [
+        "Factor the number; verify all exponents are even; if any exponent is odd, the number is not a square"
+      ],
+      "used_in": [
+        "cmath_4766"
+      ]
+    },
+    "Bound via sqrt in square-factor parametrization": {
+      "name": "Bound via sqrt in square-factor parametrization",
+      "kind": "strategy",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "base factor",
+          "typing": "int",
+          "description": "the coefficient multiplying the square of an integer"
+        },
+        {
+          "name": "upper bound",
+          "typing": "int",
+          "description": "the maximum allowed value of n"
+        }
+      ],
+      "description": "If a number n is expressed as n = base * t^2 with integer t, then an upper bound on n yields an upper bound on t via t ≤ floor(sqrt(upper_bound / base)).",
+      "cues": [
+        "n is written as base * t^2",
+        "there is an upper limit on n"
+      ],
+      "implementation": [
+        "Compute t_max = floor(sqrt(upper_bound / base)); enumerate t = 1 to t_max to generate all feasible n = base * t^2"
+      ],
+      "used_in": [
+        "cmath_4766"
+      ]
+    },
+    "Residue Class Parameterization": {
+      "name": "Residue Class Parameterization",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "modulus",
+          "typing": "int",
+          "description": "m in the congruence n ≡ a (mod m)"
+        },
+        {
+          "name": "residue",
+          "typing": "int",
+          "description": "a in the congruence n ≡ a (mod m)"
+        }
+      ],
+      "description": "Express numbers in a fixed residue class modulo m as n = a + m·k, turning a congruence constraint into a linear parameterization to analyze feasible k.",
+      "cues": [
+        "problem requires selecting numbers belonging to a specific residue class modulo a modulus",
+        "objective is to maximize/minimize such a number within a bounded range"
+      ],
+      "implementation": [
+        "set n = residue + modulus · k",
+        "translate the given range for n into a range for k",
+        "determine feasible k and compute the extremal n from those k"
+      ],
+      "used_in": [
+        "cmath_4938"
+      ]
+    },
+    "Integer Bound via Floor and Ceiling": {
+      "name": "Integer Bound via Floor and Ceiling",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "lower_bound",
+          "typing": "float",
+          "description": "real lower bound for the parameter"
+        },
+        {
+          "name": "upper_bound",
+          "typing": "float",
+          "description": "real upper bound for the parameter"
+        }
+      ],
+      "description": "Convert a real-valued interval for an integer parameter into an integer interval using ceiling for the lower bound and floor for the upper bound.",
+      "cues": [
+        "the parameter of interest must be an integer",
+        "feasible values form a real interval"
+      ],
+      "implementation": [
+        "compute k_min = ⌈lower_bound⌉",
+        "compute k_max = ⌊upper_bound⌋",
+        "enumerate or select among integers k with k_min ≤ k ≤ k_max"
+      ],
+      "used_in": [
+        "cmath_4938"
+      ]
+    },
+    "Shoelace Formula for Polygon Area": {
+      "name": "Shoelace Formula for Polygon Area",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "vertex list",
+          "typing": "list[tuple[float, float]]",
+          "description": "ordered vertices of the polygon around its boundary"
+        }
+      ],
+      "description": "Compute area of a polygon from vertex coordinates using the shoelace determinant",
+      "cues": [
+        "problem provides a polygon via a sequence of coordinate points",
+        "area can be obtained directly from the vertex coordinates"
+      ],
+      "implementation": [
+        "compute sum1 = sum over i of x_i * y_{i+1} (indices modulo n)",
+        "compute sum2 = sum over i of y_i * x_{i+1} (indices modulo n)",
+        "area = 0.5 * |sum1 - sum2|"
+      ],
+      "used_in": [
+        "cmath_5659"
+      ]
+    },
+    "Triangulation into Triangles for Area": {
+      "name": "Triangulation into Triangles for Area",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Decompose a polygon into triangles along a diagonal and sum their areas",
+      "cues": [
+        "region of interest is a simple polygon defined by multiple vertices",
+        "a diagonal can split the region into non-overlapping triangles"
+      ],
+      "implementation": [
+        "select a diagonal that partitions the polygon into triangles",
+        "for each triangle, compute its area (e.g., 0.5 * base * height or via coordinates)",
+        "sum the triangle areas to obtain the polygon area"
+      ],
+      "used_in": [
+        "cmath_5659"
+      ]
+    },
+    "Distance Between Points in the Plane": {
+      "name": "Distance Between Points in the Plane",
+      "kind": "theorem",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "The Euclidean distance between two points is sqrt((Δx)^2 + (Δy)^2).",
+      "cues": [
+        "the solution computes a segment length from coordinate differences",
+        "coordinates of two points are known and a diagonal is formed"
+      ],
+      "implementation": [
+        "let Δx = x2 − x1 and Δy = y2 − y1",
+        "apply distance formula: distance = sqrt((Δx)^2 + (Δy)^2)"
+      ],
+      "used_in": [
+        "cmath_5976"
+      ]
+    },
+    "Aligning a Side with an Axis (Coordinate Setup)": {
+      "name": "Aligning a Side with an Axis (Coordinate Setup)",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Place a geometric figure so that a convenient side lies on a coordinate axis to simplify coordinate assignments.",
+      "cues": [
+        "a side is chosen to lie along a coordinate axis",
+        "right-angle relationships are used to fix perpendicular directions"
+      ],
+      "implementation": [
+        "position a vertex at the origin",
+        "align a chosen side with the x- or y-axis",
+        "determine remaining coordinates using perpendicular relationships"
+      ],
+      "used_in": [
+        "cmath_5976"
+      ]
+    },
+    "Height of a Right Trapezoid": {
+      "name": "Height of a Right Trapezoid",
+      "kind": "definition",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "The height of a trapezoid is the perpendicular distance between its two parallel bases; in a right trapezoid, the perpendicular leg equals this height.",
+      "cues": [
+        "figure is a trapezoid with bases parallel",
+        "there is a leg perpendicular to the bases"
+      ],
+      "implementation": [
+        "identify the height as the length of the segment perpendicular to both bases",
+        "use this height as the key distance in subsequent calculations"
+      ],
+      "used_in": [
+        "cmath_5976"
+      ]
+    },
+    "Average Rate of Change": {
+      "name": "Average Rate of Change",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "endpoints",
+          "typing": "tuple[time, distance, time, distance]",
+          "description": "times and distances at the interval endpoints"
+        }
+      ],
+      "description": "compute the rate of change of distance with respect to time between two points on a distance–time graph to obtain average speed",
+      "cues": [
+        "problem provides a distance–time graph with clearly defined start and end points",
+        "you are asked to determine an average speed over an interval"
+      ],
+      "implementation": [
+        "identify endpoints (t1, d1) and (t2, d2) from the graph",
+        "compute average rate: (d2 − d1) / (t2 − t1)"
+      ],
+      "used_in": [
+        "cmath_6446"
+      ]
+    },
+    "Slope as Speed on Distance–Time Graph": {
+      "name": "Slope as Speed on Distance–Time Graph",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "interval",
+          "typing": "tuple[time, time]",
+          "description": "start and end times of the interval"
+        }
+      ],
+      "description": "interpret the slope of a distance–time graph as speed; for an interval, the slope equals the average speed over that interval",
+      "cues": [
+        "a distance–time graph is provided",
+        "you need the average speed for a specified time interval"
+      ],
+      "implementation": [
+        "compute the slope Δdistance/Δtime between the interval endpoints on the graph"
+      ],
+      "used_in": [
+        "cmath_6446"
+      ]
+    },
+    "Oriented Volume via Scalar Triple Product": {
+      "name": "Oriented Volume via Scalar Triple Product",
+      "kind": "definition",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "The oriented volume of a parallelepiped with edge vectors a, b, c is the absolute value of the scalar triple product a · (b × c).",
+      "cues": [
+        "S is defined as a · (b × c)",
+        "volume equals |S|"
+      ],
+      "implementation": [
+        "interpret the parallelepiped volume as the magnitude of the scalar triple product of its edge vectors"
+      ],
+      "used_in": [
+        "cmath_6868"
+      ]
+    },
+    "Bilinearity of Scalar Triple Product": {
+      "name": "Bilinearity of Scalar Triple Product",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Expand a · (B × C) when B and C are linear combinations of basis vectors by applying bilinearity of cross and dot products along with cyclic identities.",
+      "cues": [
+        "A, B, C are expressed as linear combinations of a fixed basis",
+        "need to expand the triple product term-by-term"
+      ],
+      "implementation": [
+        "write B and C as linear combinations; apply bilinearity to form a sum of terms like a · (e_i × e_j); reduce using known triple products and zero terms"
+      ],
+      "used_in": [
+        "cmath_6868"
+      ]
+    },
+    "Cyclic Permutation Identity for Scalar Triple Product": {
+      "name": "Cyclic Permutation Identity for Scalar Triple Product",
+      "kind": "technique",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Use that a · (b × c) is invariant under cyclic permutation and flips sign when two vectors are swapped; relate expressions like b · (a × c) to ±S.",
+      "cues": [
+        "terms involve b · (a × c) or similar",
+        "need to connect to S = a · (b × c)"
+      ],
+      "implementation": [
+        "apply cyclic invariance: a · (b × c) = b · (c × a) = c · (a × b); apply sign changes when swapping two factors to express in terms of S"
+      ],
+      "used_in": [
+        "cmath_6868"
+      ]
+    },
+    "Determinant as Volume Multiplier for Change of Basis": {
+      "name": "Determinant as Volume Multiplier for Change of Basis",
+      "kind": "theorem",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "coefficient matrix",
+          "typing": "Matrix",
+          "description": "3×3 matrix of coefficients expressing each new edge in terms of the original basis"
+        }
+      ],
+      "description": "If new edge vectors are linear combinations of the original basis with coefficient matrix M, the oriented triple product scales by det(M); hence the volume scales by the absolute value of det(M).",
+      "cues": [
+        "new vectors are linear combinations of the original basis",
+        "the determinant of the coefficient matrix gives the scaling factor between oriented triple products"
+      ],
+      "implementation": [
+        "form M from the coefficients; compute det(M); then S' = det(M) · S; final volume = |det(M)| · |S|"
+      ],
+      "used_in": [
+        "cmath_6868"
+      ]
+    },
+    "Nonnegative Radicand Domain": {
+      "name": "Nonnegative Radicand Domain",
+      "kind": "definition",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "radicand expression",
+          "typing": "str",
+          "description": "the expression inside the square root"
+        }
+      ],
+      "description": "The domain of a function involving a square root is restricted to inputs for which the radicand is nonnegative.",
+      "cues": [
+        "problem includes a square root",
+        "determining valid input values requires radicand ≥ 0"
+      ],
+      "implementation": [
+        "impose the constraint radicand ≥ 0",
+        "solve the resulting inequality to obtain the admissible input set"
+      ],
+      "used_in": [
+        "cmath_8075"
+      ]
+    }
+  },
+  "solutions": {
+    "cmath_1005": {
+      "problem_id": "cmath_1005",
+      "solution": null,
+      "summary": "",
+      "pseudocode": "We need integer n such that |n| < |n-3| < 9.\n\n1) Solve |n-3| < 9:\n   -9 < n - 3 < 9  =>  -6 < n < 12\n   So n ∈ { -5, -4, -3, -2, -1, 0, 1, 2, ..., 11 }.\n\n2) Solve |n| < |n-3|:\n   Since |n| and |n-3| are nonnegative, we can square:\n   n^2 < (n-3)^2 = n^2 - 6n + 9\n   0 < -6n + 9  =>  6n < 9  =>  n < 3/2\n   So n ≤ 1 for integers.\n\n3) Take the intersection of the two conditions:\n   n ∈ { -5, -4, -3, -2, -1, 0, 1 }.\n\nThe sum of these integers is:\n(-5) + (-4) + (-3) + (-2) + (-1) + 0 + 1 = -14.\n\nThus, the sum of all integer solutions is \\boxed{-14}."
+    },
+    "cmath_10055": {
+      "problem_id": "cmath_10055",
+      "solution": null,
+      "summary": "",
+      "pseudocode": "Let P(x) = x^{98} + x^{97} + ... + x + 1. Its roots r_1, ..., r_{98} are the 99th roots of unity other than x = 1; i.e., r_i^{99} = 1 and r_i ≠ 1.\n\nWe want S = sum_{i=1}^{98} r_i^2/(r_i + 1).\n\nFirst, observe the identity\nr^2/(r+1) = (r-1) + 1/(r+1),\nsince (r-1) + 1/(r+1) = [(r-1)(r+1) + 1]/(r+1) = r^2/(r+1).\n\nHence\nS = sum_i (r_i - 1) + sum_i 1/(r_i + 1) = (sum_i r_i) - 98 + sum_i 1/(r_i + 1).\n\nBy Viète’s formulas, the sum of the roots of P is -1, so sum_i r_i = -1. Thus\nS = -1 - 98 + sum_i 1/(r_i + 1) = -99 + sum_i 1/(r_i + 1).\n\nTo compute sum_i 1/(r_i + 1), use the standard identity for a polynomial with roots r_i:\nP'(a)/P(a) = sum_i 1/(a - r_i).\nTaking a = -1 gives\nP'(-1)/P(-1) = sum_i 1/(-1 - r_i) = - sum_i 1/(r_i + 1),\nso\nsum_i 1/(r_i + 1) = - P'(-1)/P(-1).\n\nCompute P(-1) and P'(-1) for P(x) = sum_{k=0}^{98} x^k.\n\n- P(-1) = sum_{k=0}^{98} (-1)^k = 1.\n- P'(x) = sum_{k=1}^{98} k x^{k-1}, so P'(-1) = sum_{k=1}^{98} k(-1)^{k-1}.\n\nPairing terms (1 - 2) + (3 - 4) + ... + (97 - 98) yields 49 pairs each contributing -1, so P'(-1) = -49.\n\nTherefore\nsum_i 1/(r_i + 1) = - P'(-1)/P(-1) = -(-49)/1 = 49.\n\nFinally,\nS = -99 + 49 = -50.\n\nSo the requested sum is \\boxed{-50}."
+    },
+    "cmath_10114": {
+      "problem_id": "cmath_10114",
+      "solution": null,
+      "summary": "",
+      "pseudocode": "Let P(x) = (a+x)(b+x)(c+x). Then P is a monic cubic:\nP(x) = x^3 + (a+b+c)x^2 + (ab+bc+ca)x + abc.\n\nGiven P(1)=1, P(2)=2, P(3)=3, consider\nR(x) = P(x) - x.\nThen R(1)=R(2)=R(3)=0, so x-1, x-2, x-3 are roots of R. Since deg R ≤ 3 and its leading coefficient is 1, we must have\nR(x) = (x-1)(x-2)(x-3).\n\nThus\nP(x) = x + (x-1)(x-2)(x-3).\n\nTherefore\nP(4) = 4 + (4-1)(4-2)(4-3) = 4 + 3·2·1 = 10.\n\nHence (a+4)(b+4)(c+4) = 10. \n\n\\boxed{10}"
+    },
+    "cmath_10132": {
+      "problem_id": "cmath_10132",
+      "solution": null,
+      "summary": "",
+      "pseudocode": "Let z = x + iy, with\nz1 = 18 + 83i, z2 = 18 + 39i, z3 = 78 + 99i.\n\nDefine A = (z3 − z1)/(z2 − z1). Compute:\nz3 − z1 = 60 + 16i, z2 − z1 = −44i, hence\nA = (60 + 16i)/(−44i) = (−4 + 15i)/11 = a + bi with a = −4/11, b = 15/11.\n\nLet z − z2 = (x − 18) + (y − 39)i and z − z3 = (x − 78) + (y − 99)i.\nWrite\nB = (z − z2)/(z − z3) = (u + iv)/(s + it),\nwhere u = x − 18, v = y − 39, s = x − 78, t = y − 99.\n\nIf AB is real, then Im(AB) = 0. Since A = a + bi, with a = −4/11, b = 15/11, we have\nIm(AB) = b Re(B) + a Im(B) = 0.\n\nCompute\nRe(B) = (u s + v t)/D, Im(B) = (v s − u t)/D, with D = s^2 + t^2.\n\nThus\nb(u s + v t) + a(v s − u t) = 0.\nWith a = −4/11, b = 15/11 and multiplying by 11:\n15(u s + v t) − 4(v s − u t) = 0.\n\nSubstitute u, v, s, t:\nu s + v t = (x − 18)(x − 78) + (y − 39)(y − 99) = x^2 + y^2 − 96x − 138y + 5265,\nv s − u t = (y − 39)(x − 78) − (x − 18)(y − 99) = 60x − 60y + 1260.\n\nHence\n15[x^2 + y^2 − 96x − 138y + 5265] − 4[60x − 60y + 1260] = 0.\n\nSimplify:\n15x^2 + 15y^2 − 1680x − 1830y + 73935 = 0,\nwhich gives\nx^2 + y^2 − 112x − 122y + 4929 = 0.\n\nComplete the square:\n(x − 56)^2 + (y − 61)^2 = 1928.\n\nThus the locus of z such that the given expression is real is the circle with center (56, 61) and radius sqrt(1928).\n\nTo maximize Im(z), take the topmost point on this circle:\nx = 56, y = 61 + sqrt(1928).\n\nTherefore the real part of z is Re(z) = 56, and the answer is\n\\boxed{56}."
+    },
+    "cmath_10175": {
+      "problem_id": "cmath_10175",
+      "solution": null,
+      "summary": "",
+      "pseudocode": "Let P(x) = x^7 − 7, and let its roots be r_1, ..., r_7.\n\n1) Use the resultant trick. For any u, consider Res_x(P(x), P(u − x)). Since P(u − r_i) = ∏_{j=1}^7 (u − r_i − r_j), we have\n   Res_x(P(x), P(u − x)) = ∏_{i=1}^7 P(u − r_i) = ∏_{i=1}^7 ∏_{j=1}^7 (u − (r_i + r_j)) = ∏_{i,j} (u − (r_i + r_j)).\n\n   In particular, at u = 0,\n   Res_x(P(x), P(−x)) = ∏_{i,j} (−(r_i + r_j)) = (−1)^{49} ∏_{i,j} (r_i + r_j) = − ∏_{i,j} (r_i + r_j).\n\n2) Compute the same resultant from the roots. Since P(−r_i) = (−r_i)^7 − 7 = −r_i^7 − 7 and r_i^7 = 7 (because r_i is a root), we get P(−r_i) = −14 for each i. Thus\n   Res_x(P(x), P(−x)) = ∏_{i=1}^7 P(−r_i) = (−14)^7.\n\n   Equating the two expressions for the same resultant,\n   − ∏_{i,j} (r_i + r_j) = (−14)^7 ⇒ ∏_{i,j} (r_i + r_j) = 14^7.\n\n3) Relate ∏_{i,j} (r_i + r_j) to K. The product over all ordered pairs (i, j) (i, j = 1,…,7) includes:\n   - off-diagonal pairs (i ≠ j): each r_i + r_j appears twice (as (i, j) and (j, i)),\n   - diagonal pairs (i = j): terms r_i + r_i = 2 r_i.\n\n   Hence\n   ∏_{i,j} (r_i + r_j) = [∏_{i<j} (r_i + r_j)]^2 · ∏_{i=1}^7 (2 r_i) = K^2 · 2^7 · ∏_{i=1}^7 r_i,\n\n   where K = ∏_{1 ≤ i < j ≤ 7} (r_i + r_j).\n\n4) Find ∏ r_i. For the monic polynomial x^7 − 7, the product of the roots is ∏ r_i = (−1)^7 · (−7) = 7.\n\n5) Solve for K^2. From step 2 and 3:\n   14^7 = K^2 · 2^7 · 7 ⇒ K^2 = 14^7 / (2^7 · 7) = (2^7 · 7^7) / (2^7 · 7) = 7^6.\n\n   Therefore K^2 = 7^6 = 117649.\n\nAnswer: \\boxed{117649}"
+    },
+    "cmath_10590": {
+      "problem_id": "cmath_10590",
+      "solution": null,
+      "summary": "",
+      "pseudocode": "We need n to have:\n- four digits in base 3: 3^3 ≤ n ≤ 3^4 − 1, i.e., 27 ≤ n ≤ 80.\n- two digits in base 6: 6^1 ≤ n ≤ 6^2 − 1, i.e., 6 ≤ n ≤ 35.\n\nIntersection: 27 ≤ n ≤ 35.\n\nThese are consecutive integers from 27 to 35. The average of consecutive integers is (first + last)/2:\n(27 + 35) / 2 = 62 / 2 = 31.\n\nAnswer: \\boxed{31}"
+    },
+    "cmath_10691": {
+      "problem_id": "cmath_10691",
+      "solution": null,
+      "summary": "",
+      "pseudocode": "Let C(n) be the correct answer for item n, and S(n) the student’s answer.\n\n- C(n) = True if n is a multiple of 4; otherwise False.\n- S(n) = False if n is a multiple of 3; otherwise True.\n\nWe want the count of n in {1,2,...,100} for which C(n) = S(n).\n\nPeriodicity: C(n) depends on n mod 4 and S(n) depends on n mod 3, so the combined pattern repeats with period lcm(3,4) = 12. It suffices to analyze n = 1,...,12, then repeat 8 times (since 100 = 12*8 + 4) and handle the remaining 4 terms.\n\nCompute for n = 1 to 12:\n- C(n) is True exactly for n ∈ {4,8,12}; False otherwise.\n- S(n) is False exactly for n ∈ {3,6,9,12}; True otherwise.\n\nMatches (C(n) = S(n)) occur for n = 3, 4, 6, 8, 9. Thus there are 5 matches in each block of 12.\n\n- Number of full 12-blocks in 1..100: 8. Matches from full blocks: 8 × 5 = 40.\n- Remaining items: n = 97, 98, 99, 100 (which correspond to residues 1, 2, 3, 4 mod 12). From the 1..12 analysis, these give matches for n = 99 and 100, i.e., 2 more matches.\n\nTotal correct answers = 40 + 2 = 42.\n\nTherefore, the final answer is \\boxed{42}."
+    },
+    "cmath_1092": {
+      "problem_id": "cmath_1092",
+      "solution": null,
+      "summary": "",
+      "pseudocode": "Let a = -8π and b = 10π. The integers n with a ≤ n ≤ b are precisely those with\n⌈a⌉ ≤ n ≤ ⌊b⌋.\n\nCompute:\n- a = -8π ≈ -25.1327, so ⌈a⌉ = -25.\n- b = 10π ≈ 31.4159, so ⌊b⌋ = 31.\n\nThus n ranges from -25 to 31 inclusive. The number of integers in [−25, 31] is\n31 − (−25) + 1 = 57.\n\nSo, the number of integers n satisfying -8π ≤ n ≤ 10π is\n\\boxed{57}."
+    },
+    "cmath_2171": {
+      "problem_id": "cmath_2171",
+      "solution": null,
+      "summary": "",
+      "pseudocode": "We want colorings of a 7×7 grid (49 squares) that are invariant under all symmetries of the square (rotations by multiples of 90° and reflections across the 4 symmetry axes). Call these the D4-symmetric colorings. Additionally, there must be at least one black and one white square.\n\nKey idea: Under the action of the dihedral group D4, the squares split into orbits. A coloring that is invariant under all D4 symmetries must assign the same color to every square in each orbit. Thus the number of D4-symmetric colorings equals the number of ways to color the orbits with two colors.\n\nRepresent each square by its coordinates relative to the center. Let dx = i − 4 and dy = j − 4, so dx, dy ∈ {−3, −2, −1, 0, 1, 2, 3}. Under D4, the orbit of a square is determined by the pair (|dx|, |dy|), up to order. So squares with the same unordered pair {a,b} where a = |dx| ∈ {0,1,2,3} and b = |dy| ∈ {0,1,2,3} lie in the same orbit.\n\nThus the number of orbits equals the number of unordered pairs {a,b} with a,b ∈ {0,1,2,3}. The count of such multisets is C(4+2−1, 2) = C(5,2) = 10.\n\nTherefore:\n- Number of D4-symmetric colorings (no restriction on colors) = 2^10 = 1024.\n- Exclude the all-black and all-white colorings (to satisfy “at least one square of each color”): 1024 − 2 = 1022.\n\nAnswer: \\boxed{1022}"
+    },
+    "cmath_2508": {
+      "problem_id": "cmath_2508",
+      "solution": null,
+      "summary": "",
+      "pseudocode": "Let s be the common remainder when dividing by 6 and by 8. Since the remainders must be equal, s ∈ {0,1,2,3,4,5} (because remainders mod 6 lie in 0..5).\n\n- If n ≡ s (mod 6) and n ≡ s (mod 8) with the same s, then n − s is divisible by both 6 and 8. Hence n − s is a multiple of lcm(6,8) = 24.\n- Therefore n ≡ s (mod 24) for some s ∈ {0,1,2,3,4,5}. Equivalently, n mod 24 ∈ {0,1,2,3,4,5}.\n\nWe need to count integers n with 100 < n < 200 (i.e., 101 ≤ n ≤ 199) such that n ≡ r (mod 24) for some r ∈ {0,1,2,3,4,5}.\n\nIn each block of 24 consecutive integers, there are exactly 6 numbers with residues 0,1,2,3,4,5 mod 24 (namely 24k + 0, 24k + 1, ..., 24k + 5).\n\nWithin 101 to 199, the relevant 24-blocks are for k = 4,5,6,7,8 (since 24k runs from 96 to 192, and 24k+5 runs up to 197; 24k for k=9 starts at 216 which is beyond 199). Counting:\n\n- k = 4 block contributes only n = 101 (since 96–101 intersects the range, but only 101 has residue 0–5 mod 24).\n- k = 5 block (120–125): 6 numbers (120,121,122,123,124,125).\n- k = 6 block (144–149): 6 numbers.\n- k = 7 block (168–173): 6 numbers.\n- k = 8 block (192–197): 6 numbers.\n\nTotal = 1 + 6 + 6 + 6 + 6 = 25.\n\nThus, the number of integers n with 100 < n < 200 and n having the same remainder when divided by 6 and by 8 is:\n\n\\boxed{25}"
+    },
+    "cmath_3005": {
+      "problem_id": "cmath_3005",
+      "solution": null,
+      "summary": "",
+      "pseudocode": "We are given B = (12,19), C = (23,20), A = (p,q), and the median to BC has slope -5. Let M be the midpoint of BC:\n- M = ((12+23)/2, (19+20)/2) = (35/2, 39/2).\n\nSince AM has slope -5,\n(q − 39/2) / (p − 35/2) = −5.\nSolving gives q = 107 − 5p. (1)\n\nThe area of triangle ABC is 70. Using base BC with length √122, the height from A to BC is\nh = 2·Area / base = 140 / √122.\n\nThe line BC has equation through B and C: slope 1/11, so\nx − 11y + 197 = 0.\n\nDistance from A(p,q) to BC is\nh = |p − 11q + 197| / √122.\n\nThus |p − 11q + 197| = 140. (2)\n\nSubstitute q from (1) into (2):\np − 11(107 − 5p) + 197 = p − 1177 + 55p + 197 = 56p − 980.\n\nSo |56p − 980| = 140, which gives two solutions:\n- 56p − 980 = 140 ⇒ 56p = 1120 ⇒ p = 20, then q = 107 − 5·20 = 7. So p+q = 27.\n- 56p − 980 = −140 ⇒ 56p = 840 ⇒ p = 15, then q = 107 − 5·15 = 32. So p+q = 47.\n\nThe largest possible value of p+q is 47.\n\nTherefore, the answer is \\boxed{47}."
+    },
+    "cmath_3946": {
+      "problem_id": "cmath_3946",
+      "solution": null,
+      "summary": "",
+      "pseudocode": "Let y = x^2. Then\nx^8 - 98x^4 + 1 = y^4 - 98y^2 + 1.\n\nWe look for a factorization in Z[y] of the form\ny^4 - 98y^2 + 1 = (y^2 + a y + 1)(y^2 - a y + 1)\nbecause the product has no y^3 or y terms, matching the left-hand side.\n\nExpanding:\n(y^2 + a y + 1)(y^2 - a y + 1) = y^4 + (2 - a^2) y^2 + 1.\n\nWe need 2 - a^2 = -98, so a^2 = 100, hence a = 10 (or -10, which gives the same factors up to order).\n\nThus\ny^4 - 98y^2 + 1 = (y^2 + 10y + 1)(y^2 - 10y + 1).\n\nReturning to x with y = x^2:\nx^8 - 98x^4 + 1 = (x^4 + 10x^2 + 1)(x^4 - 10x^2 + 1).\n\nThese are monic non-constant integer-coefficient polynomials. Take p(x) = x^4 + 10x^2 + 1 and q(x) = x^4 - 10x^2 + 1.\n\nEvaluate at x = 1:\np(1) = 1 + 10 + 1 = 12,\nq(1) = 1 - 10 + 1 = -8.\n\nThus p(1) + q(1) = 12 + (-8) = 4.\n\nAnswer: \\boxed{4}"
+    },
+    "cmath_4766": {
+      "problem_id": "cmath_4766",
+      "solution": null,
+      "summary": "",
+      "pseudocode": "Let n have prime factorization n = ∏ p^{e_p}. Since 15 = 3·5, the prime exponents in 15n are:\n- for p = 3: e_3(n) + 1\n- for p = 5: e_5(n) + 1\n- for p ≠ 3,5: e_p(n)\n\nFor 15n to be a perfect square, all these exponents must be even. Hence:\n- e_3(n) is odd,\n- e_5(n) is odd,\n- for all p ≠ 3,5, e_p(n) is even.\n\nThis means the squarefree part of n is exactly 3·5 = 15, so n can be written as n = 15·t^2 for some integer t ≥ 1.\n\nWe need n ≤ 1000, so 15 t^2 ≤ 1000 → t^2 ≤ 1000/15 = 200/3 ≈ 66.666... ⇒ t ≤ 8.\n\nThus t = 1,2,...,8, giving 8 such n. (Explicitly: 15, 60, 135, 240, 375, 540, 735, 960.)\n\n\\boxed{8}"
+    },
+    "cmath_4938": {
+      "problem_id": "cmath_4938",
+      "solution": null,
+      "summary": "",
+      "pseudocode": "Let n be the largest four-digit negative integer with n ≡ 1 (mod 23).\n\n- Write n = 1 + 23k for some integer k.\n- Four-digit negative integers are those with -9999 ≤ n ≤ -1000.\n\nSubstitute n = 1 + 23k:\n-9999 ≤ 1 + 23k ≤ -1000\n=> -10000 ≤ 23k ≤ -1001\n=> -10000/23 ≤ k ≤ -1001/23\n\nNumerically, -10000/23 ≈ -434.78 and -1001/23 ≈ -43.52, so\nk ∈ { -434, -433, ..., -44 }.\n\nTo maximize n = 1 + 23k, take the largest k in this set: k = -44.\n\nThen n = 1 + 23(-44) = 1 - 1012 = -1011.\n\nThus the largest four-digit negative integer congruent to 1 mod 23 is:\n\\boxed{-1011}"
+    },
+    "cmath_5659": {
+      "problem_id": "cmath_5659",
+      "solution": null,
+      "summary": "",
+      "pseudocode": "Let the rectangle have coordinates D(0,0), C(8,0), B(8,4), A(0,4) so its sides are 8 by 4 cm.\n\n- M is the midpoint of BC: B(8,4) and C(8,0) give M(8,2).\n- N is the midpoint of CD: C(8,0) and D(0,0) give N(4,0).\n\nThe region AMCN is the quadrilateral with vertices A(0,4), M(8,2), C(8,0), N(4,0).\n\nMethod 1 (triangulation by diagonal AC):\n- Triangle ACM has base CM of length 2 (vertical) and height from A to x = 8 is 8, so area = (1/2)(2)(8) = 8.\n- Triangle ACN has base CN of length 4 (horizontal) and height from A to y = 0 is 4, so area = (1/2)(4)(4) = 8.\n- Total area = 8 + 8 = 16.\n\nMethod 2 (shoelace, for verification):\nOrder A(0,4), M(8,2), C(8,0), N(4,0):\n- Sum1 = 0*2 + 8*0 + 8*0 + 4*4 = 16\n- Sum2 = 4*8 + 2*8 + 0*4 + 0*0 = 48\n- Area = 1/2 |Sum1 - Sum2| = 1/2 |16 - 48| = 16\n\nTherefore, the area of region AMCN is \\boxed{16}."
+    },
+    "cmath_5976": {
+      "problem_id": "cmath_5976",
+      "solution": null,
+      "summary": "",
+      "pseudocode": "Since ∠B and ∠C are right angles, AB ⟂ BC and BC ⟂ CD, so AB ∥ CD. Thus ABCD is a right trapezoid with height h = BC = 8.\n\nPlace coordinates for clarity:\n- Let B = (0, 0) and AB lie along the x-axis. Then A = (5, 0).\n- Since BC is perpendicular to AB, take C = (0, −8).\n- CD ∥ AB and length CD = 20, starting at C, so D = (20, −8).\n\nNow find AD:\nAD^2 = (20 − 5)^2 + (−8 − 0)^2 = 15^2 + 8^2 = 225 + 64 = 289,\nso AD = sqrt(289) = 17.\n\nTherefore, the length of AD is \\boxed{17}."
+    },
+    "cmath_6157": {
+      "problem_id": "cmath_6157",
+      "solution": null,
+      "summary": "",
+      "pseudocode": "We use the coordinates given by the figure (A, B, C, D lie on a plane with right angle at D): \n- D = (0,0)\n- A = (12,0) since AD lies on the x-axis and DC = 5 makes C = (0,5)\n- C = (0,5)\n- B lies on the vertical line x = 0 and AB = 15. With A = (12,0),\n  AB^2 = (12)^2 + (y_B)^2 = 15^2 ⇒ 144 + y_B^2 = 225 ⇒ y_B^2 = 81 ⇒ y_B = 9\n  So B = (0,9).\n\nNow compute the area of triangle ABC.\n- Base BC lies on the vertical line x = 0, so BC = |9 − 5| = 4.\n- The distance (height) from A to the line BC (i.e., to x = 0) is |12 − 0| = 12.\n\nArea = (1/2) × base × height = (1/2) × 4 × 12 = 24.\n\nTherefore, the area of triangle ABC is \\boxed{24}."
+    },
+    "cmath_6446": {
+      "problem_id": "cmath_6446",
+      "solution": null,
+      "summary": "",
+      "pseudocode": "- The graph shows distance (in miles) vs time (in hours) from 6 a.m. to 11 a.m.\n- Initial distance at 6 a.m. is 0 miles; final distance at 11 a.m. is 160 miles. (From the graph: 6 a.m. = 0 miles, 11 a.m. = 160 miles.)\n- The time interval is 11 a.m. − 6 a.m. = 5 hours.\n- Use the average rate of change (the slope of the distance–time graph): average speed = ΔDistance / ΔTime = (160 − 0) miles / 5 hours = 160/5 = 32 miles per hour.\n\nThus, the average speed from 6 a.m. to 11 a.m. is \\boxed{32}."
+    },
+    "cmath_6868": {
+      "problem_id": "cmath_6868",
+      "solution": null,
+      "summary": "",
+      "pseudocode": "Let S denote the oriented scalar triple product S = a · (b × c). The volume of the parallelepiped with edges a, b, c is |S| = 4.\n\nWe want the volume of the parallelepiped spanned by\nA = a + b, B = b + 3c, C = c − 7a.\n\nCompute the needed cross product and dot product using bilinearity and the cyclic property of the scalar triple product.\n\n1) Expand B × C:\n(b + 3c) × (c − 7a) = b × c − 7 b × a + 3 c × c − 21 c × a\n= b × c + 7 a × b + 21 a × c\n(since c × c = 0 and b × a = − a × b, c × a = − a × c).\n\n2) Dot with A:\n(a + b) · [b × c + 7 a × b + 21 a × c]\n= a · (b × c) + b · (b × c) + 7 a · (a × b) + 7 b · (a × b)\n  + 21 a · (a × c) + 21 b · (a × c).\n\n3) Use standard identities:\n- b · (b × c) = 0, a · (a × b) = 0, a · (a × c) = 0.\n- b · (a × c) = − c · (a × b) = − S (cyclic permutation and the fact that c · (a × b) = S).\n\nThus the sum reduces to:\nT = (a + b) · [(b + 3c) × (c − 7a)] = S + 0 + 0 + 0 + 0 + 21(b · (a × c))\n= S + 21(− S) = −20 S.\n\nTherefore the oriented volume is −20 times the original oriented volume, so the volume is\n|T| = 20 |S| = 20 · 4 = 80.\n\nAnswer: 80\n\n(Alternative determinant view: express the new vectors in the basis {a,b,c} as columns [1,1,0], [0,1,3], [−7,0,1]. The determinant of this 3×3 coefficient matrix is −20, so the new oriented triple product is det × S = −20 S, giving the same result.) \n\n\\boxed{80}"
+    },
+    "cmath_8075": {
+      "problem_id": "cmath_8075",
+      "solution": null,
+      "summary": "",
+      "pseudocode": "First, recall that the domain of a square root requires a nonnegative radicand.\n\n1) For sqrt(25 - x^2): 25 - x^2 >= 0 => x^2 <= 25 => -5 <= x <= 5.\n\n2) For sqrt(-(x - 2)) = sqrt(2 - x): 2 - x >= 0 => x <= 2.\n\nThe domain of h(x) is the intersection of these intervals:\n[-5, 5] ∩ (-∞, 2] = [-5, 2].\n\nThe width of this interval is 2 - (-5) = 7.\n\nTherefore, the width of the domain is \\boxed{7}."
+    }
+  },
+  "custom_types": {}
+}

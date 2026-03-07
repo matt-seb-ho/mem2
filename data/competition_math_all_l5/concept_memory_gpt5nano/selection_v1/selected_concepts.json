@@ -1,0 +1,704 @@
+{
+  "cmath_10098": [
+    "Leading-Term Non-Cancellation in Polynomial Sums",
+    "Coefficient Matching in Polynomial Identities"
+  ],
+  "cmath_10143": [
+    "Sum of Pairwise Products via Square of Sum"
+  ],
+  "cmath_10170": [
+    "Elementary Symmetric Sums"
+  ],
+  "cmath_10229": [
+    "Elementary Symmetric Sums"
+  ],
+  "cmath_10265": [
+    "Substitution-Based Linear System Elimination",
+    "Quadratic Formula"
+  ],
+  "cmath_10274": [
+    "Center-based Relative Coordinate System",
+    "Substitution-Based Linear System Elimination",
+    "Intersection of Solution Sets"
+  ],
+  "cmath_1035": [
+    "Divisor Enumeration of gcd"
+  ],
+  "cmath_10404": [
+    "Polynomial Intercepts"
+  ],
+  "cmath_10424": [
+    "Completing the Square to Identify a Circle"
+  ],
+  "cmath_10546": [
+    "Modular Inverse Calculation",
+    "Extended Euclidean Algorithm for B\u00e9zout Coefficients"
+  ],
+  "cmath_10547": [
+    "Modular Inverse Calculation",
+    "Linear Congruence by GCD"
+  ],
+  "cmath_10564": [
+    "Base-b Polynomial Representation"
+  ],
+  "cmath_10599": [
+    "Residue Class Counting in a Range"
+  ],
+  "cmath_10620": [
+    "Arithmetic Series"
+  ],
+  "cmath_10637": [
+    "Digit Validity in Base-n"
+  ],
+  "cmath_10685": [
+    "LCM-based Divisibility Merging",
+    "Prime-Power Candidate Enumeration"
+  ],
+  "cmath_1073": [
+    "Two-Variable Linear System"
+  ],
+  "cmath_10805": [
+    "Intersection of Solution Sets",
+    "Finite Case Enumeration",
+    "Modular Inverse Calculation"
+  ],
+  "cmath_10857": [
+    "Geometric Series Sum Formula"
+  ],
+  "cmath_10962": [
+    "Order of an Element mod p (Multiplicative Order)",
+    "Fermat's Little Theorem"
+  ],
+  "cmath_10967": [
+    "Sum-of-Divisors Function",
+    "Prime-power Factorization and Multiplicity Count"
+  ],
+  "cmath_11016": [
+    "Tau Constraint to Triples"
+  ],
+  "cmath_11303": [
+    "Center-based Relative Coordinate System"
+  ],
+  "cmath_11338": [
+    "Central Angle in Regular n-gon"
+  ],
+  "cmath_11504": [
+    "Digit-Bounded Congruence Solving",
+    "Residue Class Counting in a Range"
+  ],
+  "cmath_11575": [
+    "Base-b Polynomial Representation",
+    "Digit Validity in Base-n"
+  ],
+  "cmath_11628": [
+    "Distance Formula"
+  ],
+  "cmath_11970": [
+    "Reflection Across the Line y = x to Obtain Inverse Relation",
+    "Determinant as Volume Scaling under Change of Basis"
+  ],
+  "cmath_12063": [
+    "Center-based Relative Coordinate System",
+    "Distance Between Two Points"
+  ],
+  "cmath_12065": [
+    "Substitution-Based Linear System Elimination"
+  ],
+  "cmath_12173": [
+    "Intersection of Solution Sets"
+  ],
+  "cmath_12357": [
+    "Sylvester's Criterion for Positive Definiteness"
+  ],
+  "cmath_1273": [
+    "Rational Root Theorem",
+    "Synthetic Division by a Known Root",
+    "Quadratic Formula"
+  ],
+  "cmath_1359": [
+    "Inverse Domain from Range"
+  ],
+  "cmath_1391": [
+    "Polynomial Intercepts"
+  ],
+  "cmath_1468": [
+    "Geometric Series Sum Formula",
+    "Base-b Polynomial Representation"
+  ],
+  "cmath_1502": [
+    "Affine Transformation of Parabolas"
+  ],
+  "cmath_1545": [
+    "Domain Constraint for Substitution"
+  ],
+  "cmath_1770": [
+    "Center-based Relative Coordinate System",
+    "Intersection Point and Sum of Coordinates",
+    "Line Segment Length with Fixed Slope",
+    "Coordinate Setup for Right Trapezoid"
+  ],
+  "cmath_1815": [
+    "Binomial Coefficient"
+  ],
+  "cmath_1859": [
+    "Inclusion-Exclusion for Two Properties",
+    "Multiples-in-Interval Count"
+  ],
+  "cmath_2084": [
+    "Block-wise Counting by Period",
+    "Residue Class Counting in a Range"
+  ],
+  "cmath_2107": [
+    "k-Permutations (P(n,k))"
+  ],
+  "cmath_2115": [
+    "Inclusion-Exclusion for Two Properties",
+    "Intersection of Solution Sets"
+  ],
+  "cmath_2126": [
+    "Binomial Coefficient",
+    "Disjoint Case Addition"
+  ],
+  "cmath_2133": [
+    "Binomial Coefficient",
+    "Probability Normalization"
+  ],
+  "cmath_2138": [
+    "Finite Case Enumeration"
+  ],
+  "cmath_2146": [
+    "Inclusive Interval Length for Integers",
+    "Intersection of Solution Sets"
+  ],
+  "cmath_2149": [
+    "Interval Width",
+    "Quadratic Discriminant Zero Double Root Criterion"
+  ],
+  "cmath_2154": [
+    "Decomposition into Independent Subproblems",
+    "k-Permutations (P(n,k))",
+    "Binomial Coefficient",
+    "Multiset Interpretation of Distributions"
+  ],
+  "cmath_2182": [
+    "Binomial Coefficient",
+    "Multiplication Principle for Counting"
+  ],
+  "cmath_2193": [
+    "Multiset Interpretation of Distributions"
+  ],
+  "cmath_2307": [
+    "Finite Case Enumeration",
+    "Pattern Detection from Iterated Table"
+  ],
+  "cmath_2309": [
+    "Small-Domain Case Analysis",
+    "Finite-case Enumeration"
+  ],
+  "cmath_2340": [
+    "Power-Set Cardinality for Nonempty Subsets",
+    "Binomial Coefficient"
+  ],
+  "cmath_243": [
+    "Intersection of Solution Sets"
+  ],
+  "cmath_2691": [
+    "Triangle Area via Base-Height"
+  ],
+  "cmath_2920": [
+    "Center-based Relative Coordinate System",
+    "Distance from a Point to a Line"
+  ],
+  "cmath_2924": [
+    "Scalar Triple Product as Volume Measure",
+    "Cross Product Magnitude via Dot Product"
+  ],
+  "cmath_2931": [
+    "Triangle Area Formula",
+    "Scalar Triple Product as Volume Measure"
+  ],
+  "cmath_2939": [
+    "Scalar Triple Product as Volume Measure",
+    "Cross/Dot Bilinearity in Parallelepiped Expansion"
+  ],
+  "cmath_2973": [
+    "Shoelace Formula",
+    "Triangle Area Formula"
+  ],
+  "cmath_2985": [
+    "Center-based Relative Coordinate System"
+  ],
+  "cmath_2989": [
+    "Difference-of-Distances Linearization",
+    "Coordinate Setup for Right Trapezoid"
+  ],
+  "cmath_3010": [
+    "Distance Formula",
+    "Line through a Point with a Given Direction Vector",
+    "Center-based Relative Coordinate System"
+  ],
+  "cmath_3011": [
+    "Distance from a Point to a Line"
+  ],
+  "cmath_3022": [
+    "Center-based Relative Coordinate System",
+    "Line Segment Length with Fixed Slope",
+    "Distance from a Point to a Line",
+    "Coordinate Setup for Right Trapezoid"
+  ],
+  "cmath_3023": [
+    "Slant Height of a Cone",
+    "Cone Similarity with Parallel Slice"
+  ],
+  "cmath_3054": [
+    "Intersection of Solution Sets"
+  ],
+  "cmath_3059": [
+    "Coordinate Setup for Right Trapezoid",
+    "Rectangle Area Formula"
+  ],
+  "cmath_3115": [
+    "Pair-Sum Decomposition",
+    "Distinct Pair Sums from Bounded Multiset"
+  ],
+  "cmath_3121": [
+    "Line through a Point with a Given Direction Vector"
+  ],
+  "cmath_3177": [
+    "Circle Circumference Formula",
+    "Rectangle Area Formula",
+    "Exterior-Interior Angle Supplementary Relation"
+  ],
+  "cmath_3206": [
+    "Square Side from Area"
+  ],
+  "cmath_3213": [
+    "Circumradius Equals Side Length in Regular Hexagon"
+  ],
+  "cmath_3317": [
+    "Distance from a Point to a Line",
+    "Triangle Area via Base-Height"
+  ],
+  "cmath_3436": [
+    "Telescoping with Arithmetic Progression"
+  ],
+  "cmath_3442": [
+    "Intersection of Solution Sets",
+    "Discriminant-Based Parameter Elimination"
+  ],
+  "cmath_3472": [
+    "Elementary Symmetric Sums"
+  ],
+  "cmath_3479": [
+    "Center-based Relative Coordinate System",
+    "Intersection of Solution Sets"
+  ],
+  "cmath_3569": [
+    "Distance Between Two Points",
+    "Center-based Relative Coordinate System",
+    "Magnitude Comparison by Squaring (Nonnegative Sides)"
+  ],
+  "cmath_359": [
+    "Polynomial Intercepts",
+    "Elementary Symmetric Sums"
+  ],
+  "cmath_367": [
+    "Rectangle Area Formula",
+    "Perimeter Constraint",
+    "Intersection of Solution Sets"
+  ],
+  "cmath_3697": [
+    "Elementary Symmetric Sums"
+  ],
+  "cmath_3810": [
+    "Divisor Enumeration of gcd"
+  ],
+  "cmath_3855": [
+    "Sum of Pairwise Products via Square of Sum"
+  ],
+  "cmath_3891": [
+    "Residue Class Counting in a Range",
+    "Inclusion-Exclusion for Two Properties"
+  ],
+  "cmath_4051": [
+    "Domain Constraint for Substitution",
+    "Intersection of Solution Sets"
+  ],
+  "cmath_407": [
+    "Inverse of a Linear Fractional Transformation"
+  ],
+  "cmath_4094": [
+    "Roots of Unity Angle Parametrization"
+  ],
+  "cmath_4161": [
+    "Specialization of Functional Equation to Determine Base Values"
+  ],
+  "cmath_4174": [
+    "Unique Squarefree Decomposition"
+  ],
+  "cmath_4186": [
+    "Polynomial Intercepts"
+  ],
+  "cmath_4190": [
+    "Specialization of Functional Equation to Determine Base Values"
+  ],
+  "cmath_4215": [
+    "Vi\u00e8te's Formulas",
+    "Discriminant-Based Parameter Elimination"
+  ],
+  "cmath_4292": [
+    "Center-based Relative Coordinate System",
+    "Extremal point on a circle (topmost point)"
+  ],
+  "cmath_433": [
+    "Circle Equation from Center and Point",
+    "Distance Between Two Points"
+  ],
+  "cmath_4416": [
+    "Substitution-Based Linear System Elimination",
+    "Base-b Polynomial Representation"
+  ],
+  "cmath_442": [
+    "Completing the Square to Identify a Circle",
+    "Two-Variable Linear System"
+  ],
+  "cmath_4501": [
+    "Telescoping with Arithmetic Progression"
+  ],
+  "cmath_456": [
+    "Pattern Detection from Iterated Table"
+  ],
+  "cmath_4596": [
+    "Quadratic Irrational Root Representation"
+  ],
+  "cmath_4613": [
+    "Telescoping with Arithmetic Progression"
+  ],
+  "cmath_4682": [
+    "Base-b Digit Count Bounds",
+    "Base-b Polynomial Representation"
+  ],
+  "cmath_4731": [
+    "Modular Inverse Calculation",
+    "Linear Congruence by GCD"
+  ],
+  "cmath_4777": [
+    "Divisor Enumeration of gcd",
+    "Divisor-Based Parameterization"
+  ],
+  "cmath_4786": [
+    "2^a 5^b Under N Counting"
+  ],
+  "cmath_4804": [
+    "Circle Circumference Formula",
+    "LCM-based Periodicity for Dual Modulo Conditions",
+    "Intersection of Solution Sets"
+  ],
+  "cmath_4829": [
+    "Power Modulo Computation",
+    "Euler's Totient Function",
+    "Chinese Remainder Theorem"
+  ],
+  "cmath_4859": [
+    "Base-b Polynomial Representation",
+    "Digit Validity in Base-n",
+    "Digit-Bounded Congruence Solving"
+  ],
+  "cmath_4949": [
+    "Center-based Relative Coordinate System"
+  ],
+  "cmath_4950": [
+    "Fundamental Theorem of Arithmetic",
+    "Prime-Power Candidate Enumeration"
+  ],
+  "cmath_4962": [
+    "Chinese Remainder Theorem",
+    "LCM-based Periodicity for Dual Modulo Conditions"
+  ],
+  "cmath_5230": [
+    "Intersection of Solution Sets",
+    "Inclusive Interval Length for Integers"
+  ],
+  "cmath_5232": [
+    "Divisor Enumeration of gcd"
+  ],
+  "cmath_5243": [
+    "Intersection of Solution Sets",
+    "Inclusive Interval Length for Integers",
+    "Floor-Ceiling Interval Bound for Integer Counting"
+  ],
+  "cmath_5246": [
+    "Base-b Digit Count Bounds",
+    "Interval Width"
+  ],
+  "cmath_5247": [
+    "Binomial Coefficient",
+    "Multiset Interpretation of Distributions"
+  ],
+  "cmath_525": [
+    "Simon's Favorite Factoring Trick"
+  ],
+  "cmath_5259": [
+    "Divisor Enumeration of gcd"
+  ],
+  "cmath_5263": [
+    "Fundamental Theorem of Arithmetic"
+  ],
+  "cmath_5268": [
+    "Linear Diophantine Feasibility with Nonnegative Unknowns"
+  ],
+  "cmath_5274": [
+    "Modular Inverse Calculation"
+  ],
+  "cmath_5285": [
+    "Perfect Square Recognition",
+    "Inclusive Interval Length for Integers"
+  ],
+  "cmath_5298": [
+    "Speed Unit Interpretation",
+    "Floor-Ceiling Interval Bound for Integer Counting",
+    "Interval Width"
+  ],
+  "cmath_5313": [
+    "Base-b Polynomial Representation"
+  ],
+  "cmath_5348": [
+    "Fundamental Theorem of Arithmetic",
+    "Exponent Bound from Prime Factorization"
+  ],
+  "cmath_536": [
+    "Vi\u00e8te's Formulas"
+  ],
+  "cmath_5388": [
+    "Modular Inverse Calculation",
+    "Residue Class Counting in a Range"
+  ],
+  "cmath_539": [
+    "Arithmetic Series"
+  ],
+  "cmath_5398": [
+    "GCD\u2013LCM Decomposition"
+  ],
+  "cmath_5400": [
+    "Euclidean Algorithm for gcd in Simple Case",
+    "3-adic Valuation"
+  ],
+  "cmath_5464": [
+    "11-Divisibility Rule (Alternating Sum)"
+  ],
+  "cmath_5497": [
+    "Two-Variable Linear System",
+    "Modular Inverse Calculation"
+  ],
+  "cmath_5559": [
+    "Inclusion-Exclusion for Two Properties"
+  ],
+  "cmath_5615": [
+    "Digit-Bounded Congruence Solving"
+  ],
+  "cmath_5656": [
+    "Circle Circumference Formula"
+  ],
+  "cmath_5676": [
+    "Base-b Polynomial Representation",
+    "Euler's Totient Function",
+    "Pisano Period (Fibonacci modulo n)"
+  ],
+  "cmath_5686": [
+    "Binomial Coefficient",
+    "Disjoint Case Addition"
+  ],
+  "cmath_5702": [
+    "Base-b Polynomial Representation"
+  ],
+  "cmath_5705": [
+    "Center-based Relative Coordinate System",
+    "Radius from Center to Known Point"
+  ],
+  "cmath_592": [
+    "Inverse of a Linear Fractional Transformation"
+  ],
+  "cmath_5996": [
+    "Rectangle Area Formula"
+  ],
+  "cmath_601": [
+    "Substitution-Based Linear System Elimination"
+  ],
+  "cmath_606": [
+    "Quadratic Irrational Root Representation"
+  ],
+  "cmath_6310": [
+    "Distance Between Two Points"
+  ],
+  "cmath_6389": [
+    "Triangle Area via Base-Height"
+  ],
+  "cmath_6403": [
+    "Multiset Interpretation of Distributions"
+  ],
+  "cmath_6591": [
+    "Linear Inequality Isolation"
+  ],
+  "cmath_6595": [
+    "Multiset Interpretation of Distributions"
+  ],
+  "cmath_6632": [
+    "Inclusion-Exclusion for Two Properties"
+  ],
+  "cmath_676": [
+    "Intersection Point and Sum of Coordinates"
+  ],
+  "cmath_6775": [
+    "Cosine Sum-to-Product"
+  ],
+  "cmath_678": [
+    "Completing the Square to Identify a Circle"
+  ],
+  "cmath_6888": [
+    "Fixed-Point Stabilization under Nested Recurrence"
+  ],
+  "cmath_6998": [
+    "Floor-Ceiling Interval Bound for Integer Counting"
+  ],
+  "cmath_7354": [
+    "Base-b Polynomial Representation"
+  ],
+  "cmath_7520": [
+    "Vi\u00e8te's Formulas"
+  ],
+  "cmath_7630": [
+    "Vi\u00e8te's Formulas"
+  ],
+  "cmath_7636": [
+    "Inclusive Interval Length for Integers",
+    "Floor-Ceiling Interval Bound for Integer Counting"
+  ],
+  "cmath_7708": [
+    "Sum of Consecutive Integers (Arithmetic Series)"
+  ],
+  "cmath_7784": [
+    "Vertex Identification for Parabola in Standard Form"
+  ],
+  "cmath_7791": [
+    "Two-Variable Linear System"
+  ],
+  "cmath_7854": [
+    "Distance Between Two Points"
+  ],
+  "cmath_7871": [
+    "Circle Equation from Center and Point",
+    "Distance Between Two Points"
+  ],
+  "cmath_7927": [
+    "Circle Equation from Center and Point"
+  ],
+  "cmath_795": [
+    "Domain Constraint for Substitution"
+  ],
+  "cmath_8012": [
+    "Vi\u00e8te's Formulas"
+  ],
+  "cmath_8095": [
+    "Intersection of Solution Sets"
+  ],
+  "cmath_8139": [
+    "Substitution Method for Linear Systems"
+  ],
+  "cmath_8361": [
+    "Conjugate Rationalization of Surds in Denominator"
+  ],
+  "cmath_8427": [
+    "Polynomial Intercepts"
+  ],
+  "cmath_8557": [
+    "Intersection of Solution Sets"
+  ],
+  "cmath_8648": [
+    "Vertex Identification for Parabola in Standard Form"
+  ],
+  "cmath_8649": [
+    "Quadratic Formula",
+    "Completing the Square"
+  ],
+  "cmath_8692": [
+    "Inclusion-Exclusion for Two Properties",
+    "Binomial Coefficient"
+  ],
+  "cmath_8695": [
+    "Finite Case Enumeration",
+    "Decomposition into Independent Subproblems"
+  ],
+  "cmath_9111": [
+    "Dihedral Group Action on Circular Colorings",
+    "Burnside's Lemma (Orbit Counting)"
+  ],
+  "cmath_914": [
+    "Base-b Digit Count Bounds",
+    "Base-b Polynomial Representation"
+  ],
+  "cmath_924": [
+    "Squaring to Eliminate Radicals"
+  ],
+  "cmath_9421": [
+    "Circle Area Formula",
+    "Center-based Relative Coordinate System",
+    "Distance Between Two Points"
+  ],
+  "cmath_9427": [
+    "Distance from a Point to a Line",
+    "Distance Between Two Points",
+    "Center-based Relative Coordinate System"
+  ],
+  "cmath_9599": [
+    "Center-based Relative Coordinate System"
+  ],
+  "cmath_9619": [
+    "Coordinate Setup for Right Trapezoid",
+    "Trapezoid Midline (Midsegment)"
+  ],
+  "cmath_9733": [
+    "Intersection of Solution Sets",
+    "Floor-Ceiling Interval Bound for Integer Counting",
+    "Small-Domain Case Analysis"
+  ],
+  "cmath_9808": [
+    "Polynomial Y-intercept",
+    "Divisor Enumeration of gcd",
+    "Sum-of-Divisors Function"
+  ],
+  "cmath_9820": [
+    "Coefficient Matching in Polynomial Identities"
+  ],
+  "cmath_9867": [
+    "Roots of Unity Angle Parametrization"
+  ],
+  "cmath_9932": [
+    "Polynomial Intercepts",
+    "Monic Quadratic Factorization over Integers"
+  ],
+  "cmath_9948": [
+    "Complex-Conjugate Cancellation in Summation"
+  ],
+  "cmath_9955": [
+    "Vi\u00e8te's Formulas",
+    "Elementary Symmetric Sums"
+  ],
+  "cmath_9959": [
+    "Specialization of Functional Equation to Determine Base Values",
+    "Polynomial Y-intercept"
+  ],
+  "cmath_9982": [
+    "Symmetry-based State Aggregation in Markov Chains"
+  ],
+  "cmath_9987": [
+    "Center-based Relative Coordinate System"
+  ],
+  "cmath_4005": [
+    "Center-based Relative Coordinate System",
+    "Distance Between Two Points"
+  ],
+  "cmath_6208": [
+    "GCD-LCM Product Identity",
+    "Exponent Bound from Prime Factorization"
+  ]
+}

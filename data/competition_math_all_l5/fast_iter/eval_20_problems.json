@@ -1,0 +1,242 @@
+{
+  "cmath_10805": {
+    "uid": "cmath_10805",
+    "metadata": {
+      "problem_text": "Lupe went to the store and paid for her purchase with a $\\$ 10$ bill. She found that the digits making the amount of her purchase could be rearranged to make the amount she received back in change. If her purchase amount and her change amount were different and each amount was at least $\\$1 $, how many possible amounts of change could she have received?",
+      "solution_text": "First, for simplicity, let's make all the amounts of money into integers by considering them all in cents. For example, $\\$5.43$ becomes 543. Let the purchase price be $A=A_1A_2A_3$ and the amount of change be $B_1B_2B_3$ where $A_1$ represents the first digit of $A$, $B_1$ represents the first digit of $B$, $A_2$ represents the second digit of $A$, etc.\n\nWe know that $A+B=1000$, and we can conclude that $A_1+B_1=9$ because if $A_1+B_1<9$ then $A+B<1000$ and if $A_1+B_1=10$ then $A_2=B_2=A_3=B_3=0$, but then the only way that B can be a rearrangement of the digits of A is if $A_1=B_1=5$, which means $A=B=500$, but the problem states that the price and the amount of change are different.\n\nSince 9 is odd, we can also conclude that $A_1$ and $B_1$ are distinct, which, using the fact that $A$'s digits can be rearranged to get B's digits, implies that $A_1=B_2$ or $A_1=B_3$ and $B_1=A_2$ or $B_1=A_3$. We can also observe that A and B have the same remainder when divided by 9 because the remainder when $n$ is divided by 9 is equal to the remainder when the sum of the digits of $n$ is divided by 9 for all $n$ and the sum of the digits of A is obviously equal to the sum of the digits of B.\n\nSince the remainder when 1000 is divided by 9 is 1, we can in fact conclude that the remainder when A and B are divided by 9 (and when the sum of their digits is divided by 9) is 5. Keeping in mind that two of the digits of $A$ are $A_1$ and $B_1$ and that $A_1+B_1=9$, we can conclude that the other digit is 5, which is the only digit that would result in the sum having a remainder of 5 when divided by 9. By similar logic we can conclude that 5 is also one of the digits of $B$. A little thought makes it clear that at least one of these 5's appears as the last digit in its number (that is, $A_3=5$ or $B_3=5$) since if neither of them appears as the last digit in a number, then $A_1=B_3$ and $B_1=A_3$ and $A_3+B_3=9\\Rightarrow A+B$ ends in a 9, which is a contradiction. But if $A_3=5$ then the only way for the sum of $A$ and $B$ to end in a 0 is for $B_3=5$, so we can conclude that $A_3=B_3=5$, $A_1=B_2$, and $A_2=B_1$. So once we have picked a value for $A_1$, the other 5 digits are all determined. Since both amounts are greater than a dollar, we know that $A_1$ can be any number between 1 and 8 for a total of 8 possible prices (and thus 8 possible amounts of change). To double check, we can work out $A$ and $B$ for each value of $A_1$ and reconvert them to dollars to make sure that the price and the amount of change satisfy the given conditions:\n\n$A_1=1\\Rightarrow A=\\$1.85, B=\\$8.15$;\n\n$A_1=2\\Rightarrow A=\\$2.75, B=\\$7.25$;\n\n$A_1=3\\Rightarrow A=\\$3.65, B=\\$6.35$;\n\n$A_1=4\\Rightarrow A=\\$4.55, B=\\$5.45$;\n\n$A_1=5\\Rightarrow A=\\$5.45, B=\\$4.55$;\n\n$A_1=6\\Rightarrow A=\\$6.35, B=\\$3.65$;\n\n$A_1=7\\Rightarrow A=\\$7.25, B=\\$2.75$; and finally\n\n$A_1=8\\Rightarrow A=\\$8.15, B=\\$1.85$.\n\nThis confirms that there are $\\boxed{8}$ possible amounts of change.",
+      "answer_str": "8",
+      "answer_int": 8,
+      "math_type": "Number Theory",
+      "level": "Level 5",
+      "dataset_idx": "10805"
+    }
+  },
+  "cmath_9932": {
+    "uid": "cmath_9932",
+    "metadata": {
+      "problem_text": "Let\n\\[x^8 + 98x^4 + 1 = p(x) q(x),\\]where $p(x)$ and $q(x)$ are monic, non-constant polynomials with integer coefficients.  Find $p(1) + q(1).$",
+      "solution_text": "In order to factor the polynomial, we will try to solve the equation $x^8 + 98x^4 + 1 = 0.$  First, we can divide both sides by $x^4,$ to get $x^4 + 98 + \\frac{1}{x^4} = 0,$ so\n\\[x^4 + \\frac{1}{x^4} = -98.\\]Then\n\\[x^4 + 2 + \\frac{1}{x^4} = -96,\\]which we can write as $\\left( x^2 + \\frac{1}{x^2} \\right)^2 = -96.$  Hence,\n\\[x^2 + \\frac{1}{x^2} = \\pm 4i \\sqrt{6}.\\]Then\n\\[x^2 - 2 + \\frac{1}{x^2} = -2 \\pm 4i \\sqrt{6},\\]which we can write as\n\\[\\left( x - \\frac{1}{x} \\right)^2 = -2 \\pm 4i \\sqrt{6}.\\]To work with this equation, we will find the square roots of $-2 \\pm 4i \\sqrt{6}.$\n\nAssume that $\\sqrt{-2 + 4i \\sqrt{6}}$ is of the form $a + b.$  Squaring, we get\n\\[-2 + 4i \\sqrt{6} = a^2 + 2ab + b^2.\\]We set $a^2 + b^2 = -2$ and $2ab = 4i \\sqrt{6},$ so $ab = 2i \\sqrt{6}.$  Then $a^2 b^2 = -24,$ so $a^2$ and $b^2$ are the roots of the quadratic\n\\[t^2 + 2t - 24 = 0,\\]which factors as $(t - 4)(t + 6) = 0.$  Hence, $a^2$ and $b^2$ are 4 and $-6$ in some order, which means $a$ and $b$ are $\\pm 2$ and $\\pm i \\sqrt{6}$ in some order.\n\nWe can check that\n\\[(2 + i \\sqrt{6})^2 = 4 + 4i \\sqrt{6} - 6 = -2 + 4i \\sqrt{6}.\\]Similarly,\n\\begin{align*}\n(-2 - i \\sqrt{6})^2 &= -2 + 4i \\sqrt{6}, \\\\\n(2 - i \\sqrt{6})^2 &= -2 - 4i \\sqrt{6}, \\\\\n(-2 + i \\sqrt{6})^2 &= -2 - 4i \\sqrt{6}.\n\\end{align*}Thus,\n\\[x - \\frac{1}{x} = \\pm 2 \\pm i \\sqrt{6}.\\]If\n\\[x - \\frac{1}{x} = 2 + i \\sqrt{6},\\]then\n\\[x - \\frac{1}{x} - 2 = i \\sqrt{6}.\\]Squaring both sides, we get\n\\[x^2 - 4x + 2 + \\frac{4}{x} + \\frac{1}{x^2} = -6,\\]so\n\\[x^2 - 4x + 8 + \\frac{4}{x} + \\frac{1}{x^2} = 0.\\]This simplifies to $x^4 - 4x^3 + 8x^2 + 4x + 1.$\n\nSimilarly,\n\\[x - \\frac{1}{x} = -2 + i \\sqrt{6}\\]leads to $x^4 + 4x^3 + 8x^2 - 4x + 1.$  Thus,\n\\[x^8 + 98x^4 + 1 = (x^4 + 4x^3 + 8x^2 - 4x + 1)(x^4 - 4x^3 + 8x^2 + 4x + 1).\\]Evaluating each factor at $x = 1,$ the final answer is $(1 + 4 + 8 - 4 + 1) + (1 - 4 + 8 + 4 + 1) = \\boxed{20}.$",
+      "answer_str": "20",
+      "answer_int": 20,
+      "math_type": "Intermediate Algebra",
+      "level": "Level 5",
+      "dataset_idx": "9932"
+    }
+  },
+  "cmath_2084": {
+    "uid": "cmath_2084",
+    "metadata": {
+      "problem_text": "Let $S$ be a subset of $\\{1,2,3,\\ldots,1989\\}$ such that no two members of $S$ differ by $4$ or $7$. What is the largest number of elements $S$ can have?\n",
+      "solution_text": "We first show that we can choose at most 5 numbers from $\\{1, 2, \\ldots , 11\\}$ such that no two numbers have a difference of $4$ or $7$. We take the smallest number to be $1$, which rules out $5,8$. Now we can take at most one from each of the pairs: $[2,9]$, $[3,7]$, $[4,11]$, $[6,10]$. Now, $1989 = 180\\cdot 11 + 9$. Because this isn't an exact multiple of $11$, we need to consider some numbers separately.\nNotice that $1969 = 180\\cdot11 - 11 = 179\\cdot11$. Therefore we can put the last $1969$ numbers into groups of 11. Now let's examine $\\{1, 2, \\ldots , 20\\}$. If we pick $1, 3, 4, 6, 9$ from the first $11$ numbers, then we're allowed to pick $11 + 1$, $11 + 3$, $11 + 4$, $11 + 6$, $11 + 9$. This means we get 10 members from the 20 numbers. Our answer is thus $179\\cdot 5 + 10 = \\boxed{905}$.",
+      "answer_str": "905",
+      "answer_int": 905,
+      "math_type": "Counting & Probability",
+      "level": "Level 5",
+      "dataset_idx": "2084"
+    }
+  },
+  "cmath_3121": {
+    "uid": "cmath_3121",
+    "metadata": {
+      "problem_text": "It is desired to construct a right triangle in the coordinate plane so that its legs are parallel to the $x$ and $y$ axes and so that the medians to the midpoints of the legs lie on the lines $y = 3x + 1$ and $y = mx + 2$. The number of different constants $m$ for which such a triangle exists is\n$\\textbf{(A)}\\ 0\\qquad \\textbf{(B)}\\ 1\\qquad \\textbf{(C)}\\ 2\\qquad \\textbf{(D)}\\ 3\\qquad \\textbf{(E)}\\ \\text{more than 3}$\n",
+      "solution_text": "In any right triangle with legs parallel to the axes, one median to the midpoint of a leg has slope $4$ times that of the other. This can easily be shown with coordinates: any triangle of this sort may be labelled with right angle at $P(a,b)$, other vertices $Q(a,b+2c)$ and $R(a-2d,b)$, and thus midpoints $(a,b+c)$ and $(a-d,b)$, so that the slopes are $\\frac{c}{2d}$ and $\\frac{2c}{d} = 4(\\frac{c}{2d})$, thus showing that one is $4$ times the other as required.\nThus in our problem, $m$ is either $3 \\times 4 = 12$ or $3 \\div 4 = \\frac{3}{4}$. In fact, both are possible, and each for infinitely many triangles. We shall show this for $m=12$, and the argument is analogous for $m=\\frac{3}{4}$. Take any right triangle with legs parallel to the axes and a hypotenuse with slope $12 \\div 2 = 6$, e.g. the triangle with vertices $(0,0)$, $(1,0)$, and $(1,6)$. Then quick calculations show that the medians to the legs have slopes $12$ and $3$. Now translate the triangle (without rotating it) so that its medians intersect at the point where the lines $y=12x+2$ and $y=3x+1$ intersect. This forces the medians to lie on these lines (since their slopes are determined, and now we force them to go through a particular point; a slope and a point uniquely determine a line). Finally, for any central dilation of this triangle (a larger or smaller triangle with the same centroid and sides parallel to this one's sides), the medians will still lie on these lines, showing the \"infinitely many\" part of the result.\nHence, to sum up, $m$ can in fact be both $12$ or $\\frac{3}{4}$, which is exactly $\\boxed{2}$ values.",
+      "answer_str": "2",
+      "answer_int": 2,
+      "math_type": "Geometry",
+      "level": "Level 5",
+      "dataset_idx": "3121"
+    }
+  },
+  "cmath_3177": {
+    "uid": "cmath_3177",
+    "metadata": {
+      "problem_text": "Charlyn walks completely around the boundary of a square whose sides are each 5 km long. From any point on her path she can see exactly 1 km horizontally in all directions. What is the area of the region consisting of all points Charlyn can see during her walk, expressed in square kilometers and rounded to the nearest whole number?",
+      "solution_text": "At any point on Charlyn's walk, she can see all the points inside a circle of radius 1 km. The portion of the viewable region inside the square consists of the interior of the square except for a smaller square with side length 3 km. This portion of the viewable region has area $(25-9)$ km$^2$. The portion of the viewable region outside the square consists of four rectangles, each 5 km by 1 km, and four quarter-circles, each with a radius of 1 km. This portion of the viewable region has area $4 \\left(5+\\frac{\\pi}{4} \\right)=(20+\\pi)\\text{\nkm}^2$. The area of the entire viewable region is $36+\\pi\\approx\n\\boxed{39}\\text{ km}^2$.\n\n[asy]\ndraw((5.8,5.8)..(6,5)--(5,5)--(5,6)..cycle);\ndraw((-5.8,-5.8)..(-6,-5)--(-5,-5)--(-5,-6)..cycle);\ndraw((-5.8,5.8)..(-5,6)--(-5,5)--(-6,5)..cycle);\ndraw((5.8,-5.8)..(5,-6)--(5,-5)--(6,-5)..cycle);\ndraw((-5,6)--(5,6));\ndraw((-6,5)--(-6,-5));\ndraw((-5,-6)--(5,-6));\ndraw((6,5)--(6,-5));\ndraw((5,5)--(5,-5)--(-5,-5)--(-5,5)--cycle,linewidth(0.7));\ndraw((4,4)--(4,-4)--(-4,-4)--(-4,4)--cycle);\ndraw(Circle((5,0),1));\n[/asy]",
+      "answer_str": "39",
+      "answer_int": 39,
+      "math_type": "Geometry",
+      "level": "Level 5",
+      "dataset_idx": "3177"
+    }
+  },
+  "cmath_4161": {
+    "uid": "cmath_4161",
+    "metadata": {
+      "problem_text": "Let $f : \\mathbb{R} \\to \\mathbb{R}$ be a function such that\n\\[f(x^2 + yf(z)) = xf(x) + zf(y)\\]for all real numbers $x,$ $y,$ and $z.$\n\nLet $n$ be the number of possible values of $f(5),$ and let $s$ be the sum of all possible values of $f(5).$  Find $n \\times s.$",
+      "solution_text": "Setting $x = y = 0,$ we get\n\\[f(0) = zf(0)\\]for all $z,$ so $f(0) = 0.$\n\nSetting $y = 0,$ we get\n\\[f(x^2) = xf(x)\\]for all $x.$\n\nSetting $x = 0,$ we get\n\\[f(yf(z)) = zf(y).\\]In particular, for $y = 1,$ $f(f(z)) = zf(1).$\n\nSince $f(x^2) = xf(x),$\n\\[f(f(x^2)) = f(xf(x)).\\]But $f(f(x^2)) = x^2 f(1)$ and $f(xf(x)) = xf(x),$ so\n\\[x^2 f(1) = xf(x).\\]Then for $x \\neq 0,$ $f(x) = f(1) x.$  Since $f(0) = 0,$\n\\[f(x) = f(1) x\\]for all $x.$\n\nLet $c = f(1),$ so $f(x) = cx.$  Substituting into the given equation, we get\n\\[cx^2 + c^2 yz = cx^2 + cyz.\\]For this to hold for all $x,$ $y,$ and $z,$ we must have $c^2 = c,$ so $c = 0$ or $c = 1.$\n\nThus, the solutions are $f(x) = 0$ and $f(x) = x.$  This means $n = 2$ and $s = 0 + 5,$ so $n \\times s = \\boxed{10}.$",
+      "answer_str": "10",
+      "answer_int": 10,
+      "math_type": "Intermediate Algebra",
+      "level": "Level 5",
+      "dataset_idx": "4161"
+    }
+  },
+  "cmath_10098": {
+    "uid": "cmath_10098",
+    "metadata": {
+      "problem_text": "The polynomial $p(x)$ satisfies $p(1) = 210$ and\n\\[(x + 10) p(2x) = 8(x - 4) p(x + 6)\\]for all real numbers $x.$  Find $p(10).$",
+      "solution_text": "Setting $x = 4,$ we get\n\\[14 p(8) = 0,\\]so $p(x)$ has a factor of $x - 8.$\n\nSetting $x = -10,$ we get\n\\[8(-14)p(-4) = 0,\\]so $p(x)$ has a factor of $x + 4.$\n\nSetting $x = -2,$ we get\n\\[8p(-4) = 8(-6)p(4).\\]Since $p(-4) = 0,$ $p(4) = 0,$ which means $p(x)$ has a factor of $x - 4.$\n\nLet\n\\[p(x) = (x - 8)(x - 4)(x + 4) q(x).\\]Then\n\\[(x + 10)(2x - 8)(2x - 4)(2x + 4) q(2x) = 8(x - 4)(x - 2)(x + 2)(x + 10) q(x + 6).\\]This simplifies to $q(2x) = q(x + 6).$\n\nLet $q(x) = q_n x^n + q_{n - 1} x^{n - 1} + \\dots + q_1 x + q_0.$  Then the leading coefficient in $q(2x)$ is $q_n 2^n,$ and the leading coefficient in $q(x + 6)$ is $q_n.$  Since $q(2x) = q(x + 6),$\n\\[q_n 2^n = q_n.\\]Since $q_n \\neq 0,$ $2^n = 1,$ so $n = 0.$  This means $q(x)$ is a constant polynomial.  Let $q(x) = c,$ so\n\\[p(x) = c(x - 8)(x - 4)(x + 4).\\]Setting $x = 1,$ we get\n\\[c(1 - 8)(1 - 4)(1 + 4) = 210,\\]so $c = 2.$  Therefore, $p(x) = 2(x - 8)(x - 4)(x + 4),$ so $p(10) = 2(10 - 8)(10 - 4)(10 + 4) = \\boxed{336}.$",
+      "answer_str": "336",
+      "answer_int": 336,
+      "math_type": "Intermediate Algebra",
+      "level": "Level 5",
+      "dataset_idx": "10098"
+    }
+  },
+  "cmath_5298": {
+    "uid": "cmath_5298",
+    "metadata": {
+      "problem_text": "On a long straight stretch of one-way single-lane highway, cars all travel at the same speed and all obey the safety rule: the distance from the back of the car ahead to the front of the car behind is exactly one car length for each 15 kilometers per hour of speed or fraction thereof (Thus the front of a car traveling 52 kilometers per hour will be four car lengths behind the back of the car in front of it.) A photoelectric eye by the side of the road counts the number of cars that pass in one hour. Assuming that each car is 4 meters long and that the cars can travel at any speed, let $M$ be the maximum whole number of cars that can pass the photoelectric eye in one hour. Find the quotient when $M$ is divided by $10$.\n",
+      "solution_text": "Let $n$ be the number of car lengths that separates each car. Then their speed is at most $15n$. Let a unit be the distance between the cars (front to front). Then the length of each unit is $4(n + 1)$. To maximize, in a unit, the CAR comes first, THEN the empty space. So at time zero, the car is right at the eye.\nHence, we count the number of units that pass the eye in an hour: $\\frac {15,000n\\frac{\\text{meters}}{\\text{hour}}}{4(n + 1)\\frac{\\text{meters}}{\\text{unit}}} = \\frac {15,000n}{4(n + 1)}\\frac{\\text{units}}{\\text{hour}}$. We wish to maximize this.\nObserve that as $n$ gets larger, the $+ 1$ gets less and less significant, so we take the limit as $n$ approaches infinity\n$\\lim_{n\\rightarrow \\infty}\\frac {15,000n}{4(n + 1)} = \\lim_{n\\rightarrow \\infty}\\frac {15,000}{4} = 3750$\nNow, as the speeds are clearly finite, we can never actually reach $3750$ full UNITs. However, we only need to find the number of CARS. We can increase their speed so that the camera stops (one hour goes by) after the car part of the $3750$th unit has passed, but not all of the space behind it. Hence, $3750$ cars is possible, and the answer is $\\boxed{375}$.",
+      "answer_str": "375",
+      "answer_int": 375,
+      "math_type": "Number Theory",
+      "level": "Level 5",
+      "dataset_idx": "5298"
+    }
+  },
+  "cmath_2931": {
+    "uid": "cmath_2931",
+    "metadata": {
+      "problem_text": "The rectangle $ABCD$ below has dimensions $AB = 12 \\sqrt{3}$ and $BC = 13 \\sqrt{3}$. Diagonals $\\overline{AC}$ and $\\overline{BD}$ intersect at $P$. If triangle $ABP$ is cut out and removed, edges $\\overline{AP}$ and $\\overline{BP}$ are joined, and the figure is then creased along segments $\\overline{CP}$ and $\\overline{DP}$, we obtain a triangular pyramid, all four of whose faces are isosceles triangles. Find the volume of this pyramid.\n[asy] pair D=origin, A=(13,0), B=(13,12), C=(0,12), P=(6.5, 6); draw(B--C--P--D--C^^D--A); filldraw(A--P--B--cycle, gray, black); label(\"$A$\", A, SE); label(\"$B$\", B, NE); label(\"$C$\", C, NW); label(\"$D$\", D, SW); label(\"$P$\", P, N); label(\"$13\\sqrt{3}$\", A--D, S); label(\"$12\\sqrt{3}$\", A--B, E);[/asy]\n",
+      "solution_text": "Let $\\triangle{ABC}$ (or the triangle with sides $12\\sqrt {3}$, $13\\sqrt {3}$, $13\\sqrt {3}$) be the base of our tetrahedron. We set points $C$ and $D$ as $(6\\sqrt {3}, 0, 0)$ and $( - 6\\sqrt {3}, 0, 0)$, respectively. Using Pythagoras, we find $A$ as $(0, \\sqrt {399}, 0)$. We know that the vertex of the tetrahedron ($P$) has to be of the form $(x, y, z)$, where $z$ is the altitude of the tetrahedron. Since the distance from $P$ to points $A$, $B$, and $C$ is $\\frac {\\sqrt {939}}{2}$, we can write three equations using the distance formula:\n\\begin{align*} x^{2} + (y - \\sqrt {399})^{2} + z^{2} &= \\frac {939}{4}\\\\ (x - 6\\sqrt {3})^{2} + y^{2} + z^{2} &= \\frac {939}{4}\\\\ (x + 6\\sqrt {3})^{2} + y^{2} + z^{2} &= \\frac {939}{4} \\end{align*}\nSubtracting the last two equations, we get $x = 0$. Solving for $y,z$ with a bit of effort, we eventually get $x = 0$, $y = \\frac {291}{2\\sqrt {399}}$, $z = \\frac {99}{\\sqrt {133}}$. Since the area of a triangle is $\\frac {1}{2}\\cdot bh$, we have the base area as $18\\sqrt {133}$. Thus, the volume is $V = \\frac {1}{3}\\cdot18\\sqrt {133}\\cdot\\frac {99}{\\sqrt {133}} = 6\\cdot99 = \\boxed{594}$.",
+      "answer_str": "594",
+      "answer_int": 594,
+      "math_type": "Geometry",
+      "level": "Level 5",
+      "dataset_idx": "2931"
+    }
+  },
+  "cmath_9959": {
+    "uid": "cmath_9959",
+    "metadata": {
+      "problem_text": "Let $f(x)$ be a polynomial with real coefficients such that $f(0) =\n1$, $f(2) + f(3) = 125,$ and for all $x$, $f(x)f(2x^2) = f(2x^3 +\nx)$. Find $f(5)$.",
+      "solution_text": "If the leading term of $f(x)$ is $a x^m$, then the leading term of $f(x)f(2x^2)$ is\n\\[ax^m \\cdot a(2x^2)^m = 2^ma^2x^{3m},\\]and the leading term of $f(2x^3 + x)$ is $2^max^{3m}$. Hence $2^ma^2 = 2^ma$, and $a =1$.\n\nBecause $f(0) = 1$, the product of all the roots of $f(x)$ is $\\pm 1$. If $f(\\lambda)=0$, then $f(2\\lambda^3+\\lambda)= 0$. Assume that there exists a root $\\lambda$ with $|\\lambda | \\neq 1$. Then there must be such a root $\\lambda_1$ with $|\\lambda_1|>1$. Then\n\\[|2\\lambda^3+\\lambda | \\geq 2|\\lambda |^3-|\\lambda | > 2|\\lambda |-|\\lambda |= |\\lambda |.\\]But then $f(x)$ would have infinitely many roots, given by $\\lambda_{k+1}=2\\lambda_k^3+\\lambda_k$, for $k \\geq 1$. Therefore $|\\lambda |=1$ for all of the roots of the polynomial.\n\nThus $\\lambda \\overline{\\lambda} = 1$, and $(2\\lambda^3+\\lambda)\\overline{(2\\lambda^3+\\lambda)}= 1$. Solving these equations simultaneously for $\\lambda = a+bi$ yields $a=0$, $b^2 = 1$, and so $\\lambda^2=-1$. Because the polynomial has real coefficients, the polynomial must have the form $f(x) = (1+ x^2)^n$ for some integer $n \\geq 1$. The condition $f(2) + f(3) = 125$ implies $n = 2$, giving $f(5) = \\boxed{676}$.",
+      "answer_str": "676",
+      "answer_int": 676,
+      "math_type": "Intermediate Algebra",
+      "level": "Level 5",
+      "dataset_idx": "9959"
+    }
+  },
+  "cmath_7630": {
+    "uid": "cmath_7630",
+    "metadata": {
+      "problem_text": "Let $a$ and $b$ be the solutions of the equation $2x^2-10x+5=0$. What is the value of $(2a-3)(4b-6)$?",
+      "solution_text": "Expanding the desired expression, we get $(2a-3)(4b-6)=8ab-12a-12b+18=8ab-12(a+b)+18$. This implies that we need the sum and product of the roots of the given equation, which are $10/2=5$ and $5/2$, respectively. Thus, the desired expression equals $\\left(8\\cdot \\frac{5}{2}\\right) - (12 \\cdot 5) + 18 = \\boxed{-22}$.",
+      "answer_str": "-22",
+      "answer_int": -22,
+      "math_type": "Algebra",
+      "level": "Level 5",
+      "dataset_idx": "7630"
+    }
+  },
+  "cmath_5246": {
+    "uid": "cmath_5246",
+    "metadata": {
+      "problem_text": "Let $T = \\{9^k : k ~ \\mbox{is an integer}, 0 \\le k \\le 4000\\}$. Given that $9^{4000}$ has 3817 digits and that its first (leftmost) digit is 9, how many elements of $T$ have 9 as their leftmost digit?\n",
+      "solution_text": "Since $9^{4000}$ has 3816 digits more than $9^1$, $4000 - 3816 = \\boxed{184}$ numbers have 9 as their leftmost digits.",
+      "answer_str": "184",
+      "answer_int": 184,
+      "math_type": "Number Theory",
+      "level": "Level 5",
+      "dataset_idx": "5246"
+    }
+  },
+  "cmath_3719": {
+    "uid": "cmath_3719",
+    "metadata": {
+      "problem_text": "Let $x,$ $y,$ $z$ be nonnegative real numbers.  Let\n\\begin{align*}\nA &= \\sqrt{x + 2} + \\sqrt{y + 5} + \\sqrt{z + 10}, \\\\\nB &= \\sqrt{x + 1} + \\sqrt{y + 1} + \\sqrt{z + 1}.\n\\end{align*}Find the minimum value of $A^2 - B^2.$",
+      "solution_text": "We can write\n\\begin{align*}\nA^2 - B^2 &= (A + B)(A - B) \\\\\n&= (\\sqrt{x + 2} + \\sqrt{x + 1} + \\sqrt{y + 5} + \\sqrt{y + 1} + \\sqrt{z + 10} + \\sqrt{z + 1}) \\\\\n&\\quad \\times (\\sqrt{x + 2} - \\sqrt{x + 1} + \\sqrt{y + 5} - \\sqrt{y + 1} + \\sqrt{z + 10} - \\sqrt{z + 1}).\n\\end{align*}Let\n\\begin{align*}\na_1 &= \\sqrt{x + 2} + \\sqrt{x + 1}, \\\\\nb_1 &= \\sqrt{y + 5} + \\sqrt{y + 1}, \\\\\nc_1 &= \\sqrt{z + 10} + \\sqrt{z + 1}, \\\\\na_2 &= \\sqrt{x + 2} - \\sqrt{x + 1}, \\\\\nb_2 &= \\sqrt{y + 5} - \\sqrt{y + 1}, \\\\\nc_2 &= \\sqrt{z + 10} - \\sqrt{z + 1}.\n\\end{align*}Then by Cauchy-Schwarz,\n\\begin{align*}\nA^2 - B^2 &= (a_1 + b_1 + c_1)(a_2 + b_2 + c_2) \\\\\n&\\ge (\\sqrt{a_1 a_2} + \\sqrt{b_1 b_2} + \\sqrt{c_2 c_2})^2 \\\\\n&= (1 + 2 + 3)^2 \\\\\n&= 36.\n\\end{align*}Equality occurs when\n\\[\\frac{a_1}{a_2} = \\frac{b_1}{b_2} = \\frac{c_1}{c_2},\\]or equivalently,\n\\[\\frac{x + 2}{x + 1} = \\frac{y + 5}{y + 1} = \\frac{z + 10}{z + 1}.\\]For example, if we set each fraction to 2, then we get $x = 0,$ $y = 3,$ and $z = 8.$\n\nHence, the minimum value is $\\boxed{36}.$",
+      "answer_str": "36",
+      "answer_int": 36,
+      "math_type": "Intermediate Algebra",
+      "level": "Level 5",
+      "dataset_idx": "3719"
+    }
+  },
+  "cmath_3059": {
+    "uid": "cmath_3059",
+    "metadata": {
+      "problem_text": "Triangle $ABC$ has side lengths $AB = 12$, $BC = 25$, and $CA = 17$. Rectangle $PQRS$ has vertex $P$ on $\\overline{AB}$, vertex $Q$ on $\\overline{AC}$, and vertices $R$ and $S$ on $\\overline{BC}$. In terms of the side length $PQ = \\omega$, the area of $PQRS$ can be expressed as the quadratic polynomial\\[Area(PQRS) = \\alpha \\omega - \\beta \\omega^2.\\]\nThen the coefficient $\\beta = \\frac{m}{n}$, where $m$ and $n$ are relatively prime positive integers. Find $m+n$.\n",
+      "solution_text": "If $\\omega = 25$, the area of rectangle $PQRS$ is $0$, so\n\\[\\alpha\\omega - \\beta\\omega^2 = 25\\alpha - 625\\beta = 0\\]\nand $\\alpha = 25\\beta$. If $\\omega = \\frac{25}{2}$, we can reflect $APQ$ over $PQ$, $PBS$ over $PS$, and $QCR$ over $QR$ to completely cover rectangle $PQRS$, so the area of $PQRS$ is half the area of the triangle. Using Heron's formula, since $s = \\frac{12 + 17 + 25}{2} = 27$,\n\\[[ABC] = \\sqrt{27 \\cdot 15 \\cdot 10 \\cdot 2} = 90\\]\nso\n\\[45 = \\alpha\\omega - \\beta\\omega^2 = \\frac{625}{2} \\beta - \\beta\\frac{625}{4} = \\beta\\frac{625}{4}\\]\nand\n\\[\\beta = \\frac{180}{625} = \\frac{36}{125}\\]\nso the answer is $m + n = 36 + 125 = \\boxed{161}$.",
+      "answer_str": "161",
+      "answer_int": 161,
+      "math_type": "Geometry",
+      "level": "Level 5",
+      "dataset_idx": "3059"
+    }
+  },
+  "cmath_2138": {
+    "uid": "cmath_2138",
+    "metadata": {
+      "problem_text": "Consider sequences that consist entirely of $A$'s and $B$'s and that have the property that every run of consecutive $A$'s has even length, and every run of consecutive $B$'s has odd length. Examples of such sequences are $AA$, $B$, and $AABAA$, while $BBAB$ is not such a sequence. How many such sequences have length 14?\n",
+      "solution_text": "Let $a_n$ and $b_n$ denote, respectively, the number of sequences of length $n$ ending in $A$ and $B$. If a sequence ends in an $A$, then it must have been formed by appending two $A$s to the end of a string of length $n-2$. If a sequence ends in a $B,$ it must have either been formed by appending one $B$ to a string of length $n-1$ ending in an $A$, or by appending two $B$s to a string of length $n-2$ ending in a $B$. Thus, we have the recursions\\begin{align*} a_n &= a_{n-2} + b_{n-2}\\\\ b_n &= a_{n-1} + b_{n-2}  \\end{align*}By counting, we find that $a_1 = 0, b_1 = 1, a_2 = 1, b_2 = 0$.\\[\\begin{array}{|r||r|r|||r||r|r|} \\hline n & a_n & b_n & n & a_n & b_n\\\\ \\hline 1&0&1& 8&6&10\\\\ 2&1&0& 9&11&11\\\\ 3&1&2& 10&16&21\\\\ 4&1&1& 11&22&27\\\\ 5&3&3& 12&37&43\\\\ 6&2&4& 13&49&64\\\\ 7&6&5& 14&80&92\\\\ \\hline \\end{array}\\]Therefore, the number of such strings of length $14$ is $a_{14} + b_{14} = \\boxed{172}$.",
+      "answer_str": "172",
+      "answer_int": 172,
+      "math_type": "Counting & Probability",
+      "level": "Level 5",
+      "dataset_idx": "2138"
+    }
+  },
+  "cmath_6775": {
+    "uid": "cmath_6775",
+    "metadata": {
+      "problem_text": "Let $a_0$, $a_1$, $a_2$, $\\dots$ be an infinite sequence of real numbers such that $a_0 = \\frac{5}{13}$ and\n\\[\n  a_{n} = 2 a_{n-1}^2 - 1\n\\]for every positive integer $n$.  Let $c$ be the smallest number such that for every positive integer $n$, the product of the first $n$ terms satisfies the inequality\n\\[|a_0 a_1 \\dotsm a_{n - 1}| \\le \\frac{c}{2^n}.\\]What is the value of $100c$, rounded to the nearest integer?",
+      "solution_text": "Define the sequence $(\\theta_n)$ by $\\theta_0 = \\arccos \\frac{5}{13}$ and\n\\[\\theta_n = 2 \\theta_{n - 1}.\\]Then $\\cos \\theta_0 = \\frac{5}{13},$ and\n\\begin{align*}\n\\cos \\theta_n &= \\cos (2 \\theta_{n - 1}) \\\\\n&= 2 \\cos^2 \\theta_{n - 1} - 1.\n\\end{align*}Since the sequences $(a_n)$ and $(\\cos \\theta_n)$ have the same initial term, and the same recursion, they coincide.\n\nWe have that\n\\[\\sin^2 \\theta_0 = 1 - \\cos^2 \\theta_0 = \\frac{144}{169}.\\]Since $\\theta_0$ is acute, $\\sin \\theta_0 = \\frac{12}{13}.$\n\nNow,\n\\begin{align*}\na_0 a_1 \\dotsm a_{n - 1} &= \\cos \\theta_0 \\cos \\theta_1 \\dotsm \\cos \\theta_{n - 1} \\\\\n&= \\cos \\theta_0 \\cos 2 \\theta_0 \\dotsm \\cos 2^{n - 1} \\theta_0.\n\\end{align*}Multiplying both sides by $\\sin \\theta_0 = \\frac{12}{13},$ we get\n\\begin{align*}\n\\frac{12}{13} a_0 a_1 \\dotsm a_{n - 1} &= \\sin \\theta_0 \\cos \\theta_0 \\cos 2 \\theta_0 \\cos 4 \\theta_0 \\dotsm \\cos 2^{n - 1} \\theta_0 \\\\\n&= \\frac{1}{2} \\sin 2 \\theta_0 \\cos 2 \\theta_0 \\cos 4 \\theta_0 \\dotsm \\cos 2^{n - 1} \\theta_0 \\\\\n&= \\frac{1}{4} \\sin 4 \\theta_0 \\dotsm \\cos 2^{n - 1} \\theta_0 \\\\\n&= \\dotsb \\\\\n&= \\frac{1}{2^n} \\sin 2^n \\theta_0.\n\\end{align*}Hence,\n\\[|a_0 a_2 \\dotsm a_{n - 1}| = \\frac{1}{2^n} \\cdot \\frac{13}{12} |\\sin 2^n \\theta_0| \\le \\frac{1}{2^n} \\cdot \\frac{13}{12}.\\]This tells us $c \\le \\frac{13}{12}.$\n\nWe can compute that $a_1 = 2a_0^2 - 1 = 2 \\left( \\frac{5}{13} \\right)^2 - 1 = -\\frac{119}{169},$ so\n\\[\\frac{5}{13} \\cdot \\frac{119}{169} \\le \\frac{c}{4}.\\]Then $c \\ge \\frac{2380}{2197}.$  The bound\n\\[\\frac{2380}{2197} \\le c \\le \\frac{13}{12}\\]tells us that the integer closest to $100c$ is $\\boxed{108}.$",
+      "answer_str": "108",
+      "answer_int": 108,
+      "math_type": "Precalculus",
+      "level": "Level 5",
+      "dataset_idx": "6775"
+    }
+  },
+  "cmath_9987": {
+    "uid": "cmath_9987",
+    "metadata": {
+      "problem_text": "Let $a,$ $b,$ and $c$ be positive real numbers such that $a > b$ and $a + b + c = 4.$  Find the minimum value of\n\\[4a + 3b + \\frac{c^3}{(a - b)b}.\\]",
+      "solution_text": "By AM-GM,\n\\[(a - b) + b + \\frac{c^3}{(a - b)b} \\ge 3 \\sqrt[3]{(a - b) \\cdot b \\cdot \\frac{c^3}{(a - b)b}} = 3c.\\]Hence,\n\\begin{align*}\n4a + 3b + \\frac{c^3}{(a - b)b} &= 3a + 3b + \\left[ (a - b) + b + \\frac{c^3}{(a - b)b} \\right] \\\\\n&\\ge 3a + 3b + 3c \\\\\n&= 12.\n\\end{align*}Equality occurs when $a = 2$ and $b = c = 1,$ so the minimum value is $\\boxed{12}.$",
+      "answer_str": "12",
+      "answer_int": 12,
+      "math_type": "Intermediate Algebra",
+      "level": "Level 5",
+      "dataset_idx": "9987"
+    }
+  },
+  "cmath_10170": {
+    "uid": "cmath_10170",
+    "metadata": {
+      "problem_text": "Find the number of ordered triples $(x,y,z)$ of real numbers such that\n\\begin{align*}\nx + 2y + 4z &= 12, \\\\\nxy + 2xz + 4yz &= 22, \\\\\nxyz &= 6.\n\\end{align*}",
+      "solution_text": "Let $a = x,$ $b = 2y,$ and $c = 4z.$  Then $x = a,$ $y = \\frac{1}{2} b,$ and $z = \\frac{1}{4} c,$ so the given system becomes\n\\begin{align*}\na + b + c &= 12, \\\\\nab + ac + bc &= 44, \\\\\nabc &= 48.\n\\end{align*}Then by Vieta's formulas, $a,$ $b,$ and $c$ are the roots of\n\\[t^3 - 12t^2 + 44t - 48 = 0.\\]This factors as $(t - 2)(t - 4)(t - 6) = 0,$ so $a,$ $b,$ $c$ are 2, 4, 6, in some order.\n\nThere are $3! = 6$ ways to assign 2, 4, 6 to $a,$ $b,$ and $c.$  These produce $\\boxed{6}$ different solutions $(x,y,z),$ via the substitution $x = a,$ $y = \\frac{1}{2} b,$ $z = \\frac{1}{4} c.$",
+      "answer_str": "6",
+      "answer_int": 6,
+      "math_type": "Intermediate Algebra",
+      "level": "Level 5",
+      "dataset_idx": "10170"
+    }
+  },
+  "cmath_10229": {
+    "uid": "cmath_10229",
+    "metadata": {
+      "problem_text": "Let $a,$ $b,$ $c$ be positive real numbers such that\n\\[\\log_a b + \\log_b c + \\log_c a = 0.\\]Find\n\\[(\\log_a b)^3 + (\\log_b c)^3 + (\\log_c a)^3.\\]",
+      "solution_text": "Let $x = \\log_a b,$ $y = \\log_b c,$ and $z = \\log_c a.$  Then $x + y + z = 0,$ so\n\\[x^3 + y^3 + z^3 - 3xyz = (x + y + z)(x^2 + y^2 + z^2 - xy - xz - yz) = 0.\\]Hence,\n\\[x^3 + y^3 + z^3 = 3xyz = 3 (\\log_a b)(\\log_b c)(\\log_c a) = 3 \\cdot \\frac{\\log b}{\\log a} \\cdot \\frac{\\log c}{\\log b} \\cdot \\frac{\\log a}{\\log c} = \\boxed{3}.\\]",
+      "answer_str": "3",
+      "answer_int": 3,
+      "math_type": "Intermediate Algebra",
+      "level": "Level 5",
+      "dataset_idx": "10229"
+    }
+  },
+  "cmath_10265": {
+    "uid": "cmath_10265",
+    "metadata": {
+      "problem_text": "The complex numbers $z$ and $w$ satisfy the system\n\\begin{align*}\nz + \\frac{20i}w &= 5+i, \\\\\nw+\\frac{12i}z &= -4+10i.\n\\end{align*}Find the smallest possible value of $\\vert zw\\vert^2$.",
+      "solution_text": "Multiplying the two equations, we have \\[zw + 12i + 20i - \\frac{240}{zw} = (5+i) (-4+10i) = -30 + 46i.\\]Letting $t = zw,$ this simplifies to \\[t^2 + (30-14i)t - 240 = 0.\\]By the quadratic formula, \\[t = \\frac{-(30-14i) \\pm \\sqrt{(30-14i)^2 + 4\\cdot240}}{2} = -(15-7i) \\pm \\sqrt{416-210i}.\\]We hope that we can write $416 - 210i = (a+bi)^2,$ for some integers $a$ and $b.$ Upon expansion, we get the equations $416 = a^2-b^2$ and $-210=2ab$. The smallest perfect square greater than $416$ is $21^2 = 441$, so we try $a = 21$; then $416 = 441 - b^2$, so $b^2 = 25$ and $b = \\pm 5$. Indeed, we get the solution $(a, b) = (21, -5)$.\n\nTherefore, \\[t = -(15-7i) \\pm (21-5i) = 6+2i \\; \\text{or} \\; -36+12i.\\]The choice of $t=zw$ with smallest magnitude is $t = 6+2i,$ giving \\[|t|^2 = 6^2 + 2^2 = \\boxed{40}.\\]",
+      "answer_str": "40",
+      "answer_int": 40,
+      "math_type": "Intermediate Algebra",
+      "level": "Level 5",
+      "dataset_idx": "10265"
+    }
+  }
+}

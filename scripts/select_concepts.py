@@ -50,7 +50,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--problems", type=Path, required=True,
                     help="Path to problems.json (from a previous run output)")
     p.add_argument("--domain", choices=["arc", "math", "code"], required=True)
-    p.add_argument("--model", type=str, default="qwen/qwen3.5-397b-a17b",
+    p.add_argument("--model", type=str, default="qwen/qwen3.5-plus-02-15",
                     help="LLM model for selection")
     p.add_argument("--output-dir", type=Path, required=True,
                     help="Output directory for selected_concepts.json + prompt_info.json")
@@ -58,6 +58,14 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--max-tokens", type=int, default=4096)
     p.add_argument("--show-other-concepts", action="store_true",
                     help="Include names of non-selected concepts in hint (default: off)")
+    p.add_argument("--request-timeout", type=float, default=600.0,
+                    help="Per-request timeout in seconds (default: 600)")
+    p.add_argument("--provider", default="llmplus_openrouter",
+                    help="Provider profile name (default: llmplus_openrouter)")
+    p.add_argument("--chunk-size", type=int, default=0,
+                    help="Process prompts in chunks of this size (0=all at once)")
+    p.add_argument("--chunk-delay", type=float, default=5.0,
+                    help="Delay between chunks in seconds (default: 5)")
     p.add_argument("--dry-run", action="store_true")
     return p.parse_args()
 
@@ -142,51 +150,105 @@ async def main() -> None:
     pids = sorted(problems.keys())
     logger.info(f"Loaded {len(pids)} problems")
 
+    # ── Resume: load existing completions ─────────────────────────
+    existing_completions: dict[str, str] = {}
+    completions_path = Path(args.output_dir) / "completions.json"
+    if completions_path.exists():
+        existing_completions = json.loads(completions_path.read_text())
+        # Keep only non-None completions as "done"
+        existing_completions = {
+            k: v for k, v in existing_completions.items()
+            if v and v != "None"
+        }
+        if existing_completions:
+            logger.info(f"Resuming: {len(existing_completions)} already completed, "
+                        f"{len(pids) - len(existing_completions)} remaining")
+
     # ── Get selection prompt template ────────────────────────────────
     select_template, hint_template = DOMAIN_PROMPT_MAP.get(
         args.domain, DOMAIN_PROMPT_MAP["arc"]
     )
 
-    # ── Build prompts ────────────────────────────────────────────────
+    # ── Build prompts (only for incomplete problems) ──────────────
+    remaining_pids = [pid for pid in pids if pid not in existing_completions]
     prompts = []
-    for pid in pids:
+    for pid in remaining_pids:
         problem_text = format_problem_text(problems[pid], args.domain)
         prompt = select_template.format(concepts=mem_str, puzzle=problem_text)
         prompts.append(prompt)
 
-    logger.info(f"Built {len(prompts)} selection prompts "
-                f"(avg {sum(len(p) for p in prompts) // len(prompts)} chars)")
+    if prompts:
+        logger.info(f"Built {len(prompts)} selection prompts "
+                    f"(avg {sum(len(p) for p in prompts) // len(prompts)} chars)")
+    else:
+        logger.info("All problems already completed — skipping LLM calls")
 
     if args.dry_run:
         print(f"\n{'='*60}")
         print("DRY RUN — first prompt preview:")
         print(f"{'='*60}")
-        print(prompts[0][:2000])
-        print(f"... ({len(prompts[0])} chars total)")
+        if prompts:
+            print(prompts[0][:2000])
+            print(f"... ({len(prompts[0])} chars total)")
+        else:
+            print("(no prompts to send — all resumed)")
         return
 
-    # ── Run LLM selection ────────────────────────────────────────────
-    client = LLMPlusProviderClient(profile_cfg={
-        "profile_name": "llmplus_openrouter",
-        "default_max_concurrency": args.concurrency,
-    })
-    gen_cfg = {"n": 1, "temperature": 0.0, "max_tokens": args.max_tokens}
+    # ── Run LLM selection (only remaining) ────────────────────────
+    completions_log: dict[str, str] = dict(existing_completions)
 
-    logger.info(f"Sending {len(prompts)} selection prompts to {args.model}...")
-    results = await client.async_batch_generate(
-        prompts=prompts, model=args.model, gen_cfg=gen_cfg,
-    )
+    if prompts:
+        client = LLMPlusProviderClient(profile_cfg={
+            "profile_name": args.provider,
+            "default_max_concurrency": args.concurrency,
+        })
+        gen_cfg = {"n": 1, "temperature": 0.0, "max_tokens": args.max_tokens,
+                   "batch_size": args.concurrency}
+
+        chunk_size = args.chunk_size if args.chunk_size > 0 else len(prompts)
+        n_chunks = (len(prompts) + chunk_size - 1) // chunk_size
+        logger.info(f"Sending {len(prompts)} selection prompts to {args.model} "
+                     f"in {n_chunks} chunk(s) of {chunk_size}...")
+
+        out = Path(args.output_dir)
+        out.mkdir(parents=True, exist_ok=True)
+
+        for chunk_idx in range(n_chunks):
+            start = chunk_idx * chunk_size
+            end = min(start + chunk_size, len(prompts))
+            chunk_prompts = prompts[start:end]
+            chunk_pids = remaining_pids[start:end]
+
+            logger.info(f"Chunk {chunk_idx+1}/{n_chunks}: {len(chunk_prompts)} prompts")
+            results = await client.async_batch_generate(
+                prompts=chunk_prompts, model=args.model, gen_cfg=gen_cfg,
+                request_timeout=args.request_timeout,
+            )
+
+            # Merge chunk results into completions_log
+            for pid, result_list in zip(chunk_pids, results):
+                completion = str(result_list[0]) if result_list else ""
+                completions_log[pid] = completion
+
+            # Save completions after each chunk so we can resume on crash
+            (out / "completions.json").write_text(
+                json.dumps(completions_log, indent=2) + "\n"
+            )
+            logger.info(f"Saved {len(completions_log)} completions (after chunk {chunk_idx+1})")
+
+            # Delay between chunks to let rate limits recover
+            if chunk_idx < n_chunks - 1 and args.chunk_delay > 0:
+                logger.info(f"Waiting {args.chunk_delay}s before next chunk...")
+                await asyncio.sleep(args.chunk_delay)
 
     # ── Parse selections ─────────────────────────────────────────────
     selected_concepts: dict[str, list[str]] = {}
-    completions_log: dict[str, str] = {}
     parse_errors: dict[str, str] = {}
     n_ok = 0
     n_fail = 0
 
-    for pid, result_list in zip(pids, results):
-        completion = str(result_list[0]) if result_list else ""
-        completions_log[pid] = completion
+    for pid in pids:
+        completion = completions_log.get(pid, "")
 
         names, error = parse_selection(completion, valid_names)
         if names:

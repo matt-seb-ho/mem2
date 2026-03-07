@@ -1,0 +1,92 @@
+{
+  "cmath_10098": [
+    "Factor Theorem",
+    "Polynomial Determination from Roots",
+    "Undetermined Coefficients Method"
+  ],
+  "cmath_10170": [
+    "Vieta's Formulas",
+    "Factor Theorem"
+  ],
+  "cmath_10229": [
+    "Vieta's Formulas"
+  ],
+  "cmath_10265": [
+    "Auxiliary Polynomial Construction",
+    "Completing the Square for Circle Parameters",
+    "Point-to-Point Distance Formula"
+  ],
+  "cmath_10805": [
+    "Real-to-Integer Bound Conversion",
+    "Intersection of Inequality Intervals",
+    "Counting Integers in an Interval"
+  ],
+  "cmath_2138": [
+    "Complementary Counting",
+    "Stars and Bars"
+  ],
+  "cmath_2931": [
+    "Cartesian Coordinate Placement",
+    "Point-to-Point Distance Formula",
+    "Triangle Area via Base and Height",
+    "Pythagorean Theorem",
+    "Midpoint Formula"
+  ],
+  "cmath_3059": [
+    "Pythagorean Theorem",
+    "Parallelism via Common Perpendicular",
+    "Triangle Area via Base and Height"
+  ],
+  "cmath_3121": [
+    "Axis-Aligned Coordinate Placement",
+    "Midpoint Formula",
+    "Median Slope Constraint"
+  ],
+  "cmath_3177": [
+    "Axis-Aligned Coordinate Placement",
+    "Interval Width Calculation",
+    "Polygon Triangulation"
+  ],
+  "cmath_3719": [
+    "Extremal Parameter Selection",
+    "Intersection of Inequality Intervals"
+  ],
+  "cmath_4161": [
+    "Undetermined Coefficients Method",
+    "Factor Theorem"
+  ],
+  "cmath_5246": [
+    "Base-$b$ Digit Count Bounds",
+    "Real-to-Integer Bound Conversion",
+    "Counting Integers in an Interval"
+  ],
+  "cmath_5298": [
+    "Extremal Parameter Selection",
+    "Real-to-Integer Bound Conversion",
+    "Counting Integers in an Interval"
+  ],
+  "cmath_6775": [
+    "Extremal Parameter Selection",
+    "Intersection of Inequality Intervals"
+  ],
+  "cmath_7630": [
+    "Vieta's Formulas"
+  ],
+  "cmath_9932": [
+    "Undetermined Coefficients Method",
+    "Factorization of Reciprocal Polynomials"
+  ],
+  "cmath_9959": [
+    "Polynomial Determination from Roots",
+    "Undetermined Coefficients Method",
+    "Factor Theorem"
+  ],
+  "cmath_2084": [
+    "Casework by Residue Class",
+    "Periodic Counting Strategy",
+    "Counting Integers in an Interval"
+  ],
+  "cmath_9987": [
+    "Extremal Parameter Selection"
+  ]
+}

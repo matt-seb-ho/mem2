@@ -6,7 +6,7 @@ from typing import Any
 from mem2.core.entities import AttemptRecord, EvalRecord, ProblemSpec, RunContext
 
 # Reuse the same regex from the benchmark adapter
-_BOXED_RE = re.compile(r"\\boxed\{([^{}]*(?:\{[^{}]*\}[^{}]*)*)\}")
+_BOXED_RE = re.compile(r"\\?boxed\{([^{}]*(?:\{[^{}]*\}[^{}]*)*)\}")
 
 
 def extract_boxed_answer(text: str) -> str | None:

@@ -90,12 +90,16 @@ class LLMPlusProviderClient:
         prompts: list[str | list[dict[str, Any]]],
         model: str,
         gen_cfg: dict[str, Any],
+        request_timeout: float | None = 300.0,
     ) -> list[list[str | None]]:
         final_cfg = dict(self._default_gen)
         final_cfg.update(gen_cfg or {})
         cfg = self._generation_cls(**final_cfg)
         model_name = model or self._model
-        return await self._client.async_batch_generate(prompts=prompts, model=model_name, gen_cfg=cfg)
+        return await self._client.async_batch_generate(
+            prompts=prompts, model=model_name, gen_cfg=cfg,
+            request_timeout=request_timeout,
+        )
 
     def get_usage_snapshot(self) -> dict[str, Any]:
         return self._client.get_token_usage_dict()

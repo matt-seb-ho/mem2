@@ -1,0 +1,839 @@
+{
+  "cmath_10098": [
+    "Leading Coefficient Matching",
+    "Degree of Polynomial Composition",
+    "Coefficient Matching"
+  ],
+  "cmath_10143": [
+    "Symmetric Sum Substitution"
+  ],
+  "cmath_10170": [
+    "Shifted-Variable Rectangle Trick",
+    "Substitution Method for Linear Systems",
+    "Quadratic Formula",
+    "Vi\u00e8te's Formulas"
+  ],
+  "cmath_10229": [
+    "Symmetric Sum Substitution",
+    "Logarithm Product Rule"
+  ],
+  "cmath_10265": [
+    "Substitution Method for Linear Systems",
+    "Quadratic in Complex Variable"
+  ],
+  "cmath_10274": [
+    "Scalar Triple Product Coplanarity Criterion",
+    "Distance from a Point to a Line"
+  ],
+  "cmath_1035": [
+    "Factor Pair Method for Area Equation",
+    "Prime-Pair Factor Enumeration for Difference of Squares",
+    "Sum of Squares Formula"
+  ],
+  "cmath_10404": [
+    "Factor Theorem"
+  ],
+  "cmath_10424": [
+    "Substitution Method for Linear Systems",
+    "Quadratic Formula",
+    "Radical Simplification",
+    "Back-Substitution Verification"
+  ],
+  "cmath_10546": [
+    "Modular Inverse via Extended Euclidean Algorithm",
+    "Linear Congruence Solving via Inverse"
+  ],
+  "cmath_10547": [
+    "Chinese Remainder Theorem",
+    "Linear Congruence Solving via Inverse",
+    "Modular Inverse via Extended Euclidean Algorithm",
+    "Linear Congruence Solving via gcd Reduction"
+  ],
+  "cmath_10564": [
+    "Last-Digit Cycle Analysis",
+    "Block Decomposition Modulo 10"
+  ],
+  "cmath_10599": [
+    "Residue Class Interval Counting"
+  ],
+  "cmath_10620": [
+    "Arithmetic Progression"
+  ],
+  "cmath_10637": [
+    "Base-Digit Validity Constraint",
+    "Divisibility Constraint from Fixed Difference",
+    "Integer Count in a Real Interval",
+    "Divisor Pair Enumeration"
+  ],
+  "cmath_1073": [
+    "Substitution Method for Linear Systems"
+  ],
+  "cmath_10805": [
+    "Range Intersection for Digit-Constraint Counting"
+  ],
+  "cmath_10962": [
+    "Modular Reduction",
+    "Order of a Modulo m",
+    "Exponent Reduction in Modular Arithmetic"
+  ],
+  "cmath_10967": [
+    "Sum-of-Divisors Function"
+  ],
+  "cmath_11016": [
+    "Product of Positive Divisors Identity",
+    "Number of Divisors Function"
+  ],
+  "cmath_11303": [
+    "Pythagorean Theorem",
+    "Circle from General Equation via Completing the Square",
+    "Distance from a Point to a Line",
+    "Radical Simplification",
+    "Triangle Area via Base and Height"
+  ],
+  "cmath_11504": [
+    "Residue Class Interval Counting"
+  ],
+  "cmath_11575": [
+    "Multiplication Principle (Product Rule)"
+  ],
+  "cmath_11628": [
+    "Distance-Squared Constraint (Coordinate Geometry)",
+    "Pythagorean Theorem",
+    "Squaring Both Sides",
+    "Distance to Origin"
+  ],
+  "cmath_12063": [
+    "Quadratic Formula",
+    "Standard Radical Form for Quadratic Roots"
+  ],
+  "cmath_12065": [
+    "Substitution Method for Linear Systems",
+    "Clear Denominators",
+    "Quadratic Formula",
+    "Back-Substitution Verification"
+  ],
+  "cmath_12173": [
+    "Ratio of variables from two equations",
+    "Symmetric Sum Substitution",
+    "Reciprocal Sum Identity"
+  ],
+  "cmath_12357": [
+    "Gradient-Based Minimum for Convex Quadratic"
+  ],
+  "cmath_1273": [
+    "Clear Denominators",
+    "Standard Form of Quadratic Equation",
+    "Quadratic Formula"
+  ],
+  "cmath_1359": [
+    "Linear Equation Solving from Average Constraint"
+  ],
+  "cmath_1391": [
+    "Quadratic Formula",
+    "Factor Theorem",
+    "Trial Division Factorization",
+    "Absolute Value Equation Solving"
+  ],
+  "cmath_1468": [
+    "Geometric Progression Parameterization"
+  ],
+  "cmath_1502": [
+    "Area Scaling under Similarity"
+  ],
+  "cmath_1770": [
+    "Cross-Group Pair Counting",
+    "Intra-Group Pairings (C(n,2))",
+    "Multiplication Principle (Product Rule)",
+    "Category-Based Counting"
+  ],
+  "cmath_1815": [
+    "Combination Without Repetition"
+  ],
+  "cmath_1859": [
+    "Inclusion-Exclusion Principle",
+    "Integer Count in a Real Interval",
+    "LCM-based Overlap Counting"
+  ],
+  "cmath_2084": [
+    "Residue Class Interval Counting"
+  ],
+  "cmath_2097": [
+    "Iterated Midpoint Construction on a Line",
+    "Availability Sufficiency for Bounded Repetition",
+    "Inductive Fixed-Point Stabilization in Nested Recursion"
+  ],
+  "cmath_2107": [
+    "Stars and Bars",
+    "Multiplication Principle (Product Rule)"
+  ],
+  "cmath_2115": [
+    "Complementary Counting",
+    "Inclusion-Exclusion Principle"
+  ],
+  "cmath_2126": [
+    "Fixed-Length Digit Expansion",
+    "Stars and Bars",
+    "Category-Based Counting",
+    "Complementary Counting"
+  ],
+  "cmath_2133": [
+    "Independence of Events in Probability",
+    "Reducing Fractions to Lowest Terms",
+    "Complementary Counting"
+  ],
+  "cmath_2138": [
+    "Fibonacci Sequence"
+  ],
+  "cmath_2149": [
+    "Quadratic Inequality Solving via Discriminant",
+    "Integer Count in a Real Interval",
+    "Radical Simplification",
+    "Arithmetic Mean Definition",
+    "Integer Floor via Tight Bounds"
+  ],
+  "cmath_2154": [
+    "2-Regular Graph Realization"
+  ],
+  "cmath_2182": [
+    "Category-Based Counting"
+  ],
+  "cmath_2193": [
+    "Stars and Bars"
+  ],
+  "cmath_2307": [
+    "ABA Palindrome Structure"
+  ],
+  "cmath_2309": [
+    "Rook Placement Permutation Bijection",
+    "Labeling Fixed Cell Pattern with Distinct Objects",
+    "Product Rule in Stagewise Allocation"
+  ],
+  "cmath_2340": [
+    "Multiplication Principle (Product Rule)",
+    "Power Set Cardinality"
+  ],
+  "cmath_243": [
+    "Domain Validity Check"
+  ],
+  "cmath_2691": [
+    "Angle Bisector Theorem",
+    "Pythagorean Theorem",
+    "Area Proportionality with Common Height"
+  ],
+  "cmath_2920": [
+    "Circle from General Equation via Completing the Square",
+    "Distance from a Point to a Line",
+    "Pythagorean Theorem",
+    "Angle Bisector Theorem"
+  ],
+  "cmath_2924": [
+    "Area-Altitude Relation"
+  ],
+  "cmath_2931": [
+    "Pythagorean Theorem",
+    "Volume Scaling under Similarity",
+    "Cone Volume Formula"
+  ],
+  "cmath_2939": [
+    "Area-Altitude Relation"
+  ],
+  "cmath_2973": [
+    "Area Proportionality with Common Height"
+  ],
+  "cmath_2985": [
+    "Distance via displacement vector",
+    "Pythagorean Theorem"
+  ],
+  "cmath_2989": [
+    "Distance-Squared Constraint (Coordinate Geometry)",
+    "Pythagorean Theorem",
+    "Integer Feasibility Filtering on Altitude"
+  ],
+  "cmath_3010": [
+    "Completing the Square in Two Variables",
+    "Circle from General Equation via Completing the Square",
+    "External Tangency Distance",
+    "Distance from a Point to a Line",
+    "Radius Determination from Circle Equation"
+  ],
+  "cmath_3011": [
+    "Circle from General Equation via Completing the Square",
+    "Chord Length from Distance to Center",
+    "External Tangency Distance",
+    "Center on Angle Bisector for Tangency to Two Lines",
+    "Pythagorean Theorem"
+  ],
+  "cmath_3022": [
+    "Iterated Midpoint Construction on a Line",
+    "Distance-Squared Constraint (Coordinate Geometry)",
+    "Pythagorean Theorem",
+    "Radical Simplification",
+    "Standard Radical Form for Quadratic Roots"
+  ],
+  "cmath_3023": [
+    "Center-to-Vertex Distance in Square Base",
+    "Cone Volume Formula",
+    "Distance = Speed \u00d7 Time (Constant-Speed Kinematics)",
+    "Pythagorean Theorem",
+    "Radical Simplification"
+  ],
+  "cmath_3054": [
+    "Distance Constraint as an Algebraic Condition",
+    "Pythagorean Theorem"
+  ],
+  "cmath_3059": [
+    "Pythagorean Theorem",
+    "Rectangle Area Calculation",
+    "Distance from a Point to a Line",
+    "Quadratic Maximization on a Bounded Interval"
+  ],
+  "cmath_3115": [
+    "Pythagorean Theorem"
+  ],
+  "cmath_3121": [
+    "Midpoint of a Segment",
+    "Line Equation from Point and Slope",
+    "Substitution Method for Linear Systems",
+    "Slope-Angle Relation"
+  ],
+  "cmath_3177": [
+    "Rectangle Area Calculation",
+    "Distance Between Parallel Lines",
+    "Distance from a Point to a Line",
+    "Distance Constraint as an Algebraic Condition",
+    "Shoelace Formula"
+  ],
+  "cmath_3213": [
+    "Regular Hexagon Circumradius Equals Side",
+    "Regular Hexagon Opposite Vertex Distance",
+    "Equilateral Triangle Condition on Vertex-Base Configuration",
+    "Pythagorean Theorem"
+  ],
+  "cmath_3317": [
+    "Distance to Origin",
+    "Midpoint of a Segment",
+    "Pythagorean Theorem",
+    "Shoelace Formula"
+  ],
+  "cmath_3436": [
+    "Telescoping with AP Reciprocals",
+    "Sum of First N Integers"
+  ],
+  "cmath_3442": [
+    "Integer Count in a Real Interval",
+    "Distance-Squared Constraint (Coordinate Geometry)",
+    "Floor-Section Length Counting",
+    "Absolute-Value to Quadratic Reduction"
+  ],
+  "cmath_3569": [
+    "Distance to Origin",
+    "Distance Between Parallel Lines",
+    "Distance via displacement vector",
+    "Pythagorean Identity in Distance Simplification"
+  ],
+  "cmath_367": [
+    "Arithmetic Mean Definition",
+    "Arithmetic Progression",
+    "Quadratic Maximization on a Bounded Interval"
+  ],
+  "cmath_3697": [
+    "Vi\u00e8te's Formulas",
+    "Quadratic Formula",
+    "Symmetric Sum Substitution"
+  ],
+  "cmath_3719": [
+    "Gradient-Based Minimum for Convex Quadratic",
+    "Completing the Square",
+    "Convexity-Based Optimization on a Linear Constraint"
+  ],
+  "cmath_3810": [
+    "Factor Theorem",
+    "Divisor Pair Enumeration",
+    "Rational Root Theorem"
+  ],
+  "cmath_3891": [
+    "Range Intersection for Digit-Constraint Counting"
+  ],
+  "cmath_4005": [
+    "Distance-Squared Constraint (Coordinate Geometry)",
+    "Completing the Square",
+    "Circle from General Equation via Completing the Square",
+    "Gradient-Based Minimum for Convex Quadratic"
+  ],
+  "cmath_4051": [
+    "Base-Case Handling for Recurrences",
+    "Domain Validity Check"
+  ],
+  "cmath_407": [
+    "Clear Denominators",
+    "Coefficient Matching"
+  ],
+  "cmath_4094": [
+    "Partial Fraction Decomposition for Root Sums",
+    "Logarithmic derivative to sum over roots",
+    "Sum of nth roots of unity",
+    "Factor Theorem"
+  ],
+  "cmath_4161": [
+    "Substitution Method for Linear Systems",
+    "Inner-Outer Substitution for Nested Function Equations",
+    "Domain Validity Check",
+    "Linear Equation Solving from Average Constraint",
+    "Coefficient Matching"
+  ],
+  "cmath_4174": [
+    "Fundamental Theorem of Arithmetic (Unique Prime Factorization)",
+    "Prime-Power Exponent Pattern in Composite Numbers",
+    "Conjugate Root Theorem",
+    "Divisor Pair Enumeration"
+  ],
+  "cmath_4186": [
+    "Finite Differences for Polynomials"
+  ],
+  "cmath_4190": [
+    "Inner-Outer Substitution for Nested Function Equations"
+  ],
+  "cmath_4215": [
+    "Vi\u00e8te's Formulas",
+    "Discriminant Test for Integer Solutions",
+    "Quadratic Formula",
+    "Existence via Quadratic Discriminant for Real Positive Solutions"
+  ],
+  "cmath_4292": [
+    "Completing the Square in Two Variables",
+    "Radius Determination from Circle Equation",
+    "Distance from a Point to a Line",
+    "Quadratic Maximization on a Bounded Interval",
+    "Pythagorean Theorem"
+  ],
+  "cmath_433": [
+    "Distance-Squared Constraint (Coordinate Geometry)",
+    "Absolute Value Equation Solving",
+    "Solution Validation by Substitution",
+    "Pythagorean Theorem"
+  ],
+  "cmath_436": [
+    "Geometric Progression Parameterization"
+  ],
+  "cmath_442": [
+    "Gradient-Based Minimum for Convex Quadratic",
+    "Completing the Square"
+  ],
+  "cmath_456": [
+    "Piecewise Function Composition Case Analysis",
+    "Solve Piecewise Linear Equations by Branch Substitution"
+  ],
+  "cmath_4596": [
+    "Cube-root Reciprocal Rationalization (Conjugate Trick)",
+    "Rational Root Theorem",
+    "Quadratic Formula",
+    "Radical Simplification"
+  ],
+  "cmath_4613": [
+    "Telescoping with AP Reciprocals",
+    "Radical Simplification",
+    "Sum of Squares Formula"
+  ],
+  "cmath_4682": [
+    "Base-b Digit Count Criterion"
+  ],
+  "cmath_4731": [
+    "Linear Congruence Solving via Inverse",
+    "Modular Inverse via Extended Euclidean Algorithm"
+  ],
+  "cmath_4777": [
+    "Number of Divisors Function",
+    "Integer Count in a Real Interval"
+  ],
+  "cmath_4786": [
+    "Terminating Decimal Criterion (Base 10)"
+  ],
+  "cmath_4804": [
+    "Circle Circumference Formula",
+    "Rate from Distance-Time Observations",
+    "Distance = Speed \u00d7 Time (Constant-Speed Kinematics)"
+  ],
+  "cmath_4829": [
+    "Last-Digit Cycle Analysis",
+    "Exponentiation by Squaring",
+    "Modular Reduction",
+    "Order of a Modulo m",
+    "Exponent Reduction in Modular Arithmetic"
+  ],
+  "cmath_4859": [
+    "Base-b Digit Expansion",
+    "Modular Constraint Digit Assignment",
+    "Greedy Digit-by-Digit Minimal Construction under Modulo Constraint",
+    "Base-b Digit Count Criterion"
+  ],
+  "cmath_4949": [
+    "Sign Symmetry for Quadratic Diophantine Equations",
+    "Symmetry-based Counting for Lattice Points",
+    "Exhaustive Small-case Enumeration for Sum of Cubes"
+  ],
+  "cmath_4950": [
+    "Largest Prime Factor"
+  ],
+  "cmath_4962": [
+    "Chinese Remainder Theorem",
+    "Linear Congruence Parametrization"
+  ],
+  "cmath_5196": [
+    "Number of Divisors Function"
+  ],
+  "cmath_5230": [
+    "Domain Validity Check",
+    "Integer Point Extraction from Real Interval"
+  ],
+  "cmath_5232": [
+    "GCD bound by containing divisor",
+    "Casework on Possible gcd Values"
+  ],
+  "cmath_5243": [
+    "Integer Count in a Real Interval",
+    "Minimum Integer from Linear Inequality"
+  ],
+  "cmath_5246": [
+    "Base-b Digit Count Criterion",
+    "Integer Count in a Real Interval"
+  ],
+  "cmath_5247": [
+    "Divisibility from a Linear Factorization P = kx",
+    "Legendre's Formula",
+    "Finite Case Enumeration for Solutions",
+    "Prime Divisors of a Factorial"
+  ],
+  "cmath_525": [
+    "Simon's Favorite Factoring Trick",
+    "Divisor Pair Enumeration"
+  ],
+  "cmath_5259": [
+    "Number of Divisors Function"
+  ],
+  "cmath_5263": [
+    "LCM via Prime-Exponent Maximum",
+    "GCD-LCM Decomposition with Coprime Factors",
+    "Prime-Power Exponent Pattern in Composite Numbers",
+    "Stars and Bars"
+  ],
+  "cmath_5268": [
+    "Casework on Possible gcd Values"
+  ],
+  "cmath_5274": [
+    "Sum of squares formula"
+  ],
+  "cmath_5285": [
+    "Number of Divisors Function",
+    "Parity-based Range Counting",
+    "Integer Floor via Tight Bounds",
+    "Integer Count in a Real Interval"
+  ],
+  "cmath_5298": [
+    "Ceiling for Minimum Integer Count in Batching",
+    "Rate from Distance-Time Observations",
+    "Domain Validity Check",
+    "Arithmetic Progression"
+  ],
+  "cmath_5313": [
+    "Base-b Digit Expansion",
+    "Modular Constraint Digit Assignment"
+  ],
+  "cmath_5348": [
+    "Prime-Power Exponent Pattern in Composite Numbers",
+    "Number of Divisors Function",
+    "Divisibility Constraint from Fixed Difference",
+    "Inclusion-Exclusion Principle"
+  ],
+  "cmath_536": [
+    "Vi\u00e8te's Formulas"
+  ],
+  "cmath_5388": [
+    "Linear Congruence Solving via Inverse",
+    "Residue Class Interval Counting",
+    "Integer Count in a Real Interval"
+  ],
+  "cmath_539": [
+    "Arithmetic Progression"
+  ],
+  "cmath_5398": [
+    "GCD-LCM Decomposition with Coprime Factors"
+  ],
+  "cmath_5400": [
+    "GCD bound by containing divisor",
+    "Linear Congruence Solving via Inverse",
+    "Divisibility Constraint from Fixed Difference",
+    "Quadratic Formula",
+    "Factor Theorem"
+  ],
+  "cmath_5464": [
+    "11-Divisibility Rule",
+    "Fixed-Length Digit Expansion",
+    "Casework by Modulo Class",
+    "Stars and Bars"
+  ],
+  "cmath_5497": [
+    "Modular Inverse via Small Prime Modulus",
+    "Linear Congruence Solving via gcd Reduction",
+    "Order of a Modulo m",
+    "Modular Reduction"
+  ],
+  "cmath_5559": [
+    "Inclusion-Exclusion Principle"
+  ],
+  "cmath_5615": [
+    "Divisibility by 3 Rule",
+    "Complementary Counting",
+    "Digit-Length Block Decomposition"
+  ],
+  "cmath_5656": [
+    "Radius Upper Bound from Circumference"
+  ],
+  "cmath_5676": [
+    "Decimal Periodicity for Fractions with Denominator Coprime to 10",
+    "Digit of Repeating Decimal by Position",
+    "Modular Inverse via Small Prime Modulus",
+    "Modular Reduction"
+  ],
+  "cmath_5686": [
+    "Cross-Group Pair Counting"
+  ],
+  "cmath_5702": [
+    "Base-b Digit Expansion",
+    "Decimal Periodicity for Fractions with Denominator Coprime to 10"
+  ],
+  "cmath_5705": [
+    "Radius Upper Bound from Circumference",
+    "Circle Area Formula",
+    "Circle Circumference Formula"
+  ],
+  "cmath_592": [
+    "Inverse of a M\u00f6bius Transformation"
+  ],
+  "cmath_5996": [
+    "Rectangle Area Calculation",
+    "Divisor Pair Enumeration",
+    "Integer Factor Pair Enumeration"
+  ],
+  "cmath_606": [
+    "Standard Radical Form for Quadratic Roots",
+    "Quadratic Formula"
+  ],
+  "cmath_6208": [
+    "LCM via Prime-Exponent Maximum"
+  ],
+  "cmath_6310": [
+    "Pythagorean Theorem",
+    "Distance = Speed \u00d7 Time (Constant-Speed Kinematics)",
+    "Rectangle Area Calculation",
+    "Triangle Area via Base and Height",
+    "Law of Total Probability"
+  ],
+  "cmath_6389": [
+    "Isosceles Exclusion via Side Equality",
+    "Pythagorean Theorem"
+  ],
+  "cmath_6403": [
+    "Fixed-Length Digit Expansion",
+    "Stars and Bars",
+    "Leading-Ddigit Casework (Hundreds-First Partition)"
+  ],
+  "cmath_6591": [
+    "Absolute Value Equation Solving",
+    "Integer Count in a Real Interval",
+    "Inequality-based Parameter Bounding"
+  ],
+  "cmath_6595": [
+    "Arithmetic Mean Definition"
+  ],
+  "cmath_6632": [
+    "Inclusion-Exclusion Principle"
+  ],
+  "cmath_6775": [
+    "Cosine Double-Angle Identity"
+  ],
+  "cmath_678": [
+    "Completing the Square in Two Variables",
+    "Gradient-Based Minimum for Convex Quadratic"
+  ],
+  "cmath_6888": [
+    "Inner-Outer Substitution for Nested Function Equations"
+  ],
+  "cmath_6998": [
+    "Integer Count in a Real Interval"
+  ],
+  "cmath_7354": [
+    "Cosine Sum-to-Product Transformation",
+    "Cosine Double-Angle Identity",
+    "Zero Product Resolution for Trig Equations"
+  ],
+  "cmath_7630": [
+    "Vieta's Formulas"
+  ],
+  "cmath_7636": [
+    "Radical Domain Intersection",
+    "Squaring Both Sides",
+    "Integer Count in a Real Interval",
+    "Finite Case Enumeration for Solutions"
+  ],
+  "cmath_7708": [
+    "Arithmetic Progression",
+    "Isosceles Exclusion via Side Equality"
+  ],
+  "cmath_7784": [
+    "Completing the square to rewrite as x = a y^2 + b y + c"
+  ],
+  "cmath_7791": [
+    "Substitution Method for Linear Systems",
+    "Quadratic Formula",
+    "Symmetric Sum Substitution",
+    "Rational Root Theorem"
+  ],
+  "cmath_7854": [
+    "Distance to Origin",
+    "Squared-Distance Minimization",
+    "Quadratic Formula",
+    "Solution Validation by Substitution"
+  ],
+  "cmath_7871": [
+    "Circle from General Equation via Completing the Square",
+    "Radius Determination from Circle Equation"
+  ],
+  "cmath_7927": [
+    "Completing the Square in Two Variables",
+    "Radius Determination from Circle Equation",
+    "Radical Simplification"
+  ],
+  "cmath_795": [
+    "Domain Validity Check"
+  ],
+  "cmath_8012": [
+    "Vi\u00e8te's Formulas",
+    "Rational Root Theorem"
+  ],
+  "cmath_8095": [
+    "Domain Validity Check",
+    "Piecewise Revenue Function",
+    "Midpoint of a Segment",
+    "Linear Equation Solving from Average Constraint",
+    "Piecewise Function Composition Case Analysis"
+  ],
+  "cmath_8139": [
+    "Linear Equation Solving from Average Constraint"
+  ],
+  "cmath_8361": [
+    "Rationalize Denominator via Conjugate",
+    "Canonical Surd Form Extraction",
+    "Coefficient Matching in Radical Decomposition"
+  ],
+  "cmath_8427": [
+    "Difference of Squares Factorization",
+    "Quadratic Factoring"
+  ],
+  "cmath_8557": [
+    "Single-Variable Reduction via Difference with Fixed Product"
+  ],
+  "cmath_8648": [
+    "Completing the square to rewrite as x = a y^2 + b y + c"
+  ],
+  "cmath_8649": [
+    "Rational Root Theorem",
+    "Vi\u00e8te's Formulas",
+    "Quadratic Formula",
+    "Sum-Product to Sum of Squares (Symmetric Sum Identity)"
+  ],
+  "cmath_8692": [
+    "Complementary Counting",
+    "Category-Based Counting",
+    "Multiplication Principle (Product Rule)"
+  ],
+  "cmath_8695": [
+    "Divisor Pair Enumeration"
+  ],
+  "cmath_9111": [
+    "Dihedral Group Orbit Classification on a 7\u00d77 Grid",
+    "Burnside's Lemma (Orbit Counting)"
+  ],
+  "cmath_914": [
+    "Base-b Digit Expansion",
+    "Linear Equation Solving from Average Constraint"
+  ],
+  "cmath_924": [
+    "Radical Simplification",
+    "Standard Radical Form for Quadratic Roots"
+  ],
+  "cmath_9421": [
+    "Distance-Squared Constraint (Coordinate Geometry)",
+    "Ellipse-Circle Intersection by Substitution",
+    "Shoelace Formula"
+  ],
+  "cmath_9427": [
+    "Radical Axis for Circle Intersections",
+    "Chord Length from Distance to Center",
+    "Distance Between Parallel Lines",
+    "Distance from a Point to a Line"
+  ],
+  "cmath_9599": [
+    "Distance Between Parallel Lines",
+    "Radius Upper Bound from Circumference",
+    "Circle Area Formula",
+    "Pythagorean Theorem"
+  ],
+  "cmath_9619": [
+    "Angle Bisector Theorem",
+    "Area Proportionality with Common Height",
+    "Pythagorean Theorem",
+    "Shoelace Formula"
+  ],
+  "cmath_9733": [
+    "Minimum Integer from Linear Inequality",
+    "Inequality-based Parameter Bounding",
+    "Domain Validity Check"
+  ],
+  "cmath_9808": [
+    "Number of Divisors Function",
+    "Divisor Pair Enumeration"
+  ],
+  "cmath_9820": [
+    "Factor Theorem",
+    "Vi\u00e8te's Formulas",
+    "Divisor Pair Enumeration"
+  ],
+  "cmath_9867": [
+    "Factor Theorem",
+    "Vieta's Formulas",
+    "Sum of nth roots of unity"
+  ],
+  "cmath_9932": [
+    "Factor Theorem",
+    "Coefficient Matching",
+    "Quadratic Formula",
+    "Root-based Polynomial Reconstruction"
+  ],
+  "cmath_9948": [
+    "Complex Substitution in Real Systems",
+    "Quadratic in Complex Variable",
+    "Sum of Real and Imaginary Parts from Complex Roots",
+    "Vieta's Formulas",
+    "Radical Simplification"
+  ],
+  "cmath_9955": [
+    "Vi\u00e8te's Formulas",
+    "Substitution Method for Linear Systems",
+    "Back-Substitution Verification"
+  ],
+  "cmath_9959": [
+    "Functional Equation Iteration with Scaling",
+    "Coefficient Matching"
+  ],
+  "cmath_9982": [
+    "Symmetric Sum Substitution",
+    "Simon's Favorite Factoring Trick",
+    "Lagrange Multipliers for Constrained Optimization"
+  ],
+  "cmath_9987": [
+    "Single-Variable Reduction via Difference with Fixed Product",
+    "Lagrange Multipliers for Constrained Optimization",
+    "Substitution to Reduce to Single Variable",
+    "Domain Validity Check"
+  ]
+}

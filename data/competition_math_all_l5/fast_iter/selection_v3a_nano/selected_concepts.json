@@ -1,0 +1,88 @@
+{
+  "cmath_10098": [
+    "Factor Theorem",
+    "Monic Root Factorization",
+    "Coefficient Matching to Determine Factorization Parameters"
+  ],
+  "cmath_10170": [
+    "Vi\u00e8te's Formulas",
+    "Monic Root Factorization"
+  ],
+  "cmath_10229": [
+    "Vi\u00e8te's Formulas"
+  ],
+  "cmath_10265": [
+    "Vi\u00e8te's Formulas"
+  ],
+  "cmath_10805": [
+    "Residue Class Parameterization",
+    "Single-Period Enumeration",
+    "Base-b Digit Count Range",
+    "Integer Bound via Floor and Ceiling"
+  ],
+  "cmath_2084": [
+    "Single-Period Enumeration",
+    "Residue-Block Counting in a Period",
+    "Partial-Block Handling in Periodic Counting"
+  ],
+  "cmath_2138": [
+    "Residue Class Parameterization",
+    "Integer Interval Cardinality via Floor and Ceiling",
+    "Intersection of Constraint Solution Sets"
+  ],
+  "cmath_2931": [
+    "Distance Between Points in the Plane",
+    "Triangle Area via Base-Height",
+    "Point-to-Line Distance Formula"
+  ],
+  "cmath_3059": [
+    "Triangle Area via Base-Height"
+  ],
+  "cmath_3121": [
+    "Aligning a Side with an Axis (Coordinate Setup)",
+    "Median Slope Constraint"
+  ],
+  "cmath_3177": [
+    "Aligning a Side with an Axis (Coordinate Setup)",
+    "Point-to-Line Distance Formula",
+    "Intersection of Constraint Solution Sets",
+    "Distance Between Points in the Plane"
+  ],
+  "cmath_3719": [
+    "Nonnegative Radicand Domain",
+    "Intersection of Constraint Solution Sets"
+  ],
+  "cmath_4161": [
+    "Coefficient Matching to Determine Factorization Parameters",
+    "Vi\u00e8te's Formulas",
+    "Factor Theorem"
+  ],
+  "cmath_5246": [
+    "Base-b Digit Count Range"
+  ],
+  "cmath_5298": [
+    "Integer Bound via Floor and Ceiling",
+    "Integer Interval Cardinality via Floor and Ceiling"
+  ],
+  "cmath_6775": [
+    "Power Substitution to Reduce Degree",
+    "Solving Absolute Value Inequalities"
+  ],
+  "cmath_7630": [
+    "Vi\u00e8te's Formulas"
+  ],
+  "cmath_9932": [
+    "Reciprocal Polynomial Factorization (Palindromic Quartic)",
+    "Coefficient Matching to Determine Factorization Parameters"
+  ],
+  "cmath_9959": [
+    "Factor Theorem",
+    "Monic Root Factorization",
+    "Coefficient Matching to Determine Factorization Parameters"
+  ],
+  "cmath_9987": [
+    "Intersection of Constraint Solution Sets",
+    "Nonnegative Radicand Domain",
+    "Squaring Nonnegative Quantities to Compare"
+  ]
+}

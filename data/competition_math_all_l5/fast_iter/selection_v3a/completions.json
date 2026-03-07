@@ -1,0 +1,22 @@
+{
+  "cmath_10098": "```yaml\n- Factor Theorem\n- Monic Root Factorization\n- Coefficient Matching to Determine Factorization Parameters\n```",
+  "cmath_10170": "```yaml\n- Vi\u00e8te's Formulas\n- Monic Root Factorization\n```",
+  "cmath_10229": "```yaml\n- Vi\u00e8te's Formulas\n```",
+  "cmath_6775": "```yaml\n- Power Substitution to Reduce Degree\n- Solving Absolute Value Inequalities\n```",
+  "cmath_7630": "```yaml\n- Vi\u00e8te's Formulas\n```",
+  "cmath_10265": "```yaml\n- Vi\u00e8te's Formulas\n```",
+  "cmath_3059": "```yaml\n- Triangle Area via Base-Height\n```",
+  "cmath_3121": "```yaml\n- Aligning a Side with an Axis (Coordinate Setup)\n- Median Slope Constraint\n```",
+  "cmath_10805": "```yaml\n- Intersection of Constraint Solution Sets\n- Base-b Digit Count Range\n```",
+  "cmath_2084": "```yaml\n- Residue Class Parameterization\n```",
+  "cmath_2138": "```yaml\n- Residue Pair Mapping for Combined Conditions\n- LCM-based Periodicity Reduction\n```",
+  "cmath_2931": "```yaml\n- Distance Between Points in the Plane\n- Shoelace Formula for Polygon Area\n- Triangle Area via Base-Height\n```",
+  "cmath_3177": "```yaml\n- Shoelace Formula for Polygon Area\n- Triangulation into Triangles for Area\n```",
+  "cmath_3719": "```yaml\n- Nonnegative Radicand Domain\n- Squaring Nonnegative Quantities to Compare\n```",
+  "cmath_4161": "```yaml\n- Auxiliary Polynomial Construction\n- Coefficient Matching to Determine Factorization Parameters\n```",
+  "cmath_5246": "```yaml\n- Base-b Digit Count Range\n- Intersection of Constraint Solution Sets\n```",
+  "cmath_5298": "```yaml\n- Integer Interval Cardinality via Floor and Ceiling\n- Integer Bound via Floor and Ceiling\n```",
+  "cmath_9932": "```yaml\n- Power Substitution to Reduce Degree\n- Reciprocal Polynomial Factorization (Palindromic Quartic)\n- Coefficient Matching to Determine Factorization Parameters\n```",
+  "cmath_9959": "```yaml\n- Auxiliary Polynomial Construction\n- Factor Theorem\n```",
+  "cmath_9987": "```yaml\n- Intersection of Constraint Solution Sets\n- Integer Interval Cardinality via Floor and Ceiling\n```"
+}
