@@ -66,6 +66,9 @@ def parse_args() -> argparse.Namespace:
                     help="Process prompts in chunks of this size (0=all at once)")
     p.add_argument("--chunk-delay", type=float, default=5.0,
                     help="Delay between chunks in seconds (default: 5)")
+    p.add_argument("--selector-render-mode", default="full",
+                    choices=["full", "cues_only", "name_only"],
+                    help="Which concept fields the selector sees (default: full)")
     p.add_argument("--dry-run", action="store_true")
     return p.parse_args()
 
@@ -141,9 +144,20 @@ async def main() -> None:
     valid_names = set(mem.concepts.keys())
 
     # ── Render concept memory string ─────────────────────────────────
+    from mem2.branches.memory_retriever.ps_selector import _RENDER_PROFILES
     profile = build_profile(mem, args.domain)
-    mem_str = mem.to_string(usage_threshold=0, profile=profile)
-    logger.info(f"Concept memory string: {len(mem_str)} chars")
+    sel_flags = _RENDER_PROFILES.get(args.selector_render_mode, _RENDER_PROFILES["full"])
+    mem_str = mem.to_string(
+        usage_threshold=0,
+        profile=profile,
+        skip_cues=sel_flags["skip_cues"],
+        skip_implementation=sel_flags["skip_implementation"],
+        skip_parameters=sel_flags["skip_parameters"],
+        skip_parameter_description=sel_flags["skip_parameter_description"],
+        include_description=sel_flags["include_description"],
+    )
+    logger.info(f"Concept memory string: {len(mem_str)} chars "
+                f"(selector_render_mode={args.selector_render_mode})")
 
     # ── Load problems ────────────────────────────────────────────────
     problems = json.loads(args.problems.read_text())

@@ -272,8 +272,8 @@ the specific technique (e.g. "Digit Sum Modular Reduction", "Greedy Interval Pac
     concept: the specific technique/theorem/pattern name
     kind: one of "theorem", "technique", "strategy", "definition"
     description: (optional) one-sentence elaboration if the name is not self-evident
-    parameters: (optional) list of {{name, typing, description}} — the variable aspects \
-of this concept that change across problems
+    parameters: (optional) list of {{name, typing, description}} for the variable \
+aspects of this concept
     cues: 2-4 specific problem features that suggest this concept is relevant \
 (these should be concrete and observable, not tautological)
     implementation: 1-2 notes on the general procedure for applying this concept \
@@ -386,8 +386,8 @@ YAML output. Use plain text descriptions instead of code formatting.
     concept: the specific algorithm/data structure/technique name
     kind: one of "algorithm", "data structure", "technique", "definition"
     description: (optional) one-sentence elaboration if the name is not self-evident
-    parameters: (optional) list of {{name, typing, description}} — the variable aspects \
-of this concept that change across problems
+    parameters: (optional) list of {{name, typing, description}} for the variable \
+aspects of this concept
     cues: 2-4 specific problem features that suggest this concept is relevant
     implementation: 1-2 notes on the general procedure for applying this concept \
 (describe the method abstractly, not what happened in this particular problem)

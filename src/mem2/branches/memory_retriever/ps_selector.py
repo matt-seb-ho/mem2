@@ -81,6 +81,7 @@ class PsSelectorRetriever:
         prompt_info_file: str = "",
         selected_concepts_file: str = "",
         render_mode: str = "full",
+        selector_render_mode: str = "full",
         max_frequency: float = 0.0,
         max_concepts_per_problem: int = 0,
         routing_strategy: str = "none",
@@ -98,6 +99,7 @@ class PsSelectorRetriever:
         )
         self.hint_template_key = hint_template_key
         self.render_mode = render_mode
+        self.selector_render_mode = selector_render_mode
 
         # ── Format-independent stages (reusable by any retriever) ─────
         self._filter = ConceptFilter(
@@ -426,7 +428,18 @@ class PsSelectorRetriever:
 
         # Mode 3: inline LLM selection → through pipeline
         profile = self._build_profile(concept_mem)
-        full_concepts_str = concept_mem.to_string(usage_threshold=0, profile=profile)
+        sel_flags = _RENDER_PROFILES.get(
+            self.selector_render_mode, _RENDER_PROFILES["full"]
+        )
+        full_concepts_str = concept_mem.to_string(
+            usage_threshold=0,
+            profile=profile,
+            skip_cues=sel_flags["skip_cues"],
+            skip_implementation=sel_flags["skip_implementation"],
+            skip_parameters=sel_flags["skip_parameters"],
+            skip_parameter_description=sel_flags["skip_parameter_description"],
+            include_description=sel_flags["include_description"],
+        )
 
         select_template, _ = self._get_prompt_templates()
         puzzle_str = self._format_problem_for_selection(problem)
