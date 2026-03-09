@@ -1,0 +1,82 @@
+_base_: ../../base.yaml
+pipeline:
+  task_adapter: livecodebench
+  benchmark: livecodebench
+  memory_builder: arcmemo_ps
+  memory_retriever: ps_selector
+  trajectory_policy: single_path
+  provider: llmplus_openrouter
+  inference_engine: lcb_solve
+  feedback_engine: lcb_gt
+  evaluator: lcb_exec
+  artifact_sink: json_local
+run:
+  run_type: fastiter_concept_cues_only_lcb_flash
+  seed: 42
+  max_passes: 2
+  execution_mode: arc_batch
+  retry_criterion: test
+  retry_policy:
+    max_passes: 2
+    criterion: test
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+components:
+  task_adapter:
+    task_name: livecodebench
+  benchmark:
+    data_root: data/livecodebench_all
+    limit: 0
+    include_ids:
+    - '2757'
+    - '2919'
+    - '2921'
+    - '3024'
+    - '3025'
+    - '3032'
+    - '3047'
+    - '3153'
+    - '3298'
+    - '3765'
+    - abc312_f
+    - abc366_e
+    - abc366_f
+    - abc368_g
+    - abc372_f
+    - abc374_g
+    - abc380_g
+    - abc385_d
+    - abc396_e
+    - abc397_f
+  memory_builder:
+    seed_memory_file: data/livecodebench_all/fast_iter/extracted_v3a_flash.json
+    domain: code
+    max_concepts: 500
+  memory_retriever:
+    domain: code
+    prompt_info_file: data/livecodebench_all/fast_iter/selection_v3a_cues_only/prompt_info.json
+  trajectory_policy:
+    retry_paths: 1
+  provider:
+    profile_name: llmplus_openrouter
+    dotenv_path: .env.example
+    default_max_concurrency: 8
+  inference_engine:
+    model: qwen/qwen3.5-flash-02-23
+    gen_cfg:
+      n: 1
+      max_tokens: 16384
+      batch_size: 8
+      seed: 42
+      ignore_cache: true
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+    include_reselected_lessons: false
+    prompt_options: null
+  feedback_engine: {}
+  evaluator:
+    timeout_s: 30.0
+    require_all_tests: null
+  artifact_sink: {}
