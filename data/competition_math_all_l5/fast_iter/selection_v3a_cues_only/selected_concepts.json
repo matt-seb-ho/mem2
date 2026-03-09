@@ -1,0 +1,80 @@
+{
+  "cmath_10098": [
+    "Factor Theorem",
+    "Polynomial Determination from Roots"
+  ],
+  "cmath_10170": [
+    "Vieta's Formulas",
+    "Factor Theorem"
+  ],
+  "cmath_10229": [
+    "Vieta's Formulas"
+  ],
+  "cmath_10265": [
+    "Auxiliary Polynomial Construction",
+    "Undetermined Coefficients Method",
+    "Point-to-Point Distance Formula",
+    "Comparing Absolute Values via Squaring"
+  ],
+  "cmath_10805": [
+    "Counting Integers in an Interval",
+    "Real-to-Integer Bound Conversion",
+    "Intersection of Inequality Intervals",
+    "Base-$b$ Digit Count Bounds"
+  ],
+  "cmath_2084": [
+    "Periodic Counting Strategy",
+    "Counting Integers in an Interval",
+    "Casework by Residue Class"
+  ],
+  "cmath_2138": [
+    "Stars and Bars",
+    "Linear Congruence Parametrization"
+  ],
+  "cmath_2931": [
+    "Pythagorean Theorem",
+    "Triangle Area via Base and Height",
+    "Parallelepiped Volume via Scalar Triple Product"
+  ],
+  "cmath_3059": [
+    "Triangle Area via Base and Height",
+    "Cartesian Coordinate Placement"
+  ],
+  "cmath_3121": [
+    "Axis-Aligned Coordinate Placement",
+    "Midpoint Formula",
+    "Slope Calculation from Two Points",
+    "Median Slope Constraint"
+  ],
+  "cmath_3177": [
+    "Axis-Aligned Coordinate Placement",
+    "Point-to-Line Distance Formula",
+    "Point-to-Point Distance Formula",
+    "Pythagorean Theorem"
+  ],
+  "cmath_3719": [
+    "Extremal Parameter Selection"
+  ],
+  "cmath_5246": [
+    "Base-$b$ Digit Count Bounds",
+    "Real-to-Integer Bound Conversion",
+    "Complementary Counting"
+  ],
+  "cmath_5298": [
+    "Extremal Parameter Selection",
+    "Real-to-Integer Bound Conversion"
+  ],
+  "cmath_6775": [
+    "Circle Extremum Optimization",
+    "Intersection of Inequality Intervals"
+  ],
+  "cmath_9959": [
+    "Polynomial Determination from Roots",
+    "Undetermined Coefficients Method",
+    "Even-Power Substitution"
+  ],
+  "cmath_9987": [
+    "Extremal Parameter Selection",
+    "Intersection of Inequality Intervals"
+  ]
+}

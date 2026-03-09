@@ -1,0 +1,88 @@
+{
+  "cmath_10098": [
+    "Factor Theorem",
+    "Polynomial Reconstruction from Roots"
+  ],
+  "cmath_10170": [
+    "Vieta's Formulas",
+    "Factor Theorem"
+  ],
+  "cmath_10229": [
+    "Vieta's Formulas",
+    "Polynomial Reconstruction from Roots"
+  ],
+  "cmath_10265": [
+    "Auxiliary Polynomial Construction",
+    "Vieta's Formulas",
+    "Euclidean Distance Formula"
+  ],
+  "cmath_10805": [
+    "Base-$b$ Digit Range",
+    "Counting Integers in Interval",
+    "Real-to-Integer Bound Conversion",
+    "Interval Intersection"
+  ],
+  "cmath_2084": [
+    "LCM Periodicity",
+    "Residue Class Exhaustion",
+    "Periodic Interval Counting",
+    "Counting Integers in Interval"
+  ],
+  "cmath_2138": [
+    "Counting Integers in Interval",
+    "Periodic Interval Counting",
+    "Periodic Range Decomposition"
+  ],
+  "cmath_2931": [
+    "Euclidean Distance Formula",
+    "Triangle Area via Base and Height",
+    "Scalar Triple Product Volume",
+    "Axis-Aligned Coordinate Setup"
+  ],
+  "cmath_3059": [
+    "Right-Angle Coordinate Placement",
+    "Euclidean Distance Formula",
+    "Point-to-Line Distance"
+  ],
+  "cmath_3121": [
+    "Right-Angle Coordinate Placement",
+    "Linear Constraint from Slope"
+  ],
+  "cmath_3177": [
+    "Axis-Aligned Coordinate Setup",
+    "Point-to-Line Distance",
+    "Irrational Constant Approximation"
+  ],
+  "cmath_4161": [
+    "Undetermined Coefficients Method",
+    "Vieta's Formulas"
+  ],
+  "cmath_5246": [
+    "Base-$b$ Digit Range",
+    "Counting Integers in Interval"
+  ],
+  "cmath_5298": [
+    "Average Rate of Change",
+    "Real-to-Integer Bound Conversion",
+    "Extremum Selection from Interval",
+    "Counting Integers in Interval"
+  ],
+  "cmath_6775": [
+    "Even-Power Substitution",
+    "Circle Coordinate Extremum",
+    "Irrational Constant Approximation"
+  ],
+  "cmath_7630": [
+    "Vieta's Formulas",
+    "Factor Theorem"
+  ],
+  "cmath_9959": [
+    "Polynomial Reconstruction from Roots",
+    "Undetermined Coefficients Method",
+    "Factor Theorem"
+  ],
+  "cmath_9987": [
+    "Interval Intersection",
+    "Extremum Selection from Interval"
+  ]
+}
