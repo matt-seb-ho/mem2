@@ -187,7 +187,7 @@ class CompetitionMathPsBenchmarkAdapter:
         for uid, problem in problems.items():
             if not problem.metadata.get("problem_text"):
                 raise DataValidationError(f"Problem {uid} has no problem text")
-            if problem.metadata.get("answer_int") is None:
+            if self.require_integer_answer and problem.metadata.get("answer_int") is None:
                 raise DataValidationError(
                     f"Problem {uid} has no integer answer "
                     f"(answer_str={problem.metadata.get('answer_str')!r})"

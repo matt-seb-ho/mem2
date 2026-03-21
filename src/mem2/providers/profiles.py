@@ -64,6 +64,14 @@ _XAI = ProviderProfile(
     extra_gen_defaults={"n": 1, "temperature": 0.2},
 )
 
+_VLLM = ProviderProfile(
+    profile_name="llmplus_vllm",
+    backend="llmplus",
+    provider="vllm",
+    model="Qwen/Qwen3.5-9B",
+    extra_gen_defaults={"n": 1, "temperature": 0.0},
+)
+
 DEFAULT_PROVIDER_PROFILES: dict[str, ProviderProfile] = {
     "mock": _MOCK,
     "mock_v1": replace(_MOCK, profile_name="mock_v1"),
@@ -80,6 +88,8 @@ DEFAULT_PROVIDER_PROFILES: dict[str, ProviderProfile] = {
     "llmplus_arcmemo_gpt41_v1": replace(_ARCMEMO_GPT41, profile_name="llmplus_arcmemo_gpt41_v1"),
     "llmplus_xai": _XAI,
     "llmplus_xai_v1": replace(_XAI, profile_name="llmplus_xai_v1"),
+    "llmplus_vllm": _VLLM,
+    "llmplus_vllm_v1": replace(_VLLM, profile_name="llmplus_vllm_v1"),
 }
 
 

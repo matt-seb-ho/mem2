@@ -13,7 +13,7 @@ def main():
     parser = argparse.ArgumentParser(description="Download LiveCodeBench dataset")
     parser.add_argument(
         "--output",
-        default="/root/workspace/data/hf/livecodebench",
+        default="data/livecodebench_v56",
         help="Output directory for saved dataset",
     )
     parser.add_argument(

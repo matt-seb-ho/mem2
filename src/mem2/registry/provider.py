@@ -12,4 +12,6 @@ PROVIDERS = {
     "llmplus_arcmemo_gpt41_v1": LLMPlusProviderClient,
     "llmplus_xai": LLMPlusProviderClient,
     "llmplus_xai_v1": LLMPlusProviderClient,
+    "llmplus_vllm": LLMPlusProviderClient,
+    "llmplus_vllm_v1": LLMPlusProviderClient,
 }

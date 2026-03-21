@@ -26,7 +26,7 @@ class ProviderMeta:
     # -- helpers -------------------------------------------------------------
     def api_key(self, dotenv_path: str | Path | None = None) -> str | None:
         if self.env_key is _NO_KEY:
-            return None
+            return "unused"  # dummy key for local endpoints (OpenAI SDK requires non-None)
         if dotenv_path:
             load_dotenv(dotenv_path)
         return os.getenv(self.env_key)
@@ -108,11 +108,11 @@ MODEL_REGISTRY: dict[Provider, ProviderMeta] = {
     ),
     Provider.VLLM: ProviderMeta(
         env_key=_NO_KEY,  # local endpoint
-        base_url="http://localhost:8100/v1",
+        base_url="https://gxq9fs48m3gycg-8888.proxy.runpod.net/v1",
         supports_multi=True,
         models={
-            "meta-llama/Meta-Llama-3-70B-Instruct": ModelMeta(
-                "meta-llama/Meta-Llama-3-70B-Instruct"
+            "Qwen/Qwen3.5-9B": ModelMeta(
+                "Qwen/Qwen3.5-9B",
             ),
         },
     ),
@@ -175,6 +175,9 @@ MODEL_REGISTRY: dict[Provider, ProviderMeta] = {
             ),
             "qwen/qwen3.5-flash-02-23": ModelMeta(
                 "qwen/qwen3.5-flash-02-23",
+            ),
+            "qwen/qwen3.5-27b": ModelMeta(
+                "qwen/qwen3.5-27b",
             ),
         },
     ),
