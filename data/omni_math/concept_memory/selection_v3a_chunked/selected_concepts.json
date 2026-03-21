@@ -1,0 +1,913 @@
+{
+  "omath_0003": [
+    "Case Analysis on Parameter Value",
+    "Case Analysis on Polynomial Degree",
+    "Case Analysis on Root Multiplicity",
+    "Case Analysis on Parameter Sign",
+    "Discriminant Condition for No Real Roots"
+  ],
+  "omath_0013": [
+    "Chord Length from Distance to Center",
+    "Complex Number to Cartesian Coordinate Mapping",
+    "Convexity Constraint on Polygon Angles",
+    "Convexity Constraint Validation",
+    "Distance Formula"
+  ],
+  "omath_0016": [
+    "Absolute Value Distance Interpretation",
+    "Case Analysis by Parameter Value",
+    "Case Analysis on Absolute Value",
+    "Intermediate Value Theorem for Root Counting",
+    "Intersection of Solution Sets"
+  ],
+  "omath_0024": [
+    "Coordinate Geometry with Right Triangle Alignment",
+    "Distance Formula Application",
+    "Distance Squared Equation for Intersection",
+    "Distance from Point to Line Formula",
+    "Coordinate Geometry via Slope and Intercept"
+  ],
+  "omath_0033": [
+    "Case Analysis on Initial Value",
+    "Case Analysis on Parameter Value",
+    "Case Analysis on Divisor Properties",
+    "Case Analysis on Injectivity of Sequence Values",
+    "Case Analysis on Polynomial Degree"
+  ],
+  "omath_0037": [
+    "Case Analysis by Parameter Value",
+    "Connectivity and Dead-End Validation",
+    "Adjacency Constraint in Permutations",
+    "Distinct Item Selection Logic",
+    "Finite State Space Convergence"
+  ],
+  "omath_0093": [
+    "Case Analysis by Parameter Value",
+    "AM-GM Inequality for Minimization",
+    "Algebraic Substitution for Target Expression",
+    "Critical Point Optimization via Partial Derivatives",
+    "Equality Condition for Jensen's Inequality"
+  ],
+  "omath_0100": [
+    "Case Analysis on Parameter Sign",
+    "Algebraic Substitution for Target Expression",
+    "Algebraic Substitution via Common Factor Extraction",
+    "Cyclic System Substitution",
+    "Derivative Analysis for Monotonicity on an Interval"
+  ],
+  "omath_0115": [
+    "Angle Between Lines via Slopes",
+    "Algebraic Simplification of Radical Expressions",
+    "Completing the Square for Multivariable Quadratics",
+    "Coordinate Geometry with Right Triangle Alignment",
+    "Distance Formula Application"
+  ],
+  "omath_0139": [
+    "Combinatorial Enumeration via Case Partition",
+    "Complementary Counting",
+    "Case Analysis by Parameter Value",
+    "Multiplication Principle for Independent Choices",
+    "Integer Factor Enumeration"
+  ],
+  "omath_0147": [
+    "Case Analysis on Divisor Count",
+    "Arithmetic Sequence Term Relation",
+    "Case Analysis by Parameter Value",
+    "Case Analysis on Divisor Properties",
+    "Composite Number Definition"
+  ],
+  "omath_0150": [
+    "Binomial Coefficient Identity for Factorial Reciprocals",
+    "Alternating Sum of Polynomial Coefficients",
+    "Constant Term in Binomial Expansion",
+    "Finite Difference of Monic Polynomials",
+    "Evaluation of Simplified Function"
+  ],
+  "omath_0156": [
+    "Convexity Constraint on Polygon Angles",
+    "Case Analysis by Parameter Value",
+    "Case Analysis on Divisor Properties",
+    "Case Analysis on Parameter Sign",
+    "Case Analysis on Parameter Range"
+  ],
+  "omath_0173": [
+    "Algebraic Expansion of Binomial Products",
+    "Algebraic Substitution for Target Expression",
+    "Coefficient of $x^2$ via Power Sums",
+    "Factorization of Polynomial Differences",
+    "Factorization of Sum of Cubes"
+  ],
+  "omath_0183": [
+    "Boundary Term Substitution",
+    "Angle Subtraction Formula for Cosine",
+    "Equating Alternative Representations",
+    "Factorization of Polynomial Differences",
+    "Double Angle Formula for Cosine"
+  ],
+  "omath_0184": [
+    "Combinatorial Enumeration via Case Partition",
+    "Binomial Coefficient for Subset Selection",
+    "Fundamental Counting Principle",
+    "Counting Solutions to Bounded Linear Equations",
+    "Counting Distinct Solutions"
+  ],
+  "omath_0212": [
+    "Case Analysis on Initial Value",
+    "Case Analysis on Polynomial Degree",
+    "Case Analysis on Parameter Value",
+    "Functional Equation Substitution",
+    "Functional Equation Zero Substitution"
+  ],
+  "omath_0230": [
+    "Absolute Value Distance Interpretation",
+    "Arithmetic Sequence Condition",
+    "Base-10 Digit Representation",
+    "Binomial Coefficient for Subset Selection",
+    "Case Analysis by Parameter Value"
+  ],
+  "omath_0260": [
+    "Circle Circumference Calculation",
+    "Arc Length Bounding via Complement",
+    "Approximation of Irrational Constants",
+    "Case Analysis by Parameter Value",
+    "Geometric Constraint Inequality"
+  ],
+  "omath_0269": [
+    "Constant Term as Intercept Identification",
+    "Algebraic Substitution for Target Expression",
+    "Case Analysis by Parameter Value",
+    "Complementary Counting",
+    "Coprimality Condition for Lowest Terms"
+  ],
+  "omath_0270": [
+    "Combinatorial Selection of Pairs",
+    "Case Analysis by Parameter Value",
+    "Combinatorial Enumeration via Case Partition",
+    "Fundamental Counting Principle",
+    "Counting Distinct Solutions"
+  ],
+  "omath_0342": [
+    "Case Analysis by Parameter Value",
+    "Case Analysis by Parameter Range",
+    "Constructive Existence for Extremal Bounds",
+    "Cycle Graph Construction for Regularity",
+    "Distance Classification in Hypercube Vertices"
+  ],
+  "omath_0365": [
+    "Case Analysis by Number of Parts",
+    "Case Analysis by Parameter Value",
+    "Combinatorial Enumeration via Case Partition",
+    "Counting Solutions to Bounded Linear Equations",
+    "Counting Distinct Solutions"
+  ],
+  "omath_0409": [
+    "Boundary Term Substitution",
+    "Algebraic Simplification of Radical Expressions",
+    "Difference of Squares Factorization",
+    "Grouping Terms in a Product Sequence",
+    "Logarithm Product to Sum Conversion"
+  ],
+  "omath_0415": [
+    "Case Analysis by Residue Class",
+    "Common Remainder Congruence Reduction",
+    "Case Analysis by Parameter Value",
+    "Definition of Modular Congruence",
+    "Counting via Block Decomposition and Remainder Analysis"
+  ],
+  "omath_0426": [
+    "Implication Logic for Digit Constraints",
+    "Linear Function Determination via Functional Equation",
+    "Modular Constraint on Single Digit",
+    "State-Based Recurrence for Forbidden Substrings",
+    "Sum of Digits in Base b"
+  ],
+  "omath_0443": [
+    "Linear Inequality Solving for Unknown Count",
+    "Integer Count in Real Interval",
+    "Greedy Construction of Extremal Sequences",
+    "Intersection of Inequality Intervals",
+    "Integer Constraint on Continuous Interval"
+  ],
+  "omath_0462": [
+    "AM-GM Inequality for Minimization",
+    "Basic Proportionality Theorem (Thales's Theorem)",
+    "Convexity and Critical Point Minimization",
+    "Coordinate Geometry via Slope and Intercept",
+    "Geometric Constraint Inequality"
+  ],
+  "omath_0473": [
+    "Combinatorial Enumeration via Case Partition",
+    "Case Analysis by Parameter Value",
+    "Case Analysis by Number of Parts",
+    "Case Analysis by Chain Length",
+    "Case Analysis on Parameter Value"
+  ],
+  "omath_0483": [
+    "Complementary Counting",
+    "Binomial Coefficient for Subset Selection",
+    "Algebraic Equivalence via Symmetric Sums",
+    "Counting Solutions to Bounded Linear Equations",
+    "Counting via Complementary Cases"
+  ],
+  "omath_0509": [
+    "Combinatorial Enumeration via Case Partition",
+    "Case Analysis by Parameter Value",
+    "Geometric Constraint Inequality",
+    "Distinctness Constraint Elimination",
+    "Counting Distinct Solutions"
+  ],
+  "omath_0538": [
+    "Cofactor Expansion for Determinant Calculation",
+    "Complex Number Area Formula",
+    "Area Decomposition into Triangles",
+    "Coordinate Geometry with Right Triangle Alignment",
+    "Distance Formula Application"
+  ],
+  "omath_0546": [
+    "Completing the Square for Multivariable Quadratics",
+    "Case Analysis by Divisor Value",
+    "Difference of Squares Factorization",
+    "Divisor Enumeration for Diophantine Equations",
+    "Discriminant Condition for Integer Roots"
+  ],
+  "omath_0585": [
+    "Binomial Coefficient for Subset Selection",
+    "Case Analysis by Parameter Value",
+    "Combinatorial Enumeration via Case Partition",
+    "Fundamental Counting Principle",
+    "Distinct Item Selection Logic"
+  ],
+  "omath_0603": [
+    "Definition of Modular Congruence",
+    "Fermat's Little Theorem",
+    "Counting Solutions in a Range via Parameterization",
+    "Modular Reduction of Large Powers",
+    "Modular Constraint on Single Digit"
+  ],
+  "omath_0615": [
+    "Area Decomposition via Sector and Triangle",
+    "Area Decomposition via Subtraction",
+    "Circle Standard Form Identification",
+    "Coordinate Geometry with Rotational Symmetry",
+    "Distance Formula Application"
+  ],
+  "omath_0651": [
+    "Circle Area to Radius Conversion",
+    "Chord Length from Distance to Center",
+    "Area Decomposition via Subtraction",
+    "Area of a Trapezoid",
+    "Area of Equilateral Hexagon via Trigonometric Sum"
+  ],
+  "omath_0775": [
+    "Divisor Enumeration for Integer Constraints",
+    "GCD of Coprime Components",
+    "Divisor Enumeration via Prime Factorization",
+    "Divisibility of Products by Prime Factors",
+    "Fundamental Theorem of Arithmetic"
+  ],
+  "omath_0864": [
+    "Case Analysis by Parameter Value",
+    "Case Analysis by Partition",
+    "Area Decomposition into Triangles",
+    "Arithmetic Sequence Sum Formula",
+    "Combinatorial Enumeration via Case Partition"
+  ],
+  "omath_0866": [
+    "Complementary Counting via Symmetry",
+    "Case Analysis by Parameter Value",
+    "Probability as Ratio of Counts",
+    "Ratio Cancellation in Probability",
+    "Symmetry Reduction via Complementation"
+  ],
+  "omath_0893": [
+    "Binomial Coefficient for Subset Selection",
+    "Binomial Theorem",
+    "Fundamental Counting Principle",
+    "Factorial Representation of Permutations",
+    "Geometric Growth Pattern Identification"
+  ],
+  "omath_0905": [
+    "Complete Graph Edge Counting",
+    "Binomial Coefficient for Subset Selection",
+    "Case Analysis by Parameter Value",
+    "Arithmetic Mean Definition",
+    "Fundamental Counting Principle"
+  ],
+  "omath_0959": [
+    "Complementary Counting",
+    "Area Decomposition via Subtraction",
+    "Counting via Complementary Cases",
+    "Geometric Constraint Inequality",
+    "Fundamental Counting Principle"
+  ],
+  "omath_0973": [
+    "Closed Form for Recurrence via Summation",
+    "Base Case Initialization for Recurrence",
+    "Case Analysis by Parameter Value",
+    "Iterative Sequence Computation",
+    "Linear System Solution via Substitution"
+  ],
+  "omath_0981": [
+    "Case Analysis by Parameter Value",
+    "Base-10 Digit Representation",
+    "Combinatorial Enumeration via Case Partition",
+    "Coordinate Geometry with Axis Tangency",
+    "Coprimality Condition for Lowest Terms"
+  ],
+  "omath_0989": [
+    "Arithmetic Sequence Term Relation",
+    "Binomial Coefficient for Subset Selection",
+    "Divisibility of Products by Prime Factors",
+    "Counting Multiples via Floor Function",
+    "Grouping Terms in a Product Sequence"
+  ],
+  "omath_1024": [
+    "Euler's Totient Function",
+    "Divisor Count Formula",
+    "Divisor Enumeration via Prime Factorization",
+    "Divisor Enumeration for Integer Constraints",
+    "Prime Factorization for Divisor Enumeration"
+  ],
+  "omath_1073": [
+    "Case Analysis by Parameter Value",
+    "Binomial Coefficient for Subset Selection",
+    "Combinatorial Enumeration via Case Partition",
+    "Fundamental Counting Principle",
+    "Counting Distinct Solutions"
+  ],
+  "omath_1143": [
+    "Binomial Coefficient for Subset Selection",
+    "Complementary Counting for Geometric Configurations",
+    "Complementary Counting",
+    "Counting via Complementary Cases",
+    "Distinct Item Selection Logic"
+  ],
+  "omath_1150": [
+    "Altitude Similarity in Triangles",
+    "Area via Sine Rule and Product of Sides",
+    "Area Decomposition into Triangles",
+    "Geometric Decomposition for Area",
+    "Distance Formula"
+  ],
+  "omath_1163": [
+    "Common Remainder Congruence Reduction",
+    "GCD Scaling Property",
+    "Definition of Modular Congruence",
+    "Coprimality Condition for Lowest Terms",
+    "Counting Multiples via Floor Function"
+  ],
+  "omath_1216": [
+    "Case Analysis by Parameter Value",
+    "Chain Decomposition via Prime Powers",
+    "GCD-LCM Product Identity",
+    "Counting via Floor Function",
+    "Counting Distinct Solutions"
+  ],
+  "omath_1292": [
+    "Binomial Coefficient for Subset Selection",
+    "Combinatorial Enumeration via Case Partition",
+    "Fundamental Counting Principle",
+    "Counting via Complementary Cases",
+    "Counting Distinct Solutions"
+  ],
+  "omath_1296": [
+    "Algebraic Substitution for Target Expression",
+    "Case Analysis by Parameter Value",
+    "Constraint Satisfaction Verification",
+    "Counting Solutions to Bounded Linear Equations",
+    "Divisor Enumeration for Integer Constraints"
+  ],
+  "omath_1366": [
+    "Biquadratic Substitution",
+    "Case Analysis on Square Root Sign",
+    "Definition of Inverse Function",
+    "Coordinate Geometry with Right Triangle Alignment",
+    "Discarding Extraneous Solutions via Domain Constraints"
+  ],
+  "omath_1387": [
+    "Angle Subtraction Formula for Cosine",
+    "Algebraic Substitution for Target Expression",
+    "Case Analysis by Parameter Value",
+    "Constraint Satisfaction Verification",
+    "Finite Difference of Monic Polynomials"
+  ],
+  "omath_1413": [
+    "Change of Base to Common Logarithm",
+    "Case Analysis on Factor Zero",
+    "Arithmetic Progression Term Counting",
+    "Domain Validation for Logarithmic Bases",
+    "Factorization of Cubic Polynomials"
+  ],
+  "omath_1551": [
+    "Algebraic Decomposition of Rational Terms",
+    "Arithmetic Sequence Sum Formula",
+    "Arithmetic Progression Summation",
+    "Factorization of Difference of Cubes",
+    "Finite Difference of Monic Polynomials"
+  ],
+  "omath_1565": [
+    "Case Analysis by Parameter Value",
+    "Bounding via Coefficient Growth",
+    "Case Analysis by Parameter Range",
+    "Divisor Enumeration for Integer Constraints",
+    "Divisor Enumeration for Diophantine Equations"
+  ],
+  "omath_1597": [
+    "Arithmetic Sequence Sum Formula",
+    "Case Analysis by Divisor Value",
+    "Divisor Enumeration for Diophantine Equations",
+    "Divisor Enumeration via Prime Factorization",
+    "Fundamental Theorem of Arithmetic"
+  ],
+  "omath_1622": [
+    "Legendre's Formula",
+    "Modular Arithmetic with Product of Factors",
+    "Modular Reduction of Large Coefficients",
+    "Modular Arithmetic with Division",
+    "Prime Factorization of Factorials"
+  ],
+  "omath_1662": [
+    "Complementary Counting",
+    "Case Analysis by Parameter Value",
+    "Combinatorial Enumeration via Case Partition",
+    "Handshaking Lemma",
+    "Maximum Independent Set on a Path Graph"
+  ],
+  "omath_1680": [
+    "Circle Standard Form Identification",
+    "Circle Area to Radius Conversion",
+    "Area Decomposition into Circular and Polygonal Parts",
+    "Area Ratio Equation Solving",
+    "Distance Squared Equation for Intersection"
+  ],
+  "omath_1697": [
+    "Case Analysis by Parameter Count",
+    "Binomial Coefficient for Subset Selection",
+    "Fundamental Counting Principle",
+    "Exponentiation for Sequence Generation",
+    "Multiplication Principle for Independent Choices"
+  ],
+  "omath_1721": [
+    "Arithmetic Sequence Sum Formula",
+    "Composite Number Definition",
+    "Complementary Counting via Extremal Counterexample",
+    "Divisor Enumeration via Prime Factorization",
+    "Fundamental Theorem of Arithmetic"
+  ],
+  "omath_1746": [
+    "Divisor Count Formula",
+    "Divisor Enumeration for Diophantine Equations",
+    "Divisor Enumeration via Prime Factorization",
+    "Integer Factor Enumeration",
+    "Integer Factorization for Diophantine Equations"
+  ],
+  "omath_1756": [
+    "Basic Proportionality Theorem (Thales's Theorem)",
+    "Area Decomposition into Triangles",
+    "Convexity Constraint on Polygon Angles",
+    "Distance Formula",
+    "Distance Formula Application"
+  ],
+  "omath_1800": [
+    "Altitude Similarity in Triangles",
+    "Case Analysis on Parameter Value",
+    "Distance Formula Application",
+    "Domain Validation for Physical Quantities",
+    "Linear Equation Solving via Subtraction"
+  ],
+  "omath_1821": [
+    "Base-10 Digit Representation",
+    "Case Analysis by Number of Digits",
+    "Case Analysis by Digit Position",
+    "Combinatorial Enumeration via Case Partition",
+    "Digit-by-Digit Addition with Carry Propagation"
+  ],
+  "omath_1822": [
+    "Absolute Value of Determinant for Volume",
+    "Case Analysis by Partition",
+    "Convexity Constraint Validation",
+    "Coordinate Geometry with Right Triangle Alignment",
+    "Determinant of Linear Transformation Matrix"
+  ],
+  "omath_1852": [
+    "Absolute Value Distance Interpretation",
+    "Case Analysis on Absolute Value",
+    "Case Testing Near Approximation",
+    "Monotonicity of Logarithmic Functions",
+    "Intersection of Inequality Intervals"
+  ],
+  "omath_1921": [
+    "Algebraic Expansion of Binomial Products",
+    "Case Analysis by Parameter Value",
+    "Coefficient Identification from Standard Form",
+    "Domain Validation for Physical Quantities",
+    "Expansion of Binomial Squares"
+  ],
+  "omath_1974": [
+    "Complementary Counting for \"At Least One\"",
+    "Convergence Condition for Geometric Series",
+    "Geometric Series Closed Form",
+    "Geometric Growth Pattern Identification",
+    "Fixed Points of a Mapping"
+  ],
+  "omath_1999": [
+    "Composite Number Definition",
+    "Case Analysis by Parameter Value",
+    "Case Analysis by Parameter Range",
+    "Greedy Enumeration of Smallest Integers",
+    "Integer Factor Enumeration"
+  ],
+  "omath_2006": [
+    "Adjacency Constraint in Permutations",
+    "Chain Decomposition via Prime Powers",
+    "Case Analysis by Chain Length",
+    "Counting via Complementary Cases",
+    "Divisibility Transitivity"
+  ],
+  "omath_2059": [
+    "Area Decomposition via Subtraction",
+    "Area via Sine Rule and Product of Sides",
+    "Area Ratio via Common Vertex",
+    "Equilateral Triangle Side Equality",
+    "Geometric Decomposition for Area"
+  ],
+  "omath_2117": [
+    "Chord Length from Distance to Center",
+    "Circle Area to Radius Conversion",
+    "Divisor Enumeration for Integer Constraints",
+    "Distance Formula for Circle Radius",
+    "Midpoint Formula for Coordinates"
+  ],
+  "omath_2120": [
+    "Complementary Counting",
+    "Combinatorial Enumeration via Case Partition",
+    "Binomial Coefficient for Subset Selection",
+    "Counting via Complementary Cases",
+    "Fundamental Counting Principle"
+  ],
+  "omath_2122": [
+    "Characteristic Equation for Linear Recurrences",
+    "Base Case Initialization for Recurrence",
+    "Composition Recurrence Relation",
+    "Case Analysis by Parameter Value",
+    "Markov Chain State Definition for Sequential Events"
+  ],
+  "omath_2132": [
+    "Case Analysis on Divisor Properties",
+    "Case Analysis by Parameter Value",
+    "Case Analysis by Parameter Range",
+    "Discriminant Condition for Rational Roots",
+    "Discriminant Condition for Multiple Roots"
+  ],
+  "omath_2144": [
+    "Area via Sine Rule and Product of Sides",
+    "Area Decomposition into Triangles",
+    "Angle Bisector Theorem",
+    "Geometric Decomposition for Area",
+    "Inradius Formula via Area and Semi-perimeter"
+  ],
+  "omath_2147": [
+    "Chinese Remainder Theorem for Solution Counting",
+    "Case Analysis by Residue Class",
+    "Case Analysis by Parameter Range",
+    "Divisor Enumeration via Prime Factorization",
+    "Divisibility by 14 Decomposition"
+  ],
+  "omath_2281": [
+    "Chord Length from Distance to Center",
+    "Area Calculation via Side Length Squared",
+    "Coordinate Geometry with Right Triangle Alignment",
+    "Distance Formula for Circle Radius",
+    "Distance Formula Application"
+  ],
+  "omath_2286": [
+    "Case Analysis by Parameter Value",
+    "Combinatorial Enumeration via Case Partition",
+    "Fundamental Counting Principle",
+    "Counting Solutions to Bounded Linear Equations",
+    "Coprimality Condition for Lowest Terms"
+  ],
+  "omath_2334": [
+    "Distance Formula Application",
+    "Geometric Decomposition for Area",
+    "Distance Formula",
+    "Interval Width Calculation",
+    "Linear Equation Solving via Inverse Operations"
+  ],
+  "omath_2341": [
+    "Constructive Existence for Extremal Bounds",
+    "Constraint Satisfaction Verification",
+    "Adjacency Constraint in Grid Graphs",
+    "Coordinate Geometry with Axis Tangency",
+    "Coprimality Condition for Lowest Terms"
+  ],
+  "omath_2369": [
+    "Complex Number Representation of Real Systems",
+    "Geometric Series Closed Form",
+    "Double Angle Formula for Cosine",
+    "Distance Formula",
+    "Geometric Series Summation"
+  ],
+  "omath_2392": [
+    "Block Decomposition of Sequences",
+    "Case Analysis by Parameter Value",
+    "Case Analysis by Divisor Value",
+    "Counting Multiples via Floor Function",
+    "Counting Multiples in a Range via Floor Function"
+  ],
+  "omath_2431": [
+    "Area Calculation via Side Length Squared",
+    "Area Decomposition via Subtraction",
+    "Area via Sine Rule and Product of Sides",
+    "Arithmetic Mean Definition",
+    "Geometric Decomposition for Area"
+  ],
+  "omath_2440": [
+    "Coordinate Geometry with Right Triangle Alignment",
+    "Distance Formula in Coordinate Plane",
+    "Distance Squared via Coordinate Differences",
+    "Median to Hypotenuse in Right Triangle",
+    "Isosceles Triangle Construction via Symmetry"
+  ],
+  "omath_2448": [
+    "Case Analysis by Parameter Value",
+    "Case Analysis on Parameter Range",
+    "Exponent Laws for Linearization",
+    "Divisor Enumeration for Integer Constraints",
+    "Exponent Decomposition for Ratio Simplification"
+  ],
+  "omath_2458": [
+    "Distance Formula in Coordinate Plane",
+    "Distance Between Points with Common Coordinate",
+    "Fundamental Counting Principle",
+    "Law of Cosines for Distance Calculation",
+    "Integer Points on a Circle"
+  ],
+  "omath_2512": [
+    "Definition of Modular Congruence",
+    "Fundamental Counting Principle",
+    "Coprimality Condition for Lowest Terms",
+    "Counting via Block Decomposition and Remainder Analysis",
+    "Product Rule for Independent Choices"
+  ],
+  "omath_2605": [
+    "Algebraic Simplification of Radical Expressions",
+    "Algebraic Expansion of Binomial Products",
+    "Domain Validation for Rational Equations",
+    "Difference of Squares Factorization",
+    "Discarding Extraneous Solutions via Domain Constraints"
+  ],
+  "omath_2611": [
+    "Difference of Squares Factorization",
+    "Counting via Block Decomposition and Remainder Analysis",
+    "Grouping Terms in a Product Sequence",
+    "Linear Equation Solving via Summation",
+    "Sum of First n Integers"
+  ],
+  "omath_2671": [
+    "Fundamental Counting Principle",
+    "Counting via Complementary Cases",
+    "Coprimality Condition for Lowest Terms",
+    "Multiplication Principle for Independent Choices",
+    "Independence of Sequential Choices"
+  ],
+  "omath_2679": [
+    "Fundamental Counting Principle",
+    "Counting Distinct Solutions",
+    "Digit Range Constraints in Base b",
+    "Leading Digit Non-Zero Constraint",
+    "Multiplication Principle for Independent Choices"
+  ],
+  "omath_2683": [
+    "Domain Validation for Physical Quantities",
+    "Counting Solutions in a Range via Parameterization",
+    "Counting via Complementary Cases",
+    "Linear Inequality Solving for Unknown Count",
+    "Integer Constraint on Continuous Interval"
+  ],
+  "omath_2688": [
+    "Counting via Complementary Cases",
+    "Inclusion-Exclusion Principle for Two Sets",
+    "Linear Equation Solving via Inverse Operations",
+    "System of Equations via Set Cardinality",
+    "Summation of Disjoint Cases"
+  ],
+  "omath_2693": [
+    "Coprimality for LCM Calculation",
+    "Counting Multiples via Floor Function",
+    "Discarding Extraneous Solutions via Domain Constraints",
+    "LCM for Intersection of Divisibility Conditions",
+    "LCM Intersection for Divisibility"
+  ],
+  "omath_2700": [
+    "Evaluation at a Specific Point",
+    "Evaluation of Simplified Function",
+    "Iterative Computation of Recurrence",
+    "Linear Equation Solving via Substitution",
+    "System of Linear Equations via Substitution"
+  ],
+  "omath_2722": [
+    "Geometric Progression Condition",
+    "Counting Solutions to $a+d=b+c$ via Difference Parameter",
+    "Factorization of Polynomial Differences",
+    "Divisor Enumeration for Integer Constraints",
+    "Distinctness Constraint Elimination"
+  ],
+  "omath_2724": [
+    "Coprimality Condition for Lowest Terms",
+    "Euler's Totient Function",
+    "Divisor Count Formula",
+    "Fermat's Little Theorem",
+    "Fundamental Counting Principle"
+  ],
+  "omath_2726": [
+    "Evaluation at a Specific Point",
+    "Fundamental Counting Principle",
+    "Linear Equation Solving via Inverse Operations",
+    "Sum of First n Integers",
+    "Summation of Triangular Numbers"
+  ],
+  "omath_2732": [
+    "Equating Derived Expressions",
+    "Counting Solutions to $a+d=b+c$ via Difference Parameter",
+    "Linear Equation Solving via Inverse Operations",
+    "Zero Product Property"
+  ],
+  "omath_2736": [
+    "Equating Alternative Representations",
+    "Domain Validation for Physical Quantities",
+    "Linear Equation Solving for Unknown Count",
+    "Linear Equation Solving via Inverse Operations"
+  ],
+  "omath_2746": [
+    "Coordinate Geometry with Right Triangle Alignment",
+    "Distance Squared via Coordinate Differences",
+    "Geometric Decomposition for Area",
+    "Midpoint Theorem for Segment Length",
+    "Law of Cosines for Distance Calculation"
+  ],
+  "omath_2748": [
+    "Evaluation at a Specific Point",
+    "Zero Product Property"
+  ],
+  "omath_2753": [
+    "Counting Multiples in a Range via Floor Function",
+    "Double Counting Correction",
+    "Fundamental Counting Principle",
+    "Interval Width Calculation",
+    "Inclusive Interval Counting"
+  ],
+  "omath_2754": [
+    "Geometric Constraint Inequality",
+    "Distinctness Constraint Elimination",
+    "Domain Validation for Physical Quantities",
+    "Zero Sum of Positive Integers"
+  ],
+  "omath_2790": [
+    "Fundamental Counting Principle",
+    "Counting Multiples via Floor Function"
+  ],
+  "omath_2798": [
+    "Divisor Enumeration for Diophantine Equations",
+    "Discriminant Condition for Integer Roots",
+    "Zero Product Property"
+  ],
+  "omath_2835": [
+    "Cyclic System Substitution",
+    "Equating Derived Expressions"
+  ],
+  "omath_2863": [
+    "Fundamental Counting Principle",
+    "Exponentiation for Sequence Generation"
+  ],
+  "omath_2864": [
+    "Equating Alternative Representations"
+  ],
+  "omath_2884": [
+    "Coordinate Geometry via Slope and Intercept",
+    "Equating Derived Expressions",
+    "Evaluation at a Specific Point"
+  ],
+  "omath_2925": [
+    "Distance Formula in Coordinate Plane",
+    "Geometric Decomposition for Area",
+    "Equating Derived Expressions",
+    "Zig-Zag Angle Sum with Parallel Lines"
+  ],
+  "omath_2937": [
+    "Divisor Enumeration for Diophantine Equations",
+    "Discriminant Condition for Integer Roots",
+    "Divisor Enumeration via Prime Factorization",
+    "Zero Product Property"
+  ],
+  "omath_2981": [
+    "Equating Derived Expressions",
+    "Definition of Inverse Function",
+    "Domain Validation for Physical Quantities",
+    "Zero Product Property"
+  ],
+  "omath_3020": [
+    "Definition of Inverse Function",
+    "Domain Validation for Physical Quantities",
+    "Discarding Extraneous Solutions via Domain Constraints"
+  ],
+  "omath_3111": [
+    "Zero Product Property"
+  ],
+  "omath_3113": [
+    "Zero Product Property"
+  ],
+  "omath_3140": [
+    "Zero Product Property"
+  ],
+  "omath_3143": [
+    "Zero Term Condition in Product Sequences"
+  ],
+  "omath_3144": [
+    "Zero Term Condition in Product Sequences"
+  ],
+  "omath_3151": [
+    "Zero Product Property"
+  ],
+  "omath_3155": [
+    "Zero Product Property"
+  ],
+  "omath_3162": [
+    "Zero Product Property"
+  ],
+  "omath_3196": [
+    "Zero Product Property"
+  ],
+  "omath_3219": [
+    "Zero Product Property"
+  ],
+  "omath_3227": [
+    "Zero Product Property"
+  ],
+  "omath_3250": [
+    "Zero Product Property"
+  ],
+  "omath_3270": [
+    "Zero Product Property",
+    "Zero Product Property for Trigonometric Equations"
+  ],
+  "omath_3273": [
+    "Zero Product Property"
+  ],
+  "omath_3280": [
+    "Zero Product Property"
+  ],
+  "omath_3297": [
+    "Zero Product Property"
+  ],
+  "omath_3431": [
+    "Zero Product Property"
+  ],
+  "omath_3520": [
+    "Zero Product Property"
+  ],
+  "omath_3525": [
+    "Zero Product Property"
+  ],
+  "omath_3528": [
+    "Zero Sum of Positive Integers"
+  ],
+  "omath_3537": [
+    "Zero Sum of Positive Integers"
+  ],
+  "omath_3552": [
+    "Zero Product Property for Trigonometric Equations",
+    "Zero Product Property"
+  ],
+  "omath_3553": [
+    "Zero Product Property"
+  ],
+  "omath_3555": [
+    "Zero Sum of Positive Integers"
+  ],
+  "omath_3559": [
+    "Zig-Zag Angle Sum with Parallel Lines"
+  ],
+  "omath_3589": [
+    "Zero Product Property"
+  ],
+  "omath_3611": [
+    "Zero Product Property",
+    "Zero Sum of Positive Integers"
+  ],
+  "omath_3625": [
+    "Zero Product Property"
+  ],
+  "omath_3640": [
+    "Zero Product Property"
+  ],
+  "omath_3648": [
+    "Zero Product Property"
+  ],
+  "omath_3650": [
+    "Zero Product Property"
+  ],
+  "omath_3693": [
+    "Zero Product Property"
+  ]
+}

@@ -1,0 +1,122 @@
+[
+  {
+    "query_uid": "omath_2286",
+    "query_diff": 3.5,
+    "math_l5_top1_sim": 0.31741352563734265,
+    "omni_self_top1_sim": 0.8710780413052478
+  },
+  {
+    "query_uid": "omath_0479",
+    "query_diff": 3.5,
+    "math_l5_top1_sim": 0.26403503701312936,
+    "omni_self_top1_sim": 0.2857026830639248
+  },
+  {
+    "query_uid": "omath_0373",
+    "query_diff": 3.5,
+    "math_l5_top1_sim": 0.7574902183200787,
+    "omni_self_top1_sim": 0.5869700688164114
+  },
+  {
+    "query_uid": "omath_2622",
+    "query_diff": 3.5,
+    "math_l5_top1_sim": 0.2990591529700156,
+    "omni_self_top1_sim": 0.4182095666018181
+  },
+  {
+    "query_uid": "omath_0842",
+    "query_diff": 3.5,
+    "math_l5_top1_sim": 0.28015106865768574,
+    "omni_self_top1_sim": 0.3291587999768135
+  },
+  {
+    "query_uid": "omath_0789",
+    "query_diff": 3.5,
+    "math_l5_top1_sim": 0.3555379681192956,
+    "omni_self_top1_sim": 0.37468532658014514
+  },
+  {
+    "query_uid": "omath_1107",
+    "query_diff": 4.0,
+    "math_l5_top1_sim": 0.28515133816407995,
+    "omni_self_top1_sim": 0.43465159480883786
+  },
+  {
+    "query_uid": "omath_0819",
+    "query_diff": 4.0,
+    "math_l5_top1_sim": 0.45207131500559955,
+    "omni_self_top1_sim": 0.49922500253513125
+  },
+  {
+    "query_uid": "omath_2305",
+    "query_diff": 4.0,
+    "math_l5_top1_sim": 0.25342065936558456,
+    "omni_self_top1_sim": 0.4418044333328539
+  },
+  {
+    "query_uid": "omath_0691",
+    "query_diff": 4.5,
+    "math_l5_top1_sim": 0.40040411158049605,
+    "omni_self_top1_sim": 0.8194201128800955
+  },
+  {
+    "query_uid": "omath_2213",
+    "query_diff": 4.0,
+    "math_l5_top1_sim": 0.20406905762248106,
+    "omni_self_top1_sim": 0.3072232854350085
+  },
+  {
+    "query_uid": "omath_2313",
+    "query_diff": 4.0,
+    "math_l5_top1_sim": 0.21855211026275442,
+    "omni_self_top1_sim": 0.3175163709939414
+  },
+  {
+    "query_uid": "omath_3598",
+    "query_diff": 5.0,
+    "math_l5_top1_sim": 0.4845942482928801,
+    "omni_self_top1_sim": 0.3546765641067288
+  },
+  {
+    "query_uid": "omath_0646",
+    "query_diff": 5.0,
+    "math_l5_top1_sim": 0.19409931576932116,
+    "omni_self_top1_sim": 0.4582451697760631
+  },
+  {
+    "query_uid": "omath_4034",
+    "query_diff": 5.0,
+    "math_l5_top1_sim": 0.20720478459837152,
+    "omni_self_top1_sim": 0.4797881981816682
+  },
+  {
+    "query_uid": "omath_2039",
+    "query_diff": 5.0,
+    "math_l5_top1_sim": 0.3591504519803754,
+    "omni_self_top1_sim": 0.5074012312886433
+  },
+  {
+    "query_uid": "omath_0437",
+    "query_diff": 5.0,
+    "math_l5_top1_sim": 0.5297329264318665,
+    "omni_self_top1_sim": 0.7718228499525045
+  },
+  {
+    "query_uid": "omath_0422",
+    "query_diff": 5.0,
+    "math_l5_top1_sim": 0.2708305756968497,
+    "omni_self_top1_sim": 0.7035655173422569
+  },
+  {
+    "query_uid": "omath_0279",
+    "query_diff": 6.0,
+    "math_l5_top1_sim": 0.20212539627630405,
+    "omni_self_top1_sim": 0.14144758720067793
+  },
+  {
+    "query_uid": "omath_1535",
+    "query_diff": 6.0,
+    "math_l5_top1_sim": 0.2592417592819141,
+    "omni_self_top1_sim": 0.5964333789075893
+  }
+]

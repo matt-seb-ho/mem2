@@ -1,0 +1,449 @@
+{
+  "cmath_10098": [
+    "Degree of Polynomial Composition",
+    "Polynomial Root Construction via Subtraction",
+    "Coefficient Comparison for Polynomial Identity",
+    "Polynomial Degree Analysis for Root Counting",
+    "Vieta's Formulas"
+  ],
+  "cmath_10143": [
+    "Square of a Sum Identity",
+    "System of Equations via Sum and Product",
+    "Minimization via Parameter Substitution",
+    "Quadratic Equation Root Properties"
+  ],
+  "cmath_10170": [
+    "Vieta's Formulas",
+    "Factorization of Cubic Polynomials",
+    "Rational Root Theorem",
+    "Fundamental Counting Principle"
+  ],
+  "cmath_10229": [
+    "Logarithmic Product and Quotient Rules",
+    "Logarithmic Power Rule and Coefficient Extraction"
+  ],
+  "cmath_10265": [
+    "Quadratic Equation Solving via Discriminant",
+    "Algebraic Substitution for Target Expression"
+  ],
+  "cmath_1035": [
+    "Coefficient Identification from Standard Form",
+    "Integer Factorization for Diophantine Equations",
+    "System of Equations via Sum and Product",
+    "Case Analysis on Parameter Value"
+  ],
+  "cmath_10404": [
+    "Polynomial Evaluation at Roots",
+    "Linear Equation Solving via Substitution"
+  ],
+  "cmath_10424": [
+    "Non-Negative Sum Zero Principle",
+    "Completing the Square for Multivariable Quadratics",
+    "Square of a Binomial Expansion"
+  ],
+  "cmath_10546": [
+    "Coprimality Condition for Modular Inverse",
+    "Modular Inverse via Linear Combination",
+    "Modular Inverse via Negation",
+    "Definition of Modular Congruence",
+    "Range Validation for Modular Solutions"
+  ],
+  "cmath_10547": [
+    "System of Linear Congruences",
+    "LCM Intersection for Divisibility",
+    "Solving Linear Congruence via Inverse Multiplication",
+    "Range Validation for Modular Solutions"
+  ],
+  "cmath_10564": [
+    "Modular Arithmetic with Product of Factors",
+    "Summation of Disjoint Categories",
+    "Digit Range Constraint"
+  ],
+  "cmath_10599": [
+    "Range Validation for Modular Solutions",
+    "Range Validation for Integer Parameters",
+    "Smallest Non-Negative Solution via Parameter Tuning",
+    "Intersection of Inequality Intervals",
+    "Linear Equation Solving via Inverse Operations"
+  ],
+  "cmath_10620": [
+    "Arithmetic Sequence Sum Formula",
+    "Universal Divisibility Deduction",
+    "GCD Bounding via Specific Instance"
+  ],
+  "cmath_10637": [
+    "Definition of Modular Congruence",
+    "Divisor Count Formula",
+    "Digit Range Constraint",
+    "Divisor Enumeration for Integer Constraints"
+  ],
+  "cmath_1073": [
+    "Exponent Laws for Radical Simplification",
+    "Exponent Laws for Linearization",
+    "Exponent Laws in Modular Arithmetic"
+  ],
+  "cmath_10805": [
+    "Digit Range Constraint",
+    "Base-10 Digit Representation",
+    "Coprimality Condition for Lowest Terms",
+    "Intersection of Inequality Intervals",
+    "Case Analysis by Parameter Value"
+  ],
+  "cmath_10857": [
+    "Infinite Geometric Series Sum Formula",
+    "Fraction Simplification via GCD",
+    "Sum of Numerator and Denominator",
+    "Coprimality Condition for Lowest Terms"
+  ],
+  "cmath_10962": [
+    "Fermat's Little Theorem",
+    "Modular Reduction of Large Powers",
+    "Modular Reduction of Constants"
+  ],
+  "cmath_10967": [
+    "Sum of Divisors Function",
+    "Divisor Enumeration via Prime Factorization",
+    "Sum of Divisors Function for Prime Powers"
+  ],
+  "cmath_11303": [
+    "Midpoint Formula",
+    "Segment Addition on a Line"
+  ],
+  "cmath_11338": [
+    "Polygon Interior Angle Formula",
+    "Linear Equation Solving via Inverse Operations"
+  ],
+  "cmath_11504": [
+    "Base-10 Digit Representation",
+    "Case Analysis by Digit Position",
+    "Divisor Enumeration for Integer Constraints",
+    "Digit Range Constraint"
+  ],
+  "cmath_11575": [
+    "Fundamental Counting Principle",
+    "Digit Range Constraint",
+    "Repetition Allowed in Sequences",
+    "Leading Digit Non-Zero Constraint"
+  ],
+  "cmath_11628": [
+    "Distance Formula",
+    "Pythagorean Theorem"
+  ],
+  "cmath_11970": [
+    "Determinant of Linear Transformation Matrix"
+  ],
+  "cmath_12063": [
+    "Law of Cosines for Distance Calculation",
+    "Pythagorean Theorem",
+    "Rationalizing Denominators with Binomial Conjugates",
+    "Algebraic Simplification of Radical Expressions"
+  ],
+  "cmath_12065": [
+    "System of Equations via Sum and Difference",
+    "System of Equations via Sum and Product",
+    "System of Equations via Point Substitution",
+    "System of Equations via Sum and Substitution"
+  ],
+  "cmath_12173": [
+    "System of Equations via Sum and Product",
+    "Algebraic Substitution for Parameter Reduction",
+    "Symmetric Polynomial Identity for Difference",
+    "Algebraic Simplification of Difference",
+    "Domain Validation for Derived Solutions"
+  ],
+  "cmath_12357": [
+    "Distance Squared via Coordinate Differences",
+    "Quadratic Equation Solving via Discriminant",
+    "Quadratic Vertex as Threshold",
+    "Distance Formula Application"
+  ],
+  "cmath_1273": [
+    "Vieta's Formulas",
+    "Domain Validation for Rational Equations",
+    "Rational Equation Solving via Clearing Denominators"
+  ],
+  "cmath_1359": [
+    "Definition of Inverse Function",
+    "Evaluation at a Specific Point"
+  ],
+  "cmath_1391": [
+    "Factorization of Polynomials with Zero Constant Term",
+    "Zero Product Property",
+    "Prime Factorization for Divisor Analysis",
+    "Integer Constraint on Continuous Interval",
+    "Case Analysis on Parameter Value"
+  ],
+  "cmath_1468": [
+    "Geometric Sequence Ratio Substitution",
+    "Difference of Squares Factorization",
+    "Distinctness Constraint Elimination",
+    "Linear Equation Solving via Inverse Operations"
+  ],
+  "cmath_1502": [
+    "Vector Area Formula for Triangles",
+    "Determinant of Linear Transformation Matrix",
+    "Coordinate Geometry with Rotational Symmetry"
+  ],
+  "cmath_1545": [
+    "Recursive Sequence Stabilization",
+    "Iterative Sequence Computation",
+    "Domain Validation for Recurrence Validity",
+    "Counting Distinct Solutions"
+  ],
+  "cmath_1770": [
+    "Lattice Path Counting",
+    "Binomial Coefficient for Subset Selection",
+    "Recursive Enumeration with Backtracking",
+    "Counting via Complementary Cases"
+  ],
+  "cmath_1815": [
+    "Binomial Coefficient for Subset Selection",
+    "Fundamental Counting Principle",
+    "Combinatorial Enumeration via Case Partition"
+  ],
+  "cmath_1859": [
+    "Counting Multiples via Floor Function",
+    "Principle of Inclusion-Exclusion for Overlapping Sets",
+    "Complementary Counting",
+    "Inclusive Interval Counting"
+  ],
+  "cmath_2107": [
+    "Fundamental Counting Principle",
+    "Binomial Coefficient for Subset Selection",
+    "Stars and Bars (Multiset Coefficient)",
+    "Permutation Counting with Constraints"
+  ],
+  "cmath_2115": [
+    "Complementary Counting",
+    "Probability as Ratio of Counts",
+    "Fundamental Counting Principle"
+  ],
+  "cmath_2126": [
+    "Case Analysis by Number of Digits",
+    "Case Analysis by Parameter Value",
+    "Fundamental Counting Principle",
+    "Binomial Coefficient for Subset Selection",
+    "Leading Digit Non-Zero Constraint"
+  ],
+  "cmath_2133": [
+    "Probability as Ratio of Counts",
+    "Symmetry Reduction in Counting",
+    "Binomial Coefficient for Subset Selection",
+    "Symmetric Product Decomposition",
+    "Independence of Sequential Choices"
+  ],
+  "cmath_2138": [
+    "State-Based Recurrence for Forbidden Substrings",
+    "Case Analysis by Parameter Value",
+    "Iterative Computation of Recurrence"
+  ],
+  "cmath_2146": [
+    "Fundamental Counting Principle",
+    "Combinatorial Enumeration via Case Partition",
+    "Summation of Arithmetic Progression",
+    "Probability as Ratio of Counts",
+    "Coprimality Condition for Lowest Terms"
+  ],
+  "cmath_2149": [
+    "Floor Function for Integer Part Extraction",
+    "Integer Constraint on Continuous Interval",
+    "Square Root Integer Condition",
+    "Probability as Ratio of Counts",
+    "Integer Factorization for Diophantine Equations"
+  ],
+  "cmath_2154": [
+    "Graph Model for Pairwise Interactions",
+    "Case Analysis by Partition",
+    "Binomial Coefficient for Subset Selection",
+    "Permutation Counting with Constraints",
+    "Partitioning by Group Size Patterns"
+  ],
+  "cmath_2182": [
+    "Fundamental Counting Principle",
+    "Binomial Coefficient for Subset Selection",
+    "Product Rule for Independent Choices",
+    "Combinatorial Enumeration via Case Partition"
+  ],
+  "cmath_2193": [
+    "Stars and Bars (Multiset Coefficient)",
+    "Leading Digit Non-Zero Constraint",
+    "Digit Range Constraint"
+  ],
+  "cmath_2307": [
+    "Palindrome Digit Structure",
+    "Base-10 Digit Representation",
+    "Iterative Sequence Computation",
+    "Summation of Valid Solutions",
+    "Case Analysis by Parameter Value"
+  ],
+  "cmath_2340": [
+    "Fundamental Counting Principle"
+  ],
+  "cmath_243": [
+    "Domain Validation for Derived Solutions",
+    "Point on Curve Constraint",
+    "Summation of Disjoint Cases",
+    "Intersection of Inequality Intervals",
+    "Sum of Numerator and Denominator"
+  ],
+  "cmath_2691": [
+    "Pythagorean Theorem",
+    "Angle Bisector Theorem",
+    "Triangle Area via Base and Height",
+    "Quadratic Equation Solving via Discriminant",
+    "Rounding to Nearest Integer"
+  ],
+  "cmath_2920": [
+    "Distance Formula",
+    "Circle Standard Form Identification",
+    "Point on Curve Constraint",
+    "Intersection of Lines with Coordinate Axis",
+    "Coordinate Geometry with Rotational Symmetry",
+    "Tangency Condition for Circles",
+    "Perpendicular Bisector Property"
+  ],
+  "cmath_2924": [
+    "Pyramid Volume Formula",
+    "Tetrahedron Volume from Edge Lengths and Dihedral Angles",
+    "Trigonometric Evaluation of Specific Angles",
+    "Trigonometric Identity for $\\tan(15^\\circ)$"
+  ],
+  "cmath_2931": [
+    "Rectangle Diagonal Bisector Property",
+    "Pythagorean Theorem",
+    "Coordinate Geometry with Axis Tangency",
+    "Distance Formula Application",
+    "Isosceles Triangle Altitude Bisection",
+    "System of Equations via Point Substitution",
+    "Perpendicular Bisector Property"
+  ],
+  "cmath_2939": [
+    "Tetrahedron Volume from Edge Lengths and Dihedral Angles",
+    "Pyramid Volume Formula",
+    "Triangle Area via Base and Height",
+    "Trigonometric Evaluation of Specific Angles"
+  ],
+  "cmath_2973": [
+    "Area Decomposition into Triangles",
+    "Area Ratio via Common Vertex",
+    "Square of a Sum Identity"
+  ],
+  "cmath_2985": [
+    "Distance Formula",
+    "Distance Squared via Coordinate Differences",
+    "Distance Formula Application",
+    "Distance Formula in Coordinate Plane",
+    "Distance Squared via Symmetric Coordinates"
+  ],
+  "cmath_2989": [
+    "Pythagorean Theorem",
+    "Isosceles Triangle Altitude Bisection",
+    "Integer Factorization for Diophantine Equations",
+    "Triangle Inequality Theorem"
+  ],
+  "cmath_3010": [
+    "Circle Standard Form Identification",
+    "Ellipse Focal Property",
+    "Intersection of Solution Sets"
+  ],
+  "cmath_3011": [
+    "Tangency Condition for Circles",
+    "Distance Formula",
+    "Chord Length from Distance to Center",
+    "Square-Free Condition for Radicals"
+  ],
+  "cmath_3022": [
+    "Point on Curve Constraint",
+    "Distance Formula",
+    "Pythagorean Theorem",
+    "Coordinate Geometry with Rotational Symmetry",
+    "Square Root Integer Condition",
+    "Simplest Radical Form",
+    "Sum of Numerator and Denominator"
+  ],
+  "cmath_3023": [
+    "Pythagorean Theorem",
+    "Simplest Radical Form"
+  ],
+  "cmath_3054": [
+    "Linear Equation Solving via Inverse Operations"
+  ],
+  "cmath_3059": [
+    "Similar Triangle Identification via Parallel Lines",
+    "Heron's Formula for Triangle Area",
+    "Triangle Area via Base and Height",
+    "Coefficient Identification from Standard Form"
+  ],
+  "cmath_3115": [
+    "Triangle Inequality Theorem",
+    "Case Analysis by Parameter Value"
+  ],
+  "cmath_3121": [
+    "Slope Calculation from Two Points",
+    "Case Analysis by Parameter Value",
+    "System of Linear Equations via Sum and Substitution",
+    "Point on Curve Constraint"
+  ],
+  "cmath_3177": [
+    "Area Decomposition via Subtraction",
+    "Area Decomposition into Circular and Polygonal Parts",
+    "Rounding to Nearest Integer"
+  ],
+  "cmath_3206": [
+    "Pythagorean Theorem",
+    "Pythagorean Theorem Application",
+    "Pythagorean Theorem for Vector Magnitude",
+    "Pythagorean Theorem for Slant Height",
+    "Pythagorean Theorem for Altitude Calculation"
+  ],
+  "cmath_3213": [
+    "Regular Hexagon Diagonal Property",
+    "Pythagorean Theorem",
+    "Pyramid Volume Formula"
+  ],
+  "cmath_3317": [
+    "Area Decomposition via Subtraction",
+    "Shoelace Formula for Polygon Area"
+  ],
+  "cmath_3436": [
+    "Algebraic Substitution for Target Expression",
+    "Algebraic Substitution for Parameter Reduction",
+    "Rational Expression Simplification via Factoring"
+  ],
+  "cmath_3472": [
+    "Square of a Sum Identity",
+    "Parity of Sum of Integers",
+    "Square Root Integer Condition"
+  ],
+  "cmath_3479": [
+    "Ellipse Focal Property",
+    "Quadratic Equation Root Finding",
+    "Simplest Radical Form"
+  ],
+  "cmath_3569": [
+    "Distance Formula",
+    "Distance Formula Application",
+    "Triangle Inequality Theorem"
+  ],
+  "cmath_359": [
+    "Evaluation at a Specific Point",
+    "Point on Curve Constraint"
+  ],
+  "cmath_367": [
+    "Quadratic Vertex Maximization",
+    "Geometric Constraint Inequality",
+    "Reduction to Single-Variable Optimization",
+    "Optimization via Parameter Minimization"
+  ],
+  "cmath_3697": [
+    "Vieta's Formulas",
+    "Symmetric Polynomial Identity for Difference",
+    "Quadratic Equation Root Finding",
+    "System of Equations via Sum and Product"
+  ],
+  "cmath_3719": [
+    "Cauchy-Schwarz Inequality for Sum Maximization",
+    "Pythagorean Theorem for Vector Magnitude",
+    "Minimization via Parameter Substitution"
+  ]
+}

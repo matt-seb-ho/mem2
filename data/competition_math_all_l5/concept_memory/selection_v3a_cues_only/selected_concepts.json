@@ -1,0 +1,733 @@
+{
+  "cmath_10143": [
+    "Square of a Sum Identity",
+    "System of Equations via Sum and Product",
+    "Discriminant Condition for Real Preimages",
+    "Reduction to Single-Variable Optimization"
+  ],
+  "cmath_10170": [
+    "System of Symmetric Polynomials",
+    "Vieta's Formulas",
+    "Integer Root Divisibility Theorem",
+    "Factorization of Cubic Polynomials",
+    "Permutation Counting with Constraints"
+  ],
+  "cmath_10229": [
+    "Sum of Cubes Identity",
+    "Logarithmic Product to Sum Conversion",
+    "Substitution for Logarithmic Linearization"
+  ],
+  "cmath_10265": [
+    "Substitution to Simplify Rational Equations",
+    "Quadratic Equation Solving via Discriminant",
+    "Complex Number to Cartesian Coordinate Mapping",
+    "Distance Formula"
+  ],
+  "cmath_1035": [
+    "Coefficient Identification from Standard Form",
+    "Integer Factor Enumeration",
+    "Distinctness Constraint Elimination"
+  ],
+  "cmath_10404": [
+    "Polynomial Remainder Theorem Application",
+    "Polynomial Evaluation via Substitution",
+    "System of Linear Equations via Sum and Substitution"
+  ],
+  "cmath_10424": [
+    "Non-Negative Sum Zero Principle",
+    "Completing the Square for Multivariable Quadratics",
+    "Non-Negative Square Zero Principle"
+  ],
+  "cmath_10546": [
+    "Modular Inverse via Linear Combination",
+    "Solving Linear Congruence via Inverse Multiplication",
+    "Modular Inverse via Extended Euclidean Algorithm",
+    "Coprimality Condition for Modular Inverse"
+  ],
+  "cmath_10547": [
+    "System of Linear Congruences",
+    "Modular Inverse via Inspection",
+    "Range Validation for Modular Solutions",
+    "Intersection of Inequality Intervals",
+    "Linear Congruence Solvability and Count"
+  ],
+  "cmath_10564": [
+    "Definition of Modular Congruence",
+    "Modular Arithmetic with Product of Factors",
+    "Base-10 Digit Representation"
+  ],
+  "cmath_10599": [
+    "Definition of Modular Congruence",
+    "Range Validation for Modular Solutions",
+    "Linear Congruence Solvability and Count"
+  ],
+  "cmath_10620": [
+    "Arithmetic Sequence Sum Formula",
+    "GCD Bounding via Specific Instance",
+    "Arithmetic Sequence Term Relation"
+  ],
+  "cmath_10637": [
+    "Definition of Modular Congruence",
+    "Digit Range Constraint",
+    "Divisor Count Formula",
+    "Prime Factorization for Divisor Analysis"
+  ],
+  "cmath_10685": [
+    "LCM Calculation via Prime Factorization",
+    "Divisibility by 9 via Digit Sum",
+    "Prime Factorization of a Constant",
+    "LCM Intersection for Divisibility"
+  ],
+  "cmath_1073": [
+    "System of Linear Equations via Substitution",
+    "Linear Equation Solving via Inverse Operations"
+  ],
+  "cmath_10857": [
+    "Infinite Geometric Series Sum Formula",
+    "Fraction Simplification via GCD",
+    "Sum of Numerator and Denominator",
+    "Coprimality Condition for Lowest Terms"
+  ],
+  "cmath_10962": [
+    "Fermat's Little Theorem",
+    "Modular Reduction of Large Powers",
+    "Modular Reduction of Constants"
+  ],
+  "cmath_10967": [
+    "Sum of Divisors Function",
+    "Prime Factorization for Divisor Analysis",
+    "Sum of Divisors for Prime Powers"
+  ],
+  "cmath_11016": [
+    "Divisor Count Formula",
+    "Greedy Enumeration of Smallest Integers",
+    "Divisor Enumeration for Diophantine Equations",
+    "Prime Factorization for Divisor Analysis"
+  ],
+  "cmath_11303": [
+    "Midpoint Formula",
+    "Segment Addition on a Line",
+    "Segment Subtraction on a Line"
+  ],
+  "cmath_11338": [
+    "Polygon Interior Angle Formula",
+    "Linear Equation Solving via Inverse Operations",
+    "Regular Polygon Central Angle"
+  ],
+  "cmath_11504": [
+    "Base-10 Digit Representation",
+    "Case Analysis by Digit Position",
+    "Definition of Modular Congruence",
+    "Digit Range Constraint",
+    "Integer Count in Real Interval"
+  ],
+  "cmath_11575": [
+    "Fundamental Counting Principle",
+    "Repetition Allowed in Sequences",
+    "Leading Digit Non-Zero Constraint",
+    "Digit Range Constraint"
+  ],
+  "cmath_11628": [
+    "Distance Formula",
+    "Pythagorean Theorem",
+    "Distance Formula Application"
+  ],
+  "cmath_11970": [
+    "Determinant of Linear Transformation Matrix",
+    "Absolute Value of Determinant for Volume"
+  ],
+  "cmath_12063": [
+    "Tangency Condition for Circles",
+    "Distance Formula",
+    "Coordinate Geometry with Rotational Symmetry",
+    "Rationalizing Denominators with Binomial Conjugates",
+    "Simplest Radical Form"
+  ],
+  "cmath_12065": [
+    "Case Analysis on Parameter Value",
+    "System of Equations via Sum and Difference",
+    "Zero Product Property",
+    "Counting Distinct Solutions"
+  ],
+  "cmath_12173": [
+    "Algebraic Substitution for Target Expression",
+    "Algebraic Identity for $(a+b+c)^3$",
+    "Algebraic Identity for Sum of Powers of 1/2"
+  ],
+  "cmath_12357": [
+    "Distance Formula Application",
+    "Quadratic Vertex Maximization",
+    "Completing the Square for Multivariable Quadratics",
+    "Critical Point Optimization via Partial Derivatives",
+    "Positive Definite Quadratic Form"
+  ],
+  "cmath_1273": [
+    "Vieta's Sum of Roots",
+    "Rational Equation Solving via Clearing Denominators",
+    "Extraneous Solution Rejection"
+  ],
+  "cmath_1359": [
+    "Definition of Inverse Function",
+    "Evaluation at a Specific Point"
+  ],
+  "cmath_1391": [
+    "Factorization of Cubic Polynomials",
+    "Absolute Value Distance Interpretation"
+  ],
+  "cmath_1468": [
+    "Geometric Sequence Ratio Substitution",
+    "Difference of Squares Factorization",
+    "Distinctness Constraint Elimination"
+  ],
+  "cmath_1502": [
+    "Determinant of Linear Transformation Matrix",
+    "Shoelace Formula for Polygon Area"
+  ],
+  "cmath_1545": [
+    "Iterative Computation of Recurrence",
+    "Finite State Space Convergence"
+  ],
+  "cmath_1770": [
+    "Binomial Coefficient for Subset Selection",
+    "Fundamental Counting Principle",
+    "Case Analysis by Initial Edge Selection",
+    "Connectivity and Dead-End Validation",
+    "Recursive Enumeration with Backtracking"
+  ],
+  "cmath_1815": [
+    "Binomial Coefficient for Subset Selection",
+    "Distinct Item Selection Logic"
+  ],
+  "cmath_1859": [
+    "Principle of Inclusion-Exclusion for Overlapping Sets",
+    "Counting Multiples via Floor Function",
+    "LCM Intersection for Divisibility",
+    "Complementary Counting"
+  ],
+  "cmath_2084": [
+    "Counting Multiples via Floor Function",
+    "Partitioning by Disjoint Cases"
+  ],
+  "cmath_2097": [
+    "Arithmetic Sequence Term Relation",
+    "Recursive Sequence Stabilization",
+    "Case Analysis on Parameter Value"
+  ],
+  "cmath_2107": [
+    "Binomial Coefficient for Subset Selection",
+    "Fundamental Counting Principle",
+    "Permutation Counting with Constraints",
+    "Stars and Bars (Multiset Coefficient)",
+    "Distinct Item Selection Logic"
+  ],
+  "cmath_2115": [
+    "Principle of Inclusion-Exclusion for Overlapping Sets",
+    "Complementary Counting",
+    "Fundamental Counting Principle",
+    "Probability as Ratio of Counts"
+  ],
+  "cmath_2126": [
+    "Leading Digit Non-Zero Constraint",
+    "Case Analysis by Parameter Value",
+    "Complementary Counting",
+    "Digit Range Constraint",
+    "Binomial Coefficient for Subset Selection"
+  ],
+  "cmath_2133": [
+    "Symmetry Reduction in Counting",
+    "Binomial Coefficient for Subset Selection",
+    "Symmetric Product Decomposition"
+  ],
+  "cmath_2138": [
+    "Linear Recurrence Relation with Constant Term",
+    "Case Analysis by Parameter Value",
+    "Partitioning by Disjoint Cases",
+    "Recursive Sequence Stabilization",
+    "Linear Equation Solving via Substitution"
+  ],
+  "cmath_2146": [
+    "Absolute Value Distance Interpretation",
+    "Probability as Ratio of Counts",
+    "Fundamental Counting Principle",
+    "Sum of Arithmetic Progression",
+    "Coprimality Condition for Lowest Terms"
+  ],
+  "cmath_2149": [
+    "Square Root Integer Condition",
+    "Integer Factorization for Diophantine Equations",
+    "Quadratic Equation Solving via Discriminant",
+    "Interval Width Calculation",
+    "Probability as Ratio of Counts"
+  ],
+  "cmath_2154": [
+    "Combinatorial Enumeration via Case Partition",
+    "Partitioning Elements into Disjoint Subsets",
+    "Fundamental Counting Principle",
+    "Permutation Counting with Constraints"
+  ],
+  "cmath_2182": [
+    "Binomial Coefficient for Subset Selection",
+    "Partitioning by Disjoint Cases",
+    "Fundamental Counting Principle"
+  ],
+  "cmath_2193": [
+    "Stars and Bars (Multiset Coefficient)",
+    "Leading Digit Non-Zero Constraint"
+  ],
+  "cmath_2307": [
+    "Iterative Sequence Computation",
+    "Palindrome Digit Structure",
+    "Base-10 Digit Representation",
+    "Digit-by-Digit Addition with Carry Propagation",
+    "Summation of Valid Solutions"
+  ],
+  "cmath_2309": [
+    "Lattice Path Counting",
+    "Adjacency Constraint in Grid Graphs",
+    "Recursive Enumeration with Backtracking",
+    "Combinatorial Enumeration via Case Partition"
+  ],
+  "cmath_2340": [
+    "Fundamental Counting Principle",
+    "Power Set Cardinality"
+  ],
+  "cmath_243": [
+    "Definition of Inverse Function",
+    "Domain Validation for Derived Solutions",
+    "Intersection of Inequality Intervals",
+    "Summation of Disjoint Cases",
+    "Evaluation at a Specific Point"
+  ],
+  "cmath_2691": [
+    "Pythagorean Theorem",
+    "Angle Bisector Theorem"
+  ],
+  "cmath_2920": [
+    "Pythagorean Theorem",
+    "Distance Formula",
+    "Midpoint Formula",
+    "Circle Standard Form Identification",
+    "Tangent Line Uniqueness"
+  ],
+  "cmath_2924": [
+    "Pyramid Volume Formula",
+    "Triangle Area via Base and Height",
+    "Trigonometric Evaluation of Specific Angles"
+  ],
+  "cmath_2931": [
+    "Pyramid Volume Formula",
+    "Pythagorean Theorem",
+    "Perpendicular Bisector Property",
+    "Isosceles Triangle Altitude Bisection",
+    "Distance Formula"
+  ],
+  "cmath_2939": [
+    "Pyramid Volume Formula",
+    "Triangle Area via Base and Height",
+    "Trigonometric Evaluation of Specific Angles"
+  ],
+  "cmath_2973": [
+    "Area Decomposition via Subtraction",
+    "Square of a Sum Identity",
+    "System of Symmetric Polynomials",
+    "Area Ratio Equation Solving"
+  ],
+  "cmath_2985": [
+    "Distance Classification in Hypercube Vertices",
+    "Distance Formula",
+    "Equilateral Triangle Side Equality"
+  ],
+  "cmath_2989": [
+    "Pythagorean Theorem",
+    "Difference of Squares Factorization",
+    "Triangle Inequality Theorem",
+    "Divisor Enumeration for Diophantine Equations",
+    "Isosceles Triangle Altitude Bisection"
+  ],
+  "cmath_3010": [
+    "Circle Standard Form Identification",
+    "Tangency Condition for Circles",
+    "Ellipse Focal Property",
+    "Discriminant Condition for Multiple Roots"
+  ],
+  "cmath_3011": [
+    "Tangency Condition for Circles",
+    "Distance from Point to Line Formula",
+    "Chord Length from Distance to Center",
+    "Distance Formula",
+    "Radical Simplification"
+  ],
+  "cmath_3022": [
+    "Distance Formula",
+    "Pythagorean Theorem",
+    "Simplest Radical Form",
+    "Midpoint Formula",
+    "Trigonometric Evaluation of Specific Angles"
+  ],
+  "cmath_3023": [
+    "Pythagorean Theorem",
+    "Integer Factorization for Diophantine Equations",
+    "Square-Free Condition for Radicals"
+  ],
+  "cmath_3054": [
+    "System of Linear Equations via Sum and Product"
+  ],
+  "cmath_3059": [
+    "Similar Triangle Ratio Property",
+    "Triangle Area via Base and Height",
+    "Similar Triangle Identification via Parallel Lines"
+  ],
+  "cmath_3115": [
+    "Triangle Inequality Theorem",
+    "Triangle Inequality Failure Condition",
+    "Case Analysis on Parameter Value",
+    "Intersection of Inequality Intervals"
+  ],
+  "cmath_3121": [
+    "Slope Calculation from Two Points",
+    "Point on Curve Constraint",
+    "Coordinate Geometry with Right Triangle Alignment",
+    "System of Linear Equations via Sum and Substitution"
+  ],
+  "cmath_3177": [
+    "Area Decomposition via Subtraction",
+    "Area Decomposition into Circular and Polygonal Parts",
+    "Circle Area to Radius Conversion",
+    "Rounding to Nearest Integer"
+  ],
+  "cmath_3206": [
+    "Pythagorean Theorem",
+    "Similar Solids Surface Area Ratio"
+  ],
+  "cmath_3213": [
+    "Pyramid Volume Formula",
+    "Regular Hexagon Diagonal Property",
+    "Pythagorean Theorem",
+    "Area of Equilateral Hexagon via Trigonometric Sum",
+    "Right Pyramid Edge Congruence"
+  ],
+  "cmath_3317": [
+    "Distance from Point to Line Formula",
+    "Distance Formula Application",
+    "Area Decomposition via Subtraction"
+  ],
+  "cmath_3436": [
+    "Algebraic Decomposition of Rational Terms",
+    "Summation of Arithmetic Progression"
+  ],
+  "cmath_3442": [
+    "Floor Function Decomposition via Integer-Fraction Split",
+    "Quadratic Equation Solving via Discriminant",
+    "Range Validation for Integer Parameters",
+    "Case Analysis on Parameter Value"
+  ],
+  "cmath_3472": [
+    "Square of a Sum Identity",
+    "Parity of Sum of Integers",
+    "Smallest Integer Strictly Greater Than a Real Bound"
+  ],
+  "cmath_3479": [
+    "Ellipse Focal Property",
+    "Point on Curve Constraint",
+    "Distance Formula",
+    "Quadratic Equation Solving via Discriminant",
+    "Simplest Radical Form"
+  ],
+  "cmath_3569": [
+    "Distance Formula",
+    "Minkowski Inequality for Vector Sums",
+    "Complex Number to Cartesian Coordinate Mapping",
+    "Modulus and Conjugate Properties"
+  ],
+  "cmath_359": [
+    "Evaluation at a Specific Point",
+    "Point on Curve Constraint",
+    "Vieta's Formulas"
+  ],
+  "cmath_367": [
+    "Geometric Constraint Inequality",
+    "Quadratic Vertex Maximization",
+    "Intersection of Inequality Intervals"
+  ],
+  "cmath_3697": [
+    "Vieta's Formulas",
+    "Square of a Sum Identity",
+    "System of Symmetric Polynomials"
+  ],
+  "cmath_3719": [
+    "Monotonicity via Derivative Analysis",
+    "Algebraic Simplification of Radical Expressions",
+    "Domain Validation for Physical Quantities"
+  ],
+  "cmath_3810": [
+    "Prime Factorization for Divisor Analysis",
+    "Fundamental Theorem of Arithmetic",
+    "Integer Root Divisibility Theorem",
+    "Divisor Count Formula"
+  ],
+  "cmath_3855": [
+    "Square of a Sum Identity",
+    "Parity of Sum of Integers",
+    "Range Validation for Integer Parameters"
+  ],
+  "cmath_3891": [
+    "Floor Function Decomposition via Integer-Fraction Split",
+    "Case Analysis on Parameter Range",
+    "Arithmetic Progression Term Counting",
+    "Inclusive Interval Counting",
+    "Integer Count in Real Interval"
+  ],
+  "cmath_4005": [
+    "Complex Number to Cartesian Coordinate Mapping",
+    "Circle Standard Form Identification",
+    "Midpoint Formula",
+    "Point-Circle Distance Relation",
+    "Distance Squared Minimization"
+  ],
+  "cmath_4051": [
+    "Intersection of Inequality Intervals",
+    "Domain Validation for Physical Quantities",
+    "Square Root Integer Condition"
+  ],
+  "cmath_407": [
+    "Inverse Function via Variable Swap",
+    "Coefficient Identification from Standard Form",
+    "System of Linear Equations via Substitution"
+  ],
+  "cmath_4094": [
+    "Roots of Unity Representation",
+    "Geometric Series Summation",
+    "Logarithmic Derivative of a Polynomial",
+    "Sum of First n Integers"
+  ],
+  "cmath_4174": [
+    "Vieta's Formulas",
+    "Fundamental Theorem of Arithmetic"
+  ],
+  "cmath_4186": [
+    "Polynomial Interpolation via Root Construction",
+    "Finite Difference of Monic Polynomials",
+    "Monic Polynomial Leading Coefficient Preservation",
+    "Evaluation at a Specific Point"
+  ],
+  "cmath_4190": [
+    "Functional Equation Iteration via Backward Substitution",
+    "Functional Equation Zero Substitution",
+    "Functional Equation Substitution",
+    "Functional Equation Evaluation via Preimage",
+    "Functional Equation via Intermediate Variable"
+  ],
+  "cmath_4215": [
+    "Vieta's Formulas",
+    "AM-GM Inequality for Minimization",
+    "Discriminant Condition for Multiple Roots"
+  ],
+  "cmath_4292": [
+    "Circle Standard Form Identification",
+    "Distance from Point to Line Formula",
+    "Cauchy-Schwarz Inequality for Sum Maximization"
+  ],
+  "cmath_433": [
+    "Absolute Value Distance Interpretation",
+    "Distance Formula",
+    "Point on Curve Constraint",
+    "Intersection of Inequality Intervals"
+  ],
+  "cmath_436": [
+    "Geometric Sequence Ratio Substitution",
+    "Geometric Progression Condition",
+    "Geometric Growth Pattern Identification"
+  ],
+  "cmath_4416": [
+    "Cauchy-Schwarz Inequality for Sum Maximization",
+    "Jensen's Inequality for Convex Functions",
+    "Non-Negative Sum Zero Principle"
+  ],
+  "cmath_442": [
+    "Elliptic Paraboloid Minimum Identification",
+    "Completing the Square for Multivariable Quadratics",
+    "Vertex of a Parabola"
+  ],
+  "cmath_4501": [
+    "Grouping Terms in a Product Sequence",
+    "Iterative Sequence Computation",
+    "Linear Equation Solving via Inverse Operations"
+  ],
+  "cmath_456": [
+    "Finite State Space Convergence",
+    "Iterative Computation of Recurrence",
+    "Modular Index Reduction for Periodic Sequences"
+  ],
+  "cmath_4596": [
+    "Sum of Cubes Factorization",
+    "System of Equations via Sum and Product",
+    "Quadratic Equation Solving via Discriminant",
+    "Substitution to Simplify Rational Equations",
+    "Radical Simplification"
+  ],
+  "cmath_4613": [
+    "Algebraic Simplification of Radical Expressions",
+    "Square of a Binomial Expansion",
+    "Telescoping Sum via Partial Fraction Decomposition",
+    "Floor Function for Integer Part Extraction"
+  ],
+  "cmath_4682": [
+    "Digit Count Range in Base b",
+    "Base Expansion to Polynomial Form",
+    "Leading Digit Non-Zero Constraint"
+  ],
+  "cmath_4731": [
+    "System of Linear Congruences",
+    "Solving Linear Congruence via Inverse Multiplication",
+    "Modular Inverse via Extended Euclidean Algorithm",
+    "Smallest Non-Negative Solution via Parameter Tuning"
+  ],
+  "cmath_4777": [
+    "Divisor Count Formula",
+    "Prime Factorization for Divisor Analysis",
+    "Divisibility by 3 via Digit Sum",
+    "Divisibility by 9 via Digit Sum"
+  ],
+  "cmath_4804": [
+    "Circle Circumference Calculation",
+    "Constant Speed Formula",
+    "LCM for Intersection of Divisibility Conditions",
+    "LCM Calculation via Prime Factorization"
+  ],
+  "cmath_4829": [
+    "Euler's Totient Function",
+    "Modular Exponentiation by Squaring",
+    "Chinese Remainder Theorem for Solution Counting",
+    "Modular Arithmetic with Product of Factors"
+  ],
+  "cmath_4859": [
+    "Base Expansion to Polynomial Form",
+    "Digit Range Constraint",
+    "Leading Digit Non-Zero Constraint",
+    "Range Validation for Integer Parameters",
+    "Case Analysis by Parameter Value"
+  ],
+  "cmath_4949": [
+    "Divisor Count Formula",
+    "Fundamental Theorem of Arithmetic",
+    "Perfect Square Exponent Condition"
+  ],
+  "cmath_4950": [
+    "Largest Prime Divisor Identification",
+    "Prime Factorization for Divisor Analysis",
+    "Prime Factorization of Factorials",
+    "Primality Testing via Trial Division"
+  ],
+  "cmath_4962": [
+    "Common Remainder Congruence Reduction",
+    "LCM Calculation via Prime Factorization",
+    "System of Linear Congruences",
+    "LCM Intersection for Divisibility"
+  ],
+  "cmath_5196": [
+    "Divisor Count Formula",
+    "Prime Factorization for Divisor Analysis"
+  ],
+  "cmath_5230": [
+    "Linear Equation Solving via Substitution",
+    "Integer Count in Real Interval",
+    "Intersection of Inequality Intervals",
+    "Case Analysis by Parameter Range",
+    "Range Validation for Integer Parameters"
+  ],
+  "cmath_5232": [
+    "Linear Combination for GCD Elimination",
+    "GCD Bounding via Specific Instance",
+    "Prime Factorization for Divisor Analysis"
+  ],
+  "cmath_5243": [
+    "Interval Width Calculation",
+    "Integer Count in Real Interval",
+    "Intersection of Inequality Intervals"
+  ],
+  "cmath_5246": [
+    "Digit Count Range in Base b",
+    "Floor Function for Integer Part Extraction",
+    "Summation of Disjoint Cases"
+  ],
+  "cmath_525": [
+    "Simon's Favorite Factoring Trick",
+    "Divisor Count Formula",
+    "Integer Factorization for Diophantine Equations"
+  ],
+  "cmath_5259": [
+    "Simon's Favorite Factoring Trick",
+    "Prime Factorization for Divisor Analysis",
+    "Parity Constraint on Product Factors",
+    "Integer Factorization for Diophantine Equations"
+  ],
+  "cmath_5263": [
+    "LCM Calculation via Prime Factorization",
+    "Prime Factorization for Divisor Analysis",
+    "Divisor Count Formula"
+  ],
+  "cmath_5268": [
+    "Base Expansion to Linear Form",
+    "System of Linear Equations via Substitution",
+    "Linear Congruence Solvability and Count",
+    "Range Validation for Integer Parameters"
+  ],
+  "cmath_5274": [
+    "Prime Factorization for Divisor Analysis",
+    "Linear Congruence Solvability and Count",
+    "LCM Intersection for Divisibility",
+    "Divisibility by 3 via Digit Sum",
+    "Divisibility by 9 via Digit Sum"
+  ],
+  "cmath_5285": [
+    "Divisor Count Formula",
+    "Parity of Sum of Integers",
+    "Summation of Arithmetic Progression",
+    "Integer Count in Real Interval"
+  ],
+  "cmath_5313": [
+    "Repeating Decimal to Fraction Conversion",
+    "Divisibility by 11 via Alternating Sum",
+    "Linear Equation Solving via Substitution",
+    "Integer Constraint on Continuous Interval"
+  ],
+  "cmath_5348": [
+    "Divisor Count Formula",
+    "Complementary Counting",
+    "Perfect Power Divisor Condition",
+    "System of Linear Congruences",
+    "LCM Calculation via Prime Factorization"
+  ],
+  "cmath_536": [
+    "Vieta's Formulas",
+    "Parity of Sum of Integers",
+    "Composite Number Definition"
+  ],
+  "cmath_5388": [
+    "Coprimality Condition for Modular Inverse",
+    "Modular Reduction of Large Coefficients",
+    "Solving Linear Congruence via Inverse Multiplication",
+    "Counting Solutions in a Range via Parameterization"
+  ],
+  "cmath_539": [
+    "Sum of Arithmetic Progression",
+    "Arithmetic Progression Counting",
+    "Sum of First n Integers"
+  ],
+  "cmath_5398": [
+    "GCD-LCM Product Identity",
+    "Prime Factorization for Divisor Analysis",
+    "Integer Constraint from Radical Terms"
+  ],
+  "cmath_5400": [
+    "GCD Divides Linear Combination",
+    "GCD of Coprime Components",
+    "GCD of Divisor and Multiple",
+    "Divisibility by 9 via Digit Sum"
+  ],
+  "cmath_5676": [
+    "Periodicity of Rational Decimals",
+    "Geometric Series Summation",
+    "Sum of Consecutive Integers"
+  ]
+}

@@ -1,9 +1,9 @@
 {
   "description": "LiveCodeBench v5+v6 (all difficulties). Seed=42.",
   "datasets": {
-    "v5": "/root/workspace/data/hf/livecodebench",
-    "v6": "/root/workspace/data/hf/livecodebench_v6",
-    "combined": "/root/workspace/data/hf/livecodebench_v56"
+    "v5": "data/livecodebench_v56",
+    "v6": "data/livecodebench_v56",
+    "combined": "data/livecodebench_v56"
   },
   "total": 342,
   "build": {

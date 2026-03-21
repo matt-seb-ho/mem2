@@ -1,0 +1,503 @@
+{
+  "3502": [
+    "Brute Force Search",
+    "Frequency Map",
+    "Sliding Window"
+  ],
+  "3588": [
+    "Dynamic Programming on Time Steps",
+    "State Definition by Auxiliary Value",
+    "Modulo Arithmetic for Counting"
+  ],
+  "3591": [
+    "Prefix Sum Array",
+    "Greedy Strategy with Local Optimization",
+    "Floyd-Warshall Algorithm"
+  ],
+  "3607": [
+    "Sieve of Eratosthenes",
+    "Reverse Linear Scan",
+    "Greedy Strategy with Local Optimization"
+  ],
+  "3608": [
+    "GCD of a Set",
+    "Modulo Arithmetic for Counting",
+    "Modular Exponentiation",
+    "Inclusion-Exclusion Principle",
+    "Frequency Map"
+  ],
+  "3616": [
+    "Brute Force Search",
+    "State Tracking with Counter",
+    "State Definition by Position"
+  ],
+  "3621": [
+    "Input Validation for Boundary Conditions",
+    "Frequency Map (Set for Uniqueness)",
+    "Greedy Strategy with Sorting"
+  ],
+  "3631": [
+    "State Definition by Auxiliary Value",
+    "State Definition by Position",
+    "Modulo Arithmetic for Counting",
+    "State Tracking with Bounded Auxiliary Value"
+  ],
+  "3632": [
+    "Linear Scan for Maximum",
+    "Linear Adjacent Pair Scan",
+    "Linear Scan with Conditional Aggregation"
+  ],
+  "3636": [
+    "Linear Scan for Character Count",
+    "Linear Scan for Pattern Validation",
+    "Parity Check for Sum"
+  ],
+  "3638": [
+    "Dynamic Programming on Subarrays",
+    "State Definition by Auxiliary Value",
+    "Greedy Strategy with Sorting",
+    "Frequency Map",
+    "Binary Search on Answer"
+  ],
+  "3646": [
+    "Dynamic Programming on Subsequences",
+    "Value-Based DP State",
+    "State Definition by Auxiliary Value",
+    "Modulo Arithmetic for Counting"
+  ],
+  "3647": [
+    "Greedy Strategy with Sorting",
+    "Difference Array",
+    "Offline Event Processing",
+    "Two Pointers on Sorted Array"
+  ],
+  "3653": [
+    "Prefix Sum Array",
+    "State Tracking with Auxiliary Values in Map",
+    "Linear Scan for Maximum"
+  ],
+  "3654": [
+    "Knapsack Dynamic Programming",
+    "State Definition by Auxiliary Value",
+    "State Definition by Subset"
+  ],
+  "3656": [
+    "Brute Force Search",
+    "Frequency Map",
+    "Set Membership for Constant-Time Lookup"
+  ],
+  "3680": [
+    "DSU with Path Compression and Rank Heuristic",
+    "Sieve of Eratosthenes",
+    "GCD of a Set",
+    "LCM of a Set",
+    "Implicit Graph Graph"
+  ],
+  "3684": [
+    "Brute Force Search",
+    "Substring Enumeration",
+    "String Delimiter Parsing",
+    "Linear Scan for Pattern Validation"
+  ],
+  "3699": [
+    "Frequency Map",
+    "Prefix Sum Array",
+    "Two Sum with Frequency Map"
+  ],
+  "3705": [
+    "Frequency Map",
+    "Brute Force Search",
+    "Sliding Window"
+  ],
+  "3709": [
+    "Linear Scan for Run Lengths",
+    "Block Decomposition",
+    "Linear Scan for Pattern Validation"
+  ],
+  "3714": [
+    "Sorting by Key",
+    "Combinatorial Summation over Subsets",
+    "Modulo Arithmetic for Counting",
+    "Binomial Coefficient Precomputation"
+  ],
+  "3715": [
+    "Sliding Window for Subarray Properties",
+    "Coordinate Sweep Line",
+    "Prefix Sum Array",
+    "Two Pointers on Sorted Array",
+    "Linear Scan for Run Lengths"
+  ],
+  "3731": [
+    "Prefix Sum Array",
+    "Brute Force Search",
+    "Linear Scan for Character Count"
+  ],
+  "3736": [
+    "Frequency Map",
+    "Linear Adjacent Pair Scan",
+    "Linear Scan for Pattern Validation"
+  ],
+  "3743": [
+    "Sliding Window",
+    "Prefix Sum Array"
+  ],
+  "3748": [
+    "Implicit Grid Graph",
+    "Coordinate Transformation for Manhattan Distance",
+    "Linear Scan for Run Lengths",
+    "Sorting by Key",
+    "Prefix Sum Array"
+  ],
+  "3759": [
+    "Offline Query Processing",
+    "Binary Lifting on Fenwick Tree",
+    "Fenwick Tree for Inversion Counting"
+  ],
+  "3760": [
+    "State Tracking with Auxiliary Values in Map",
+    "Constant-Time Lookup",
+    "Linear Scan for Index Extraction",
+    "Multiples Enumeration via Strided Loop",
+    "Sieve of Eratosthenes"
+  ],
+  "3763": [
+    "Binary Search on Answer",
+    "Coordinate Sweep Line"
+  ],
+  "3764": [
+    "Greedy Strategy with Sorting",
+    "Top-K Selection",
+    "Sorting by Key"
+  ],
+  "3778": [
+    "Character Replacement Pattern",
+    "Sorting by Key",
+    "Frequency Map"
+  ],
+  "3781": [
+    "Binary Search on Answer",
+    "Greedy Strategy with Sorting",
+    "Coordinate Transformation for Manhattan Distance"
+  ],
+  "3785": [
+    "Range Constraint Satisfaction",
+    "Linear Scan for Maximum",
+    "Input Validation for Boundary Conditions"
+  ],
+  "3786": [
+    "Dynamic Programming on Subsequences",
+    "State Definition by Auxiliary Value",
+    "State Definition by Position"
+  ],
+  "3789": [
+    "Prefix Sum Array",
+    "Suffix Maximum Aggregation",
+    "Algebraic Decomposition of Subarray Sums",
+    "Coordinate Sweep Line",
+    "Linear Scan for Maximum"
+  ],
+  "3794": [
+    "Dynamic Programming on Time Steps",
+    "Prefix Sum Array",
+    "Linear Scan for Maximum"
+  ],
+  "3809": [
+    "DSU with Path Compression and Rank Heuristic",
+    "Brute Force Search",
+    "Frequency Map",
+    "Connected Component Analysis"
+  ],
+  "3817": [
+    "Input Validation for Boundary Conditions",
+    "Greedy Selection with Sorting",
+    "Range Constraint Satisfaction",
+    "Linear Scan for Maximum",
+    "Binary Search on Answer"
+  ],
+  "3832": [
+    "Linear Scan for Maximum",
+    "Prefix Sum Array"
+  ],
+  "abc374_e": [
+    "Binary Search on Answer",
+    "Linear Scan for Small Range",
+    "Knapsack Dynamic Programming"
+  ],
+  "abc375_a": [
+    "Linear Scan for Pattern Validation",
+    "Linear Scan with Conditional Aggregation",
+    "Fixed-Size Subarray Scan"
+  ],
+  "abc375_c": [
+    "Layered Grid Construction",
+    "Symmetric Coordinate Mapping",
+    "Coordinate Transformation for Centering"
+  ],
+  "abc375_d": [
+    "Combinatorial Summation over Pairs",
+    "Frequency Map",
+    "Linear Scan for Character Count"
+  ],
+  "abc376_a": [
+    "Linear Scan with Conditional Aggregation",
+    "State Tracking with Thresholds"
+  ],
+  "abc376_b": [
+    "Circular Distance Calculation",
+    "State Tracking with Counter"
+  ],
+  "abc376_d": [
+    "BFS for Unweighted Shortest Path",
+    "Dijkstra's Algorithm"
+  ],
+  "abc376_f": [
+    "Dynamic Programming on Time Steps",
+    "State Definition by Position",
+    "Circular Distance Calculation"
+  ],
+  "abc376_g": [
+    "Tree DP on Subtrees",
+    "Greedy Strategy with Sorting",
+    "Modular Arithmetic for Counting",
+    "Modular Inverse via Fermat's Little Theorem",
+    "Prefix Sum Array"
+  ],
+  "abc377_d": [
+    "Prefix Minimum and Suffix Maximum Aggregation",
+    "Coordinate Sweep Line",
+    "Linear Scan for Maximum"
+  ],
+  "abc378_b": [
+    "Linear Equation Derivation",
+    "Modular Congruence Check",
+    "Modular Arithmetic for Counting"
+  ],
+  "abc378_f": [
+    "Connected Component Analysis",
+    "Graph Structure Check",
+    "BFS for Unweighted Shortest Path",
+    "Tree DP on Subtrees",
+    "Linear Scan for Index Extraction"
+  ],
+  "abc380_d": [
+    "Binary Search on Answer",
+    "Linear Scan for Pattern Validation",
+    "Coordinate Transformation for Centering",
+    "Bit Length Calculation",
+    "Modular Arithmetic for Counting"
+  ],
+  "abc380_f": [
+    "Brute Force Search",
+    "Depth-First Search with Backtracking",
+    "State Definition by Subset",
+    "Dynamic Programming on DAG"
+  ],
+  "abc381_b": [
+    "Linear Scan for Pattern Validation",
+    "Frequency Map",
+    "Input Validation for Boundary Conditions"
+  ],
+  "abc382_c": [
+    "Prefix Minimum and Suffix Maximum Aggregation",
+    "Value-Based DP State",
+    "Offline Query Processing",
+    "Linear Scan for Index Extraction"
+  ],
+  "abc382_f": [
+    "Segment Tree for Range Queries",
+    "Sorting by Key",
+    "Coordinate Sweep Line",
+    "Greedy Strategy with Sorting"
+  ],
+  "abc383_a": [
+    "Linear Scan for Pattern Validation",
+    "State Tracking with Counter",
+    "Linear Scan for Small Range"
+  ],
+  "abc383_c": [
+    "BFS for Unweighted Shortest Path",
+    "Implicit Grid Graph",
+    "State Definition by Position"
+  ],
+  "abc383_e": [
+    "Kruskal's Algorithm for Minimum Spanning Tree",
+    "DSU with Path Compression and Rank Heuristic",
+    "State Tracking with Auxiliary Values in DSU",
+    "Sorting by Key"
+  ],
+  "abc384_b": [
+    "Linear Scan with Conditional Aggregation",
+    "State Tracking with Counter",
+    "Input Validation for Boundary Conditions"
+  ],
+  "abc384_e": [
+    "Dijkstra's Algorithm",
+    "Implicit Grid Graph",
+    "State Definition by Position",
+    "Set Membership for Constant-Time Lookup",
+    "Greedy Strategy with Sorting"
+  ],
+  "abc386_c": [
+    "Linear Scan for Mismatch",
+    "Input Validation for Boundary Conditions",
+    "Linear Scan for Character Count"
+  ],
+  "abc387_a": [
+    "Input Validation for Boundary Conditions",
+    "Modular Arithmetic for Counting",
+    "Linear Scan for Character Count",
+    "Linear Scan for Maximum",
+    "Linear Scan for Small Range"
+  ],
+  "abc390_c": [
+    "Linear Scan for Index Extraction",
+    "Linear Scan for Pattern Validation",
+    "Input Validation for Boundary Conditions"
+  ],
+  "abc390_f": [
+    "Linear Scan for Index Extraction",
+    "Combinatorial Summation over Ranges",
+    "Two Pointers on Sorted Array",
+    "Frequency Map",
+    "Prefix Sum Optimization"
+  ],
+  "abc391_b": [
+    "Brute Force Search",
+    "Fixed-Size Subarray Scan",
+    "Linear Scan for Pattern Validation"
+  ],
+  "abc391_g": [
+    "Dynamic Programming on Time Steps",
+    "State Compression with Bounded Auxiliary Value",
+    "Modulo Arithmetic for Counting",
+    "Bitmask Representation of Grid Rows",
+    "State Definition by Subset"
+  ],
+  "abc392_c": [
+    "Bidirectional Mapping",
+    "Constant-Time Lookup"
+  ],
+  "abc392_d": [
+    "Frequency Map",
+    "Brute Force Search",
+    "Linear Scan for Character Count",
+    "Linear Scan for Maximum"
+  ],
+  "abc393_a": [
+    "Brute Force Search",
+    "Constant-Time Lookup"
+  ],
+  "abc393_b": [
+    "Brute Force Search",
+    "Center Expansion with Precomputed Bounds"
+  ],
+  "abc393_d": [
+    "Greedy Strategy with Sorting",
+    "Linear Scan for Index Extraction",
+    "Prefix Sum Optimization"
+  ],
+  "abc395_a": [
+    "Linear Adjacent Pair Scan",
+    "Linear Scan for Pattern Validation"
+  ],
+  "abc396_b": [
+    "State Tracking with Counter"
+  ],
+  "abc396_c": [
+    "Greedy Strategy with Sorting",
+    "Prefix Sum Array",
+    "Linear Scan for Maximum"
+  ],
+  "abc397_e": [
+    "Tree DP on Subtrees",
+    "Greedy Strategy with Local Optimization",
+    "Post-Order Traversal",
+    "Degree Imbalance Calculation",
+    "Input Validation for Boundary Conditions"
+  ],
+  "abc397_g": [
+    "Binary Search on Answer",
+    "0-1 BFS",
+    "Dynamic Programming on DAG",
+    "Connected Component Analysis",
+    "Degree Imbalance Calculation"
+  ],
+  "abc398_b": [
+    "Frequency Map",
+    "Pattern Matching on Sorted Frequencies",
+    "Brute Force Search"
+  ],
+  "abc400_e": [
+    "Sieve of Eratosthenes",
+    "Mathematical Decomposition by Prime Factors",
+    "Linear Scan for Maximum",
+    "Integer Square Root for Geometric Bounds"
+  ],
+  "arc184_c": [
+    "State Tracking with Bounded Auxiliary Value",
+    "Dynamic Programming on Time Steps"
+  ],
+  "arc184_e": [
+    "Prefix Sum Array",
+    "Frequency Map",
+    "Modulo Arithmetic for Counting"
+  ],
+  "arc185_c": [
+    "Frequency Map",
+    "Two Sum with Frequency Map",
+    "Brute Force Search",
+    "Linear Scan for Character Count"
+  ],
+  "arc185_e": [
+    "Modular Arithmetic for Counting",
+    "Frequency Map",
+    "Precomputed Powers for Modular Exponentiation",
+    "GCD of a Set",
+    "Linear Scan for Maximum"
+  ],
+  "arc188_d": [
+    "Graph Structure Check",
+    "Combinatorial Counting with Permutations",
+    "Modular Arithmetic for Counting",
+    "Modular Inverse via Fermat's Little Theorem",
+    "Input Validation for Boundary Conditions"
+  ],
+  "arc189_c": [
+    "Functional Graph Chain",
+    "Connected Component Analysis",
+    "Circular Distance Calculation",
+    "Linear Scan for Maximum",
+    "Set Membership Check"
+  ],
+  "arc190_d": [
+    "Matrix Exponentiation for Linear Recurrences",
+    "Modular Exponentiation",
+    "Modular Arithmetic in Summation",
+    "Modular Arithmetic for Counting"
+  ],
+  "arc193_d": [
+    "Binary Search on Answer",
+    "Greedy Selection with Two Pointers"
+  ],
+  "arc194_c": [
+    "Greedy Strategy with Sorting",
+    "Linear Scan for Mismatch",
+    "Prefix Sum Optimization",
+    "Linear Scan for Character Count"
+  ],
+  "arc194_d": [
+    "Frequency Map",
+    "Modular Arithmetic for Counting",
+    "Binomial Coefficient Precomputation",
+    "Sorting by Key"
+  ],
+  "arc195_a": [
+    "Dynamic Programming on Subsequences",
+    "Linear Scan for Pattern Validation",
+    "State Tracking with Counter"
+  ],
+  "arc196_b": [
+    "Dynamic Programming on Grid",
+    "Modulo Arithmetic for Counting"
+  ]
+}

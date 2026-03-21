@@ -1,0 +1,1305 @@
+{
+  "cmath_10098": [
+    "Bounding via Coefficient Growth",
+    "Case Analysis on Factor Zero",
+    "Algebraic Substitution for Target Expression",
+    "Degree of Polynomial Composition",
+    "Factor Theorem Application"
+  ],
+  "cmath_10143": [
+    "Algebraic Expansion of Binomial Products",
+    "Algebraic Substitution for Target Expression",
+    "Algebraic Simplification of Radical Expressions",
+    "Algebraic Equivalence via Symmetric Sums",
+    "Expansion of Binomial Squares"
+  ],
+  "cmath_10170": [
+    "Coefficient Identification from Standard Form",
+    "Case Analysis on Root Multiplicity",
+    "Case Analysis on Parameter Value",
+    "Factorization of Cubic Polynomials",
+    "Factor Theorem Application"
+  ],
+  "cmath_10229": [
+    "Algebraic Identity for $(a+b+c)^3$",
+    "Change of Base to Common Logarithm",
+    "Domain Validation for Logarithmic Bases",
+    "Factorization of Cubic Polynomials",
+    "Factorization of Sum of Cubes"
+  ],
+  "cmath_10265": [
+    "Case Analysis on Parameter Value",
+    "Binomial Expansion for Squared Expressions",
+    "Complex Number to Cartesian Coordinate Mapping",
+    "Complex Number Representation of Real Systems",
+    "Cyclic System Substitution"
+  ],
+  "cmath_10274": [
+    "Coordinate Geometry with Axis Tangency",
+    "Distance Formula Application",
+    "Linear Equation Solving for Unknown Count",
+    "Linear System Solvability via Determinant",
+    "Intersection of Solution Sets"
+  ],
+  "cmath_1035": [
+    "Coefficient Identification from Standard Form",
+    "Case Analysis by Parameter Value",
+    "Algebraic Expansion of Binomial Products",
+    "Expansion of Binomial Products",
+    "Equating Derived Expressions"
+  ],
+  "cmath_10404": [
+    "Coefficient Identification from Standard Form",
+    "Algebraic Substitution for Target Expression",
+    "Consistency Check for Simultaneous Conditions",
+    "Factor Theorem Application",
+    "Discriminant Condition for Multiple Roots"
+  ],
+  "cmath_10424": [
+    "Completing the Square for Multivariable Quadratics",
+    "Convexity and Critical Point Minimization",
+    "Discriminant Condition for Multiple Roots",
+    "Non-Negative Sum Zero Principle",
+    "Linear Equation Solving via Substitution"
+  ],
+  "cmath_10546": [
+    "Carmichael Function for Universal Exponent",
+    "Algebraic Substitution for Target Expression",
+    "Coprimality Condition for Modular Inverse",
+    "Definition of Modular Congruence",
+    "Divisor Enumeration for Integer Constraints"
+  ],
+  "cmath_10547": [
+    "Common Remainder Congruence Reduction",
+    "Case Analysis by Parameter Range",
+    "Definition of Modular Congruence",
+    "Counting Solutions in a Range via Parameterization",
+    "Floor Function for Integer Bounds"
+  ],
+  "cmath_10564": [
+    "Arithmetic Progression Counting",
+    "Block Decomposition for Summation Modulo $m$",
+    "Base-10 Digit Representation",
+    "Case Analysis on Parameter Value",
+    "Divisibility of Products by Prime Factors"
+  ],
+  "cmath_10599": [
+    "Case Analysis by Residue Class",
+    "Case Analysis by Parameter Range",
+    "Definition of Modular Congruence",
+    "Counting Solutions in a Range via Parameterization",
+    "Domain Validation for Derived Solutions"
+  ],
+  "cmath_10620": [
+    "Arithmetic Progression Summation",
+    "Arithmetic Sequence Term Relation",
+    "Case Analysis by Parameter Value",
+    "Linear Equation Solving via Summation",
+    "Integer Factor Enumeration"
+  ],
+  "cmath_10637": [
+    "Base-b Polynomial Representation",
+    "Case Analysis by Divisor Value",
+    "Definition of Modular Congruence",
+    "Digit Range Constraint",
+    "Divisor Enumeration via Prime Factorization"
+  ],
+  "cmath_10685": [
+    "Algebraic Substitution via Common Factor Extraction",
+    "Case Analysis by Parameter Value",
+    "Fundamental Theorem of Arithmetic",
+    "Divisor Enumeration via Prime Factorization",
+    "GCD-LCM Product Identity"
+  ],
+  "cmath_1073": [
+    "Algebraic Substitution for Target Expression",
+    "Consistency Check for Simultaneous Conditions",
+    "Exponent Laws for Linearization",
+    "Exponent Laws for Radical Simplification",
+    "Equating Exponents for Same Base"
+  ],
+  "cmath_10805": [
+    "Base-10 Digit Representation",
+    "Case Analysis by Digit Value",
+    "Column-wise Addition with Carry Propagation",
+    "Digit Count Range in Base b",
+    "Digit Range Constraint"
+  ],
+  "cmath_10857": [
+    "Algebraic Simplification of Difference",
+    "Base-10 Digit Representation",
+    "Algebraic Substitution via Common Factor Extraction",
+    "Coprimality Condition for Lowest Terms",
+    "Fraction Simplification via GCD"
+  ],
+  "cmath_10962": [
+    "Fermat's Little Theorem",
+    "Exponent Laws in Modular Arithmetic",
+    "Modular Reduction of Large Coefficients",
+    "Modular Reduction of Large Powers",
+    "Periodicity of Powers Modulo $n$"
+  ],
+  "cmath_10967": [
+    "Composite Number Definition",
+    "Case Analysis on Divisor Count",
+    "Divisor Enumeration via Prime Factorization",
+    "Divisor Sum Decomposition",
+    "Geometric Series Sum for Prime Powers"
+  ],
+  "cmath_11016": [
+    "Case Analysis on Divisor Count",
+    "Case Analysis by Parameter Value",
+    "Divisor Count Formula",
+    "Divisor Enumeration for Diophantine Equations",
+    "Integer Factor Enumeration"
+  ],
+  "cmath_11303": [
+    "Collinear Segment Subtraction",
+    "Collinear Point Distance Calculation",
+    "Distance Between Points with Common Coordinate",
+    "Coordinate Translation (Shift of Origin)",
+    "Equating Derived Expressions"
+  ],
+  "cmath_11338": [
+    "Constant Sequence Identification",
+    "Arithmetic Sequence Sum Formula",
+    "Convexity Constraint on Polygon Angles",
+    "Equating Derived Expressions",
+    "Domain Validation for Physical Quantities"
+  ],
+  "cmath_11504": [
+    "Base-10 Digit Representation",
+    "Case Analysis by Digit Position",
+    "Case Analysis by Digit Value",
+    "Digit Range Constraint",
+    "Domain Validation for Rational Equations"
+  ],
+  "cmath_11575": [
+    "Base-10 Digit Representation",
+    "Case Analysis by Digit Position",
+    "Exponentiation for Sequence Generation",
+    "Digit Range Constraints in Base b",
+    "Digit Count Range in Base b"
+  ],
+  "cmath_11628": [
+    "Distance Formula in Coordinate Plane",
+    "Coordinate Geometry with Right Triangle Alignment",
+    "Distance Formula Application",
+    "Law of Cosines for Distance Calculation",
+    "Law of Cosines for Vector Magnitude"
+  ],
+  "cmath_11970": [
+    "Cofactor Expansion for Determinant Calculation",
+    "Angle Between Lines via Slopes",
+    "Absolute Value of Determinant for Volume",
+    "Determinant of Linear Transformation Matrix",
+    "Linear System Solvability via Determinant"
+  ],
+  "cmath_12063": [
+    "Algebraic Simplification of Radical Expressions",
+    "Coefficient Identification from Standard Form",
+    "Circle Standard Form Identification",
+    "Distance Formula Application",
+    "Coordinate Geometry with Rotational Symmetry"
+  ],
+  "cmath_12065": [
+    "Case Analysis by Parameter Value",
+    "Case Analysis on Factor Zero",
+    "Counting Distinct Solutions",
+    "Equating Alternative Representations",
+    "Factorization of Polynomial Differences"
+  ],
+  "cmath_12173": [
+    "Algebraic Substitution for Target Expression",
+    "Algebraic Expansion of Binomial Products",
+    "Algebraic Simplification of Difference",
+    "Domain Validation for Rational Equations",
+    "Factorization by Difference of Squares"
+  ],
+  "cmath_12357": [
+    "Completing the Square for Multivariable Quadratics",
+    "Distance Squared Minimization",
+    "Critical Point Optimization via Partial Derivatives",
+    "Pythagorean Theorem for Vector Magnitude",
+    "Quadratic Equation Solving via Discriminant"
+  ],
+  "cmath_1273": [
+    "Coefficient Identification from Standard Form",
+    "Case Analysis on Factor Zero",
+    "Algebraic Expansion of Binomial Products",
+    "Domain Validation for Rational Equations",
+    "Factorization of Cubic Polynomials"
+  ],
+  "cmath_1359": [
+    "Algebraic Substitution for Target Expression",
+    "Case Analysis on Parameter Value",
+    "Definition of Inverse Function",
+    "Evaluation at a Specific Point",
+    "Domain of Inverse Function as Range of Original"
+  ],
+  "cmath_1391": [
+    "Case Analysis on Parameter Value",
+    "Composite Number Definition",
+    "Fundamental Theorem of Arithmetic",
+    "Domain Validation for Derived Solutions",
+    "Integer Factorization for Prime Constraints"
+  ],
+  "cmath_1468": [
+    "Case Analysis on Factor Zero",
+    "Algebraic Simplification of Difference",
+    "Geometric Sequence Ratio Substitution",
+    "Difference of Squares Factorization",
+    "Distinctness Constraint Elimination"
+  ],
+  "cmath_1502": [
+    "Area Decomposition into Triangles",
+    "Area of a Trapezoid",
+    "Area Ratio via Common Altitude",
+    "Determinant of Linear Transformation Matrix",
+    "Distance Formula"
+  ],
+  "cmath_1545": [
+    "Case Analysis by Parameter Value",
+    "Case Analysis on Injectivity of Sequence Values",
+    "2-Cycle Analysis for Set Closure",
+    "Finite State Space Convergence",
+    "Domain Validation for Recurrence Validity"
+  ],
+  "cmath_1770": [
+    "Adjacency Constraint in Grid Graphs",
+    "Binomial Coefficient for Subset Selection",
+    "Combinatorial Enumeration via Case Partition",
+    "Fundamental Counting Principle",
+    "Counting via Complementary Cases"
+  ],
+  "cmath_1815": [
+    "Binomial Coefficient for Subset Selection",
+    "Distinct Item Selection Logic",
+    "Fundamental Counting Principle",
+    "Counting Distinct Solutions",
+    "One-to-One Correspondence via Parameterization"
+  ],
+  "cmath_1859": [
+    "Complementary Counting",
+    "Arithmetic Progression Counting",
+    "Base-10 Digit Representation",
+    "Counting Multiples via Floor Function",
+    "Counting via Complementary Cases"
+  ],
+  "cmath_2084": [
+    "Case Analysis by Residue Class",
+    "Case Analysis by Parameter Value",
+    "Counting via Block Decomposition and Remainder Analysis",
+    "Counting Multiples via Floor Function",
+    "Fundamental Counting Principle"
+  ],
+  "cmath_2097": [
+    "Arithmetic Sequence Identification in Functional Values",
+    "Case Analysis by Parameter Value",
+    "Arithmetic Sequence Term Relation",
+    "Counting Multiples via Floor Function",
+    "Counting Solutions in a Range via Parameterization"
+  ],
+  "cmath_2107": [
+    "Binomial Coefficient for Subset Selection",
+    "Base-10 Digit Representation",
+    "Fundamental Counting Principle for Sequential Selection",
+    "Distinct Item Selection Logic",
+    "Factorial Representation of Permutations"
+  ],
+  "cmath_2115": [
+    "Complementary Counting",
+    "Complementary Counting for Geometric Configurations",
+    "Fundamental Counting Principle",
+    "Counting via Complementary Cases",
+    "Coprimality Condition for Lowest Terms"
+  ],
+  "cmath_2126": [
+    "Case Analysis by Number of Digits",
+    "Case Analysis on Leading Digit Zero",
+    "Base-10 Digit Representation",
+    "Combinatorial Selection of Pairs",
+    "Fundamental Counting Principle"
+  ],
+  "cmath_2133": [
+    "Complementary Counting via Symmetry",
+    "Binomial Coefficient for Subset Selection",
+    "Case Analysis by Parameter Value",
+    "Coprimality Condition for Lowest Terms",
+    "Fundamental Counting Principle"
+  ],
+  "cmath_2138": [
+    "Composition Recurrence Relation",
+    "Characteristic Equation for Linear Recurrences",
+    "Combinatorial Enumeration via Case Partition",
+    "Iterative Sequence Computation",
+    "Linear Recurrence Relation with Constant Term"
+  ],
+  "cmath_2146": [
+    "Absolute Value Distance Interpretation",
+    "Combinatorial Enumeration via Case Partition",
+    "Arithmetic Progression Summation",
+    "Fundamental Counting Principle for Sequential Selection",
+    "Distinct Item Selection Logic"
+  ],
+  "cmath_2149": [
+    "Case Analysis by Parameter Range",
+    "Case Analysis on Parameter Value",
+    "Algebraic Substitution for Target Expression",
+    "Floor Function for Integer Part Extraction",
+    "Discriminant Condition for Rational Roots"
+  ],
+  "cmath_2154": [
+    "Binomial Coefficient for Subset Selection",
+    "Case Analysis by Chain Length",
+    "Combinatorial Enumeration via Case Partition",
+    "Fundamental Counting Principle",
+    "Division by Symmetry Factor for Indistinguishable Groups"
+  ],
+  "cmath_2182": [
+    "Combinatorial Selection of Pairs",
+    "Combinatorial Enumeration via Case Partition",
+    "Coefficient of $x^2$ via Power Sums",
+    "Fundamental Counting Principle",
+    "Counting Distinct Solutions"
+  ],
+  "cmath_2193": [
+    "Case Analysis by Monotonicity Constraint",
+    "Base-10 Digit Representation",
+    "Binomial Coefficient for Subset Selection",
+    "Digit Range Constraint",
+    "Fundamental Counting Principle"
+  ],
+  "cmath_2307": [
+    "Base-10 Digit Representation",
+    "Case Analysis by Chain Length",
+    "Case Analysis by Digit Value",
+    "Digit Count Range in Base b",
+    "Digit Interchange Symmetry"
+  ],
+  "cmath_2309": [
+    "Adjacency Constraint in Grid Graphs",
+    "Combinatorial Enumeration via Case Partition",
+    "Case Analysis by Initial Edge Selection",
+    "Connectivity and Dead-End Validation",
+    "Counting Distinct Solutions"
+  ],
+  "cmath_2340": [
+    "Binomial Coefficient for Subset Selection",
+    "Case Analysis by Parameter Count",
+    "Fundamental Counting Principle",
+    "Distinct Item Selection Logic",
+    "Power Set Cardinality"
+  ],
+  "cmath_243": [
+    "Case Analysis by Parameter Value",
+    "Arithmetic Progression Summation",
+    "Domain Validation for Derived Solutions",
+    "Evaluation at a Specific Point",
+    "Intersection of Solution Sets"
+  ],
+  "cmath_2691": [
+    "Angle Bisector Theorem",
+    "Area Ratio via Common Altitude",
+    "Area Calculation via Side Length Squared",
+    "Distance Formula Application",
+    "Difference of Squares Factorization in Geometric Equations"
+  ],
+  "cmath_2920": [
+    "Circle Center on Axis Constraint",
+    "Circle Standard Form Identification",
+    "Chord Length from Distance to Center",
+    "Collinear Point Distance Calculation",
+    "Complex Number to Cartesian Coordinate Mapping"
+  ],
+  "cmath_2924": [
+    "Distance from Point to Line Formula",
+    "Coordinate Geometry with Altitude as Axis",
+    "Distance Formula Application",
+    "Height of Tetrahedron from Volume and Base Area",
+    "Linear Equation Solving via Inverse Operations"
+  ],
+  "cmath_2931": [
+    "Absolute Value of Determinant for Volume",
+    "Area Decomposition into Triangles",
+    "Area via Sine Rule and Product of Sides",
+    "Circle Center on Axis Constraint",
+    "Circle Standard Form Identification"
+  ],
+  "cmath_2939": [
+    "Cone Volume Formula",
+    "Area via Sine Rule and Product of Sides",
+    "Area Ratio via Common Altitude",
+    "Cross-Section Reduction for Solids of Revolution",
+    "Distance Formula Application"
+  ],
+  "cmath_2973": [
+    "Area Decomposition via Subtraction",
+    "Algebraic Substitution for Target Expression",
+    "Geometric Decomposition for Area",
+    "Expansion of Binomial Squares",
+    "Fraction Simplification via GCD"
+  ],
+  "cmath_2985": [
+    "Area Calculation via Side Length Squared",
+    "Distance Classification in Hypercube Vertices",
+    "Distance Squared via Coordinate Differences",
+    "Law of Cosines for Vector Magnitude",
+    "Law of Cosines for Distance Calculation"
+  ],
+  "cmath_2989": [
+    "Collinearity via Triangle Inequality Equality",
+    "Case Analysis by Divisor Value",
+    "Case Analysis by Parameter Value",
+    "Difference of Squares Factorization",
+    "Divisor Enumeration for Diophantine Equations"
+  ],
+  "cmath_3010": [
+    "Circle Standard Form Identification",
+    "Algebraic Substitution for Target Expression",
+    "Case Analysis on Root Multiplicity",
+    "Coefficient Extraction from Standard Form",
+    "Ellipse Focal Property"
+  ],
+  "cmath_3011": [
+    "Chord Length from Distance to Center",
+    "Circle Center on Axis Constraint",
+    "Collinear Point Distance Calculation",
+    "Algebraic Simplification of Radical Expressions",
+    "External Center of Similitude"
+  ],
+  "cmath_3022": [
+    "Area Decomposition into Triangles",
+    "Collinear Segment Subtraction",
+    "Case Analysis by Parameter Value",
+    "Base-10 Digit Representation",
+    "Circle Center on Axis Constraint"
+  ],
+  "cmath_3023": [
+    "Circle Circumference Calculation",
+    "Constant Speed Formula",
+    "Algebraic Substitution for Target Expression",
+    "Distance Formula",
+    "Divisor Enumeration via Prime Factorization"
+  ],
+  "cmath_3054": [
+    "Collinear Point Distance Calculation",
+    "Algebraic Substitution for Target Expression",
+    "Algebraic Simplification of Difference",
+    "Distance Squared Equation for Intersection",
+    "Equating Derived Expressions"
+  ],
+  "cmath_3059": [
+    "Basic Proportionality Theorem (Thales's Theorem)",
+    "Area Calculation via Side Length Squared",
+    "Algebraic Substitution for Target Expression",
+    "Coefficient Identification from Standard Form",
+    "Geometric Decomposition for Area"
+  ],
+  "cmath_3115": [
+    "Case Analysis by Parameter Value",
+    "Case Analysis by Partition",
+    "Geometric Constraint Inequality",
+    "Domain Validation for Physical Quantities",
+    "Intersection of Solution Sets"
+  ],
+  "cmath_3121": [
+    "Coordinate Geometry with Right Triangle Alignment",
+    "Coordinate Geometry via Slope and Intercept",
+    "Equating Derived Expressions",
+    "Domain Validation for Derived Solutions",
+    "Counting Distinct Solutions"
+  ],
+  "cmath_3177": [
+    "Area Decomposition into Circular and Polygonal Parts",
+    "Area Decomposition via Subtraction",
+    "Geometric Decomposition for Area",
+    "Distance Formula Application",
+    "Rectangle Area Decomposition"
+  ],
+  "cmath_3206": [
+    "Area Calculation via Side Length Squared",
+    "Circle Area to Radius Conversion",
+    "Circle Circumference Calculation",
+    "Cross-Section Reduction for Solids of Revolution",
+    "Distance Classification in Hypercube Vertices"
+  ],
+  "cmath_3213": [
+    "Central Symmetry of Equilateral Hexagon",
+    "Area of Equilateral Hexagon via Trigonometric Sum",
+    "Area Decomposition into Triangles",
+    "Equilateral Triangle Side Equality",
+    "Coordinate Geometry with Rotational Symmetry"
+  ],
+  "cmath_3317": [
+    "Area of a Trapezoid",
+    "Area Decomposition via Subtraction",
+    "Geometric Decomposition for Area",
+    "Distance from Point to Line Formula",
+    "Coordinate Geometry via Slope and Intercept"
+  ],
+  "cmath_3436": [
+    "Algebraic Substitution for Parameter Reduction",
+    "Algebraic Decomposition of Rational Terms",
+    "Algebraic Substitution via Common Factor Extraction",
+    "Rational Term Decomposition for Symmetry",
+    "Rational Expression Simplification via Factoring"
+  ],
+  "cmath_3442": [
+    "Circle Standard Form Identification",
+    "Algebraic Substitution for Target Expression",
+    "Case Analysis by Parameter Value",
+    "Distance from Point to Line Formula",
+    "Domain Constraint Verification"
+  ],
+  "cmath_3472": [
+    "Algebraic Expansion of Binomial Products",
+    "Algebraic Substitution for Target Expression",
+    "Case Analysis on Parameter Value",
+    "Minimization via Parameter Substitution",
+    "Monotonicity of Integer Functions for Minimization"
+  ],
+  "cmath_3479": [
+    "Absolute Value Distance Interpretation",
+    "Algebraic Simplification of Radical Expressions",
+    "Coefficient Identification from Standard Form",
+    "Ellipse Focal Property",
+    "Equating Derived Expressions"
+  ],
+  "cmath_3569": [
+    "Absolute Value Distance Interpretation",
+    "Complex Number to Cartesian Coordinate Mapping",
+    "Collinearity via Triangle Inequality Equality",
+    "Distance Formula",
+    "Distance Formula Application"
+  ],
+  "cmath_359": [
+    "Coordinate Geometry Intercept Identification",
+    "Factor Theorem Application",
+    "Evaluation at a Specific Point",
+    "Factorization of Cubic Polynomials",
+    "Linear Equation Solving via Substitution"
+  ],
+  "cmath_367": [
+    "Algebraic Substitution for Area",
+    "Completing the Square for Multivariable Quadratics",
+    "Geometric Constraint Inequality",
+    "Discarding Extraneous Solutions via Domain Constraints",
+    "Domain Validation for Derived Solutions"
+  ],
+  "cmath_3697": [
+    "Algebraic Expansion of Binomial Products",
+    "Coefficient Identification from Standard Form",
+    "Algebraic Substitution for Target Expression",
+    "Equating Derived Expressions",
+    "Expansion of Binomial Products"
+  ],
+  "cmath_3719": [
+    "AM-GM Inequality for Minimization",
+    "Algebraic Substitution for Parameter Reduction",
+    "Equality Condition for Cauchy-Schwarz",
+    "Critical Point Optimization via Partial Derivatives",
+    "Domain Validation for Derived Solutions"
+  ],
+  "cmath_3810": [
+    "Case Analysis on Parameter Range",
+    "Case Analysis on Factor Zero",
+    "Chain Decomposition via Prime Powers",
+    "Constructive Existence for Extremal Bounds",
+    "GCD Divides Linear Combination"
+  ],
+  "cmath_3855": [
+    "Algebraic Expansion of Binomial Products",
+    "Algebraic Substitution for Target Expression",
+    "Case Analysis on Parameter Value",
+    "Expansion of Binomial Squares",
+    "Equating Derived Expressions"
+  ],
+  "cmath_3891": [
+    "Case Analysis by Parameter Value",
+    "Case Analysis by Parameter Range",
+    "Arithmetic Progression Counting",
+    "Floor Function Decomposition via Integer-Fraction Split",
+    "Counting Multiples in a Range via Floor Function"
+  ],
+  "cmath_4005": [
+    "Absolute Value Distance Interpretation",
+    "Circle Standard Form Identification",
+    "Completing the Square for Multivariable Quadratics",
+    "Distance Squared Minimization",
+    "Coordinate Translation (Shift of Origin)"
+  ],
+  "cmath_4051": [
+    "Case Analysis on Square Root Sign",
+    "Case Analysis by Parameter Range",
+    "Case Analysis on Parameter Value",
+    "Domain and Sign Analysis for Radical Equations",
+    "Domain Validation for Recurrence Validity"
+  ],
+  "cmath_407": [
+    "Coefficient Identification from Standard Form",
+    "Consistency Check for Simultaneous Conditions",
+    "Algebraic Substitution for Target Expression",
+    "Definition of Inverse Function",
+    "Equating Derived Expressions"
+  ],
+  "cmath_4094": [
+    "Algebraic Simplification of Difference",
+    "Algebraic Equivalence via Symmetric Sums",
+    "Coefficient of $x^2$ via Power Sums",
+    "Coefficient Comparison for Polynomial Identity",
+    "Geometric Series Summation"
+  ],
+  "cmath_4161": [
+    "Case Analysis on Square Root Sign",
+    "Case Analysis on Factor Zero",
+    "Case Analysis on Initial Value",
+    "Consistency Check for Simultaneous Conditions",
+    "Algebraic Substitution for Target Expression"
+  ],
+  "cmath_4174": [
+    "Fundamental Theorem of Arithmetic",
+    "Divisor Enumeration for Diophantine Equations",
+    "Factor Theorem Application",
+    "Fundamental Counting Principle",
+    "Zero Product Property"
+  ],
+  "cmath_4186": [
+    "Algebraic Substitution for Target Expression",
+    "Algebraic Expansion of Binomial Products",
+    "Coefficient Comparison for Polynomial Identity",
+    "Finite Difference of Monic Polynomials",
+    "Factor Theorem Application"
+  ],
+  "cmath_4190": [
+    "Case Analysis on Initial Value",
+    "Case Analysis on Factor Zero",
+    "Consistency Check for Simultaneous Conditions",
+    "Algebraic Substitution for Target Expression",
+    "Functional Equation Substitution"
+  ],
+  "cmath_4215": [
+    "AM-GM Inequality for Minimization",
+    "Case Analysis on Root Multiplicity",
+    "Constructive Existence for Extremal Bounds",
+    "Cubic Polynomial Root Counting via Extrema",
+    "Discriminant Condition for Multiple Roots"
+  ],
+  "cmath_4292": [
+    "Circle Standard Form Identification",
+    "Cauchy-Schwarz Inequality for Sum Maximization",
+    "Completing the Square for Multivariable Quadratics",
+    "Coordinate Translation (Shift of Origin)",
+    "Distance from Point to Line Formula"
+  ],
+  "cmath_433": [
+    "Absolute Value Distance Interpretation",
+    "Circle Standard Form Identification",
+    "Case Analysis on Absolute Value",
+    "Case Analysis on Parameter Value",
+    "Distance Formula Application"
+  ],
+  "cmath_436": [
+    "Geometric Sequence Ratio Substitution",
+    "Geometric Progression Condition",
+    "Exponent Laws for Radical Simplification",
+    "Cube Root Cancellation",
+    "Linear Recurrence with Constant Multiplier"
+  ],
+  "cmath_4416": [
+    "Algebraic Substitution for Parameter Reduction",
+    "Case Analysis by Parameter Range",
+    "Algebraic Substitution for Target Expression",
+    "Equality Condition for Cauchy-Schwarz",
+    "Equality Condition for Jensen's Inequality"
+  ],
+  "cmath_442": [
+    "Completing the Square for Multivariable Quadratics",
+    "Coefficient Identification from Standard Form",
+    "Circle Standard Form Identification",
+    "Critical Point Optimization via Partial Derivatives",
+    "Elliptic Paraboloid Minimum Identification"
+  ],
+  "cmath_4501": [
+    "Difference of Squares Factorization",
+    "Functional Equation Substitution",
+    "Functional Equation Iteration via Backward Substitution",
+    "Grouping Terms in a Product Sequence",
+    "Iterative Sequence Computation"
+  ],
+  "cmath_456": [
+    "Case Analysis on Injectivity of Sequence Values",
+    "Case Analysis by Parameter Value",
+    "Case Analysis on Parameter Range",
+    "Case Analysis on Divisor Properties",
+    "Case Analysis on Initial Value"
+  ],
+  "cmath_4596": [
+    "Algebraic Substitution for Parameter Reduction",
+    "Algebraic Expansion of Binomial Products",
+    "Binomial Theorem",
+    "Cube Root Cancellation",
+    "Factorization of Sum of Cubes"
+  ],
+  "cmath_4613": [
+    "Algebraic Decomposition of Rational Terms",
+    "Boundary Term Substitution",
+    "Binomial Expansion for Squared Expressions",
+    "Expansion of Binomial Squares",
+    "Factorization of Polynomial Differences"
+  ],
+  "cmath_4682": [
+    "Base Expansion to Polynomial Form",
+    "Binary Representation as Subset Sum",
+    "Base-10 Digit Representation",
+    "Leading Zero Padding for Uniform Representation",
+    "Leading Digit Non-Zero Constraint"
+  ],
+  "cmath_4731": [
+    "Chinese Remainder Theorem for Solution Counting",
+    "Definition of Modular Congruence",
+    "Coprimality Condition for Modular Inverse",
+    "Domain Validation for Derived Solutions",
+    "Linear Congruence Solvability and Count"
+  ],
+  "cmath_4777": [
+    "Case Analysis by Divisor Value",
+    "Divisor Count Formula",
+    "Divisor Enumeration for Integer Constraints",
+    "Divisibility of Products by Prime Factors",
+    "Counting via Complementary Cases"
+  ],
+  "cmath_4786": [
+    "Fundamental Theorem of Arithmetic",
+    "Digit Range Constraints in Base b",
+    "Exponential Growth Bounding for Coefficients",
+    "Coprimality Condition for Lowest Terms",
+    "Greedy Enumeration of Smallest Integers"
+  ],
+  "cmath_4804": [
+    "LCM for Intersection of Divisibility Conditions",
+    "LCM Calculation via Prime Factorization",
+    "Proportionality of Distance and Time",
+    "Parametric Integer Solution via Divisibility",
+    "Relative Motion in Coordinate Plane"
+  ],
+  "cmath_4829": [
+    "Exponent Laws in Modular Arithmetic",
+    "Euler's Totient Function",
+    "Definition of Modular Congruence",
+    "Digit Range Constraint",
+    "Periodicity of Powers Modulo $n$"
+  ],
+  "cmath_4859": [
+    "Base-b Polynomial Representation",
+    "Case Analysis by Parameter Value",
+    "Digit Range Constraint",
+    "Digit Count Range in Base b",
+    "Equating Derived Expressions"
+  ],
+  "cmath_4949": [
+    "Counting Distinct Solutions",
+    "Divisor Count Formula",
+    "Divisor Enumeration for Integer Constraints",
+    "Integer Points on a Circle",
+    "Integer Factorization for Diophantine Equations"
+  ],
+  "cmath_4950": [
+    "Algebraic Simplification of Difference",
+    "Case Analysis on Divisor Properties",
+    "Characterization of Numbers with Three Divisors",
+    "Divisibility of Products by Prime Factors",
+    "Divisibility by 3 via Digit Sum"
+  ],
+  "cmath_4962": [
+    "Definition of Modular Congruence",
+    "Counting Solutions in a Range via Parameterization",
+    "LCM for Intersection of Divisibility Conditions",
+    "LCM Calculation via Prime Factorization",
+    "Prime Factorization for LCM Calculation"
+  ],
+  "cmath_5196": [
+    "Divisor Count Formula",
+    "Fundamental Counting Principle",
+    "Multiplication Principle for Independent Choices",
+    "Inclusive Interval Counting",
+    "Multiplicative Property of Arithmetic Functions"
+  ],
+  "cmath_5230": [
+    "Case Analysis by Parameter Value",
+    "Case Analysis on Parameter Range",
+    "Constraint Satisfaction Verification",
+    "Counting Solutions to Bounded Linear Equations",
+    "Domain Validation for Physical Quantities"
+  ],
+  "cmath_5232": [
+    "GCD Divides Linear Combination",
+    "Divisor Enumeration for Integer Constraints",
+    "GCD of Divisor and Multiple",
+    "Linear Combination for GCD Elimination",
+    "Linear Congruence Solvability Condition"
+  ],
+  "cmath_5243": [
+    "Counting Distinct Solutions",
+    "Counting Multiples via Floor Function",
+    "Zero Product Property"
+  ],
+  "cmath_5246": [
+    "Digit Count Range in Base b",
+    "Counting via Complementary Cases",
+    "Floor Function for Integer Part Extraction",
+    "Floor Function Decomposition via Integer-Fraction Split",
+    "Range Validation for Integer Parameters"
+  ],
+  "cmath_5247": [
+    "Divisor Enumeration for Integer Constraints",
+    "Divisibility of Products by Prime Factors",
+    "Equating Derived Expressions",
+    "Counting Solutions in a Range via Parameterization",
+    "Product of Consecutive Integers as Binomial Multiple"
+  ],
+  "cmath_525": [
+    "Divisor Enumeration for Diophantine Equations",
+    "Divisor Count Formula",
+    "Domain Validation for Derived Solutions",
+    "Integer Factorization for Diophantine Equations",
+    "Integer Factor Enumeration"
+  ],
+  "cmath_5259": [
+    "Divisor Count Formula",
+    "Divisor Enumeration via Prime Factorization",
+    "Divisor Counting for Perfect Squares",
+    "Domain Validation for Derived Solutions",
+    "Fundamental Counting Principle"
+  ],
+  "cmath_5263": [
+    "Fundamental Theorem of Arithmetic",
+    "Fundamental Counting Principle",
+    "Divisor Enumeration for Integer Constraints",
+    "Prime Factorization for LCM Calculation",
+    "Prime Factorization for Divisor Analysis"
+  ],
+  "cmath_5268": [
+    "Definition of Modular Congruence",
+    "Divisor Enumeration for Integer Constraints",
+    "Cyclic System Substitution",
+    "Domain Validation for Derived Solutions",
+    "Positional Notation as State Mapping"
+  ],
+  "cmath_5274": [
+    "Definition of Modular Congruence",
+    "Divisor Enumeration via Prime Factorization",
+    "Divisibility by 14 Decomposition",
+    "Divisor Enumeration for Integer Constraints",
+    "Prime Factorization for Divisor Analysis"
+  ],
+  "cmath_5285": [
+    "Divisor Count Formula",
+    "Counting via Floor Function",
+    "Counting Distinct Solutions",
+    "Parity of Sum of Integers",
+    "Perfect Square Exponent Condition"
+  ],
+  "cmath_5298": [
+    "Divisor Enumeration for Integer Constraints",
+    "Floor Function for Integer Bounds",
+    "Domain Validation for Physical Quantities",
+    "Relative Motion in Coordinate Plane",
+    "Optimization via Parameter Minimization"
+  ],
+  "cmath_5313": [
+    "Digit Range Constraint",
+    "Divisor Enumeration for Integer Constraints",
+    "Definition of Modular Congruence",
+    "Domain Validation for Derived Solutions",
+    "Repeating Decimal to Fraction Conversion"
+  ],
+  "cmath_5348": [
+    "Divisor Count Formula",
+    "Fundamental Counting Principle",
+    "Counting via Complementary Cases",
+    "Perfect Power Divisor Condition",
+    "Prime Exponent Linearization"
+  ],
+  "cmath_536": [
+    "Counting Distinct Solutions",
+    "Divisibility by 3 via Digit Sum",
+    "Discriminant Condition for Integer Roots",
+    "Parity of Sum of Integers",
+    "Quadratic Equation Root Properties"
+  ],
+  "cmath_5388": [
+    "Coprimality Condition for Modular Inverse",
+    "Counting Solutions in a Range via Parameterization",
+    "Definition of Modular Congruence",
+    "Reduction of Linear Congruence by GCD",
+    "Range Validation for Integer Parameters"
+  ],
+  "cmath_539": [
+    "Digit Count Range in Base b",
+    "Counting Multiples via Floor Function",
+    "Range Validation for Integer Parameters",
+    "Product Rule for Independent Choices"
+  ],
+  "cmath_5398": [
+    "GCD-LCM Product Identity",
+    "GCD Scaling Property",
+    "Divisor Enumeration for Diophantine Equations",
+    "Domain Validation for Derived Solutions",
+    "Parametric Integer Solution via Divisibility"
+  ],
+  "cmath_5400": [
+    "Euclidean Algorithm for Polynomials",
+    "GCD Divides Linear Combination",
+    "GCD of Divisor and Multiple",
+    "Divisibility by 9 via Digit Sum",
+    "Polynomial Remainder Theorem Application"
+  ],
+  "cmath_5464": [
+    "Divisibility by 11 via Alternating Sum",
+    "Digit Range Constraints in Base b",
+    "Counting Solutions to Bounded Linear Equations",
+    "Parity Constraint on Sum and Difference",
+    "Parity of Sum of Integers"
+  ],
+  "cmath_5497": [
+    "Definition of Modular Congruence",
+    "Coprimality Condition for Modular Inverse",
+    "Domain Validation for Derived Solutions",
+    "Fermat's Little Theorem",
+    "Range Validation for Modular Solutions"
+  ],
+  "cmath_5559": [
+    "Counting via Complementary Cases",
+    "Equating Derived Expressions",
+    "Principle of Inclusion-Exclusion for Overlapping Sets",
+    "Partitioning by Disjoint Cases"
+  ],
+  "cmath_5615": [
+    "Digit Range Constraint",
+    "Divisibility by 3 via Digit Sum",
+    "Divisibility Rule for 4",
+    "Divisibility by 9 via Digit Sum",
+    "Digit Sum and Product Constraints"
+  ],
+  "cmath_5656": [
+    "Equating Alternative Representations",
+    "Difference Calculation for Comparison",
+    "Zero Product Property"
+  ],
+  "cmath_5676": [
+    "Counting via Block Decomposition and Remainder Analysis",
+    "Digit Range Constraint",
+    "Counting Multiples via Floor Function",
+    "Periodicity of Rational Decimals",
+    "Order Divisibility Property"
+  ],
+  "cmath_5686": [
+    "Fundamental Counting Principle",
+    "Counting via Complementary Cases",
+    "Distinct Item Selection Logic",
+    "Partitioning by Disjoint Cases",
+    "Product Rule for Inter-Group Interactions"
+  ],
+  "cmath_5702": [
+    "Fraction Simplification via GCD",
+    "Coprimality Condition for Lowest Terms",
+    "Divisibility by 9 via Digit Sum",
+    "Repeating Decimal to Fraction Conversion",
+    "Prime Factorization for Divisor Analysis"
+  ],
+  "cmath_5705": [
+    "Distance Between Points with Common Coordinate",
+    "Distance Formula for Circle Radius",
+    "Distance Formula",
+    "Point-Circle Distance Relation",
+    "Positive Root Selection for Geometric/Physical Quantities"
+  ],
+  "cmath_592": [
+    "Definition of Inverse Function",
+    "Functional Equation Evaluation via Preimage",
+    "Domain Validation for Rational Equations",
+    "Rearrangement to Isolate Variables",
+    "Rational Equation Denominator Elimination"
+  ],
+  "cmath_5996": [
+    "Geometric Decomposition for Area",
+    "Divisor Enumeration for Integer Constraints",
+    "Geometric Constraint Inequality",
+    "Distance Formula Application",
+    "Rectangle Area Decomposition"
+  ],
+  "cmath_601": [
+    "Functional Equation Evaluation via Preimage",
+    "Definition of Inverse Function",
+    "Evaluation at a Specific Point",
+    "Parameter Isolation via Substitution",
+    "Polynomial Evaluation via Substitution"
+  ],
+  "cmath_606": [
+    "Discriminant Condition for Rational Roots",
+    "Distance Between Points with Common Coordinate",
+    "Coprimality Condition for Lowest Terms",
+    "Quadratic Equation Root Properties",
+    "Radical Simplification via Prime Factorization"
+  ],
+  "cmath_6208": [
+    "Divisor Enumeration for Integer Constraints",
+    "Coprimality Condition for Lowest Terms",
+    "GCD Scaling Property",
+    "Reduction of Linear Congruence by GCD",
+    "Prime Factorization for Divisor Analysis"
+  ],
+  "cmath_6310": [
+    "Coordinate Geometry with Right Triangle Alignment",
+    "Distance Between Points with Common Coordinate",
+    "Distance Formula in Coordinate Plane",
+    "Pythagorean Theorem",
+    "Optimization via Parameter Minimization"
+  ],
+  "cmath_6403": [
+    "Digit Range Constraint",
+    "Counting Solutions to Bounded Linear Equations",
+    "Partitioning by Disjoint Cases",
+    "Partition into Fixed Number of Parts",
+    "Range Validation for Integer Parameters"
+  ],
+  "cmath_6591": [
+    "Counting Solutions in a Range via Parameterization",
+    "Domain Validation for Physical Quantities",
+    "Counting via Floor Function",
+    "Range Validation for Integer Parameters",
+    "Positive Solution Selection"
+  ],
+  "cmath_6595": [
+    "Equating Derived Expressions",
+    "Domain Validation for Physical Quantities",
+    "Domain Validation for Derived Solutions",
+    "Rational Equation Solving via Clearing Denominators",
+    "Positive Solution Selection"
+  ],
+  "cmath_6632": [
+    "Fundamental Counting Principle",
+    "Counting via Complementary Cases",
+    "Principle of Inclusion-Exclusion for Overlapping Sets",
+    "Partitioning by Disjoint Cases"
+  ],
+  "cmath_676": [
+    "Definition of Inverse Function",
+    "Evaluation at a Specific Point",
+    "Equating Derived Expressions",
+    "Point on Curve Constraint",
+    "Point-Slope Form of a Line"
+  ],
+  "cmath_6775": [
+    "Power-Reduction Identity for Sine",
+    "Pythagorean Trigonometric Identity",
+    "Range Validation for Intermediate Values",
+    "Rounding to Nearest Integer"
+  ],
+  "cmath_678": [
+    "Elliptic Paraboloid Minimum Identification",
+    "Critical Point Optimization via Partial Derivatives",
+    "Convexity and Critical Point Minimization",
+    "Positive Definite Quadratic Form",
+    "Quadratic Vertex as Threshold"
+  ],
+  "cmath_6888": [
+    "Periodicity of Rational Recurrence",
+    "Quadratic Equation Root Finding",
+    "Range Validation for Integer Parameters",
+    "Positive Solution Selection",
+    "Product Rule for Independent Choices"
+  ],
+  "cmath_7354": [
+    "Factorization of Polynomials with Zero Constant Term",
+    "Discriminant Condition for Real Preimages",
+    "Domain Validation for Derived Solutions",
+    "Quadratic Substitution for Even Functions",
+    "Quadratic Equation Solving via Discriminant"
+  ],
+  "cmath_7520": [
+    "Quadratic Equation Root Properties",
+    "Range Validation for Integer Parameters",
+    "Partitioning by Disjoint Cases",
+    "Positive Root Selection for Geometric/Physical Quantities"
+  ],
+  "cmath_7630": [
+    "Equating Derived Expressions",
+    "Discriminant Condition for Rational Roots",
+    "GCD Scaling Property",
+    "Coprimality Condition for Lowest Terms",
+    "Quadratic Equation Root Properties"
+  ],
+  "cmath_7636": [
+    "Radicand Non-Negativity Constraint",
+    "Range Validation for Integer Parameters",
+    "Positive Root Selection for Geometric/Physical Quantities"
+  ],
+  "cmath_7708": [
+    "Perimeter Constraint Substitution",
+    "Parameterization of Linear Relations",
+    "Range Validation for Integer Parameters"
+  ],
+  "cmath_7784": [
+    "Quadratic Vertex Maximization",
+    "Quadratic Vertex as Threshold"
+  ],
+  "cmath_7791": [
+    "Range Validation for Quadratic Solutions",
+    "Quadratic Equation Root Properties",
+    "Quadratic Equation Factoring"
+  ],
+  "cmath_7854": [
+    "Pythagorean Theorem",
+    "Quadratic Equation Root Finding",
+    "Quadratic Equation Root Properties"
+  ],
+  "cmath_7871": [
+    "Perpendicular Bisector Intersection for Circumcenter",
+    "Point on Curve Constraint",
+    "Perpendicular Bisector Property"
+  ],
+  "cmath_7927": [
+    "Point on Curve Constraint",
+    "Point-Circle Distance Relation",
+    "Pythagorean Theorem for Vector Magnitude"
+  ],
+  "cmath_795": [
+    "Quadratic Vertex in Domain",
+    "Reading Values from a Linear Graph",
+    "Piecewise Function Range Analysis",
+    "Rational Function Range via Asymptotic Analysis"
+  ],
+  "cmath_8012": [
+    "Quadratic Equation Root Properties",
+    "Point on Curve Constraint",
+    "Rearrangement to Isolate Variables"
+  ],
+  "cmath_8095": [
+    "Piecewise Function Case Analysis",
+    "Point-Slope Form for Line Equation",
+    "Range Validation for Integer Parameters",
+    "Optimization via Parameter Minimization"
+  ],
+  "cmath_8139": [
+    "Parameter Isolation via Substitution"
+  ],
+  "cmath_8361": [
+    "Rationalizing Denominators with Binomial Conjugates",
+    "Rational Expression Simplification via Common Denominator"
+  ],
+  "cmath_8427": [
+    "Polynomial Arithmetic for Base Conversion",
+    "Perfect Square Trinomial Identification"
+  ],
+  "cmath_8557": [
+    "Parameter Isolation via Substitution",
+    "Quadratic Equation Solving via Discriminant",
+    "Positive Root Selection for Geometric/Physical Quantities"
+  ],
+  "cmath_8648": [
+    "Quadratic Vertex Maximization",
+    "Perfect Square Trinomial Identification"
+  ],
+  "cmath_8649": [
+    "Rational Equation Solving via Clearing Denominators",
+    "Quadratic Equation Root Properties"
+  ],
+  "cmath_8692": [
+    "Principle of Inclusion-Exclusion for Overlapping Sets",
+    "Repetition Allowed in Sequences",
+    "Positional Assignment via Multiplication Principle"
+  ],
+  "cmath_8695": [
+    "Permutation Counting with Constraints",
+    "Partitioning by Disjoint Cases",
+    "Positional Assignment via Multiplication Principle"
+  ],
+  "cmath_9111": [
+    "Orbit Enumeration via Coordinate Symmetry",
+    "Permutation Counting with Constraints",
+    "Rotational Symmetry Reduction"
+  ],
+  "cmath_914": [
+    "Positional Notation as State Mapping",
+    "Range Validation for Integer Parameters",
+    "Parametric Integer Solution via Divisibility"
+  ],
+  "cmath_924": [
+    "Radical Simplification",
+    "Quadratic Equation Factoring",
+    "Positive Solution Selection"
+  ],
+  "cmath_9421": [
+    "Pythagorean Theorem",
+    "Point on Curve Constraint",
+    "Rectangle Area Decomposition"
+  ],
+  "cmath_9427": [
+    "Pythagorean Theorem in Circle Geometry",
+    "Perpendicular Bisector Property",
+    "Pythagorean Theorem"
+  ],
+  "cmath_9599": [
+    "Pythagorean Theorem in Circle Geometry",
+    "Perpendicular Distance as Height",
+    "Pythagorean Theorem Application"
+  ],
+  "cmath_9619": [
+    "Ratio of Areas via Common Factor Cancellation",
+    "Perpendicular Bisector Property",
+    "Pythagorean Theorem Application"
+  ],
+  "cmath_9733": [
+    "Optimization via Parameter Minimization",
+    "Range Validation for Integer Parameters",
+    "Rational Equation Solving via Clearing Denominators"
+  ],
+  "cmath_9808": [
+    "Parametric Integer Solution via Divisibility",
+    "Prime Factorization for Divisor Enumeration",
+    "Perfect Power Divisor Condition"
+  ],
+  "cmath_9820": [
+    "Polynomial Root Construction via Subtraction",
+    "Quadratic Equation Root Properties"
+  ],
+  "cmath_9867": [
+    "Palindrome Digit Structure",
+    "Parity of Sum of Integers",
+    "Partition of an Integer",
+    "Periodicity of Rational Decimals",
+    "Perpendicular Distance as Height"
+  ],
+  "cmath_9932": [
+    "Reciprocal Polynomial Factorization",
+    "Polynomial Evaluation via Substitution"
+  ],
+  "cmath_9948": [
+    "Real and Imaginary Part Extraction",
+    "Rational Root Theorem",
+    "Polynomial Division for Factorization",
+    "Quadratic Equation Solving via Discriminant"
+  ],
+  "cmath_9955": [
+    "Quadratic Equation Root Properties",
+    "Polynomial Evaluation at Roots",
+    "Quadratic Equation Factoring"
+  ],
+  "cmath_9959": [
+    "Polynomial Evaluation via Substitution",
+    "Polynomial Factorization via Known Roots",
+    "Roots of Unity Representation"
+  ],
+  "cmath_9982": [
+    "Optimization via Parameter Minimization",
+    "Range Validation for Intermediate Values",
+    "Reduction to Single-Variable Optimization"
+  ],
+  "cmath_9987": [
+    "Reduction to Single-Variable Optimization",
+    "Positive Root Selection for Geometric/Physical Quantities",
+    "Range Validation for Intermediate Values"
+  ]
+}
