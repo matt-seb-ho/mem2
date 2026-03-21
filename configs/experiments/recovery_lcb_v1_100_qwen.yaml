@@ -29,7 +29,7 @@ components:
   task_adapter:
     task_name: livecodebench
   benchmark:
-    data_root: /root/workspace/data/hf/livecodebench_v1
+    data_root: data/livecodebench_v56
     split: test
     limit: 100
   memory_builder: {}

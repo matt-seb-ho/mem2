@@ -63,12 +63,12 @@ components:
     retry_paths: 1
   provider:
     profile_name: llmplus_openrouter
-    dotenv_path: .env.example
+    dotenv_path: .env
     default_max_concurrency: 8
   inference_engine:
     model: qwen/qwen3.5-flash-02-23
     gen_cfg:
-      n: 8
+      n: 1
       max_tokens: 16384
       batch_size: 8
       seed: 42

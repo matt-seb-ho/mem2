@@ -1,4 +1,4 @@
-data_root: /root/workspace/data/hf/livecodebench
+data_root: data/livecodebench_v56
 split: test
 difficulties: null
 limit: 0

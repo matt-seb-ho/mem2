@@ -36,7 +36,7 @@ components:
   task_adapter:
     task_name: arc_grid
   benchmark:
-    data_root: /root/workspace/data/benchmarks/ARC-AGI/data/training
+    data_root: data/arc_agi/training
     limit: 1
   memory_builder: {}
   memory_retriever: {}

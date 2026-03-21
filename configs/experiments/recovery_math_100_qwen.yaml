@@ -29,7 +29,7 @@ components:
   task_adapter:
     task_name: math_ps
   benchmark:
-    data_root: /root/workspace/data/hf/qwedsacf__competition_math
+    data_root: data/competition_math_all_l5
     split: train
     types:
       - "Number Theory"

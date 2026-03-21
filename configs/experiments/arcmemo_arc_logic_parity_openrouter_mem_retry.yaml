@@ -21,7 +21,7 @@ run:
 
 components:
   benchmark:
-    data_root: /root/workspace/data/benchmarks/ARC-AGI/data/evaluation
+    data_root: data/arc_agi/evaluation
     limit: 0
     include_ids:
       - ba9d41b8

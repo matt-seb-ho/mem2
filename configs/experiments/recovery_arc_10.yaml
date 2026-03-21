@@ -17,7 +17,7 @@ run:
 
 components:
   benchmark:
-    data_root: /root/workspace/data/benchmarks/ARC-AGI/data/evaluation
+    data_root: data/arc_agi/evaluation
     limit: 10
   provider:
     profile_name: llmplus_openrouter

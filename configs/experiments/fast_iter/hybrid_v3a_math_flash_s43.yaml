@@ -11,11 +11,12 @@ pipeline:
   evaluator: math_reason_eval
   artifact_sink: json_local
 run:
-  run_type: fastiter_concept_flash_s43
+  run_type: fastiter_hybrid_v3a_math_flash
   seed: 43
   max_passes: 2
   execution_mode: arc_batch
   retry_criterion: test
+  hybrid_concept_mode: true
   retry_policy:
     max_passes: 2
     criterion: test
@@ -63,7 +64,7 @@ components:
     max_concepts: 500
   memory_retriever:
     domain: math
-    prompt_info_file: data/competition_math_all_l5/fast_iter/selection_v3a_flash/prompt_info.json
+    prompt_info_file: data/competition_math_all_l5/fast_iter/selection_v3a_cues_only/prompt_info.json
   trajectory_policy:
     retry_paths: 1
   provider:
@@ -73,7 +74,7 @@ components:
   inference_engine:
     model: qwen/qwen3.5-flash-02-23
     gen_cfg:
-      n: 8
+      n: 1
       max_tokens: 16384
       batch_size: 8
       seed: 43
