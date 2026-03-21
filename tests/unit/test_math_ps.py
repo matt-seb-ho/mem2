@@ -55,7 +55,7 @@ class TestCompetitionMathPsBenchmark:
         from mem2.branches.benchmark.competition_math_ps import CompetitionMathPsBenchmarkAdapter
 
         adapter = CompetitionMathPsBenchmarkAdapter(
-            data_root="/root/workspace/data/hf/qwedsacf__competition_math",
+            data_root="data/competition_math_all_l5",
             types=["Number Theory"],
             limit=10,
         )
@@ -71,7 +71,7 @@ class TestCompetitionMathPsBenchmark:
         from mem2.core.errors import DataValidationError
 
         adapter = CompetitionMathPsBenchmarkAdapter(
-            data_root="/root/workspace/data/hf/qwedsacf__competition_math",
+            data_root="data/competition_math_all_l5",
             types=["Number Theory"],
             limit=3,
         )
@@ -86,7 +86,7 @@ class TestCompetitionMathPsBenchmark:
         from mem2.branches.benchmark.competition_math_ps import CompetitionMathPsBenchmarkAdapter
 
         adapter = CompetitionMathPsBenchmarkAdapter(
-            data_root="/root/workspace/data/hf/qwedsacf__competition_math",
+            data_root="data/competition_math_all_l5",
             types=["Counting & Probability"],
             limit=5,
         )
