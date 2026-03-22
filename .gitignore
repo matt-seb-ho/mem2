@@ -1,4 +1,8 @@
-outputs/
+outputs/_runs/*
+!outputs/_runs/lcb_v56_baseline_flash/
+!outputs/_runs/lcb_v56_concept_v3a_flash/
+!outputs/_runs/lcb_v56_hybrid_v3a_flash/
+!outputs/_runs/build_lcb_v56_flash/
 .llm_cache/
 __pycache__/
 .pytest_cache/

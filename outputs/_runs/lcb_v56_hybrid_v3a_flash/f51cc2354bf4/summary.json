@@ -1,0 +1,19 @@
+{
+  "accuracy_per_attempt": 0.625,
+  "official_score": 80.0,
+  "strict_score": 80.0,
+  "strict_solved_puzzles": 80,
+  "official_score_sum": 80.0,
+  "total_attempts": 128,
+  "correct_attempts": 80,
+  "total_puzzles": 100,
+  "solve_rate": 0.8,
+  "test_pass_rate": 0.7658862876254181,
+  "total_test_cases": 299,
+  "passed_test_cases": 229,
+  "attempt_count": 128,
+  "feedback_count": 128,
+  "problem_count": 100,
+  "prompt_fingerprint_count": 128,
+  "config_hash": "3b44a77a7c43385247108dd8c600b24dda4e137cdd3b7d5fc2336139944fa806"
+}

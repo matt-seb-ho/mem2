@@ -1,0 +1,20 @@
+{
+  "before": {
+    "qwen/qwen3.5-flash-02-23": {
+      "input_tokens": 209477,
+      "output_tokens": 2220247,
+      "reasoning_tokens": 2019947,
+      "requests": 100,
+      "completions": 100
+    }
+  },
+  "after": {
+    "qwen/qwen3.5-flash-02-23": {
+      "input_tokens": 404681,
+      "output_tokens": 2908675,
+      "reasoning_tokens": 2560526,
+      "requests": 127,
+      "completions": 127
+    }
+  }
+}

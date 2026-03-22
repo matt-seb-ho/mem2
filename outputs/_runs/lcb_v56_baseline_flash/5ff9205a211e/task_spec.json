@@ -1,0 +1,12 @@
+{
+  "task_name": "livecodebench",
+  "task_description": "Solve competitive programming problems by writing Python code that reads from stdin and writes to stdout.",
+  "sample_format": {
+    "input": "problem statement (str) with test cases",
+    "output": "stdout for each test case"
+  },
+  "feedback_mode": "gt",
+  "metadata": {
+    "adapter": "livecodebench"
+  }
+}
