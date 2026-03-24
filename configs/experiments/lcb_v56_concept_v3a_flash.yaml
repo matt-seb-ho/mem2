@@ -141,13 +141,13 @@ components:
   provider:
     profile_name: llmplus_openrouter
     dotenv_path: .env
-    default_max_concurrency: 8
+    default_max_concurrency: 64
   inference_engine:
     model: qwen/qwen3.5-flash-02-23
     gen_cfg:
       n: 1
       max_tokens: 16384
-      batch_size: 8
+      batch_size: 64
       seed: 42
       ignore_cache: true
     error_feedback: all
