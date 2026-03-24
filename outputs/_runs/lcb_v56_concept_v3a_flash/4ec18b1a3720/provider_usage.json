@@ -1,0 +1,9 @@
+{
+  "qwen/qwen3.5-flash-02-23": {
+    "input_tokens": 373408,
+    "output_tokens": 2787759,
+    "reasoning_tokens": 2547697,
+    "requests": 126,
+    "completions": 126
+  }
+}
