@@ -147,6 +147,7 @@ class RRMCInteractiveRetriever:
             retrieved_items=[{"name": n} for n in names],
             metadata={
                 "retriever": self.name,
+                "scoring_mode": "rrmc_multi_round",
                 "num_rounds": len(rounds),
                 "per_round_counts": [len(r) for r in rounds],
                 "rounds": rounds,

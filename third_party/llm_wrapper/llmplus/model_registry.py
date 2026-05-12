@@ -108,11 +108,17 @@ MODEL_REGISTRY: dict[Provider, ProviderMeta] = {
     ),
     Provider.VLLM: ProviderMeta(
         env_key=_NO_KEY,  # local endpoint
-        base_url="https://gxq9fs48m3gycg-8888.proxy.runpod.net/v1",
+        base_url="https://s9s31fifnidjek-8000.proxy.runpod.net/v1",
         supports_multi=True,
         models={
             "Qwen/Qwen3.5-9B": ModelMeta(
                 "Qwen/Qwen3.5-9B",
+            ),
+            "Qwen/Qwen2.5-7B-Instruct": ModelMeta(
+                "Qwen/Qwen2.5-7B-Instruct",
+            ),
+            "Qwen/Qwen3-4B-Instruct": ModelMeta(
+                "Qwen/Qwen3-4B-Instruct",
             ),
         },
     ),
@@ -139,6 +145,15 @@ MODEL_REGISTRY: dict[Provider, ProviderMeta] = {
             ),
             "deepseek/deepseek-r1-0528": ModelMeta(
                 "deepseek/deepseek-r1-0528",
+            ),
+            "deepseek/deepseek-v3.2": ModelMeta(
+                "deepseek/deepseek-v3.2",
+            ),
+            "deepseek/deepseek-v4-flash": ModelMeta(
+                "deepseek/deepseek-v4-flash",
+            ),
+            "deepseek/deepseek-v4-pro": ModelMeta(
+                "deepseek/deepseek-v4-pro",
             ),
             "x-ai/grok-4": ModelMeta(
                 "x-ai/grok-4",

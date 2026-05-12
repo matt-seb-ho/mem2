@@ -56,12 +56,20 @@ class TrajectoryPlan:
 
 @dataclass(slots=True)
 class AttemptRecord:
+    """Single model attempt persisted to attempts.jsonl.
+
+    retrieval_metadata stores one snapshot per retrieval call that contributed
+    to this attempt. Each entry starts from RetrievalBundle.metadata and adds
+    retrieved_items plus hint_present for audit attribution.
+    """
+
     problem_uid: str
     pass_idx: int
     branch_id: str
     completion: str
     prompt: str
     metadata: dict[str, Any] = field(default_factory=dict)
+    retrieval_metadata: list[dict[str, Any]] = field(default_factory=list)
 
 
 @dataclass(slots=True)

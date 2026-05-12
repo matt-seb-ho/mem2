@@ -17,6 +17,18 @@ logger = logging.getLogger(__name__)
 _TYPE_DEF_RE = re.compile(r"^\s*([^:=\s]+)\s*:=\s*(.+)$")
 
 
+def _coerce_line(x) -> str:
+    """Collapse a cue/impl list entry into a string. Mirrors the `_merge_lines`
+    convention: {k: v} → "k: v", str → str (stripped), anything else → str(x).
+    """
+    if isinstance(x, str):
+        return x.strip()
+    if isinstance(x, dict) and len(x) == 1:
+        k, v = next(iter(x.items()))
+        return f"{k}: {v}".strip() if isinstance(v, str) else f"{k}: {v}"
+    return str(x)
+
+
 def maybe_parse_typedef(s: str | None) -> tuple[str, str] | None:
     """If `s` matches 'Name := annotation', return (Name, annotation). Else None."""
     if not s:
@@ -64,6 +76,21 @@ class Concept:
 
     # ----------------------- Init / validation ------------------------- #
     def __post_init__(self):
+        # Payloads serialized from older runs may store optional list fields
+        # as null; coerce to [] so downstream `.extend()` / iteration is safe.
+        if self.parameters is None:
+            self.parameters = []
+        if self.cues is None:
+            self.cues = []
+        if self.implementation is None:
+            self.implementation = []
+        if self.used_in is None:
+            self.used_in = []
+        # cues/implementation may contain dict entries from old serializations
+        # (before `_merge_lines` canonicalization). Normalize to strings so
+        # downstream dedup / aggregation is hashable-safe.
+        self.cues = [_coerce_line(x) for x in self.cues]
+        self.implementation = [_coerce_line(x) for x in self.implementation]
         assert isinstance(self.parameters, list)
         fixed_params: list[ParameterSpec] = []
         for p in self.parameters:

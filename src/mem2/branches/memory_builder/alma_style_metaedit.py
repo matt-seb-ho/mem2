@@ -84,8 +84,7 @@ class ALMAStyleMetaEditMemoryBuilder(ArcMemoReorgMemoryBuilder):
         mem = ConceptMemory.from_payload(memory.payload)
         plan = self._propose_edit_plan(ctx, mem)
         if not plan or not plan.get("merges"):
-            # Fall back to hand-coded reorg so we never lose a reorg cycle.
-            return super().consolidate(ctx, memory)
+            return self._record_alma_skip(memory, reorg, "provider absent or no merge plan returned")
 
         scorer = MDLScorer(per_concept_overhead=self.scorer.per_concept_overhead)
         before = scorer.score(mem).total
@@ -133,7 +132,7 @@ class ALMAStyleMetaEditMemoryBuilder(ArcMemoReorgMemoryBuilder):
                 accepted.append({"type": "delete", "name": name})
 
         if not accepted:
-            return super().consolidate(ctx, memory)
+            return self._record_alma_skip(memory, reorg, "no proposed edits passed validation")
 
         after = scorer.score(mem).total
         new_payload = mem.to_payload()
@@ -149,6 +148,20 @@ class ALMAStyleMetaEditMemoryBuilder(ArcMemoReorgMemoryBuilder):
         })
         new_payload["reorg"] = reorg
         memory.payload = new_payload
+        return memory
+
+    def _record_alma_skip(
+        self, memory: MemoryState, reorg: dict[str, Any], reason: str
+    ) -> MemoryState:
+        reorg.setdefault("history", []).append({
+            "step": reorg.get("step", 0),
+            "action": "alma_meta_edit_skipped",
+            "reason": reason,
+            "scope": self.scope,
+            "objective": self.objective,
+            "input_basis": self.input_basis,
+        })
+        memory.payload["reorg"] = reorg
         return memory
 
     # ----------------------------------------------------------------- #

@@ -232,9 +232,12 @@ class ConceptGraph:
         embed_threshold: float = 0.7,
         embed_max_per_node: int = 8,
         min_co_overlap: int = 1,
+        load_typed_edges: bool = True,
     ) -> "ConceptGraph":
         """Convenience: build a graph from a ConceptMemory using co-activation
-        (always) + embedding-sim (if ``embed_fn`` provided).
+        (always) + embedding-sim (if ``embed_fn`` provided) + typed semantic
+        edges from the prereq concept_graph_v1.json (when present and
+        ``load_typed_edges`` is True).
 
         Authorship-lineage edges are added by the reorg builder at reorg time.
         """
@@ -248,4 +251,49 @@ class ConceptGraph:
                 threshold=embed_threshold,
                 max_per_node=embed_max_per_node,
             )
+        if load_typed_edges:
+            g._maybe_load_typed_edges(mem)
         return g
+
+    def _maybe_load_typed_edges(self, mem: ConceptMemory) -> None:
+        """Augment the graph with typed semantic edges from the prereq file
+        ``data/arc_agi/concept_memory/concept_graph_v1.json`` if present.
+
+        Edges loaded as kind in {"uses", "is_a", "specializes",
+        "opposite_of", "composed_of"} — preserving the relation type
+        from the LLM-extracted graph rather than collapsing into
+        co-activation. Retrievers that consume these edges (axis-1 graph
+        retrievers, axis-2 graph-MDL reorg) get a richer substrate.
+
+        Silent fallback if file is absent or malformed — co-activation
+        graph still works.
+        """
+        import json
+        from pathlib import Path
+        # Resolve repo root via this module's location.
+        repo_root = Path(__file__).resolve().parents[3]  # mem2/
+        graph_path = repo_root / "data" / "arc_agi" / "concept_memory" / "concept_graph_v1.json"
+        if not graph_path.exists():
+            return
+        try:
+            data = json.loads(graph_path.read_text())
+        except Exception:
+            return
+        valid_names = set(mem.concepts.keys())
+        for e in data.get("edges", []) or []:
+            src = e.get("src")
+            tgt = e.get("tgt")
+            relation = e.get("relation")
+            weight = float(e.get("weight", 1.0))
+            if not isinstance(src, str) or not isinstance(tgt, str):
+                continue
+            if src not in valid_names or tgt not in valid_names:
+                continue
+            if not isinstance(relation, str):
+                continue
+            # Add as a typed edge — kind = the relation string.
+            # Most relations are directional in semantic intent
+            # (uses, is_a, specializes, composed_of); opposite_of is
+            # symmetric. For graph traversal we treat all as
+            # undirected by default (kind != authorship_lineage).
+            self.add_edge(src, tgt, kind=relation, weight=weight)

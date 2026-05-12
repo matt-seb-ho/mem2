@@ -81,6 +81,28 @@ class PipelineRunner:
             return {}
 
     @staticmethod
+    def _retrieval_metadata_entry(retrieval: RetrievalBundle) -> dict:
+        entry = copy.deepcopy(dict(retrieval.metadata or {}))
+        entry["retrieved_items"] = copy.deepcopy(retrieval.retrieved_items)
+        entry["hint_present"] = bool(retrieval.hint_text)
+        entry.setdefault(
+            "scoring_mode",
+            entry.get("retriever") or entry.get("selector_mode") or "unknown",
+        )
+        return entry
+
+    def _record_retrieval_metadata(self, job: dict, retrieval: RetrievalBundle) -> None:
+        job.setdefault("retrieval_metadata", []).append(
+            self._retrieval_metadata_entry(retrieval)
+        )
+
+    @staticmethod
+    def _attach_retrieval_metadata(attempts: list, job: dict) -> None:
+        entries = job.get("retrieval_metadata") or []
+        for att in attempts:
+            att.retrieval_metadata = copy.deepcopy(entries)
+
+    @staticmethod
     def _iteration_metadata_entry(pass_idx: int, problem_uid: str, step_idx: int) -> list[str] | dict:
         if pass_idx == 0:
             return [problem_uid, "0"]
@@ -361,8 +383,84 @@ class PipelineRunner:
         }
 
     async def _run_inference_job(self, ctx, job):
+        """Per-problem inference job, optionally multi-round.
+
+        Multi-round retrieval is controlled by `run.retrieval_rounds_per_pass`
+        (default 1 = current single-round behavior). When > 1, this loops:
+            retrieve → infer → quick-eval; break on solve OR retriever
+            abstain; pass accumulated attempts as history into the next
+            round. All rounds' attempts are returned and re-evaluated
+            downstream by `_finalize_problem_result`.
+
+        Multi-round is incompatible with lockstep_replay (replay's
+        retry_retrieval_bundle assumes 1 retrieval per pass).
+        """
+        max_rounds = int(
+            self.config.get("run", {}).get("retrieval_rounds_per_pass", 1)
+        )
+        if max_rounds <= 1:
+            return await self._one_retrieval_round(ctx, job, accumulated_history=None)
+
+        # Multi-round disallowed when lockstep_replay is active
+        if self.lockstep_replay.enabled:
+            return await self._one_retrieval_round(ctx, job, accumulated_history=None)
+
+        accumulated_attempts: list = []
+        job["retrieval_metadata"] = []
+        for round_idx in range(max_rounds):
+            round_job = dict(job)
+            round_job["retrieval"] = None  # force fresh retrieve each round
+            round_job["round_idx"] = round_idx
+            round_attempts = await self._one_retrieval_round(
+                ctx, round_job, accumulated_history=list(accumulated_attempts),
+            )
+            for att in round_attempts:
+                att.metadata["retrieval_round"] = round_idx
+            accumulated_attempts.extend(round_attempts)
+
+            # Early stop: any attempt this round passed the retry criterion
+            try:
+                eval_preview = self.components.evaluator.evaluate(
+                    ctx, job["problem"], round_attempts,
+                )
+                criterion = self.retry_policy.criterion
+                if self._problem_solved_in_batch(eval_preview, criterion=criterion):
+                    break
+            except Exception:
+                pass  # eval is a best-effort early-stop; ignore failures here
+
+            # Retriever-driven abstain (mediq/uot/rrmc style)
+            retriever = self.components.memory_retriever
+            if hasattr(retriever, "should_abstain"):
+                try:
+                    if retriever.should_abstain(
+                        ctx=ctx,
+                        memory=job["memory_snapshot"],
+                        problem=job["problem"],
+                        previous_attempts=list(job["history"]) + accumulated_attempts,
+                        round_idx=round_idx,
+                    ):
+                        break
+                except TypeError:
+                    pass
+
+        return accumulated_attempts
+
+    async def _one_retrieval_round(self, ctx, job, *, accumulated_history):
+        """Single retrieve + infer pass for one problem. Original
+        `_run_inference_job` body, factored out for multi-round wrapping.
+
+        `accumulated_history` (when set) appends to job["history"] so the
+        retriever and inference engine see attempts from earlier rounds
+        within the same pass.
+        """
         problem_uid = job["problem"].uid
         retrieval = job.get("retrieval")
+
+        history = list(job["history"])
+        if accumulated_history:
+            history = history + list(accumulated_history)
+
         if (
             retrieval is None
             and job["is_retry"]
@@ -372,7 +470,7 @@ class PipelineRunner:
         ):
             retrieval = self.lockstep_replay.retry_retrieval_bundle(
                 problem_uid=problem_uid,
-                history_len=len(job["history"]),
+                history_len=len(history),
             )
             if retrieval is None:
                 raise RuntimeError(
@@ -388,7 +486,7 @@ class PipelineRunner:
                 provider=self.components.provider,
                 memory=job["memory_snapshot"],
                 problem=job["problem"],
-                previous_attempts=job["history"],
+                previous_attempts=history,
                 selector_model=self.components.inference_engine.model,
             )
             job["retrieval"] = retrieval
@@ -400,14 +498,16 @@ class PipelineRunner:
             retrieval=retrieval,
         )
         job["retrieval"] = retrieval
+        self._record_retrieval_metadata(job, retrieval)
 
-        if job["is_retry"]:
+        is_retry = bool(history)  # treat any prior round as retry
+        if is_retry and history:
             return await self.components.inference_engine.retry_attempt(
                 ctx=ctx,
                 provider=self.components.provider,
                 problem=job["problem"],
                 retrieval=retrieval,
-                attempt_history=job["history"],
+                attempt_history=history,
                 feedback_history=job["feedback_hist"],
                 trajectory_plan=job["plan"],
             )
@@ -461,6 +561,7 @@ class PipelineRunner:
         problem = job["problem"]
         history = job["history"]
 
+        self._attach_retrieval_metadata(attempts, job)
         global_step_base = len(history)
         for att in attempts:
             att.pass_idx = pass_idx
@@ -605,6 +706,21 @@ class PipelineRunner:
 
         self.components.artifact_sink.write_stage_artifact(ctx, "frozen_config", self.config)
         write_json(run_root / "run_context.json", ctx)
+
+        # F.2-style LLM-aware builders (alma_style_metaedit, adas_style_search,
+        # reorg_lilo, reorg_amem, reorg_memp) read ctx.config["_meta_edit_provider"]
+        # and fall back to hand-coded behavior when absent. Wire the main provider
+        # through a sync adapter so they actually exercise the LLM path.
+        # Injected AFTER run_context.json serialization because the adapter is
+        # not JSON-serializable — the config snapshot on disk stays clean.
+        if not self.config.get("_meta_edit_provider_disabled", False):
+            from mem2.providers.meta_edit_adapter import SyncMetaEditProviderAdapter
+            adapter_cfg = self.config.get("components", {}).get("meta_edit_provider", {}) or {}
+            ctx.config["_meta_edit_provider"] = SyncMetaEditProviderAdapter(
+                self.components.provider,
+                model=adapter_cfg.get("model"),
+                gen_cfg=adapter_cfg.get("gen_cfg"),
+            )
 
         task_spec = self.components.task_adapter.get_task_spec(ctx)
         self.components.artifact_sink.write_stage_artifact(ctx, "task_spec", task_spec)

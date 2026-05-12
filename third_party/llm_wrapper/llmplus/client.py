@@ -7,6 +7,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 import diskcache as dc
+import httpx
 import orjson
 from openai import AsyncOpenAI
 from openai.types import CompletionUsage
@@ -41,6 +42,12 @@ class LLMClient:
         self._client_async = AsyncOpenAI(
             api_key=self.provider_meta.api_key(dotenv_path=dotenv_path),
             base_url=self.provider_meta.base_url,
+            # 300s read ceiling, 10s connect. Prevents indefinite hang when an
+            # OpenRouter backend stops responding mid-stream (witnessed
+            # 2026-04-30: flat_topk seed 44 iter-3 stalled 18+ min on a single
+            # call). The asyncio.wait_for in async_batch_generate is
+            # belt-and-suspenders; this is the suspenders.
+            timeout=httpx.Timeout(300.0, connect=10.0),
         )
 
         # default semaphore (used when caller does *not* supply one)
@@ -270,6 +277,9 @@ class LLMClient:
                 resp = await self._client_async.chat.completions.create(
                     model=model_meta.name,
                     messages=msgs,
+                    timeout=300.0,  # explicit per-call total bound; client-level
+                                    # httpx Timeout(read=300) only bounds inter-byte
+                                    # gaps, not total wall time.
                     **gen_kwargs,
                 )
                 return resp

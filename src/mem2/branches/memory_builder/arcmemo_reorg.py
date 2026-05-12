@@ -139,7 +139,15 @@ class ArcMemoReorgMemoryBuilder:
                     solution=(att.completion or "")[:2000],
                 )
             reorg["step"] += 1
-            reorg["outcomes"].append(1.0 if is_correct else 0.0)
+            # Outcome schema: dict with problem_id + score (consumed by
+            # reorg_memp / reorg_evolver / reorg_lrll). Older code wrote
+            # plain floats; subclasses that read outcomes expected dicts,
+            # so unfired triggers hid the bug. RN-005 finding 3 surfaced it.
+            reorg["outcomes"].append({
+                "problem_id": att.problem_uid,
+                "score": 1.0 if is_correct else 0.0,
+                "step": reorg["step"],
+            })
 
         memory.payload = mem.to_payload()
         # re-attach reorg state after payload replacement
@@ -234,11 +242,26 @@ class ArcMemoReorgMemoryBuilder:
     # ----------------------------------------------------------------- #
     def _should_reorg(self, reorg: dict[str, Any]) -> bool:
         step = int(reorg.get("step", 0))
-        outcomes = list(reorg.get("outcomes", []))
+        # Outcome schema is dict with `score` key (post RN-005 fix). Extract
+        # numeric scores for plateau detection. Backward-compat: tolerate
+        # plain floats from legacy state files.
+        raw = list(reorg.get("outcomes", []))
+        scores: list[float] = []
+        for o in raw:
+            if isinstance(o, dict):
+                try:
+                    scores.append(float(o.get("score", 0.0)))
+                except (TypeError, ValueError):
+                    continue
+            else:
+                try:
+                    scores.append(float(o))
+                except (TypeError, ValueError):
+                    continue
         if self.trigger == "every_k":
             return detect_plateau_every_k(step, k=self.every_k).should_trigger
         return detect_plateau(
-            outcomes,
+            scores,
             window=self.plateau_window,
             min_delta=self.plateau_min_delta,
         ).should_trigger
@@ -309,14 +332,14 @@ class ArcMemoReorgMemoryBuilder:
             c = mem.concepts.get(m)
             if c is None:
                 continue
-            cues.extend(c.cues)
-            impl.extend(c.implementation)
+            cues.extend(c.cues or [])
+            impl.extend(c.implementation or [])
             if c.description:
                 desc_pieces.append(f"{c.name}: {c.description}")
-            for p in c.parameters:
+            for p in (c.parameters or []):
                 if p.name not in params:
                     params[p.name] = p
-            used.extend(c.used_in)
+            used.extend(c.used_in or [])
             kinds.append(c.kind)
             subtypes.append(c.routine_subtype)
         kind = max(set(kinds), key=kinds.count) if kinds else "routine"

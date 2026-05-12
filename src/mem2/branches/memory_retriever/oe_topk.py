@@ -29,6 +29,8 @@ class OeTopKRetriever:
             hint_text=hint_text,
             retrieved_items=items,
             metadata={
+                "retriever": self.name,
+                "scoring_mode": "open_ended_topk",
                 "top_k": self.top_k,
                 "history_attempts": len(previous_attempts),
                 "scoped_to_problem": bool(problem_entries),

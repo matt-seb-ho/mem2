@@ -34,4 +34,7 @@ def build_run_context(config: dict[str, Any]) -> RunContext:
         "run_type": str(run_type),
         "benchmark": str(config.get("pipeline", {}).get("benchmark", "unknown")),
     }
-    return RunContext(run_id=run_id, seed=seed, config=config, output_dir=str(out_dir), tags=tags)
+    # Shallow-copy the config so per-run mutations (e.g., builders that inject
+    # a `_meta_edit_provider` handle during consolidate) don't leak back into
+    # the runner's self.config and contaminate the on-disk frozen_config.
+    return RunContext(run_id=run_id, seed=seed, config=dict(config), output_dir=str(out_dir), tags=tags)

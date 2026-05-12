@@ -176,8 +176,19 @@ class PsSelectorRetriever:
             section_headers={k: f"## {k}" for k in kinds},
         )
 
+    @staticmethod
+    def _extract_variant_flags(memory: MemoryState) -> dict[str, Any] | None:
+        """Read render_flags stamped by D.3x variant_format or D.4 DSPy optimizer."""
+        if not memory.metadata:
+            return None
+        flags = memory.metadata.get("render_flags")
+        if flags and isinstance(flags, dict):
+            return flags
+        return None
+
     def _render_hint_text(
-        self, concept_mem: ConceptMemory, selected_names: list[str] | None
+        self, concept_mem: ConceptMemory, selected_names: list[str] | None,
+        *, variant_flags: dict[str, Any] | None = None,
     ) -> str:
         """Return raw rendered concept text (no hint-template wrapping).
 
@@ -185,7 +196,16 @@ class PsSelectorRetriever:
         template at prompt-build time — matching arc_memo's pattern.
         """
         profile = self._build_profile(concept_mem)
-        render_flags = _RENDER_PROFILES.get(self.render_mode, _RENDER_PROFILES["full"])
+        if variant_flags is not None:
+            render_flags = {
+                "skip_cues": variant_flags.get("skip_cues", False),
+                "skip_implementation": variant_flags.get("skip_implementation", False),
+                "skip_parameters": variant_flags.get("skip_parameters", False),
+                "skip_parameter_description": variant_flags.get("skip_parameter_description", True),
+                "include_description": variant_flags.get("include_description", True),
+            }
+        else:
+            render_flags = _RENDER_PROFILES.get(self.render_mode, _RENDER_PROFILES["full"])
 
         if selected_names:
             return concept_mem.to_string(
@@ -291,17 +311,17 @@ class PsSelectorRetriever:
         problem: ProblemSpec,
         selector_mode: str,
         extra_metadata: dict[str, Any] | None = None,
+        variant_flags: dict[str, Any] | None = None,
     ) -> RetrievalBundle:
         """Apply filter → route → render after selection."""
-        # Filter (delegated to format-independent ConceptFilter)
         pre_filter_count = len(selected_names) if selected_names is not None else 0
         if selected_names is not None:
             filtered = self._filter.filter(selected_names)
         else:
             filtered = None
 
-        # Render (format-specific — uses ConceptMemory.to_string)
-        hint_text = self._render_hint_text(concept_mem, filtered)
+        hint_text = self._render_hint_text(concept_mem, filtered,
+                                            variant_flags=variant_flags)
 
         # Route (delegated to format-independent RetrievalRouter)
         decision = self._router.should_include(
@@ -373,12 +393,13 @@ class PsSelectorRetriever:
         if self._selected_concepts is not None:
             return self._retrieve_precomputed_names(concept_mem, problem)
 
-        # Mode 4: all concepts → through pipeline
+        vflags = self._extract_variant_flags(memory)
         return self._apply_pipeline(
             concept_mem=concept_mem,
             selected_names=None,
             problem=problem,
             selector_mode="all_concepts",
+            variant_flags=vflags,
         )
 
     async def async_retrieve(
@@ -417,6 +438,8 @@ class PsSelectorRetriever:
         if self._selected_concepts is not None:
             return self._retrieve_precomputed_names(concept_mem, problem)
 
+        vflags = self._extract_variant_flags(memory)
+
         # Mode 4: all concepts (no LLM)
         if not self.use_llm_selector:
             return self._apply_pipeline(
@@ -424,6 +447,7 @@ class PsSelectorRetriever:
                 selected_names=None,
                 problem=problem,
                 selector_mode="all_concepts",
+                variant_flags=vflags,
             )
 
         # Mode 3: inline LLM selection → through pipeline
@@ -499,4 +523,5 @@ class PsSelectorRetriever:
             selected_names=selected_names,
             problem=problem,
             selector_mode="llm_selected",
+            variant_flags=vflags,
         )

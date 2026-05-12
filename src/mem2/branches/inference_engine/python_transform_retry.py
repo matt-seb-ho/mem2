@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import asyncio
+import logging
+
 from mem2.core.entities import (
     AttemptRecord,
     FeedbackRecord,
@@ -11,6 +14,34 @@ from mem2.core.entities import (
 from mem2.core.retry_policy import ArcMemoRetryPolicy
 from mem2.prompting.options import ArcMemoPromptOptions
 from mem2.prompting.render import make_initial_prompt, make_retry_prompt, prompt_fingerprint
+
+logger = logging.getLogger(__name__)
+
+# Active-path wall-clock timeout per LLM call. The httpx Timeout in
+# llmplus/client.py guards per-operation reads; this guards total time per
+# call (connect + retries + reads). Set to 5 min — generous for V4 Flash on
+# hard ARC problems but bounds the indefinite-hang failure mode (witnessed
+# 2026-04-30: flat_topk seed 44 iter-3 stalled 18+ min).
+_LLM_CALL_TIMEOUT_S = 300.0
+
+
+async def _async_generate_bounded(provider, prompt, model, gen_cfg):
+    """Wraps provider.async_generate with asyncio.wait_for. On timeout,
+    returns a list of empty strings of length gen_cfg.n so the caller's
+    AttemptRecord shape is preserved (downstream evaluator scores empty
+    completions as failed → triggers retry, same as a model-returns-empty)."""
+    try:
+        return await asyncio.wait_for(
+            provider.async_generate(prompt=prompt, model=model, gen_cfg=gen_cfg),
+            timeout=_LLM_CALL_TIMEOUT_S,
+        )
+    except asyncio.TimeoutError:
+        n = int(gen_cfg.get("n", 1) or 1)
+        logger.warning(
+            "LLM call exceeded %.0fs wall-clock — returning %d empty completions.",
+            _LLM_CALL_TIMEOUT_S, n,
+        )
+        return [""] * n
 
 
 class PythonTransformRetryInferenceEngine:
@@ -53,7 +84,7 @@ class PythonTransformRetryInferenceEngine:
         cfg = dict(self.gen_cfg)
         cfg["n"] = trajectory_plan.num_paths
         if preset_completions is None:
-            completions = await provider.async_generate(prompt=prompt, model=self.model, gen_cfg=cfg)
+            completions = await _async_generate_bounded(provider, prompt, self.model, cfg)
         else:
             completions = [str(x) for x in preset_completions][: trajectory_plan.num_paths]
         return [
@@ -106,7 +137,7 @@ class PythonTransformRetryInferenceEngine:
         )
         cfg = dict(self.gen_cfg)
         cfg["n"] = trajectory_plan.num_paths
-        completions = await provider.async_generate(prompt=prompt, model=self.model, gen_cfg=cfg)
+        completions = await _async_generate_bounded(provider, prompt, self.model, cfg)
         return [
             AttemptRecord(
                 problem_uid=problem.uid,
