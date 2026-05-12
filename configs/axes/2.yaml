@@ -238,8 +238,8 @@ conditions:
       local_repo: "third_party/a_mem/"
       literature_role: "differentiation_anchor"
       ported_from: "memory_layer.py::AgenticMemorySystem.process_memory + consolidate_memories (per-note evolution + evo_threshold schedule; no Zettelkasten context rewrite; no tag-graph broadcast)"
-      parity_grade: reduced-but-honest
-      parity_note: "Template-mode tag-enrichment fix landed 2026-04-27 (doc 74 finding 5). Tags now computed from description-token intersection with nearest neighbor. Three substitutions disclosed: (1) no note-construction from raw text, (2) LLM prompt schema omits evolution-request fields in template mode, (3) no Zettelkasten context rewrite."
+      parity_grade: partial-with-disclosed-gap
+      parity_note: "Per-note link evolution + tag enrichment + evo-threshold schedule ported faithfully. Structured tags field added to Concept dataclass 2026-05-12 (concepts/data.py:75 tags: list[str]); reorg_amem.py:263-272 now appends tags both to c.tags structured field AND description text (audit-readable). T4 NoneType guard for null descriptions landed 2026-05-12. Post-T4 rerun: R1=35.0, R2=24.0 — joins top axis-2 cluster. Remaining gaps vs A-MEM paper: no Zettelkasten context rewrite (the C of A-Mem); no full tag-graph broadcast across neighbor concepts; no note-construction from raw text. Cross-check: copilot read agreed with Codex #6 on Approximated lens-1; disagreed with Codex #6 'tags logged but not applied' (tags ARE applied to description text per lines 263-272). Aaron adjudicated copilot's read 2026-05-12; structured-tags fix landed same day per 'all-fix' directive."
       status: {paper: done, repo: done, impl: done, smoke: done, run: todo}
 
   - label: reorg_lilo

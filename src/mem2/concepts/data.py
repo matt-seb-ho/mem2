@@ -73,6 +73,7 @@ class Concept:
     cues: list[str] = field(default_factory=list)
     implementation: list[str] = field(default_factory=list)
     used_in: list[str] = field(default_factory=list)
+    tags: list[str] = field(default_factory=list)
 
     # ----------------------- Init / validation ------------------------- #
     def __post_init__(self):
@@ -86,6 +87,8 @@ class Concept:
             self.implementation = []
         if self.used_in is None:
             self.used_in = []
+        if self.tags is None:
+            self.tags = []
         # cues/implementation may contain dict entries from old serializations
         # (before `_merge_lines` canonicalization). Normalize to strings so
         # downstream dedup / aggregation is hashable-safe.

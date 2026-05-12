@@ -263,9 +263,13 @@ class AMEMAgenticMemoryBuilder(ArcMemoReorgMemoryBuilder):
         if "update_tags" in actions:
             tags = decision.get("tags_to_update", [])
             if tags:
-                tag_suffix = " [tags:" + ",".join(str(t)[:32] for t in tags) + "]"
-                if tag_suffix not in (c.description or ""):
-                    c.description = (c.description or "") + tag_suffix
-                    applied.append({"type": "tags", "note": note, "tags": tags})
+                new_tag_strs = [str(t)[:32].strip() for t in tags if t]
+                fresh_tags = [t for t in new_tag_strs if t and t not in c.tags]
+                if fresh_tags:
+                    c.tags.extend(fresh_tags)
+                    tag_suffix = " [tags:" + ",".join(fresh_tags) + "]"
+                    if tag_suffix not in (c.description or ""):
+                        c.description = (c.description or "") + tag_suffix
+                    applied.append({"type": "tags", "note": note, "tags": fresh_tags})
 
         return applied
