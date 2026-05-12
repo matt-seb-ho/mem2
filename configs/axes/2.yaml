@@ -194,8 +194,8 @@ conditions:
       literature_role: "differentiation_anchor"
       ported_from: "paper §3 Method — tree structure [content, embedding, parent, children, depth]; root-to-leaf traversal with similarity routing; ancestor summary aggregation. Co-activation proxy for embedding sim; template summaries fall back when no _meta_edit_provider."
       status: {paper: done, repo: na, impl: done, smoke: done, run: todo}
-      parity_grade: reduced-but-honest
-      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
+      parity_grade: surface-port-only-disclosed-wiring-gap
+      parity_note: "Builder writes fresh tree to memory.payload['memtree_hierarchy'] per consolidate (reorg_memtree.py:170-186). Paired retriever hmem_hierarchical reads ONLY the static prereq concept_hierarchy_v1.json (hmem_hierarchical.py:65,140-142); no reference to memory.payload['memtree_hierarchy'] in retrieve path. Phase F R2=20 for ax2_reorg_memtree__hmem_hierarchical reflects static-hierarchy retrieval over post-reorg memory state, NOT memtree's matching-retriever pairing. Wiring-contract violation confirmed by Codex #6 + copilot cross-check 2026-05-12 (3rd instance of bank-write-retriever-blind pattern alongside RN-004 variant_format and M.C.1 variant_parse). Substantive fix: modify hmem_hierarchical._load_hierarchy() to prefer memory.payload['memtree_hierarchy'] when present, falling back to prereq. Until fixed, do NOT cite R2 score as MemTree evidence."
 
   - label: reorg_memp
     override_group: builder
