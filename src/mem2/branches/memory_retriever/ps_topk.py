@@ -76,6 +76,8 @@ class PsTopKRetriever:
             skip_parameter_description = variant_flags.get(
                 "skip_parameter_description", self.skip_parameter_description
             )
+            skip_kind = variant_flags.get("skip_kind", True)
+            skip_routine_subtype = variant_flags.get("skip_routine_subtype", True)
             variant = memory.metadata.get("variant")
         else:
             include_description = self.include_description
@@ -83,10 +85,14 @@ class PsTopKRetriever:
             skip_implementation = self.skip_implementation
             skip_parameters = self.skip_parameters
             skip_parameter_description = self.skip_parameter_description
+            skip_kind = True
+            skip_routine_subtype = True
             variant = None
         hint = mem.to_string(
             concept_names=top,
             include_description=include_description,
+            skip_kind=skip_kind,
+            skip_routine_subtype=skip_routine_subtype,
             skip_cues=skip_cues,
             skip_implementation=skip_implementation,
             skip_parameters=skip_parameters,

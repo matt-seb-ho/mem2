@@ -203,9 +203,11 @@ class PsSelectorRetriever:
                 "skip_parameters": variant_flags.get("skip_parameters", False),
                 "skip_parameter_description": variant_flags.get("skip_parameter_description", True),
                 "include_description": variant_flags.get("include_description", True),
+                "skip_kind": variant_flags.get("skip_kind", True),
             }
         else:
-            render_flags = _RENDER_PROFILES.get(self.render_mode, _RENDER_PROFILES["full"])
+            render_flags = dict(_RENDER_PROFILES.get(self.render_mode, _RENDER_PROFILES["full"]))
+            render_flags.setdefault("skip_kind", True)
 
         if selected_names:
             return concept_mem.to_string(
@@ -214,6 +216,7 @@ class PsSelectorRetriever:
                 skip_cues=render_flags["skip_cues"],
                 skip_implementation=render_flags["skip_implementation"],
                 skip_parameters=render_flags["skip_parameters"],
+                skip_kind=render_flags["skip_kind"],
                 include_description=render_flags["include_description"],
                 usage_threshold=0,
                 show_other_concepts=True,
@@ -224,6 +227,7 @@ class PsSelectorRetriever:
             skip_cues=render_flags["skip_cues"],
             skip_implementation=render_flags["skip_implementation"],
             skip_parameters=render_flags["skip_parameters"],
+            skip_kind=render_flags["skip_kind"],
             include_description=render_flags["include_description"],
             usage_threshold=0,
             profile=profile,
