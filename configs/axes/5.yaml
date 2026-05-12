@@ -50,8 +50,8 @@ conditions:
       literature_role: "scoop_plus_baseline_plus_inspiration"
       ported_from: "src/models/gpt_abstraction.py-inspired one-shot meta-edit plan + MDL gate. LLM provider wired via SyncMetaEditProviderAdapter (runner.py injects ctx.config['_meta_edit_provider'] after run_context serialization). Falls back to hand_coded_reorg when provider unavailable."
       status: {paper: done, repo: done, impl: done, smoke: done, run: todo}
-      parity_grade: reduced-but-honest
-      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
+      parity_grade: surface-port-only-disclosed
+      parity_note: "ALMA's actual algorithm: meta-learning over SHA-indexed memory-design ARCHIVE with MCTS-style selection, LLM-generated EXECUTABLE CODE for new memory designs, end-to-end agentic-eval reward signal (see third_party/alma/core/{meta_agent.py, memo_manager.py}). Our port: 3-shape JSON edit plan (merge/rename/delete) on a fixed ConceptMemory substrate + MDL local-gate proxy. No archive, no MCTS, no code generation, no agentic-eval reward. ALMA-spirit preserved (LLM proposes memory edits) but core mechanism (open-ended search over executable memory designs) is ABSENT. Cell label retained for artifact compatibility; honest meeting framing is 'LLM-proposed schema edits inspired by ALMA's open-ended principle'. T1 patch (2026-05-12) added action='alma_meta_edit_skipped' visibility when LLM returns empty plan. Cross-check: copilot + Codex #6 audit 2026-05-12 agreed."
 
   - label: adas_style_search
     override_group: builder
@@ -72,5 +72,5 @@ conditions:
       literature_role: "differentiation_anchor"
       ported_from: "_arc/search.py meta-agent reflexion loop (3-round reflexion buffer; same LLM-optional pattern as F.2 — falls back to F.2 then A.1 if no provider wired)"
       status: {paper: done, repo: done, impl: done, smoke: done, run: todo}
-      parity_grade: reduced-but-honest
-      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
+      parity_grade: surface-port-only-disclosed
+      parity_note: "ADAS's actual algorithm: meta agent iteratively PROGRAMS new agent designs in code, evaluated by RUNNING the generated agent on benchmark tasks (see third_party/adas/_arc/search.py). Our port: iterative reflexion (max 3 rounds) over the same 3-shape JSON edit-plan space as 5.2 alma + MDL local-gate. Reflexion-buffer pattern IS preserved (single ADAS-distinctive bit); search-space (memory edit plans vs agent designs in code) + evaluation (MDL proxy vs benchmark task-success) are SUBSTITUTED. Slightly less reductive than alma since iterative pattern is real, but capability ceiling is bounded by the JSON edit space. Built-in cell-named action labels (adas_meta_search / adas_skipped) — no silent-fallback bug. Honest meeting framing: 'ADAS-inspired iterative reflexion over schema edits with MDL local-gate proxy'. Cross-check: copilot + Codex #6 audit 2026-05-12 agreed."
