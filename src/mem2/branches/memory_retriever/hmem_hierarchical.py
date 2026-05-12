@@ -70,8 +70,8 @@ _HIERARCHY_PATH = _REPO_ROOT / "data" / "arc_agi" / "concept_memory" / "concept_
 _HIERARCHY_CACHE: dict | None = None
 
 
-def _load_hierarchy() -> dict | None:
-    """Lazy-load the prebuilt 3-level hierarchy. Returns None on absence."""
+def _load_prereq_hierarchy() -> dict | None:
+    """Lazy-load the prebuilt 3-level hierarchy from disk. Returns None on absence."""
     global _HIERARCHY_CACHE
     if _HIERARCHY_CACHE is not None:
         return _HIERARCHY_CACHE if _HIERARCHY_CACHE.get("ok") else None
@@ -87,6 +87,65 @@ def _load_hierarchy() -> dict | None:
         logger.warning(f"hmem_hierarchical: failed to load hierarchy → fallback. {e}")
         _HIERARCHY_CACHE = {"ok": False}
         return None
+
+
+def _memtree_to_prereq_shape(memtree_payload: dict) -> dict | None:
+    """Convert reorg_memtree's flat {node_name: TreeNode.to_dict()} payload
+    into the prereq categories→subcategories→concepts shape so the existing
+    retrieval walk can consume it.
+
+    Memtree structure: depth 0 root (structural), depth 1 kind-groups,
+    depth 2 mid-nodes, depth 3 leaves. We map depth 1 → categories,
+    depth 2 → subcategories, depth 3 → concepts. depth-2 nodes that are
+    themselves leaves (no depth-3 children) become single-concept subcategories.
+    """
+    if not memtree_payload:
+        return None
+    by_depth: dict[int, list[tuple[str, dict]]] = {}
+    for n, node in memtree_payload.items():
+        d = int(node.get("depth", 0))
+        by_depth.setdefault(d, []).append((n, node))
+    if 1 not in by_depth:
+        return None
+    categories = []
+    for name, node in by_depth.get(1, []):
+        cat = {
+            "name": name,
+            "description": str(node.get("content", ""))[:200],
+            "subcategories": [],
+        }
+        for sub_name, sub_node in by_depth.get(2, []):
+            if sub_node.get("parent") != name:
+                continue
+            sub = {
+                "name": sub_name,
+                "description": str(sub_node.get("content", ""))[:200],
+                "concepts": list(sub_node.get("children", [])) or [sub_name],
+            }
+            cat["subcategories"].append(sub)
+        categories.append(cat)
+    if not categories:
+        return None
+    return {"categories": categories}
+
+
+def _resolve_hierarchy(memory: MemoryState) -> tuple[dict | None, str]:
+    """Prefer fresh memtree payload when present; fall back to prereq file.
+
+    Returns (hierarchy_data, source_label) where source_label ∈
+    {'memtree_fresh', 'prebuilt_v1', 'none'}. Audit purpose: T3
+    retrieval_metadata captures source_label as scoring_mode.
+    """
+    payload_tree = memory.payload.get("memtree_hierarchy") if memory and memory.payload else None
+    if payload_tree:
+        adapted = _memtree_to_prereq_shape(payload_tree)
+        if adapted:
+            return adapted, "memtree_fresh"
+        logger.warning("hmem_hierarchical: memtree_hierarchy payload present but adapter returned empty; falling back to prereq")
+    cached = _load_prereq_hierarchy()
+    if cached and cached.get("ok"):
+        return cached["data"], "prebuilt_v1"
+    return None, "none"
 
 
 def _toks(text: str | None) -> set[str]:
@@ -136,11 +195,11 @@ class HMEMHierarchicalRetriever:
         query_text = self._query_text(problem, previous_attempts)
         q_toks = _toks(query_text)
 
-        # Try the prebuilt hierarchy path first.
-        hcache = _load_hierarchy()
-        if hcache is not None:
+        # Prefer freshly-written memtree payload when present; fall back to prereq.
+        hdata, hsource = _resolve_hierarchy(memory)
+        if hdata is not None:
             return self._retrieve_with_prebuilt_hierarchy(
-                hcache["data"], mem, q_toks, query_text, problem,
+                hdata, mem, q_toks, query_text, problem, source=hsource,
             )
 
         layer_trace: list[dict] = []
@@ -252,6 +311,7 @@ class HMEMHierarchicalRetriever:
         q_toks: set[str],
         query_text: str,
         problem: ProblemSpec,
+        source: str = "prebuilt_v1",
     ) -> RetrievalBundle:
         """3-level walk: Category → Sub-category → concept."""
         layer_trace: list[dict] = []
@@ -325,7 +385,8 @@ class HMEMHierarchicalRetriever:
             retrieved_items=[{"name": n} for n in top],
             metadata={
                 "retriever": self.name,
-                "scoring_mode": "prebuilt_hierarchy_3level",
+                "scoring_mode": f"hmem_{source}_3level",
+                "hierarchy_source": source,
                 "layer_trace": layer_trace,
                 "num_selected": len(top),
                 "top_k": self.top_k,

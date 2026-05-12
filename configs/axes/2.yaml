@@ -194,8 +194,8 @@ conditions:
       literature_role: "differentiation_anchor"
       ported_from: "paper §3 Method — tree structure [content, embedding, parent, children, depth]; root-to-leaf traversal with similarity routing; ancestor summary aggregation. Co-activation proxy for embedding sim; template summaries fall back when no _meta_edit_provider."
       status: {paper: done, repo: na, impl: done, smoke: done, run: todo}
-      parity_grade: surface-port-only-disclosed-wiring-gap
-      parity_note: "Builder writes fresh tree to memory.payload['memtree_hierarchy'] per consolidate (reorg_memtree.py:170-186). Paired retriever hmem_hierarchical reads ONLY the static prereq concept_hierarchy_v1.json (hmem_hierarchical.py:65,140-142); no reference to memory.payload['memtree_hierarchy'] in retrieve path. Phase F R2=20 for ax2_reorg_memtree__hmem_hierarchical reflects static-hierarchy retrieval over post-reorg memory state, NOT memtree's matching-retriever pairing. Wiring-contract violation confirmed by Codex #6 + copilot cross-check 2026-05-12 (3rd instance of bank-write-retriever-blind pattern alongside RN-004 variant_format and M.C.1 variant_parse). Substantive fix: modify hmem_hierarchical._load_hierarchy() to prefer memory.payload['memtree_hierarchy'] when present, falling back to prereq. Until fixed, do NOT cite R2 score as MemTree evidence."
+      parity_grade: partial-with-disclosed-gap
+      parity_note: "Wiring fix landed 2026-05-12: hmem_hierarchical._resolve_hierarchy() now prefers memory.payload['memtree_hierarchy'] (freshly-built tree from reorg_memtree, adapted to category→subcategory→concept shape) and falls back to static prereq concept_hierarchy_v1.json. scoring_mode metadata records 'memtree_fresh' vs 'prebuilt_v1' per attempt. Builder still uses token-overlap clustering as substitute for embedding-similarity (disclosed in module docstring lines 13-21). Phase F R2=20 was pre-fix (static-hierarchy artifact); post-fix rerun pending (2026-05-12, single-cell ~\$0.50). Audit history: scholar's Codex #6 found wiring gap; copilot cross-check confirmed; Aaron approved substantive wiring fix per 2026-05-12 'all-fix' directive."
 
   - label: reorg_memp
     override_group: builder
@@ -263,5 +263,5 @@ conditions:
       literature_role: "differentiation_anchor"
       ported_from: "src/models/gpt_abstraction.py::GPTLibraryLearner.generate_abstraction (iterative-abstraction-proposal; schema validation from _parse_completion + check_valid; no DreamCoder/Stitch wrap)"
       status: {paper: done, repo: done, impl: done, smoke: done, run: todo}
-      parity_grade: reduced-but-honest
-      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
+      parity_grade: partial-with-disclosed-gap
+      parity_note: "LL component (iterative LLM-proposed abstractions) faithful to GPTLibraryLearner.generate_abstraction loop (reorg_lilo.py:88-179). LILO's C (DreamCoder/Stitch compression) and O (AutoDoc) components are NOT in this module per author docstring (deferred to axes 2.2/2.3); LILO's dual-system program-search half is absent entirely. Phase F R2=19 measures LLM-driven library growth + MDL gate, NOT full L+C+O system. Cross-check: copilot read vs Codex #6 read 2026-05-12 — copilot's Partial-with-disclosed-gap adjudicated by Aaron over Codex #6's Wrong. Honest meeting framing: 'LILO's LL component, evaluated standalone on concept-bank reorganization.'"
