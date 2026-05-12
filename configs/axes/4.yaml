@@ -1,0 +1,164 @@
+axis: "4"
+title: "Auto-design format (P4b — Ablation Novelty; self-evolving conceptually adjacent, in-house implementation lives in axis 5)"
+role_tag: "ablation_novelty"
+order_index: 4
+
+baseline: arcmemo_ps
+
+gate:
+  type: sigma_delta
+  advance_threshold_sigma: 1.0
+  ambiguous_threshold_sigma: 0.5
+  stage_overrides:
+    "4a":
+      type: completion_sanity
+      min_completion_rate: 0.80
+
+auto_advance: false
+
+conditions:
+  # --- 🟢 Novelty seeds (existing arcmemo formats) -------------------
+  - label: arcmemo_oe
+    # Combo swap: OE builder produces "arcmemo_oe" schema, which needs the
+    # oe_topk retriever (ps_topk is PS-schema-only). Null PS-specific
+    # builder kwargs (seed_memory_file, domain) and retriever kwargs
+    # (include_description, skip_cues, skip_implementation) that the OE
+    # classes do not accept.
+    override_group: combo
+    builder: arcmemo_oe
+    builder_cfg:
+      seed_memory_file: null
+      domain: null
+    retriever: oe_topk
+    retriever_cfg:
+      top_k: 3
+      include_description: null
+      skip_cues: null
+      skip_implementation: null
+    candidate:
+      id: "4.1"
+      paper: "ArcMemo"
+      arxiv: "2509.04439"
+      literature_role: "novelty_seed"
+      status: {paper: done, repo: na, impl: done, smoke: done, run: done}
+
+  - label: arcmemo_ps
+    baseline: true
+    override_group: builder
+    builder: arcmemo_ps
+    builder_cfg: {}
+    candidate:
+      id: "4.2"
+      paper: "ArcMemo"
+      arxiv: "2509.04439"
+      literature_role: "baseline"
+      status: {paper: done, repo: na, impl: done, smoke: done, run: done}
+
+  # --- 5 new format variants (parameterized via variant_format builder) --
+  - label: variant_minimal
+    override_group: builder
+    builder: variant_format
+    builder_cfg:
+      variant: minimal
+    candidate:
+      id: "4.3a"
+      literature_role: "novelty_seed"
+      status: {paper: done, repo: na, impl: partial, smoke: done, run: done}
+
+  - label: variant_typed_only
+    override_group: builder
+    builder: variant_format
+    builder_cfg:
+      variant: typed_only
+    candidate:
+      id: "4.3b"
+      literature_role: "novelty_seed"
+      status: {paper: done, repo: na, impl: partial, smoke: done, run: done}
+
+  - label: variant_cue_heavy
+    override_group: builder
+    builder: variant_format
+    builder_cfg:
+      variant: cue_heavy
+    candidate:
+      id: "4.3c"
+      literature_role: "novelty_seed"
+      status: {paper: done, repo: na, impl: partial, smoke: done, run: done}
+
+  - label: variant_free_text
+    override_group: builder
+    builder: variant_format
+    builder_cfg:
+      variant: free_text
+    candidate:
+      id: "4.3d"
+      literature_role: "novelty_seed"
+      status: {paper: done, repo: na, impl: partial, smoke: done, run: done}
+
+  - label: variant_structured_routine
+    override_group: builder
+    builder: variant_format
+    builder_cfg:
+      variant: structured_routine
+    candidate:
+      id: "4.3e"
+      literature_role: "novelty_seed"
+      status: {paper: done, repo: na, impl: partial, smoke: done, run: done}
+
+  - label: variant_dspy_opt
+    override_group: builder
+    builder: variant_dspy_opt
+    builder_cfg:
+      breadth: 5
+      depth: 2
+      init_temperature: 1.4
+    candidate:
+      id: "4.4"
+      paper: "DSPy"
+      arxiv: "2310.03714"
+      repo: "https://github.com/stanfordnlp/dspy"
+      local_repo: "third_party/dspy/"
+      literature_role: "differentiation_anchor"
+      ported_from: "dspy/teleprompt/copro_optimizer.py::COPRO.compile (breadth-then-depth instruction search with proposal-given-attempts history; MDL-proxy scorer stand-in for labeled metric; LLM proposal via _meta_edit_provider, template mutation fallback)"
+      parity_grade: faithful
+      parity_note: "Optimizer→retriever wire fix landed 2026-04-27 (doc 74 §0 finding 1). Builder now writes render_flags to memory.metadata; ps_selector reads them at render time. The winning variant's flags reach the LLM prompt — optimization is no longer theatre."
+      status: {paper: done, repo: done, impl: done, smoke: done, run: todo}
+
+  - label: variant_gepa
+    override_group: builder
+    builder: variant_gepa
+    builder_cfg:
+      population_size: 6
+      generations: 3
+      tournament_k: 3
+      crossover_rate: 0.5
+      mutation_rate: 0.3
+    candidate:
+      id: "4.5"
+      paper: "GEPA"
+      arxiv: "2507.19457"
+      repo: "https://github.com/gepa-ai/gepa (vendored via dspy)"
+      local_repo: "third_party/dspy/dspy/teleprompt/gepa/"
+      literature_role: "differentiation_anchor"
+      ported_from: "dspy/teleprompt/gepa/gepa.py::GEPA (population + tournament selection + crossover + reflective-mutation structure; MDL-proxy scorer stand-in; LLM reflective proposal via _meta_edit_provider, template mutation+crossover fallback)"
+      status: {paper: done, repo: done, impl: done, smoke: done, run: todo}
+      parity_grade: reduced-but-honest
+      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
+
+  - label: variant_parse
+    override_group: builder
+    builder: variant_parse
+    builder_cfg:
+      base_variant: structured_routine
+      min_stats_per_kind: 3
+    candidate:
+      id: "4.6"
+      paper: "PARSE"
+      arxiv: "2510.08623"
+      repo: "no public official implementation (Amazon internal)"
+      local_repo: null
+      literature_role: "differentiation_anchor"
+      ported_from: "paper ARCHITECT + SCOPE mechanisms — iterative schema refinement based on extraction-error reflection. Per-kind render-flag overrides substitute for per-field JSON schema edits; heuristic performance-based flag flipping replaces ARCHITECT prompt when no LLM provider wired."
+      status: {paper: done, repo: na, impl: done, smoke: done, run: todo}
+      parity_grade: reduced-but-honest
+      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."

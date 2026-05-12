@@ -1,0 +1,267 @@
+axis: "2"
+title: "Reorganization (P2 — Headline Novelty target)"
+role_tag: "headline_novelty"
+order_index: 2
+
+baseline: reorg_off
+
+gate:
+  type: sigma_delta
+  advance_threshold_sigma: 1.0
+  ambiguous_threshold_sigma: 0.5
+  stage_overrides:
+    "4a":
+      type: completion_sanity
+      min_completion_rate: 0.80
+
+auto_advance: false
+
+conditions:
+  # --- Baselines ------------------------------------------------------
+  - label: reorg_off
+    baseline: true
+    override_group: builder
+    builder: arcmemo_ps
+    builder_cfg: {}
+    candidate:
+      id: "2.12"
+      literature_role: "baseline"
+      status: {paper: done, repo: na, impl: done, smoke: done, run: done}
+
+  - label: accretive_prune
+    override_group: builder
+    builder: accretive_prune
+    builder_cfg:
+      max_concepts: 200
+      prune_every_consolidate: true
+    candidate:
+      id: "2.11"
+      literature_role: "baseline"
+      status: {paper: done, repo: na, impl: done, smoke: done, run: todo}
+
+  # --- Our novel reorg (4 sub-axis settings) -------------------------
+  - label: reorg_on_graph_mdl_global_plateau
+    override_group: builder
+    builder: arcmemo_reorg
+    builder_cfg:
+      input_basis: graph_intrinsic
+      objective: mdl
+      scope: global_rebuild
+      trigger: plateau
+    candidate:
+      id: "2.1"
+      literature_role: "novelty_seed"
+      status: {paper: done, repo: na, impl: partial, smoke: done, run: done}
+
+  - label: reorg_on_trace_mdl_accretive_everyk
+    override_group: builder
+    builder: arcmemo_reorg
+    builder_cfg:
+      input_basis: trace_based
+      objective: mdl
+      scope: accretive
+      trigger: every_k
+      every_k: 20
+    candidate:
+      id: "2.1b"
+      literature_role: "novelty_seed"
+      status: {paper: done, repo: na, impl: partial, smoke: done, run: done}
+
+  - label: reorg_dreamcoder
+    override_group: builder
+    builder: reorg_dreamcoder
+    builder_cfg:
+      trigger: every_k
+      every_k: 20
+      scope: global_rebuild
+      min_shared_lines: 2
+      min_fragment_frequency: 2
+    candidate:
+      id: "2.2"
+      paper: "DreamCoder"
+      arxiv: "2006.08381"
+      repo: "https://github.com/ellisk42/ec"
+      local_repo: "third_party/dreamcoder/"
+      literature_role: "differentiation_anchor"
+      ported_from: "compression.py::induceGrammar + fragmentGrammar.py::insideOutside (line-level fragment extraction; no OCaml/PyPy; greedy instead of beam)"
+      parity_grade: faithful
+      parity_note: "scope:accretive→global_rebuild fix landed 2026-04-27 (doc 74 §0 finding 3). DreamCoder compression is inherently global — fragments REPLACE inlined code in children, reducing MDL. Accretive mode (add-only) made MDL gate reject every fragment by construction."
+      status: {paper: done, repo: done, impl: done, smoke: done, run: todo}
+
+  - label: reorg_stitch
+    override_group: builder
+    builder: reorg_stitch
+    builder_cfg:
+      trigger: every_k
+      every_k: 20
+      scope: accretive
+      min_line_frequency: 3
+      max_fragments_per_round: 10
+    candidate:
+      id: "2.3"
+      paper: "Stitch"
+      arxiv: "2211.16605"
+      repo: "https://github.com/mlb2251/stitch"
+      local_repo: "third_party/stitch/"
+      literature_role: "differentiation_anchor"
+      ported_from: "Stitch top-down frequency-ranked compression (single-line fragments instead of anti-unification; Python greedy instead of Rust)"
+      status: {paper: done, repo: done, impl: done, smoke: done, run: todo}
+      parity_grade: reduced-but-honest
+      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
+
+  - label: reorg_lrll
+    override_group: builder
+    builder: reorg_lrll
+    builder_cfg:
+      trigger: every_k
+      every_k: 20
+      scope: accretive
+      success_threshold: 0.5
+      min_hits: 2
+      min_shared_lines: 2
+      min_fragment_frequency: 2
+    candidate:
+      id: "2.5"
+      paper: "LRLL"
+      arxiv: "2406.18746"
+      repo: "https://gtziafas.github.io/LRLL_project/ (no public code repo)"
+      local_repo: null
+      literature_role: "differentiation_anchor"
+      ported_from: "paper §III Method — wake-sleep cycle, experience-filtered abstraction. Simulator self-verification is substituted with success-rate filter on used_in outcomes; DreamCoder fragment extraction runs on the filtered slice. Distinct from A.2 (unfiltered), A.7 (prunes post-hoc)."
+      status: {paper: done, repo: needs_fetch, impl: done, smoke: done, run: todo}
+      parity_grade: reduced-but-honest
+      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
+
+  - label: reorg_evolver
+    override_group: builder
+    builder: reorg_evolver
+    builder_cfg:
+      trigger: every_k
+      every_k: 20
+      scope: accretive
+      jaccard_threshold: 0.6
+      min_principles_for_dedup: 10
+      require_llm_verify: false
+    candidate:
+      id: "2.8"
+      paper: "EvolveR"
+      arxiv: "2510.16079"
+      repo: "https://github.com/Edaizi/EvolveR"
+      local_repo: null
+      literature_role: "differentiation_anchor"
+      ported_from: "paper §3.2 maintenance pipeline — semantic dedup of scored principles with quality-metric tiebreak. Token-set Jaccard substitutes embedding similarity; hit/success metric tracks historical effectiveness (distinct from A.7 Memp which prunes, this removes only duplicates)."
+      status: {paper: done, repo: needs_fetch, impl: done, smoke: done, run: todo}
+      parity_grade: reduced-but-honest
+      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
+
+  - label: reorg_sleepgate
+    override_group: builder
+    builder: reorg_sleepgate
+    builder_cfg:
+      trigger: every_k
+      every_k: 20
+      scope: accretive
+      token_overlap_threshold: 0.4
+      require_coverage_inclusion: true
+    candidate:
+      id: "2.10"
+      paper: "SleepGate"
+      arxiv: "2603.14517"
+      repo: "no public official implementation"
+      local_repo: null
+      literature_role: "adjacent_support"
+      ported_from: "paper mechanisms adapted from KV-cache level to concept memory — conflict-aware temporal tagger = authorship_lineage + token-overlap; forgetting gate = eviction rule (older→newer supersession with coverage inclusion); consolidation = supersedes-marker on successor. Distinct from A.6 (links), A.7 (performance prune), A.8 (dedup) by triggering on temporal-supersession signal."
+      status: {paper: done, repo: na, impl: done, smoke: done, run: todo}
+      parity_grade: reduced-but-honest
+      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
+
+  - label: reorg_memtree
+    override_group: builder
+    builder: reorg_memtree
+    builder_cfg:
+      trigger: every_k
+      every_k: 20
+      scope: accretive
+      similarity_threshold: 1.0
+      max_children_per_node: 6
+      max_depth: 3
+    candidate:
+      id: "2.9"
+      paper: "MemTree"
+      arxiv: "2410.14052"
+      repo: "no public official implementation"
+      local_repo: null
+      literature_role: "differentiation_anchor"
+      ported_from: "paper §3 Method — tree structure [content, embedding, parent, children, depth]; root-to-leaf traversal with similarity routing; ancestor summary aggregation. Co-activation proxy for embedding sim; template summaries fall back when no _meta_edit_provider."
+      status: {paper: done, repo: na, impl: done, smoke: done, run: todo}
+      parity_grade: reduced-but-honest
+      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
+
+  - label: reorg_memp
+    override_group: builder
+    builder: reorg_memp
+    builder_cfg:
+      trigger: every_k
+      every_k: 20
+      scope: accretive
+      min_hits: 3
+      prune_threshold: 0.5
+      reflect_on_failure: true
+    candidate:
+      id: "2.7"
+      paper: "Memp"
+      arxiv: "2508.06433"
+      repo: "https://github.com/zjunlp/MemP"
+      local_repo: "third_party/memp/"
+      literature_role: "differentiation_anchor"
+      ported_from: "ProcedureMem/memory.py::Memory.update (hit/success quality tracking + performance-based pruning at hit>=min_hits AND success/hit < threshold; no round/direct workflow LLM distillation)"
+      status: {paper: done, repo: done, impl: done, smoke: done, run: todo}
+      parity_grade: reduced-but-honest
+      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
+
+  - label: reorg_amem
+    override_group: builder
+    builder: reorg_amem
+    builder_cfg:
+      trigger: every_k
+      every_k: 20
+      scope: accretive
+      k_neighbors: 5
+      evo_threshold: 3
+      min_neighbor_strength: 0.1
+      max_notes_per_pass: 20
+    candidate:
+      id: "2.6"
+      paper: "A-MEM"
+      arxiv: "2502.12110"
+      repo: "https://github.com/WujiangXu/A-mem"
+      local_repo: "third_party/a_mem/"
+      literature_role: "differentiation_anchor"
+      ported_from: "memory_layer.py::AgenticMemorySystem.process_memory + consolidate_memories (per-note evolution + evo_threshold schedule; no Zettelkasten context rewrite; no tag-graph broadcast)"
+      parity_grade: reduced-but-honest
+      parity_note: "Template-mode tag-enrichment fix landed 2026-04-27 (doc 74 finding 5). Tags now computed from description-token intersection with nearest neighbor. Three substitutions disclosed: (1) no note-construction from raw text, (2) LLM prompt schema omits evolution-request fields in template mode, (3) no Zettelkasten context rewrite."
+      status: {paper: done, repo: done, impl: done, smoke: done, run: todo}
+
+  - label: reorg_lilo
+    override_group: builder
+    builder: reorg_lilo
+    builder_cfg:
+      trigger: every_k
+      every_k: 20
+      scope: accretive
+      n_function_generated: 10
+      n_task_examples: 10
+      n_program_examples: 20
+      max_candidates: 16
+      min_mdl_gain: 1.0
+    candidate:
+      id: "2.4"
+      paper: "LILO"
+      arxiv: "2310.19791"
+      repo: "https://github.com/gabegrand/lilo"
+      local_repo: "third_party/lilo/"
+      literature_role: "differentiation_anchor"
+      ported_from: "src/models/gpt_abstraction.py::GPTLibraryLearner.generate_abstraction (iterative-abstraction-proposal; schema validation from _parse_completion + check_valid; no DreamCoder/Stitch wrap)"
+      status: {paper: done, repo: done, impl: done, smoke: done, run: todo}
+      parity_grade: reduced-but-honest
+      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."

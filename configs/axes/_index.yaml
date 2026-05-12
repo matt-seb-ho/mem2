@@ -1,0 +1,19 @@
+# Axis order declaration — execution-priority numbered (2026-04-26 reshape).
+# Substrate first (axis 1), reorg/headline second (axis 2), composing axes after.
+# Drop a new axis 7.yaml in this directory and append `- "7"` to `order` below.
+# The sweep driver and aggregator read this file to validate axis names.
+
+order:
+  - "1"   # Hierarchical memory + retrieval (P1 + PL2 — Must-Engineer)
+  - "2"   # Reorganization (P2 — Headline Novelty target)
+  - "3"   # Interactive retrieval (P3 — Ablation Novelty)
+  - "4"   # Auto-design format (P4b — Ablation Novelty; self-evolving conceptually adjacent)
+  - "5"   # NASM / architecture-edit source (PL1 — Baseline + Inspiration)
+  - "6"   # Bulk ingestion / initialization (PL3 — Ablation-Only)
+
+# Reshape rationale (per discussion 2026-04-26): execution priority = build order =
+# substrate → headline → read policy → format → composition → init. Narrative weight
+# (which axis is "the headline") will be settled by Phase 1 results, not by labelling.
+# Old letter labels (A=Reorg, B=Retrieval, C=Interactive, D=Format, E=Init, F=Edit)
+# have been retired. Port IDs (e.g., "A.2 reorg_dreamcoder") remain stable
+# historical identifiers — they do NOT change with the axis rename.

@@ -1,0 +1,100 @@
+axis: "6"
+title: "Bulk ingestion / initialization (PL3 — Ablation-Only engineering)"
+role_tag: "ablation_only"
+order_index: 6
+
+baseline: empty_start
+
+gate:
+  type: sigma_delta
+  advance_threshold_sigma: 1.0
+  ambiguous_threshold_sigma: 0.5
+  stage_overrides:
+    "4a":
+      type: completion_sanity
+      min_completion_rate: 0.80
+
+# Axis E auto-advances even when no non-baseline condition beats the
+# baseline — init ablation is informative either way (a null result says
+# "seed content doesn't matter"; a negative result says "seed content hurts,
+# grow from trajectories only"). Both are reportable Phase-1 findings.
+auto_advance: true
+
+conditions:
+  - label: empty_start
+    baseline: true
+    # `empty_start` must explicitly null the inherited seed_memory_file /
+    # seed_annotations_file from the base config so the builder starts
+    # with truly empty memory. `_deep_set` treats None as "replace, do
+    # not merge-dict", stripping the inherited key.
+    override_group: builder
+    builder: arcmemo_ps
+    builder_cfg:
+      seed_memory_file: null
+      seed_annotations_file: null
+    candidate:
+      id: "6.1"
+      literature_role: "baseline"
+      status: {paper: done, repo: na, impl: done, smoke: done, run: done}
+
+  - label: barc_seeded
+    # barc_ingest doesn't accept seed_memory_file/seed_annotations_file —
+    # null-out inherited keys before registry dispatch.
+    override_group: builder
+    builder: barc_ingest
+    builder_cfg:
+      barc_dir: "../arc_memo/data/dataset/src/BARC/seeds"
+      seed_memory_file: null
+      seed_annotations_file: null
+    candidate:
+      id: "6.2"
+      paper: "BARC (Li et al.)"
+      arxiv: null
+      repo: "https://github.com/xu3kev/BARC"
+      local_repo: "../arc_memo/data/dataset/src/BARC/"
+      literature_role: "ingredient_source"
+      ported_from: "seed directory; header parser (not a full port of BARC's generation pipeline)"
+      status: {paper: partial, repo: partial, impl: partial, smoke: done, run: done}
+      parity_grade: reduced-but-honest
+      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
+
+  - label: barc_synthetic
+    # spec_only=true: HF synthetic expansion not locally mirrored; see
+    # 69_phase1_repo_fetch_attempts.md E.3 entry. Runner skips by default.
+    override_group: builder
+    builder: barc_ingest
+    builder_cfg:
+      barc_dir: "../arc_memo/data/dataset/src/BARC/seeds"
+      seed_memory_file: null
+      seed_annotations_file: null
+    spec_only: true
+    candidate:
+      id: "6.3"
+      paper: "BARC (Li et al., synthetic expansion)"
+      repo: "https://github.com/xu3kev/BARC"
+      literature_role: "ingredient_source"
+      ported_from: "NOT YET PORTED — needs HF dataset fetch (gated)"
+      status: {paper: partial, repo: needs_fetch, impl: todo, smoke: todo, run: todo}
+      parity_grade: reduced-but-honest
+      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
+
+  - label: corpus_hipporag_init
+    # spec_only=true: needs a corpus choice + OpenIE provider; see
+    # 69_phase1_repo_fetch_attempts.md E.6 entry.
+    override_group: builder
+    builder: arcmemo_ps
+    builder_cfg:
+      seed_memory_file: null
+      seed_annotations_file: null
+    spec_only: true
+    candidate:
+      id: "6.6"
+      paper: "HippoRAG / HippoRAG 2"
+      arxiv: "2405.14831, 2502.14802"
+      repo: "https://github.com/OSU-NLP-Group/HippoRAG"
+      local_repo: "third_party/hipporag/"
+      literature_role: "engineering_reference"
+      ported_from: "NOT YET PORTED — needs (a) corpus text acquisition + (b) LLM OpenIE at init time"
+      status: {paper: partial, repo: done, impl: todo, smoke: todo, run: todo}
+      parity_grade: reduced-but-honest
+      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."

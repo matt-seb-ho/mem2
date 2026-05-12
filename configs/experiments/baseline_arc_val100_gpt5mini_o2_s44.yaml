@@ -1,0 +1,11 @@
+_base_: ./baseline_arc_val100_gpt5mini.yaml
+
+run:
+  run_type: baseline_arc_val100_gpt5mini_o2_s44
+  seed: 44
+
+components:
+  inference_engine:
+    gen_cfg:
+      n: 2
+      seed: 44

@@ -1,0 +1,10 @@
+_base_: ./concept_arc_val100_gpt5mini.yaml
+
+run:
+  run_type: concept_arc_val100_gpt5mini_s44
+  seed: 44
+
+components:
+  inference_engine:
+    gen_cfg:
+      seed: 44

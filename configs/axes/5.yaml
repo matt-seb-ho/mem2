@@ -1,0 +1,76 @@
+axis: "5"
+title: "NASM / architecture-edit source (PL1 — Baseline + Inspiration; ALMA-as-inspiration in-house, ALMA-as-baseline in Phase 5)"
+role_tag: "baseline_plus_inspiration"
+order_index: 5
+
+baseline: hand_coded_reorg
+
+gate:
+  type: sigma_delta
+  advance_threshold_sigma: 1.0
+  ambiguous_threshold_sigma: 0.5
+  stage_overrides:
+    "4a":
+      type: completion_sanity
+      min_completion_rate: 0.80
+
+auto_advance: false
+
+conditions:
+  - label: hand_coded_reorg
+    baseline: true
+    override_group: builder
+    builder: arcmemo_reorg
+    builder_cfg:
+      input_basis: graph_intrinsic
+      objective: mdl
+      scope: global_rebuild
+      trigger: every_k
+      every_k: 20
+    candidate:
+      id: "5.1"
+      literature_role: "baseline"
+      status: {paper: done, repo: na, impl: done, smoke: done, run: done}
+
+  - label: alma_style_metaedit
+    override_group: builder
+    builder: alma_style_metaedit
+    builder_cfg:
+      input_basis: graph_intrinsic
+      objective: mdl
+      scope: global_rebuild
+      trigger: every_k
+      every_k: 20
+    candidate:
+      id: "5.2"
+      paper: "ALMA"
+      arxiv: "2602.07755"
+      repo: "https://github.com/zksha/alma"
+      local_repo: "third_party/alma/"
+      literature_role: "scoop_plus_baseline_plus_inspiration"
+      ported_from: "src/models/gpt_abstraction.py-inspired one-shot meta-edit plan + MDL gate. LLM provider wired via SyncMetaEditProviderAdapter (runner.py injects ctx.config['_meta_edit_provider'] after run_context serialization). Falls back to hand_coded_reorg when provider unavailable."
+      status: {paper: done, repo: done, impl: done, smoke: done, run: todo}
+      parity_grade: reduced-but-honest
+      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
+
+  - label: adas_style_search
+    override_group: builder
+    builder: adas_style_search
+    builder_cfg:
+      input_basis: graph_intrinsic
+      objective: mdl
+      scope: global_rebuild
+      trigger: every_k
+      every_k: 20
+      max_reflexion_rounds: 3
+    candidate:
+      id: "5.3"
+      paper: "ADAS: Automated Design of Agentic Systems"
+      arxiv: "2408.08435"
+      repo: "https://github.com/ShengranHu/ADAS"
+      local_repo: "third_party/adas/"
+      literature_role: "differentiation_anchor"
+      ported_from: "_arc/search.py meta-agent reflexion loop (3-round reflexion buffer; same LLM-optional pattern as F.2 — falls back to F.2 then A.1 if no provider wired)"
+      status: {paper: done, repo: done, impl: done, smoke: done, run: todo}
+      parity_grade: reduced-but-honest
+      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."

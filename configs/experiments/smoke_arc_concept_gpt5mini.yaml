@@ -1,0 +1,17 @@
+_base_: ./concept_arc_val100_gpt5mini.yaml
+
+run:
+  run_type: smoke_arc_concept_gpt5mini
+  max_passes: 1
+  retry_policy:
+    max_passes: 1
+
+components:
+  benchmark:
+    limit: 2
+    include_ids:
+    - 05a7bcf2
+    - 0a2355a6
+  inference_engine:
+    gen_cfg:
+      batch_size: 2

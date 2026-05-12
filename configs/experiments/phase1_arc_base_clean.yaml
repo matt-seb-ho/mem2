@@ -1,0 +1,95 @@
+_base_: ../base.yaml
+
+# Phase-1 ablation base config. Uses arc_memo-lineage compressed concept library
+# (option a from docs/duality_investigation_2026-04-21.md) so every axis sees
+# a non-empty concept memory. Swap in a mem2-extracted file when available.
+#
+# Evaluates on ARC-AGI-1 eval_100 (the 100-problem ArcMemo-paper split).
+
+pipeline:
+  task_adapter: arc_grid
+  benchmark: arc_agi
+  memory_builder: arcmemo_ps   # overridden per axis
+  memory_retriever: ps_topk    # flat baseline; overridden per axis
+  router: none
+  trajectory_policy: single_path
+  provider: llmplus_openrouter  # DeepSeek V3.2 via OpenRouter for Phase-1 signal
+  inference_engine: python_transform_retry
+  feedback_engine: gt_check
+  evaluator: arc_exec
+  artifact_sink: json_local
+
+run:
+  run_type: phase1_arc
+  execution_mode: arc_batch
+  max_passes: 3
+  retry_criterion: train
+  retry_policy:
+    max_passes: 3
+    criterion: train
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+  # Do not enable strict_arcmemo_compat — that path demands memory_builder=none.
+  strict_arcmemo_compat: false
+  strict_arcmemo_logic_compat: false
+
+components:
+  task_adapter:
+    task_name: arc_grid
+  benchmark:
+    data_root: data/arc_agi/evaluation
+    # eval_100 problem set — researcher-specified "ARC-AGI 1, 100 set".
+    # The include_ids list is loaded from splits.json["eval_100"]["ids"] at
+    # sweep-driver time (see scripts/sweeps/ablation_matrix.py).
+    limit: 0
+  memory_builder:
+    seed_memory_file: data/arc_agi/concept_memory/compressed_v1.json
+    domain: arc
+  memory_retriever:
+    # top_k raised 3→10 (T002, 2026-04-27): V4 Flash has 1M context — no
+    # overflow risk. Original top_k=3 was an 8K-context squeeze for Qwen-class
+    # models (overflowed 4/5 problems at top_k=10 on 2026-04-21 smoketest).
+    top_k: 10
+    include_description: true
+    skip_cues: false
+    skip_implementation: false
+  trajectory_policy:
+    retry_paths: 1
+  provider:
+    profile_name: llmplus_openrouter
+    dotenv_path: .env
+    # OpenRouter multiplexes V4 Flash across many backend providers;
+    # researcher (2026-04-21) greenlit high concurrency for iteration speed.
+    default_max_concurrency: 64
+  meta_edit_provider:
+    # Wired into ctx.config["_meta_edit_provider"] by runner.py so F.2/F.3,
+    # A.4, A.6, A.7, A.8, B.5, B.11, D.4, D.5, D.6 hit the same model.
+    model: deepseek/deepseek-v4-flash
+    gen_cfg: {temperature: 0.3, max_tokens: 2048}
+  inference_engine:
+    model: deepseek/deepseek-v4-flash  # released 2026-04-24; ~2-4× cheaper than V3.2 on OpenRouter, 1M ctx
+    gen_cfg:
+      n: 1
+      temperature: 0.3
+      max_tokens: 16384
+      top_p: 1.0
+      batch_size: 32
+      seed: 42
+      ignore_cache: true   # Clean variant: bypass cache for canonical-baseline reruns. Doc 51 / RN-002 finding.
+      expand_multi: null
+    prompt_options:
+      include_hint: true          # hint the memory — the whole point
+      hint_template_key: op3
+      require_hint_citations: false
+      instruction_key: default
+      system_prompt_key: default
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+    include_reselected_lessons: false
+  feedback_engine: {}
+  evaluator:
+    require_all_tests: true
+    timeout_s: 2.0
+  artifact_sink: {}

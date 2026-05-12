@@ -1,0 +1,89 @@
+axis: "3"
+title: "Interactive retrieval (P3 — Ablation Novelty)"
+role_tag: "ablation_novelty"
+order_index: 3
+
+baseline: one_shot
+
+gate:
+  type: sigma_delta
+  advance_threshold_sigma: 1.0
+  ambiguous_threshold_sigma: 0.5
+  stage_overrides:
+    "4a":
+      type: completion_sanity
+      min_completion_rate: 0.80
+
+auto_advance: false
+
+conditions:
+  - label: one_shot
+    baseline: true
+    override_group: retriever
+    retriever: ps_topk
+    retriever_cfg:
+      top_k: 3
+    candidate:
+      id: "3.1"
+      literature_role: "baseline"
+      status: {paper: done, repo: na, impl: done, smoke: done, run: done}
+
+  - label: rrmc_multi_round
+    override_group: retriever
+    retriever: rrmc_interactive
+    retriever_cfg:
+      top_k: 3
+      per_round_k: 2
+      max_rounds: 3
+      convergence_patience: 2
+    candidate:
+      id: "3.2"
+      arxiv: null
+      repo: "../../RRMC/RRMC/"
+      literature_role: "ingredient_source"
+      ported_from: "simplified re-implementation (NOT full KG/MI/SP machinery)"
+      status: {paper: partial, repo: partial, impl: partial, smoke: done, run: done}
+      parity_grade: reduced-but-honest
+      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
+
+  - label: mediq_policy
+    override_group: retriever
+    retriever: mediq_policy
+    retriever_cfg:
+      top_k: 3
+      per_round_k: 2
+      max_rounds: 5
+      abstention_threshold: 1
+      window: 2
+    candidate:
+      id: "3.4"
+      paper: "MediQ"
+      arxiv: "2406.00922"
+      repo: "https://github.com/stellalisy/mediQ"
+      local_repo: "third_party/mediq/"
+      literature_role: "differentiation_anchor"
+      ported_from: "expert.py::Expert + expert_functions.py::fixed_abstention_decision (coverage-based abstention instead of LLM confidence)"
+      status: {paper: done, repo: done, impl: done, smoke: todo, run: todo}
+      parity_grade: reduced-but-honest
+      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
+
+  - label: uot_entropy
+    override_group: retriever
+    retriever: uot_entropy
+    retriever_cfg:
+      top_k: 3
+      per_round_k: 2
+      max_rounds: 5
+      min_gain: 0.05
+      lamb: 0.4
+    candidate:
+      id: "3.3"
+      paper: "UoT"
+      arxiv: "2402.03271"
+      repo: "https://github.com/zhiyuanhubj/UoT"
+      local_repo: "third_party/uot/"
+      literature_role: "differentiation_anchor"
+      ported_from: "src/uot/uot.py::UoTNode.reward_function (damped-Shannon entropy info-gain per round; one-step signal instead of full tree search; no LLM question generation)"
+      status: {paper: done, repo: done, impl: done, smoke: done, run: todo}
+      parity_grade: reduced-but-honest
+      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."

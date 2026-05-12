@@ -1,0 +1,221 @@
+axis: "1"
+title: "Hierarchical memory + retrieval (P1 + PL2 — Must-Engineer)"
+role_tag: "must_engineer"
+order_index: 1
+
+baseline: flat_topk
+
+gate:
+  type: sigma_delta
+  advance_threshold_sigma: 1.0
+  ambiguous_threshold_sigma: 0.5
+  stage_overrides:
+    "4a":
+      type: completion_sanity
+      min_completion_rate: 0.80
+
+auto_advance: false
+
+conditions:
+  - label: flat_topk
+    baseline: true
+    override_group: retriever
+    retriever: ps_topk
+    retriever_cfg:
+      top_k: 3
+    candidate:
+      id: "1.1"
+      literature_role: "baseline"
+      status: {paper: done, repo: na, impl: done, smoke: done, run: done}
+
+  - label: graph_traversal
+    override_group: retriever
+    retriever: graph_traversal
+    retriever_cfg:
+      top_k: 3
+      bfs_depth: 3
+      prefer_aggregates: true
+    candidate:
+      id: "1.2"
+      literature_role: "novelty_seed"
+      status: {paper: done, repo: na, impl: partial, smoke: done, run: done}
+
+  - label: hipporag_ppr
+    override_group: retriever
+    retriever: hipporag_ppr
+    retriever_cfg:
+      top_k: 3
+      damping: 0.5
+      min_reset_overlap: 1
+    candidate:
+      id: "1.4"
+      paper: "HippoRAG / HippoRAG 2"
+      arxiv: "2405.14831, 2502.14802"
+      repo: "https://github.com/OSU-NLP-Group/HippoRAG"
+      local_repo: "third_party/hipporag/"
+      literature_role: "scoop"
+      ported_from: "HippoRAG.py::run_ppr + graph_search_with_fact_entities (PPR core only; no OpenIE / DPR)"
+      status: {paper: done, repo: done, impl: done, smoke: done, run: todo}
+      parity_grade: reduced-but-honest
+      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
+
+  - label: hipporag2_filter
+    override_group: retriever
+    retriever: hipporag2_filter
+    retriever_cfg:
+      first_stage_top_k: 10
+      top_k: 3
+      damping: 0.5
+      min_reset_overlap: 1
+    candidate:
+      id: "1.5"
+      paper: "HippoRAG 2"
+      arxiv: "2502.14802"
+      repo: "https://github.com/OSU-NLP-Group/HippoRAG"
+      local_repo: "third_party/hipporag/"
+      literature_role: "scoop"
+      ported_from: "src/hipporag/rerank.py::DSPyFilter.rerank (PPR first stage + LLM fact filter; token-overlap fallback when no _meta_edit_provider)"
+      status: {paper: done, repo: done, impl: done, smoke: done, run: todo}
+      parity_grade: reduced-but-honest
+      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
+
+  - label: raptor
+    override_group: retriever
+    retriever: raptor
+    retriever_cfg:
+      top_k: 3
+      parent_ratio: 0.4
+      min_community_size: 2
+    candidate:
+      id: "1.6"
+      paper: "RAPTOR"
+      arxiv: "2401.18059"
+      repo: "https://github.com/parthsarthi03/raptor"
+      local_repo: "third_party/raptor/"
+      literature_role: "engineering_reference"
+      ported_from: "tree_retriever.py::retrieve_information_collapse_tree + cluster_tree_builder.py::construct_tree (Louvain instead of GMM; template summaries instead of LLM)"
+      parity_grade: faithful
+      parity_note: "Cluster-summary rendering fix landed 2026-04-27 (doc 74 §0 finding 2). _render_bundle now includes cluster-summary text from parent nodes alongside leaf concepts — matching the paper's collapse-tree retrieval that flattens ALL nodes (parents + leaves) into the candidate pool."
+      status: {paper: done, repo: done, impl: done, smoke: done, run: todo}
+
+  - label: graphrag
+    override_group: retriever
+    retriever: graphrag
+    retriever_cfg:
+      top_k_communities: 2
+      min_community_size: 2
+      max_members_per_community: 5
+      top_k: null
+      skip_cues: null
+      skip_implementation: null
+    candidate:
+      id: "1.3"
+      paper: "GraphRAG (Microsoft)"
+      arxiv: "2404.16130"
+      repo: "https://github.com/microsoft/graphrag"
+      local_repo: "third_party/graphrag/"
+      literature_role: "scoop"
+      ported_from: "global_search community-report retrieval (Louvain instead of Leiden; template summaries instead of LLM map-reduce)"
+      status: {paper: done, repo: done, impl: done, smoke: done, run: todo}
+      parity_grade: reduced-but-honest
+      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
+
+  - label: lightrag
+    override_group: retriever
+    retriever: lightrag
+    retriever_cfg:
+      top_k_entities: 3
+      top_m_relationships: 3
+      min_edge_weight: 1.0
+      top_k: null
+      include_description: null
+      skip_cues: null
+      skip_implementation: null
+    candidate:
+      id: "1.7"
+      paper: "LightRAG"
+      arxiv: "2410.05779"
+      repo: "https://github.com/HKUDS/LightRAG"
+      local_repo: "third_party/lightrag/"
+      literature_role: "scoop"
+      ported_from: "operate.py::kg_query dual-level retrieval (token-overlap instead of vector sim; template relation text instead of LLM summary)"
+      parity_grade: reduced-but-honest
+      parity_note: "Dual-level (entity+relationship) rendering is faithful. Three substitutions disclosed: (1) keyword extraction is token-overlap not LLM HL/LL split, (2) always hybrid mode (no local/global/mix toggle), (3) no vector DB."
+      status: {paper: done, repo: done, impl: done, smoke: done, run: todo}
+
+  - label: magma_multigraph
+    override_group: retriever
+    retriever: magma_multigraph
+    retriever_cfg:
+      top_k_per_view: 2
+      max_active_views: 3
+      top_k: null
+    candidate:
+      id: "1.11"
+      paper: "MAGMA"
+      arxiv: "2601.03236"
+      repo: "https://github.com/FredJiang0324/MAGMA"
+      local_repo: null
+      literature_role: "differentiation_anchor"
+      ported_from: "paper §3 Method — 4 orthogonal relational views (semantic/temporal/causal/entity) + adaptive traversal policy. Views built over same ConceptGraph by filtering edge kinds + synthesizing causal view from used_in; template policy ranks by query-token hit count per view."
+      status: {paper: done, repo: needs_fetch, impl: done, smoke: done, run: todo}
+      parity_grade: reduced-but-honest
+      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
+
+  - label: pathrag
+    override_group: retriever
+    retriever: pathrag
+    retriever_cfg:
+      top_k_seeds: 4
+      max_path_length: 3
+      min_reliability: 0.1
+      max_paths_rendered: 5
+      top_k: null
+    candidate:
+      id: "1.10"
+      paper: "PathRAG"
+      arxiv: "2502.14902"
+      repo: "https://github.com/BUPT-GAMMA/PathRAG"
+      local_repo: null
+      literature_role: "scoop"
+      ported_from: "paper §Method — path-based retrieval with flow-based pruning. Token-overlap seed selection substitutes keyword-to-node match; path reliability = product of co-activation edge weights, distance-decayed; render paths ascending by reliability (paper's 'lost in the middle' mitigation)."
+      status: {paper: done, repo: needs_fetch, impl: done, smoke: done, run: todo}
+      parity_grade: reduced-but-honest
+      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
+
+  - label: hmem_hierarchical
+    override_group: retriever
+    retriever: hmem_hierarchical
+    retriever_cfg:
+      top_k: 3
+      per_layer_top_k: 2
+      trace_group_min_overlap: 1
+    candidate:
+      id: "1.9"
+      paper: "H-MEM"
+      arxiv: "2507.22925"
+      repo: "no public official implementation"
+      local_repo: null
+      literature_role: "differentiation_anchor"
+      ported_from: "paper §3 Method — 4-layer multi-layer routing (Domain→Category→Trace→Episode). Kind-based categories substitute for learned domain embeddings; trace groups cluster concepts by shared used_in problems; token-overlap scoring per layer."
+      status: {paper: done, repo: na, impl: done, smoke: done, run: todo}
+      parity_grade: reduced-but-honest
+      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
+
+  - label: colbert_rerank
+    override_group: retriever
+    retriever: colbert_rerank
+    retriever_cfg:
+      top_k: 3
+      expansion_factor: 4
+    candidate:
+      id: "1.8"
+      paper: "ColBERT"
+      arxiv: "2004.12832"
+      repo: "https://github.com/stanford-futuredata/ColBERT"
+      local_repo: "third_party/colbert/"
+      literature_role: "engineering_reference"
+      ported_from: "colbert/modeling/colbert.py::colbert_score_reduce (MaxSim per-query-token aggregation; lexical exact-match similarity substitutes BERT token embeddings; two-stage ps_topk-expand + MaxSim rerank instead of end-to-end index)"
+      status: {paper: done, repo: done, impl: done, smoke: done, run: todo}
+      parity_grade: reduced-but-honest
+      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
