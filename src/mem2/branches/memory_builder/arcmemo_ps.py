@@ -76,6 +76,27 @@ class ArcMemoPsMemoryBuilder:
         concept_mem = self._load_seed_memory()
         payload = concept_mem.to_payload()
 
+        # Preserve extra payload keys from the seed file beyond the
+        # ConceptMemory canonical {concepts, solutions, custom_types,
+        # categories} schema. Round-2 retrievers depend on reorg-history,
+        # memtree_hierarchy, and other builder-written sidecars that the
+        # seed converter at scripts/sweeps/two_round_axis_2/run.py:287
+        # preserves via dict(payload) — but ConceptMemory.load_from_file
+        # only reads the canonical schema. Without this merge, those
+        # sidecars get stripped at R2 init and the matching-retriever
+        # pairing receives no reorg state. (Audit finding 2026-05-12.)
+        if self.seed_memory_file:
+            seed_path = self._resolve_path(self.seed_memory_file)
+            if seed_path.exists():
+                try:
+                    seed_raw = json.loads(seed_path.read_text())
+                    canonical = {"concepts", "solutions", "custom_types", "categories"}
+                    for k, v in seed_raw.items():
+                        if k not in canonical and k not in payload:
+                            payload[k] = v
+                except Exception:
+                    pass  # silent: seed file may be in a non-JSON-toplevel-dict shape
+
         return MemoryState(
             schema_name="arcmemo_ps",
             schema_version="v1",
