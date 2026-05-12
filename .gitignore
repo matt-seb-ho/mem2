@@ -1,9 +1,25 @@
+outputs/
+!outputs/_runs/
 outputs/_runs/*
 !outputs/_runs/lcb_v56_baseline_flash/
 !outputs/_runs/lcb_v56_concept_v3a_flash/
 !outputs/_runs/lcb_v56_hybrid_v3a_flash/
 !outputs/_runs/build_lcb_v56_flash/
+
+# Third-party reference repos — clones for reading, not tracked.
+# Exception: third_party/llm_wrapper is our in-tree fork (cache-strip fix etc).
+# Exception: third_party/CATALOG.md lists what's referenced.
+third_party/
+!third_party/llm_wrapper/
+!third_party/CATALOG.md
+
+# Literature PDFs — read-only references, not tracked.
+literature/
+
+# Local caches + runtime artifacts.
 .llm_cache/
+.cache/
+.env.bak.*
 __pycache__/
 .pytest_cache/
 *.pyc
