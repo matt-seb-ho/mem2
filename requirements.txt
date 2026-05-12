@@ -9,3 +9,7 @@ orjson
 python-dotenv
 nest-asyncio
 omegaconf
+pytest>=9.0
+networkx
+scipy
+sentence-transformers

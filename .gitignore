@@ -9,7 +9,7 @@ outputs/_runs/*
 # Third-party reference repos — clones for reading, not tracked.
 # Exception: third_party/llm_wrapper is our in-tree fork (cache-strip fix etc).
 # Exception: third_party/CATALOG.md lists what's referenced.
-third_party/
+third_party/*
 !third_party/llm_wrapper/
 !third_party/CATALOG.md
 

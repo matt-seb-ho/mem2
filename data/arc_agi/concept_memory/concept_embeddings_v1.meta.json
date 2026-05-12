@@ -1,0 +1,11 @@
+{
+  "schema_version": "1",
+  "model": "sentence-transformers/all-MiniLM-L6-v2",
+  "dim": 384,
+  "num_concepts": 270,
+  "device": "mps",
+  "encode_time_s": 2.4644988749641925,
+  "normalized": true,
+  "built_at": "2026-05-01T15:26:05+00:00",
+  "source_seed": "data/arc_agi/concept_memory/compressed_v1.json"
+}

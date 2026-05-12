@@ -1,0 +1,7480 @@
+{
+  "schema_version": "1",
+  "model": "deepseek/deepseek-v4-flash",
+  "built_at": "2026-05-01T16:31:18+00:00",
+  "source_seed": "data/arc_agi/concept_memory/compressed_v1.json",
+  "edges": [
+    {
+      "src": "displacement_magnitude",
+      "tgt": "displacement_direction",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "displacement_magnitude",
+      "tgt": "distance",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "displacement_magnitude",
+      "tgt": "max",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "displacement_magnitude",
+      "tgt": "stride for translation",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel cluster",
+      "tgt": "pixel object",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel cluster",
+      "tgt": "large object",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel cluster",
+      "tgt": "fixed pattern",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel cluster",
+      "tgt": "extract objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel cluster",
+      "tgt": "filter objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel cluster",
+      "tgt": "count objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel cluster",
+      "tgt": "object_area",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel cluster",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel cluster",
+      "tgt": "center",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel cluster",
+      "tgt": "find object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel cluster",
+      "tgt": "sort objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel cluster",
+      "tgt": "full_overlap",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel cluster",
+      "tgt": "color match at overlap criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel cluster",
+      "tgt": "plugged pixel count",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "closest to criteria",
+      "tgt": "distance",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "closest to criteria",
+      "tgt": "min_distance",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "closest to criteria",
+      "tgt": "position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "closest to criteria",
+      "tgt": "bounding box center",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "closest to criteria",
+      "tgt": "center",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "closest to criteria",
+      "tgt": "direction between objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "split object",
+      "tgt": "split into quadrants",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "split object",
+      "tgt": "split_horizontal_center",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "split object",
+      "tgt": "split_vertical_center",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "split object",
+      "tgt": "split cross",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "split object",
+      "tgt": "split on divider lines",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "split object",
+      "tgt": "split grid",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "split object",
+      "tgt": "split regions",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "split object",
+      "tgt": "split region grid",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "split object",
+      "tgt": "combine objects",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "split object",
+      "tgt": "combine regions",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "all positions within grid",
+      "tgt": "all positions",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "all positions within grid",
+      "tgt": "all valid positions",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "all positions within grid",
+      "tgt": "in bounds",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all positions within grid",
+      "tgt": "is in bounds",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all positions within grid",
+      "tgt": "within bounds",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all positions within grid",
+      "tgt": "border fits within grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all positions within grid",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all positions within grid",
+      "tgt": "slide object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all positions within grid",
+      "tgt": "enumerate nonoverlapping placements",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all positions within grid",
+      "tgt": "sliding window",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all positions within grid",
+      "tgt": "generate rectangles",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all positions within grid",
+      "tgt": "positions_where",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all positions within grid",
+      "tgt": "grid edges",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all positions within grid",
+      "tgt": "container",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get object holes",
+      "tgt": "hole",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get object holes",
+      "tgt": "has hole criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get object holes",
+      "tgt": "background",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get object holes",
+      "tgt": "flood fill alternating",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get object holes",
+      "tgt": "find background color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get object holes",
+      "tgt": "extract objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get object holes",
+      "tgt": "is inside object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get object holes",
+      "tgt": "in bounds",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get object holes",
+      "tgt": "orthogonal neighbors",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get object holes",
+      "tgt": "count empty pixels",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get object holes",
+      "tgt": "fill region",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get object holes",
+      "tgt": "mask object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get object holes",
+      "tgt": "container",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get object holes",
+      "tgt": "crop object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel has neighbor in direction criteria",
+      "tgt": "get neighbor pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel has neighbor in direction criteria",
+      "tgt": "orthogonal neighbors",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel has neighbor in direction criteria",
+      "tgt": "diagonal neighbors",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel has neighbor in direction criteria",
+      "tgt": "next pixel in direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel has neighbor in direction criteria",
+      "tgt": "direction between objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel has neighbor in direction criteria",
+      "tgt": "count neighbors in object",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel has neighbor in direction criteria",
+      "tgt": "is adjacent criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel has neighbor in direction criteria",
+      "tgt": "contact criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel has neighbor in direction criteria",
+      "tgt": "collision criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel has neighbor in direction criteria",
+      "tgt": "opposite direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel has neighbor in direction criteria",
+      "tgt": "move position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel has neighbor in direction criteria",
+      "tgt": "shift pixel within object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel has neighbor in direction criteria",
+      "tgt": "pixel object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "repeated sprite with symmetry",
+      "tgt": "tiling of mirrored sprites",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "repeated sprite with symmetry",
+      "tgt": "detect translational symmetry",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "repeated sprite with symmetry",
+      "tgt": "detect mirror symmetry",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "repeated sprite with symmetry",
+      "tgt": "detect rotational symmetry",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "repeated sprite with symmetry",
+      "tgt": "period detection",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "repeated sprite with symmetry",
+      "tgt": "repeated translation",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "repeated sprite with symmetry",
+      "tgt": "tile object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "repeated sprite with symmetry",
+      "tgt": "reflect object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "repeated sprite with symmetry",
+      "tgt": "generate all rotations and flips",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "repeated sprite with symmetry",
+      "tgt": "compute orbit",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "repeated sprite with symmetry",
+      "tgt": "symmetry types",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "repeated sprite with symmetry",
+      "tgt": "region grid",
+      "relation": "composed_of",
+      "weight": 1.0
+    },
+    {
+      "src": "repeated sprite with symmetry",
+      "tgt": "split on divider lines",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "repeated sprite with symmetry",
+      "tgt": "repeat pattern at periodic offsets",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "repeated sprite with symmetry",
+      "tgt": "alternating pattern stacking",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "create new grid",
+      "tgt": "copy grid",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "create new grid",
+      "tgt": "crop grid",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "create new grid",
+      "tgt": "crop around objects",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "create new grid",
+      "tgt": "create rectangle",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "create new grid",
+      "tgt": "create square border",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "create new grid",
+      "tgt": "create cross",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "create new grid",
+      "tgt": "create_hollow_rectangle",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "create new grid",
+      "tgt": "create periodic hole pattern",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "create new grid",
+      "tgt": "create staircase pattern",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "create new grid",
+      "tgt": "concatenate grids",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "create new grid",
+      "tgt": "fill region",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "create new grid",
+      "tgt": "draw object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "create new grid",
+      "tgt": "draw objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "create new grid",
+      "tgt": "set pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "create new grid",
+      "tgt": "resize object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find edge with color",
+      "tgt": "contains color criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find edge with color",
+      "tgt": "grid edges",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find edge with color",
+      "tgt": "find color",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "collision criteria",
+      "tgt": "contact criteria",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "collision criteria",
+      "tgt": "no collision with",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "collision criteria",
+      "tgt": "stopping criteria",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "collision criteria",
+      "tgt": "slide object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "collision criteria",
+      "tgt": "direction between objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "collision criteria",
+      "tgt": "is_touching",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "collision criteria",
+      "tgt": "stop at non-black",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "collision criteria",
+      "tgt": "obstacle avoidance path",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "split on divider lines",
+      "tgt": "divider lines",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "split on divider lines",
+      "tgt": "region grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "split on divider lines",
+      "tgt": "split grid",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "split on divider lines",
+      "tgt": "split region grid",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "split on divider lines",
+      "tgt": "find divider line color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "split on divider lines",
+      "tgt": "crop region between lines",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "split on divider lines",
+      "tgt": "arrange regions as grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "new pixels criteria",
+      "tgt": "not_equal",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "new pixels criteria",
+      "tgt": "not_in criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "new pixels criteria",
+      "tgt": "is blank criteria",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "new pixels criteria",
+      "tgt": "has color criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "new pixels criteria",
+      "tgt": "all pixels are color criteria",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "new pixels criteria",
+      "tgt": "all_pixels_not_in criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "new pixels criteria",
+      "tgt": "contains color criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "new pixels criteria",
+      "tgt": "has only one nonblack color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "new pixels criteria",
+      "tgt": "is color criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "new pixels criteria",
+      "tgt": "is_not_color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "new pixels criteria",
+      "tgt": "not equal criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "new pixels criteria",
+      "tgt": "not",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "new pixels criteria",
+      "tgt": "occurs_exactly_once",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "new pixels criteria",
+      "tgt": "unique",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get push direction",
+      "tgt": "obstacle avoidance path",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get push direction",
+      "tgt": "opposite direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get push direction",
+      "tgt": "direction between objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get push direction",
+      "tgt": "displacement_direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get push direction",
+      "tgt": "get flow direction",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "get push direction",
+      "tgt": "find direction from opening",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "get push direction",
+      "tgt": "reflect direction",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "get push direction",
+      "tgt": "reverse direction",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "get push direction",
+      "tgt": "rotate direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get push direction",
+      "tgt": "collision criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get push direction",
+      "tgt": "contact criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get push direction",
+      "tgt": "no collision with",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get push direction",
+      "tgt": "custom successors",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get push direction",
+      "tgt": "pathfinding with custom movement rules",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get push direction",
+      "tgt": "slide object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all valid positions",
+      "tgt": "all positions",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "all valid positions",
+      "tgt": "all positions within grid",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "all valid positions",
+      "tgt": "border fits within grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all valid positions",
+      "tgt": "no collision with",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all valid positions",
+      "tgt": "background",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all_nonblack_pixels",
+      "tgt": "find pixels",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all_nonblack_pixels",
+      "tgt": "positions_where",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all_nonblack_pixels",
+      "tgt": "crop around objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all_nonblack_pixels",
+      "tgt": "crop grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all_nonblack_pixels",
+      "tgt": "crop object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all_nonblack_pixels",
+      "tgt": "extract objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all_nonblack_pixels",
+      "tgt": "all_pixels_not_in criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "all_nonblack_pixels",
+      "tgt": "background",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel is inside grid criteria",
+      "tgt": "in bounds",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "pixel is inside grid criteria",
+      "tgt": "stopping criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "distance to grid edge",
+      "tgt": "distance",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "distance to grid edge",
+      "tgt": "move position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "distance to grid edge",
+      "tgt": "in bounds",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "distance to grid edge",
+      "tgt": "next pixel in direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get row",
+      "tgt": "row",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get row",
+      "tgt": "copy rows",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get row",
+      "tgt": "find row",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get row",
+      "tgt": "repeat color sequence in rows",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "color exclusion",
+      "tgt": "find unique color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "color exclusion",
+      "tgt": "unique color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "color exclusion",
+      "tgt": "unique colors",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "color exclusion",
+      "tgt": "not_in criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "color exclusion",
+      "tgt": "is_not_color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "color exclusion",
+      "tgt": "not equal criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "color exclusion",
+      "tgt": "not_equal",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "color exclusion",
+      "tgt": "all_pixels_not_in criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "color exclusion",
+      "tgt": "pick only color from region",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "color exclusion",
+      "tgt": "find color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "color exclusion",
+      "tgt": "has color criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "color exclusion",
+      "tgt": "contains color criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "color exclusion",
+      "tgt": "is color criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "color exclusion",
+      "tgt": "most common color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "color exclusion",
+      "tgt": "find background color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "next pixel in direction",
+      "tgt": "get neighbor pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "next pixel in direction",
+      "tgt": "move position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "next pixel in direction",
+      "tgt": "direction between objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "next pixel in direction",
+      "tgt": "opposite direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "next pixel in direction",
+      "tgt": "orthogonal neighbors",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "next pixel in direction",
+      "tgt": "diagonal neighbors",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "next pixel in direction",
+      "tgt": "position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "next pixel in direction",
+      "tgt": "in bounds",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "next pixel in direction",
+      "tgt": "distance to grid edge",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "next pixel in direction",
+      "tgt": "displacement_direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "next pixel in direction",
+      "tgt": "displacement_magnitude",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "next pixel in direction",
+      "tgt": "pixel object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "next pixel in direction",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "next pixel in direction",
+      "tgt": "slide object",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "next pixel in direction",
+      "tgt": "draw line",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "create rectangle",
+      "tgt": "create new grid",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "is line criteria",
+      "tgt": "has shape criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "is line criteria",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "split regions",
+      "tgt": "split grid",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "split regions",
+      "tgt": "split on divider lines",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "split regions",
+      "tgt": "split into quadrants",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "split regions",
+      "tgt": "split object",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "split regions",
+      "tgt": "split_horizontal_center",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "split regions",
+      "tgt": "split_vertical_center",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "split regions",
+      "tgt": "split cross",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "split regions",
+      "tgt": "split region grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "split regions",
+      "tgt": "region grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "split regions",
+      "tgt": "combine regions",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "split regions",
+      "tgt": "arrange regions as grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is on bounding box edge criteria",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is on bounding box edge criteria",
+      "tgt": "on edge criteria",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "is on bounding box edge criteria",
+      "tgt": "cup opening",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is on bounding box edge criteria",
+      "tgt": "opening of container",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is on bounding box edge criteria",
+      "tgt": "find extremal points",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is on bounding box edge criteria",
+      "tgt": "edge pixels",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is on bounding box edge criteria",
+      "tgt": "is opposite edge criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "no collision with",
+      "tgt": "collision criteria",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "no collision with",
+      "tgt": "stop at non-black",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "no collision with",
+      "tgt": "stopping criteria",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "no collision with",
+      "tgt": "all valid positions",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "no collision with",
+      "tgt": "slide object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "no collision with",
+      "tgt": "move object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "no collision with",
+      "tgt": "contact criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "no collision with",
+      "tgt": "full_overlap",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "no collision with",
+      "tgt": "in bounds",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "no collision with",
+      "tgt": "is inside object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "no collision with",
+      "tgt": "is_inside_container criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "no collision with",
+      "tgt": "inside container criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "no collision with",
+      "tgt": "is adjacent criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "no collision with",
+      "tgt": "is_touching",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "no collision with",
+      "tgt": "pixel is inside grid criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "split_horizontal_center",
+      "tgt": "split_vertical_center",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "split_horizontal_center",
+      "tgt": "split object",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "split_horizontal_center",
+      "tgt": "bounding box center",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "split_horizontal_center",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "place object on opposite side",
+      "tgt": "opposite direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "place object on opposite side",
+      "tgt": "slide object",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "place object on opposite side",
+      "tgt": "stopping criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "place object on opposite side",
+      "tgt": "direction between objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "place object on opposite side",
+      "tgt": "no collision with",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "place object on opposite side",
+      "tgt": "collision criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "not",
+      "tgt": "not equal criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "not",
+      "tgt": "not_in criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "not",
+      "tgt": "is_not_color",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "not",
+      "tgt": "not_equal",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "not",
+      "tgt": "all_pixels_not_in criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "not",
+      "tgt": "filter objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "not",
+      "tgt": "find object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "not",
+      "tgt": "count objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "rotate direction",
+      "tgt": "opposite direction",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "rotate direction",
+      "tgt": "reverse direction",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "rotate direction",
+      "tgt": "reflect direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "rotate direction",
+      "tgt": "displacement_direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "rotate direction",
+      "tgt": "direction between objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "rotate direction",
+      "tgt": "get diagonal direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "rotate direction",
+      "tgt": "axis_perpendicular_to",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "rotate direction",
+      "tgt": "move position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "rotate direction",
+      "tgt": "next pixel in direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "rotate direction",
+      "tgt": "horizontal_towards",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "rotate direction",
+      "tgt": "vertical_towards",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "rotate direction",
+      "tgt": "rotate object",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "rotate direction",
+      "tgt": "compute orbit",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "rotate direction",
+      "tgt": "orbit",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "rotate direction",
+      "tgt": "generate all rotations and flips",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "create staircase pattern",
+      "tgt": "draw line",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "create staircase pattern",
+      "tgt": "move position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find object",
+      "tgt": "filter objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find object",
+      "tgt": "sort objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find object",
+      "tgt": "count objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find object",
+      "tgt": "argmax",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find object",
+      "tgt": "max",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find object",
+      "tgt": "size criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find object",
+      "tgt": "has shape criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find object",
+      "tgt": "is color criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find object",
+      "tgt": "has color criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find object",
+      "tgt": "closest to criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find object",
+      "tgt": "inside container criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find object",
+      "tgt": "is line criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find object",
+      "tgt": "has hole criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find object",
+      "tgt": "has mirror symmetry criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "has grey adjacent to corners",
+      "tgt": "bounding box corners",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "has grey adjacent to corners",
+      "tgt": "orthogonal neighbors",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "has grey adjacent to corners",
+      "tgt": "diagonal neighbors",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "has grey adjacent to corners",
+      "tgt": "is adjacent criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "has grey adjacent to corners",
+      "tgt": "has color criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "has grey adjacent to corners",
+      "tgt": "corner pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "has grey adjacent to corners",
+      "tgt": "find pixels",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "has grey adjacent to corners",
+      "tgt": "pixel object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "has grey adjacent to corners",
+      "tgt": "in bounds",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is opposite edge criteria",
+      "tgt": "on edge criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "is opposite edge criteria",
+      "tgt": "edge pixels",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is opposite edge criteria",
+      "tgt": "border pixels",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is opposite edge criteria",
+      "tgt": "opposite direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is opposite edge criteria",
+      "tgt": "direction between objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is opposite edge criteria",
+      "tgt": "get neighbor pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is opposite edge criteria",
+      "tgt": "is in bounds",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is opposite edge criteria",
+      "tgt": "alignment criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "is opposite edge criteria",
+      "tgt": "is_aligned",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "is opposite edge criteria",
+      "tgt": "find edge with color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is opposite edge criteria",
+      "tgt": "distance to grid edge",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is opposite edge criteria",
+      "tgt": "grid edges",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is opposite edge criteria",
+      "tgt": "horizontal_towards",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is opposite edge criteria",
+      "tgt": "vertical_towards",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "split_vertical_center",
+      "tgt": "split_horizontal_center",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "split_vertical_center",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "split_vertical_center",
+      "tgt": "bounding box center",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "not equal criteria",
+      "tgt": "is_not_color",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "not equal criteria",
+      "tgt": "not_equal",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "not equal criteria",
+      "tgt": "not_in criteria",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "not equal criteria",
+      "tgt": "not",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "not equal criteria",
+      "tgt": "is color criteria",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "not equal criteria",
+      "tgt": "color exclusion",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "not equal criteria",
+      "tgt": "find color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "not equal criteria",
+      "tgt": "find unique color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "not equal criteria",
+      "tgt": "all_pixels_not_in criteria",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "not equal criteria",
+      "tgt": "has color criteria",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "not equal criteria",
+      "tgt": "contains color criteria",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "not equal criteria",
+      "tgt": "pick only color from region",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "not equal criteria",
+      "tgt": "color match at overlap criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "anchor position for centered overlay",
+      "tgt": "centered at",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "anchor position for centered overlay",
+      "tgt": "center",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "anchor position for centered overlay",
+      "tgt": "bounding box center",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "anchor position for centered overlay",
+      "tgt": "midpoint between",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "anchor position for centered overlay",
+      "tgt": "adjusted position",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "anchor position for centered overlay",
+      "tgt": "aligned_inside",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "anchor position for centered overlay",
+      "tgt": "position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "anchor position for centered overlay",
+      "tgt": "move position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "anchor position for centered overlay",
+      "tgt": "shift object position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "anchor position for centered overlay",
+      "tgt": "slide from center",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "anchor position for centered overlay",
+      "tgt": "frame size proportional to object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "anchor position for centered overlay",
+      "tgt": "draw object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "anchor position for centered overlay",
+      "tgt": "draw objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "anchor position for centered overlay",
+      "tgt": "place object on opposite side",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "position",
+      "tgt": "find pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "position",
+      "tgt": "mean position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "has hole criteria",
+      "tgt": "get object holes",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "has hole criteria",
+      "tgt": "hole",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line",
+      "tgt": "draw line until color",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line",
+      "tgt": "create staircase pattern",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line",
+      "tgt": "set pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line",
+      "tgt": "next pixel in direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line",
+      "tgt": "distance to grid edge",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line",
+      "tgt": "stopping criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line",
+      "tgt": "get endpoints",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line",
+      "tgt": "diagonal direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line",
+      "tgt": "opposite direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line",
+      "tgt": "get diagonal direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line",
+      "tgt": "interpolate paths",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line",
+      "tgt": "draw object",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line",
+      "tgt": "draw objects",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "row",
+      "tgt": "all pixels equal in row or column criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "row",
+      "tgt": "get row",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "row",
+      "tgt": "append row",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "row",
+      "tgt": "copy rows",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "row",
+      "tgt": "find row",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "row",
+      "tgt": "repeat color sequence in rows",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "row",
+      "tgt": "stripe",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "row",
+      "tgt": "vertical line",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "find pixels",
+      "tgt": "find pixel",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "find pixels",
+      "tgt": "all_nonblack_pixels",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "find pixels",
+      "tgt": "edge pixels",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "find pixels",
+      "tgt": "red pixels",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "find pixels",
+      "tgt": "find color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find pixels",
+      "tgt": "filter objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find pixels",
+      "tgt": "pixel object",
+      "relation": "composed_of",
+      "weight": 1.0
+    },
+    {
+      "src": "find pixels",
+      "tgt": "count pixels",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find pixels",
+      "tgt": "positions_where",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find pixels",
+      "tgt": "set pixel",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "stop at non-black",
+      "tgt": "stopping criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "stop at non-black",
+      "tgt": "background",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "position_along_axis",
+      "tgt": "sort objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "position_along_axis",
+      "tgt": "diagonal order",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "position_along_axis",
+      "tgt": "position",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "position_along_axis",
+      "tgt": "mean position",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "position_along_axis",
+      "tgt": "center",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "position_along_axis",
+      "tgt": "bounding box center",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "position_along_axis",
+      "tgt": "bottom left position",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "position_along_axis",
+      "tgt": "midpoint between",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "position_along_axis",
+      "tgt": "distance",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "position_along_axis",
+      "tgt": "min_distance",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "position_along_axis",
+      "tgt": "direction between objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "position_along_axis",
+      "tgt": "horizontal_towards",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "position_along_axis",
+      "tgt": "vertical_towards",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "position_along_axis",
+      "tgt": "displacement_direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is symmetric",
+      "tgt": "detect mirror symmetry",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is symmetric",
+      "tgt": "detect rotational symmetry",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is symmetric",
+      "tgt": "has mirror symmetry criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "is symmetric",
+      "tgt": "symmetry types",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is symmetric",
+      "tgt": "reflect grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is symmetric",
+      "tgt": "reflect object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is symmetric",
+      "tgt": "compute orbit",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is symmetric",
+      "tgt": "orbit",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is symmetric",
+      "tgt": "detect translational symmetry",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "is symmetric",
+      "tgt": "generate all rotations and flips",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is symmetric",
+      "tgt": "repeated sprite with symmetry",
+      "relation": "composed_of",
+      "weight": 1.0
+    },
+    {
+      "src": "is symmetric",
+      "tgt": "tiling of mirrored sprites",
+      "relation": "composed_of",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line until color",
+      "tgt": "stopping criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line until color",
+      "tgt": "draw line",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line until color",
+      "tgt": "next pixel in direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line until color",
+      "tgt": "set pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line until color",
+      "tgt": "in bounds",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line until color",
+      "tgt": "stop at non-black",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line until color",
+      "tgt": "get neighbor pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line until color",
+      "tgt": "move position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line until color",
+      "tgt": "distance to grid edge",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line until color",
+      "tgt": "find direction from opening",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line until color",
+      "tgt": "obstacle avoidance path",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line until color",
+      "tgt": "custom successors",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line until color",
+      "tgt": "pathfinding with custom movement rules",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line until color",
+      "tgt": "flood fill alternating",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw line until color",
+      "tgt": "draw expandable shape",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "argmax",
+      "tgt": "max",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "stopping criteria",
+      "tgt": "no collision with",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "stopping criteria",
+      "tgt": "stop at non-black",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "stopping criteria",
+      "tgt": "slide object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "stopping criteria",
+      "tgt": "draw line",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "stopping criteria",
+      "tgt": "draw line until color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "stopping criteria",
+      "tgt": "pathfinding with custom movement rules",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "stopping criteria",
+      "tgt": "obstacle avoidance path",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "stopping criteria",
+      "tgt": "custom successors",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "stopping criteria",
+      "tgt": "in bounds",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "stopping criteria",
+      "tgt": "is in bounds",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "stopping criteria",
+      "tgt": "border fits within grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "stopping criteria",
+      "tgt": "collision criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "stopping criteria",
+      "tgt": "contact criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "stopping criteria",
+      "tgt": "new pixels criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "stopping criteria",
+      "tgt": "full_overlap",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "draw object",
+      "tgt": "draw objects",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "draw object",
+      "tgt": "draw line",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw object",
+      "tgt": "draw line until color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw object",
+      "tgt": "draw border outside",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw object",
+      "tgt": "draw expandable shape",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw object",
+      "tgt": "set pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw object",
+      "tgt": "fill region",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw object",
+      "tgt": "copy grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw object",
+      "tgt": "move object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw object",
+      "tgt": "complete partial sprite",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw object",
+      "tgt": "recolor object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw object",
+      "tgt": "create new grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw object",
+      "tgt": "all_nonblack_pixels",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw object",
+      "tgt": "anchor position for centered overlay",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw object",
+      "tgt": "centered at",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "has only one nonblack color",
+      "tgt": "unique colors",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "has only one nonblack color",
+      "tgt": "count",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "has only one nonblack color",
+      "tgt": "has color criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "has only one nonblack color",
+      "tgt": "is color criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "has only one nonblack color",
+      "tgt": "all pixels are color criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "has only one nonblack color",
+      "tgt": "contains color criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "has only one nonblack color",
+      "tgt": "find unique color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "has only one nonblack color",
+      "tgt": "pick only color from region",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "has only one nonblack color",
+      "tgt": "all_nonblack_pixels",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "has only one nonblack color",
+      "tgt": "background",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "argmax_displacement",
+      "tgt": "argmax",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "argmax_displacement",
+      "tgt": "full_overlap",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "argmax_displacement",
+      "tgt": "displacement_magnitude",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "argmax_displacement",
+      "tgt": "displacement_direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "argmax_displacement",
+      "tgt": "slide object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "argmax_displacement",
+      "tgt": "move object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "argmax_displacement",
+      "tgt": "max",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "scale object",
+      "tgt": "scale grid",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "scale object",
+      "tgt": "resize object",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "scale object",
+      "tgt": "draw expandable shape",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "scale object",
+      "tgt": "frame size proportional to object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "scale object",
+      "tgt": "adjusted position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "scale object",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "scale object",
+      "tgt": "crop object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "scale object",
+      "tgt": "create new grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "scale object",
+      "tgt": "draw object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "scale object",
+      "tgt": "move object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "scale object",
+      "tgt": "recolor object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "scale object",
+      "tgt": "rotate object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "scale object",
+      "tgt": "reflect object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "scale object",
+      "tgt": "tile object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "scale object",
+      "tgt": "repeat pattern at periodic offsets",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "compute orbit",
+      "tgt": "orbit",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "compute orbit",
+      "tgt": "detect translational symmetry",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "compute orbit",
+      "tgt": "detect mirror symmetry",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "compute orbit",
+      "tgt": "detect rotational symmetry",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "compute orbit",
+      "tgt": "symmetry types",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "compute orbit",
+      "tgt": "all positions within grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "compute orbit",
+      "tgt": "in bounds",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "compute orbit",
+      "tgt": "move position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "compute orbit",
+      "tgt": "repeated translation",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "compute orbit",
+      "tgt": "tile object",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "crop object",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "crop object",
+      "tgt": "crop around objects",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "pyramid of lines",
+      "tgt": "alternating color pattern",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pyramid of lines",
+      "tgt": "decrementing length pattern",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pyramid of lines",
+      "tgt": "center",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pyramid of lines",
+      "tgt": "detect mirror symmetry",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pyramid of lines",
+      "tgt": "stripe",
+      "relation": "composed_of",
+      "weight": 1.0
+    },
+    {
+      "src": "is_inside_container criteria",
+      "tgt": "inside container criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "is_inside_container criteria",
+      "tgt": "container",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is_inside_container criteria",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is_inside_container criteria",
+      "tgt": "is_touching",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is_inside_container criteria",
+      "tgt": "is inside object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is_inside_container criteria",
+      "tgt": "on edge criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "has shape criteria",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw objects",
+      "tgt": "draw object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw objects",
+      "tgt": "copy grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw objects",
+      "tgt": "create new grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw objects",
+      "tgt": "crop around objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw objects",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw objects",
+      "tgt": "move object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw objects",
+      "tgt": "recolor object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw objects",
+      "tgt": "scale object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw objects",
+      "tgt": "rotate object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw objects",
+      "tgt": "reflect object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw objects",
+      "tgt": "filter objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw objects",
+      "tgt": "sort objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw objects",
+      "tgt": "all positions",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw objects",
+      "tgt": "all valid positions",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "draw objects",
+      "tgt": "set pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "crop region between lines",
+      "tgt": "crop grid",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "crop region between lines",
+      "tgt": "crop around objects",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "crop region between lines",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "crop region between lines",
+      "tgt": "vertical line",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "crop region between lines",
+      "tgt": "divider lines",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "crop region between lines",
+      "tgt": "split on divider lines",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "crop region between lines",
+      "tgt": "split grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "crop region between lines",
+      "tgt": "region grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "crop region between lines",
+      "tgt": "split regions",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "crop region between lines",
+      "tgt": "combine regions",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "crop region between lines",
+      "tgt": "crop object",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "crop region between lines",
+      "tgt": "crop grid",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "crop region between lines",
+      "tgt": "crop around objects",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "recolor object",
+      "tgt": "set pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "recolor object",
+      "tgt": "fill region",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "recolor object",
+      "tgt": "map value",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "recolor object",
+      "tgt": "fixed color mapping",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "recolor object",
+      "tgt": "copy grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "recolor object",
+      "tgt": "filter objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "recolor object",
+      "tgt": "find pixels",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "recolor object",
+      "tgt": "color exclusion",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "recolor object",
+      "tgt": "most common color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "recolor object",
+      "tgt": "is color criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "recolor object",
+      "tgt": "has only one nonblack color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "recolor object",
+      "tgt": "not_in criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "occurs_exactly_once",
+      "tgt": "count",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "occurs_exactly_once",
+      "tgt": "unique",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "occurs_exactly_once",
+      "tgt": "unique colors",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "occurs_exactly_once",
+      "tgt": "find unique color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "occurs_exactly_once",
+      "tgt": "count pixels",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "occurs_exactly_once",
+      "tgt": "has only one nonblack color",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "contact criteria",
+      "tgt": "collision criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "contact criteria",
+      "tgt": "is_touching",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "contact criteria",
+      "tgt": "is adjacent criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "contact criteria",
+      "tgt": "count neighbors in object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "contact criteria",
+      "tgt": "slide object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "contact criteria",
+      "tgt": "move object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "contact criteria",
+      "tgt": "full_overlap",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "contact criteria",
+      "tgt": "inside container criteria",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "contact criteria",
+      "tgt": "is_inside_container criteria",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "contact criteria",
+      "tgt": "no collision with",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "contact criteria",
+      "tgt": "stop at non-black",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "contact criteria",
+      "tgt": "stopping criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "contact criteria",
+      "tgt": "all positions",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "contact criteria",
+      "tgt": "all valid positions",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "contact criteria",
+      "tgt": "extract objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "axis_perpendicular_to",
+      "tgt": "opposite direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "axis_perpendicular_to",
+      "tgt": "direction between objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "axis_perpendicular_to",
+      "tgt": "displacement_direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "axis_perpendicular_to",
+      "tgt": "horizontal_towards",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "axis_perpendicular_to",
+      "tgt": "vertical_towards",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "axis_perpendicular_to",
+      "tgt": "get mirror axis",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "axis_perpendicular_to",
+      "tgt": "reflect direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "axis_perpendicular_to",
+      "tgt": "reverse direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "axis_perpendicular_to",
+      "tgt": "rotate direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "axis_perpendicular_to",
+      "tgt": "diagonal direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "axis_perpendicular_to",
+      "tgt": "get diagonal direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "axis_perpendicular_to",
+      "tgt": "detect mirror symmetry",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "axis_perpendicular_to",
+      "tgt": "is symmetric",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "axis_perpendicular_to",
+      "tgt": "reflect object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "axis_perpendicular_to",
+      "tgt": "reflect grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cross object",
+      "tgt": "split cross",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cross object",
+      "tgt": "create cross",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cross object",
+      "tgt": "object_area",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cross object",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cross object",
+      "tgt": "center",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cross object",
+      "tgt": "is line criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cross object",
+      "tgt": "is shape square",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cross object",
+      "tgt": "has shape criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cross object",
+      "tgt": "is filled rectangle",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cross object",
+      "tgt": "is hollow rectangle",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "fixed color mapping",
+      "tgt": "map value",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "fixed color mapping",
+      "tgt": "recolor object",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "fixed color mapping",
+      "tgt": "sort objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "edges of object",
+      "tgt": "edge pixels",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "edges of object",
+      "tgt": "draw border outside",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "edges of object",
+      "tgt": "draw line",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "edges of object",
+      "tgt": "draw line until color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "edges of object",
+      "tgt": "get edge pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "edges of object",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "edges of object",
+      "tgt": "rectangle object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "edges of object",
+      "tgt": "which side of rectangle hit",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "edges of object",
+      "tgt": "grid edges",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "edges of object",
+      "tgt": "border pixels",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "horizontal_towards",
+      "tgt": "vertical_towards",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "horizontal_towards",
+      "tgt": "direction between objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "horizontal_towards",
+      "tgt": "displacement_direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "horizontal_towards",
+      "tgt": "get neighbor pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "horizontal_towards",
+      "tgt": "move position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "horizontal_towards",
+      "tgt": "next pixel in direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "horizontal_towards",
+      "tgt": "opposite direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "horizontal_towards",
+      "tgt": "reverse direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "horizontal_towards",
+      "tgt": "rotate direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "horizontal_towards",
+      "tgt": "axis_perpendicular_to",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "horizontal_towards",
+      "tgt": "reflect direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "horizontal_towards",
+      "tgt": "slide object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "horizontal_towards",
+      "tgt": "direction between objects",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "cup (container with opening)",
+      "tgt": "cup opening",
+      "relation": "composed_of",
+      "weight": 1.0
+    },
+    {
+      "src": "cup (container with opening)",
+      "tgt": "opening of container",
+      "relation": "composed_of",
+      "weight": 1.0
+    },
+    {
+      "src": "cup (container with opening)",
+      "tgt": "container",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "cup (container with opening)",
+      "tgt": "find direction from opening",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cup (container with opening)",
+      "tgt": "get diagonal direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cup (container with opening)",
+      "tgt": "diagonal direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cup (container with opening)",
+      "tgt": "draw line",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cup (container with opening)",
+      "tgt": "draw line until color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cup (container with opening)",
+      "tgt": "fill region",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cup (container with opening)",
+      "tgt": "flood fill alternating",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cup (container with opening)",
+      "tgt": "find extremal points",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cup (container with opening)",
+      "tgt": "is on bounding box edge criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cup (container with opening)",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cup (container with opening)",
+      "tgt": "hole",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "cup (container with opening)",
+      "tgt": "frame",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "tile object",
+      "tgt": "repeated translation",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "tile object",
+      "tgt": "move object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "tile object",
+      "tgt": "draw object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "tile object",
+      "tgt": "displacement_magnitude",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "tile object",
+      "tgt": "direction between objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "tile object",
+      "tgt": "distance",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "tile object",
+      "tgt": "copy grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "tile object",
+      "tgt": "create new grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "tile object",
+      "tgt": "in bounds",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "tile object",
+      "tgt": "stop at non-black",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "tile object",
+      "tgt": "stopping criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "tile object",
+      "tgt": "repeated sprite with symmetry",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "tile object",
+      "tgt": "tiling of mirrored sprites",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "tile object",
+      "tgt": "detect translational symmetry",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "rectangle shape",
+      "tgt": "create rectangle",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "rectangle shape",
+      "tgt": "rectangle object",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "rectangle shape",
+      "tgt": "is filled rectangle",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "rectangle shape",
+      "tgt": "is hollow rectangle",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "rectangle shape",
+      "tgt": "create_hollow_rectangle",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "rectangle shape",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "rectangle shape",
+      "tgt": "fill region",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "rectangle shape",
+      "tgt": "create new grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "rectangle shape",
+      "tgt": "set pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "rectangle shape",
+      "tgt": "crop object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "rectangle shape",
+      "tgt": "draw object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "rectangle shape",
+      "tgt": "mask object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "rectangle shape",
+      "tgt": "generate rectangles",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "rectangle shape",
+      "tgt": "find rectangles from corners",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "large object",
+      "tgt": "pixel cluster",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "contains color criteria",
+      "tgt": "has color criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "contains color criteria",
+      "tgt": "all pixels are color criteria",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "contains color criteria",
+      "tgt": "all_pixels_not_in criteria",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "contains color criteria",
+      "tgt": "is color criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "contains color criteria",
+      "tgt": "not_in criteria",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "contains color criteria",
+      "tgt": "not equal criteria",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "contains color criteria",
+      "tgt": "is_not_color",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "contains color criteria",
+      "tgt": "color exclusion",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "contains color criteria",
+      "tgt": "find color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "contains color criteria",
+      "tgt": "find unique color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "contains color criteria",
+      "tgt": "unique color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "contains color criteria",
+      "tgt": "unique colors",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "contains color criteria",
+      "tgt": "most common color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "contains color criteria",
+      "tgt": "find background color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "contains color criteria",
+      "tgt": "indicator color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "enumerate nonoverlapping placements",
+      "tgt": "all positions",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "enumerate nonoverlapping placements",
+      "tgt": "all positions within grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "enumerate nonoverlapping placements",
+      "tgt": "all valid positions",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "enumerate nonoverlapping placements",
+      "tgt": "collision criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "enumerate nonoverlapping placements",
+      "tgt": "contact criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "enumerate nonoverlapping placements",
+      "tgt": "generate all rotations and flips",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "enumerate nonoverlapping placements",
+      "tgt": "slide object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "enumerate nonoverlapping placements",
+      "tgt": "move object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "enumerate nonoverlapping placements",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "enumerate nonoverlapping placements",
+      "tgt": "in bounds",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "enumerate nonoverlapping placements",
+      "tgt": "is inside object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "enumerate nonoverlapping placements",
+      "tgt": "inside container criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "enumerate nonoverlapping placements",
+      "tgt": "full_overlap",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "enumerate nonoverlapping placements",
+      "tgt": "no collision with",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cup opening",
+      "tgt": "cup (container with opening)",
+      "relation": "composed_of",
+      "weight": 1.0
+    },
+    {
+      "src": "cup opening",
+      "tgt": "opening of container",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "cup opening",
+      "tgt": "find direction from opening",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cup opening",
+      "tgt": "find extremal points",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cup opening",
+      "tgt": "is on bounding box edge criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cup opening",
+      "tgt": "container",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "red pixels",
+      "tgt": "find pixels",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "red pixels",
+      "tgt": "find pixel",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "red pixels",
+      "tgt": "count pixels",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "red pixels",
+      "tgt": "has color criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "red pixels",
+      "tgt": "contains color criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "red pixels",
+      "tgt": "is color criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "red pixels",
+      "tgt": "all pixels are color criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "red pixels",
+      "tgt": "position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "red pixels",
+      "tgt": "all_nonblack_pixels",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "red pixels",
+      "tgt": "pixel object",
+      "relation": "composed_of",
+      "weight": 1.0
+    },
+    {
+      "src": "logical operation on corresponding pixels",
+      "tgt": "create new grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "logical operation on corresponding pixels",
+      "tgt": "set pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "opening of container",
+      "tgt": "cup (container with opening)",
+      "relation": "composed_of",
+      "weight": 1.0
+    },
+    {
+      "src": "opening of container",
+      "tgt": "container",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "opening of container",
+      "tgt": "find direction from opening",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "opening of container",
+      "tgt": "is on bounding box edge criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "opening of container",
+      "tgt": "find extremal points",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "opening of container",
+      "tgt": "cup opening",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "custom successors",
+      "tgt": "pathfinding with custom movement rules",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "custom successors",
+      "tgt": "obstacle avoidance path",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "custom successors",
+      "tgt": "collision criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "custom successors",
+      "tgt": "stop at non-black",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "custom successors",
+      "tgt": "stopping criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "custom successors",
+      "tgt": "next pixel in direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "custom successors",
+      "tgt": "move position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "custom successors",
+      "tgt": "rotate direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "custom successors",
+      "tgt": "opposite direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "custom successors",
+      "tgt": "reflect direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "custom successors",
+      "tgt": "get neighbor pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "custom successors",
+      "tgt": "is in bounds",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "custom successors",
+      "tgt": "in bounds",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "custom successors",
+      "tgt": "contact criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "border fits within grid",
+      "tgt": "in bounds",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "shift pixel within object",
+      "tgt": "move object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "shift pixel within object",
+      "tgt": "shift object position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "shift pixel within object",
+      "tgt": "slide object",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "shift pixel within object",
+      "tgt": "pixel object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "shift pixel within object",
+      "tgt": "direction between objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "shift pixel within object",
+      "tgt": "opposite direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "shift pixel within object",
+      "tgt": "get neighbor pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "shift pixel within object",
+      "tgt": "next pixel in direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "shift pixel within object",
+      "tgt": "pixel has neighbor in direction criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "shift pixel within object",
+      "tgt": "set pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "shift pixel within object",
+      "tgt": "move position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "shift pixel within object",
+      "tgt": "collision criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "shift pixel within object",
+      "tgt": "no collision with",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "shift pixel within object",
+      "tgt": "stop at non-black",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "shift pixel within object",
+      "tgt": "stopping criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "frame",
+      "tgt": "container",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "frame",
+      "tgt": "create square border",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "frame",
+      "tgt": "draw border outside",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "frame",
+      "tgt": "aligned_inside",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "frame",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "frame",
+      "tgt": "border fits within grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "frame",
+      "tgt": "border is redundant",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "frame",
+      "tgt": "frame size proportional to object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "frame",
+      "tgt": "scale object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "frame",
+      "tgt": "scale grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "frame",
+      "tgt": "resize object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "frame",
+      "tgt": "draw expandable shape",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "frame",
+      "tgt": "create_hollow_rectangle",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "frame",
+      "tgt": "crop object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "frame",
+      "tgt": "crop around objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "lowest row below",
+      "tgt": "slide object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "lowest row below",
+      "tgt": "stop at non-black",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "lowest row below",
+      "tgt": "stopping criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "lowest row below",
+      "tgt": "get neighbor pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "lowest row below",
+      "tgt": "next pixel in direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "lowest row below",
+      "tgt": "in bounds",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "lowest row below",
+      "tgt": "is in bounds",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "lowest row below",
+      "tgt": "vertical_towards",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "lowest row below",
+      "tgt": "direction between objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "lowest row below",
+      "tgt": "find pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "lowest row below",
+      "tgt": "find row",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "lowest row below",
+      "tgt": "find column",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "lowest row below",
+      "tgt": "move position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "lowest row below",
+      "tgt": "collision criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "indicator region size",
+      "tgt": "indicator color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "indicator region size",
+      "tgt": "count pixels",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "indicator region size",
+      "tgt": "region size",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "indicator region size",
+      "tgt": "object_area",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "reflect direction",
+      "tgt": "opposite direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "reflect direction",
+      "tgt": "which side of rectangle hit",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "reflect direction",
+      "tgt": "direction between objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "reflect direction",
+      "tgt": "rotate direction",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "reflect direction",
+      "tgt": "reverse direction",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "reflect direction",
+      "tgt": "displacement_direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "reflect direction",
+      "tgt": "axis_perpendicular_to",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "reflect direction",
+      "tgt": "get flow direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "reflect direction",
+      "tgt": "get push direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "reflect direction",
+      "tgt": "horizontal_towards",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "reflect direction",
+      "tgt": "vertical_towards",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "reflect direction",
+      "tgt": "diagonal direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "reflect direction",
+      "tgt": "get diagonal direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "reflect direction",
+      "tgt": "move position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "reflect direction",
+      "tgt": "next pixel in direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "extract objects",
+      "tgt": "all_nonblack_pixels",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "extract objects",
+      "tgt": "background",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "extract objects",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "extract objects",
+      "tgt": "crop object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "extract objects",
+      "tgt": "filter objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "extract objects",
+      "tgt": "find object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "extract objects",
+      "tgt": "count objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "extract objects",
+      "tgt": "sort objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "extract objects",
+      "tgt": "object_area",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "extract objects",
+      "tgt": "has color criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "copy grid",
+      "tgt": "create new grid",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "copy grid",
+      "tgt": "set pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "decrementing length pattern",
+      "tgt": "pyramid of lines",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "decrementing length pattern",
+      "tgt": "alternating color pattern",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "decrementing length pattern",
+      "tgt": "create staircase pattern",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "inside container criteria",
+      "tgt": "is_inside_container criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "inside container criteria",
+      "tgt": "container",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "inside container criteria",
+      "tgt": "contact criteria",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "inside container criteria",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "inside container criteria",
+      "tgt": "distance to grid edge",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "inside container criteria",
+      "tgt": "edge pixels",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "inside container criteria",
+      "tgt": "all positions",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "inside container criteria",
+      "tgt": "all positions within grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "inside container criteria",
+      "tgt": "is adjacent criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "inside container criteria",
+      "tgt": "is on bounding box edge criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "inside container criteria",
+      "tgt": "hole",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "inside container criteria",
+      "tgt": "opening of container",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "inside container criteria",
+      "tgt": "cup (container with opening)",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "inside container criteria",
+      "tgt": "cup opening",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "inside container criteria",
+      "tgt": "get object holes",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "slide from center",
+      "tgt": "slide object",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "slide from center",
+      "tgt": "center",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "slide from center",
+      "tgt": "distance to grid edge",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "slide from center",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "slide from center",
+      "tgt": "next pixel in direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "slide from center",
+      "tgt": "in bounds",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "frame size proportional to object",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "frame size proportional to object",
+      "tgt": "max",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "border pixels",
+      "tgt": "edge pixels",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "border pixels",
+      "tgt": "pixel object",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "border pixels",
+      "tgt": "corner pixel",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "border pixels",
+      "tgt": "on edge criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "border pixels",
+      "tgt": "distance to grid edge",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "border pixels",
+      "tgt": "find edge with color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "border pixels",
+      "tgt": "get edge pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "border pixels",
+      "tgt": "grid edges",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "border pixels",
+      "tgt": "is opposite edge criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "border pixels",
+      "tgt": "find farthest border pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "border pixels",
+      "tgt": "border fits within grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "border pixels",
+      "tgt": "border is redundant",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "border pixels",
+      "tgt": "background",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "border pixels",
+      "tgt": "center",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "full_overlap",
+      "tgt": "argmax_displacement",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "full_overlap",
+      "tgt": "move object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "full_overlap",
+      "tgt": "collision criteria",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "full_overlap",
+      "tgt": "contact criteria",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "full_overlap",
+      "tgt": "all positions",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "full_overlap",
+      "tgt": "all valid positions",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "full_overlap",
+      "tgt": "plugged pixel count",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "full_overlap",
+      "tgt": "color match at overlap criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "full_overlap",
+      "tgt": "slide object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "full_overlap",
+      "tgt": "tile object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "full_overlap",
+      "tgt": "enumerate nonoverlapping placements",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "full_overlap",
+      "tgt": "is inside object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "full_overlap",
+      "tgt": "inside container criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "full_overlap",
+      "tgt": "is_inside_container criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "full_overlap",
+      "tgt": "no collision with",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "reflect object",
+      "tgt": "get mirror axis",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "reflect object",
+      "tgt": "reflect pixel across axes",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "delete object",
+      "tgt": "background",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "delete object",
+      "tgt": "set pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "delete object",
+      "tgt": "fill region",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "delete object",
+      "tgt": "draw object",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "interpolate paths",
+      "tgt": "draw line",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "interpolate paths",
+      "tgt": "get endpoints",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "interpolate paths",
+      "tgt": "direction between objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "interpolate paths",
+      "tgt": "move position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "interpolate paths",
+      "tgt": "opposite direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "interpolate paths",
+      "tgt": "distance",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "interpolate paths",
+      "tgt": "midpoint between",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "interpolate paths",
+      "tgt": "pathfinding with custom movement rules",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "interpolate paths",
+      "tgt": "obstacle avoidance path",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "orientation detection",
+      "tgt": "is_aligned",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "orientation detection",
+      "tgt": "is line criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "orientation detection",
+      "tgt": "alignment criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "detect mirror symmetry",
+      "tgt": "reflect object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "detect mirror symmetry",
+      "tgt": "is symmetric",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "detect mirror symmetry",
+      "tgt": "symmetry types",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "slide object",
+      "tgt": "stopping criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "slide object",
+      "tgt": "collision criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "slide object",
+      "tgt": "move object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "slide object",
+      "tgt": "direction between objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "slide object",
+      "tgt": "no collision with",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "slide object",
+      "tgt": "distance to grid edge",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "slide object",
+      "tgt": "contact criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "slide object",
+      "tgt": "stop at non-black",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "slide object",
+      "tgt": "move position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "slide object",
+      "tgt": "next pixel in direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "slide object",
+      "tgt": "slide from center",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "slide object",
+      "tgt": "place object on opposite side",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "generate all rotations and flips",
+      "tgt": "rotate object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "generate all rotations and flips",
+      "tgt": "reflect object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "generate all rotations and flips",
+      "tgt": "detect mirror symmetry",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "generate all rotations and flips",
+      "tgt": "detect rotational symmetry",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "generate all rotations and flips",
+      "tgt": "compute orbit",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "generate all rotations and flips",
+      "tgt": "orbit",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "generate all rotations and flips",
+      "tgt": "reflect grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "generate all rotations and flips",
+      "tgt": "reflect pixel across axes",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "generate all rotations and flips",
+      "tgt": "symmetry types",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "generate all rotations and flips",
+      "tgt": "tiling of mirrored sprites",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "generate all rotations and flips",
+      "tgt": "repeated sprite with symmetry",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "generate all rotations and flips",
+      "tgt": "enumerate nonoverlapping placements",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "generate all rotations and flips",
+      "tgt": "orientation detection",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "generate all rotations and flips",
+      "tgt": "has mirror symmetry criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "unique colors",
+      "tgt": "unique",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "unique colors",
+      "tgt": "color exclusion",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "unique colors",
+      "tgt": "not_in criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "mask object",
+      "tgt": "logical operation on corresponding pixels",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "mask object",
+      "tgt": "copy grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "mask object",
+      "tgt": "set pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "mask object",
+      "tgt": "positions_where",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "mask object",
+      "tgt": "fill region",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "mask object",
+      "tgt": "color match at overlap criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "mask object",
+      "tgt": "all_nonblack_pixels",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "mask object",
+      "tgt": "filter objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "fill region with pattern by grid position",
+      "tgt": "region grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "fill region with pattern by grid position",
+      "tgt": "fill region",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "fill region with pattern by grid position",
+      "tgt": "divider lines",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "fill region with pattern by grid position",
+      "tgt": "split on divider lines",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "fill region with pattern by grid position",
+      "tgt": "split region grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "fill region with pattern by grid position",
+      "tgt": "convert region grid to pixel grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "fill region with pattern by grid position",
+      "tgt": "pattern-to-color mapping",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "fill region with pattern by grid position",
+      "tgt": "fixed pattern",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "fill region with pattern by grid position",
+      "tgt": "arrange regions as grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "fill region with pattern by grid position",
+      "tgt": "copy grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "fill region with pattern by grid position",
+      "tgt": "draw object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "fill region with pattern by grid position",
+      "tgt": "set pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "fill region with pattern by grid position",
+      "tgt": "fill missing pattern pixels with divider color",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "orthogonal neighbors",
+      "tgt": "diagonal neighbors",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "orthogonal neighbors",
+      "tgt": "get neighbor pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "orthogonal neighbors",
+      "tgt": "in bounds",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "orthogonal neighbors",
+      "tgt": "is adjacent criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "orthogonal neighbors",
+      "tgt": "count neighbors in object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "orthogonal neighbors",
+      "tgt": "next pixel in direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "sliding window",
+      "tgt": "all positions within grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "sliding window",
+      "tgt": "generate rectangles",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "sliding window",
+      "tgt": "crop grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "sliding window",
+      "tgt": "extract objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "sliding window",
+      "tgt": "slide object",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "region grid",
+      "tgt": "divider lines",
+      "relation": "composed_of",
+      "weight": 1.0
+    },
+    {
+      "src": "region grid",
+      "tgt": "split on divider lines",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "region grid",
+      "tgt": "split region grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "region grid",
+      "tgt": "arrange regions as grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "region grid",
+      "tgt": "convert region grid to pixel grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "region grid",
+      "tgt": "fill region with pattern by grid position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "region grid",
+      "tgt": "region size",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "region grid",
+      "tgt": "split grid",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "region grid",
+      "tgt": "split regions",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "region grid",
+      "tgt": "combine regions",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "region grid",
+      "tgt": "odd-one-out region",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "region grid",
+      "tgt": "pick only color from region",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "region grid",
+      "tgt": "crop region between lines",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "region grid",
+      "tgt": "find divider line color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count empty pixels",
+      "tgt": "background",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count empty pixels",
+      "tgt": "count",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count empty pixels",
+      "tgt": "count pixels",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "alignment criteria",
+      "tgt": "is_aligned",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "alignment criteria",
+      "tgt": "all pixels equal in row or column criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "alignment criteria",
+      "tgt": "all pixels are color criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "alignment criteria",
+      "tgt": "has color criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "alignment criteria",
+      "tgt": "is color criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "alignment criteria",
+      "tgt": "not equal criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "alignment criteria",
+      "tgt": "not_in criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "alignment criteria",
+      "tgt": "size criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "alignment criteria",
+      "tgt": "shape match criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "alignment criteria",
+      "tgt": "inside container criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "alignment criteria",
+      "tgt": "is_inside_container criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "alignment criteria",
+      "tgt": "collision criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "alignment criteria",
+      "tgt": "contact criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "alignment criteria",
+      "tgt": "closest to criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "alignment criteria",
+      "tgt": "new pixels criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "detect translational symmetry",
+      "tgt": "period detection",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "detect translational symmetry",
+      "tgt": "compute orbit",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "detect translational symmetry",
+      "tgt": "orbit",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "detect translational symmetry",
+      "tgt": "detect mirror symmetry",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "detect translational symmetry",
+      "tgt": "detect rotational symmetry",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "detect translational symmetry",
+      "tgt": "symmetry types",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "detect translational symmetry",
+      "tgt": "repeated translation",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "detect translational symmetry",
+      "tgt": "stride for translation",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "detect translational symmetry",
+      "tgt": "tile object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "detect translational symmetry",
+      "tgt": "repeated sprite with symmetry",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "detect translational symmetry",
+      "tgt": "tiling of mirrored sprites",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "detect translational symmetry",
+      "tgt": "repeat pattern at periodic offsets",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "detect translational symmetry",
+      "tgt": "find mirror symmetry",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "mean position",
+      "tgt": "center",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "mean position",
+      "tgt": "bounding box center",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "mean position",
+      "tgt": "midpoint between",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "mean position",
+      "tgt": "position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "mean position",
+      "tgt": "object_area",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "mean position",
+      "tgt": "count pixels",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "mean position",
+      "tgt": "all_nonblack_pixels",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find background color",
+      "tgt": "most common color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find background color",
+      "tgt": "border pixels",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find background color",
+      "tgt": "background",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "find background color",
+      "tgt": "find color",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "find background color",
+      "tgt": "unique color",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "find background color",
+      "tgt": "count",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find background color",
+      "tgt": "edge pixels",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find background color",
+      "tgt": "all_nonblack_pixels",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find background color",
+      "tgt": "pick only color from region",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "find background color",
+      "tgt": "find unique color",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "get edge pixel",
+      "tgt": "distance to grid edge",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get edge pixel",
+      "tgt": "move position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get edge pixel",
+      "tgt": "next pixel in direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get edge pixel",
+      "tgt": "in bounds",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get edge pixel",
+      "tgt": "edge pixels",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get edge pixel",
+      "tgt": "border pixels",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get edge pixel",
+      "tgt": "direction between objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get edge pixel",
+      "tgt": "opposite direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get edge pixel",
+      "tgt": "get neighbor pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get edge pixel",
+      "tgt": "stop at non-black",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get edge pixel",
+      "tgt": "stopping criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get edge pixel",
+      "tgt": "slide object",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "get edge pixel",
+      "tgt": "find pixel",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "remove consecutive duplicates",
+      "tgt": "unique",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "remove consecutive duplicates",
+      "tgt": "not_equal",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count objects",
+      "tgt": "count",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "count objects",
+      "tgt": "count pixels",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "count objects",
+      "tgt": "count shape features",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "count objects",
+      "tgt": "count empty pixels",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "count objects",
+      "tgt": "count neighbors in object",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "count objects",
+      "tgt": "filter objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count objects",
+      "tgt": "unique colors",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count objects",
+      "tgt": "extract objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count objects",
+      "tgt": "sort objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count objects",
+      "tgt": "max",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count objects",
+      "tgt": "argmax",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count objects",
+      "tgt": "object_area",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count objects",
+      "tgt": "region size",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count objects",
+      "tgt": "most common color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count objects",
+      "tgt": "unique",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is blank criteria",
+      "tgt": "all pixels are color criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "is blank criteria",
+      "tgt": "is color criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "is blank criteria",
+      "tgt": "has color criteria",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "is blank criteria",
+      "tgt": "contains color criteria",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "is blank criteria",
+      "tgt": "count empty pixels",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is blank criteria",
+      "tgt": "find background color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is blank criteria",
+      "tgt": "most common color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is blank criteria",
+      "tgt": "all_nonblack_pixels",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is blank criteria",
+      "tgt": "all pixels equal in row or column criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "is blank criteria",
+      "tgt": "has only one nonblack color",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "is blank criteria",
+      "tgt": "not equal criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is blank criteria",
+      "tgt": "not_in criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is blank criteria",
+      "tgt": "all_pixels_not_in criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is blank criteria",
+      "tgt": "is_not_color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "split cross",
+      "tgt": "cross object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "split cross",
+      "tgt": "split object",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "split cross",
+      "tgt": "split_horizontal_center",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "split cross",
+      "tgt": "split_vertical_center",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find color",
+      "tgt": "all pixels equal in row or column criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find color",
+      "tgt": "occurs_exactly_once",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find color",
+      "tgt": "find unique color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find color",
+      "tgt": "find background color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find color",
+      "tgt": "find divider line color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find color",
+      "tgt": "color exclusion",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find color",
+      "tgt": "is_not_color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find color",
+      "tgt": "not equal criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find color",
+      "tgt": "not_in criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find color",
+      "tgt": "background",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find color",
+      "tgt": "bar",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find color",
+      "tgt": "divider lines",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find color",
+      "tgt": "frame",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get endpoints",
+      "tgt": "find extremal points",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "get endpoints",
+      "tgt": "direction between objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get endpoints",
+      "tgt": "get neighbor pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get endpoints",
+      "tgt": "orthogonal neighbors",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get endpoints",
+      "tgt": "count neighbors in object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get endpoints",
+      "tgt": "displacement_direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get endpoints",
+      "tgt": "draw line",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get endpoints",
+      "tgt": "draw line until color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get endpoints",
+      "tgt": "find direction from opening",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "get endpoints",
+      "tgt": "get flow direction",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "get endpoints",
+      "tgt": "get push direction",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "get endpoints",
+      "tgt": "pixel object",
+      "relation": "composed_of",
+      "weight": 1.0
+    },
+    {
+      "src": "remove object",
+      "tgt": "delete object",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "remove object",
+      "tgt": "background",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "remove object",
+      "tgt": "set pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "remove object",
+      "tgt": "fill region",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "remove object",
+      "tgt": "crop object",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "remove object",
+      "tgt": "draw object",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "remove object",
+      "tgt": "move object",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "remove object",
+      "tgt": "recolor object",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "all pixels equal in row or column criteria",
+      "tgt": "find row",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all pixels equal in row or column criteria",
+      "tgt": "find column",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all pixels equal in row or column criteria",
+      "tgt": "all pixels are color criteria",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "all pixels equal in row or column criteria",
+      "tgt": "is line criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all pixels equal in row or column criteria",
+      "tgt": "row",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all pixels equal in row or column criteria",
+      "tgt": "stripe",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all pixels equal in row or column criteria",
+      "tgt": "divider lines",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all pixels equal in row or column criteria",
+      "tgt": "bar",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all pixels equal in row or column criteria",
+      "tgt": "find divider line color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all pixels equal in row or column criteria",
+      "tgt": "get row",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all pixels equal in row or column criteria",
+      "tgt": "is color criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "all pixels equal in row or column criteria",
+      "tgt": "all pixels are color criteria",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "count pixels",
+      "tgt": "object_area",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count pixels",
+      "tgt": "count",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count pixels",
+      "tgt": "count objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count pixels",
+      "tgt": "count empty pixels",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "count pixels",
+      "tgt": "plugged pixel count",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "count pixels",
+      "tgt": "indicator region size",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "count pixels",
+      "tgt": "region size",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "count pixels",
+      "tgt": "count shape features",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "count pixels",
+      "tgt": "all pixels are color criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count pixels",
+      "tgt": "contains color criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count pixels",
+      "tgt": "has color criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count pixels",
+      "tgt": "has only one nonblack color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count pixels",
+      "tgt": "all_pixels_not_in criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count pixels",
+      "tgt": "not_in criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "which side of rectangle hit",
+      "tgt": "reflect direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "which side of rectangle hit",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "which side of rectangle hit",
+      "tgt": "rectangle object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "which side of rectangle hit",
+      "tgt": "is on bounding box edge criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "which side of rectangle hit",
+      "tgt": "direction between objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "which side of rectangle hit",
+      "tgt": "opposite direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "which side of rectangle hit",
+      "tgt": "collision criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "which side of rectangle hit",
+      "tgt": "contact criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "which side of rectangle hit",
+      "tgt": "get push direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "which side of rectangle hit",
+      "tgt": "slide object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find column",
+      "tgt": "all pixels are color criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find column",
+      "tgt": "all pixels equal in row or column criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "diagonal order",
+      "tgt": "sort objects",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "cells between",
+      "tgt": "all pairs",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cells between",
+      "tgt": "combinations",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cells between",
+      "tgt": "sort objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cells between",
+      "tgt": "position_along_axis",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cells between",
+      "tgt": "distance",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cells between",
+      "tgt": "direction between objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cells between",
+      "tgt": "is between objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cells between",
+      "tgt": "filter objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cells between",
+      "tgt": "extract objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cells between",
+      "tgt": "find object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cells between",
+      "tgt": "diagonal order",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "cells between",
+      "tgt": "midpoint between",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get neighbor pixel",
+      "tgt": "orthogonal neighbors",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "get neighbor pixel",
+      "tgt": "diagonal neighbors",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "get neighbor pixel",
+      "tgt": "next pixel in direction",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "get neighbor pixel",
+      "tgt": "move position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get neighbor pixel",
+      "tgt": "direction between objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get neighbor pixel",
+      "tgt": "opposite direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get neighbor pixel",
+      "tgt": "in bounds",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get neighbor pixel",
+      "tgt": "is in bounds",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get neighbor pixel",
+      "tgt": "within bounds",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get neighbor pixel",
+      "tgt": "distance",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get neighbor pixel",
+      "tgt": "min_distance",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count shape features",
+      "tgt": "count",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count shape features",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count shape features",
+      "tgt": "edge pixels",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count shape features",
+      "tgt": "get endpoints",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count shape features",
+      "tgt": "orientation detection",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count shape features",
+      "tgt": "object_area",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count shape features",
+      "tgt": "has shape criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count shape features",
+      "tgt": "is line criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count shape features",
+      "tgt": "is filled rectangle",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count shape features",
+      "tgt": "is hollow rectangle",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count shape features",
+      "tgt": "has hole criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count shape features",
+      "tgt": "detect mirror symmetry",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count shape features",
+      "tgt": "detect rotational symmetry",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "count shape features",
+      "tgt": "detect translational symmetry",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find direction from opening",
+      "tgt": "cup (container with opening)",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find direction from opening",
+      "tgt": "cup opening",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find direction from opening",
+      "tgt": "opening of container",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find direction from opening",
+      "tgt": "direction between objects",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "find direction from opening",
+      "tgt": "opposite direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find direction from opening",
+      "tgt": "get neighbor pixel",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find direction from opening",
+      "tgt": "next pixel in direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find direction from opening",
+      "tgt": "orthogonal neighbors",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find direction from opening",
+      "tgt": "is on bounding box edge criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find direction from opening",
+      "tgt": "find extremal points",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find direction from opening",
+      "tgt": "get endpoints",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find direction from opening",
+      "tgt": "displacement_direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find direction from opening",
+      "tgt": "diagonal direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "find direction from opening",
+      "tgt": "get diagonal direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is filled rectangle",
+      "tgt": "is hollow rectangle",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "is filled rectangle",
+      "tgt": "rectangle object",
+      "relation": "is_a",
+      "weight": 1.0
+    },
+    {
+      "src": "is filled rectangle",
+      "tgt": "has hole criteria",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "is filled rectangle",
+      "tgt": "create rectangle",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is filled rectangle",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is filled rectangle",
+      "tgt": "object_area",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is filled rectangle",
+      "tgt": "crop object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is filled rectangle",
+      "tgt": "all pixels are color criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is filled rectangle",
+      "tgt": "is shape square",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "is filled rectangle",
+      "tgt": "has only one nonblack color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is filled rectangle",
+      "tgt": "fill region",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is filled rectangle",
+      "tgt": "has shape criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is filled rectangle",
+      "tgt": "size criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "is filled rectangle",
+      "tgt": "is blank criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "split into quadrants",
+      "tgt": "split_horizontal_center",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "split into quadrants",
+      "tgt": "split_vertical_center",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "split into quadrants",
+      "tgt": "split object",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "split into quadrants",
+      "tgt": "combine objects",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "split into quadrants",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "split into quadrants",
+      "tgt": "crop object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "split into quadrants",
+      "tgt": "region grid",
+      "relation": "composed_of",
+      "weight": 1.0
+    },
+    {
+      "src": "split into quadrants",
+      "tgt": "split grid",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "split into quadrants",
+      "tgt": "split region grid",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "split into quadrants",
+      "tgt": "split on divider lines",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "split into quadrants",
+      "tgt": "arrange regions as grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "split into quadrants",
+      "tgt": "combine regions",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "split into quadrants",
+      "tgt": "center",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "split into quadrants",
+      "tgt": "create new grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pick only color from region",
+      "tgt": "find unique color",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "pick only color from region",
+      "tgt": "background",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pick only color from region",
+      "tgt": "color exclusion",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "pick only color from region",
+      "tgt": "has only one nonblack color",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get mirror axis",
+      "tgt": "detect mirror symmetry",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get mirror axis",
+      "tgt": "reflect object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get mirror axis",
+      "tgt": "reflect grid",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get mirror axis",
+      "tgt": "frame",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get mirror axis",
+      "tgt": "bounding box",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get mirror axis",
+      "tgt": "center",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get mirror axis",
+      "tgt": "position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get mirror axis",
+      "tgt": "direction between objects",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get mirror axis",
+      "tgt": "compute orbit",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get mirror axis",
+      "tgt": "find mirror symmetry",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get mirror axis",
+      "tgt": "is symmetric",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get mirror axis",
+      "tgt": "has mirror symmetry criteria",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get mirror axis",
+      "tgt": "reflect pixel across axes",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get mirror axis",
+      "tgt": "axis_perpendicular_to",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "get mirror axis",
+      "tgt": "opposite direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "direction between objects",
+      "tgt": "displacement_direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "direction between objects",
+      "tgt": "horizontal_towards",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "direction between objects",
+      "tgt": "vertical_towards",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "direction between objects",
+      "tgt": "opposite direction",
+      "relation": "opposite_of",
+      "weight": 1.0
+    },
+    {
+      "src": "direction between objects",
+      "tgt": "diagonal direction",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "direction between objects",
+      "tgt": "get diagonal direction",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "direction between objects",
+      "tgt": "distance",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "direction between objects",
+      "tgt": "move position",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "direction between objects",
+      "tgt": "next pixel in direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "direction between objects",
+      "tgt": "axis_perpendicular_to",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "direction between objects",
+      "tgt": "reflect direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "direction between objects",
+      "tgt": "rotate direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "direction between objects",
+      "tgt": "reverse direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "direction between objects",
+      "tgt": "get push direction",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "repeat pattern at periodic offsets",
+      "tgt": "tile object",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "repeat pattern at periodic offsets",
+      "tgt": "repeated translation",
+      "relation": "specializes",
+      "weight": 1.0
+    },
+    {
+      "src": "repeat pattern at periodic offsets",
+      "tgt": "draw object",
+      "relation": "uses",
+      "weight": 1.0
+    },
+    {
+      "src": "repeat pattern at periodic offsets",
+      "tgt": "shift object position",
+      "relation": "uses",
+      "weight": 1.0
+    }
+  ],
+  "stats": {
+    "num_concepts": 270,
+    "num_edges": 1242,
+    "num_concepts_with_zero_edges": 137,
+    "edges_per_concept_mean": 9.338345864661655,
+    "edges_per_concept_median": 10,
+    "edges_per_concept_max": 15,
+    "edges_per_concept_min": 1,
+    "wall_time_total_s": 11736.514670374221,
+    "wall_time_per_call_mean_s": 43.46857285323786,
+    "num_failures": 0,
+    "failures": [],
+    "relation_counts": {
+      "specializes": 194,
+      "is_a": 36,
+      "uses": 945,
+      "opposite_of": 54,
+      "composed_of": 13
+    }
+  }
+}

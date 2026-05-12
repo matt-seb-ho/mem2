@@ -1,0 +1,433 @@
+{
+  "schema_version": "1",
+  "model": "deepseek/deepseek-v4-flash",
+  "built_at": "2026-05-01T15:37:45+00:00",
+  "source_seed": "data/arc_agi/concept_memory/compressed_v1.json",
+  "domain": "ARC-AGI",
+  "categories": [
+    {
+      "name": "spatial transformations",
+      "description": "operations that move, orient, or resize objects in the grid",
+      "subcategories": [
+        {
+          "name": "rotation and reflection",
+          "description": "rotating and reflecting objects or grids",
+          "concepts": [
+            "detect mirror symmetry",
+            "detect rotational symmetry",
+            "detect translational symmetry",
+            "generate all rotations and flips",
+            "reflect direction",
+            "reflect grid",
+            "reflect object",
+            "reflect pixel across axes",
+            "rotate direction",
+            "rotate object",
+            "is symmetric",
+            "has mirror symmetry criteria",
+            "symmetry types",
+            "repeated sprite with symmetry",
+            "tiling of mirrored sprites"
+          ]
+        },
+        {
+          "name": "translation and movement",
+          "description": "moving objects and computing new positions",
+          "concepts": [
+            "move object",
+            "move position",
+            "shift object position",
+            "shift pixel within object",
+            "slide object",
+            "slide from center",
+            "place object on opposite side",
+            "repeated translation",
+            "tile object",
+            "stride for translation",
+            "compute orbit",
+            "orbit",
+            "direction between objects",
+            "displacement_direction",
+            "displacement_magnitude",
+            "horizontal_towards",
+            "vertical_towards",
+            "opposite direction",
+            "reverse direction",
+            "next pixel in direction",
+            "get push direction",
+            "get flow direction",
+            "get diagonal direction",
+            "diagonal direction",
+            "axis_perpendicular_to"
+          ]
+        },
+        {
+          "name": "scaling and resizing",
+          "description": "changing the size of objects or grids",
+          "concepts": [
+            "scale grid",
+            "scale object",
+            "resize object",
+            "draw expandable shape",
+            "frame size proportional to object"
+          ]
+        },
+        {
+          "name": "position computation",
+          "description": "computing positions, anchors, and alignments",
+          "concepts": [
+            "adjusted position",
+            "aligned_inside",
+            "anchor position for centered overlay",
+            "bottom left position",
+            "bottom row alignment",
+            "bounding box",
+            "bounding box center",
+            "bounding box corners",
+            "center",
+            "centered at",
+            "mean position",
+            "midpoint between",
+            "position",
+            "position_along_axis",
+            "map object corner to output",
+            "all positions",
+            "all positions within grid",
+            "all valid positions",
+            "enumerate nonoverlapping placements"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "object detection and analysis",
+      "description": "identifying, extracting, and analyzing objects and their properties",
+      "subcategories": [
+        {
+          "name": "object extraction",
+          "description": "extracting objects and pixels from grids",
+          "concepts": [
+            "all_nonblack_pixels",
+            "extract objects",
+            "find object",
+            "find pixel",
+            "find pixels",
+            "edge pixels",
+            "red pixels",
+            "border pixels",
+            "corner pixel",
+            "get edge pixel",
+            "get endpoints",
+            "find extremal points",
+            "find farthest border pixel",
+            "crop object",
+            "crop around objects",
+            "crop grid",
+            "crop region between lines"
+          ]
+        },
+        {
+          "name": "shape and structure detection",
+          "description": "detecting shapes, lines, and structural properties",
+          "concepts": [
+            "is line criteria",
+            "is filled rectangle",
+            "is hollow rectangle",
+            "is shape square",
+            "has shape criteria",
+            "has hole criteria",
+            "get object holes",
+            "hole",
+            "orientation detection",
+            "find rectangles from corners",
+            "generate rectangles",
+            "find column",
+            "find row",
+            "find divider line color",
+            "find edge with color",
+            "find color",
+            "find unique color",
+            "find background color",
+            "find direction from opening",
+            "find mirror symmetry",
+            "period detection",
+            "count shape features",
+            "count neighbors in object"
+          ]
+        },
+        {
+          "name": "object properties",
+          "description": "computing properties of objects like size, color, and position",
+          "concepts": [
+            "object_area",
+            "region size",
+            "count",
+            "count objects",
+            "count pixels",
+            "count empty pixels",
+            "indicator region size",
+            "distance",
+            "distance to grid edge",
+            "min_distance",
+            "most common color",
+            "unique colors",
+            "unique color",
+            "pick only color from region",
+            "indicator color",
+            "other_indicator",
+            "rightmost pixel",
+            "lowest row below",
+            "cells between",
+            "max",
+            "argmax",
+            "argmax_displacement"
+          ]
+        },
+        {
+          "name": "criteria and conditions",
+          "description": "conditions and criteria for filtering and matching objects",
+          "concepts": [
+            "alignment criteria",
+            "all pixels are color criteria",
+            "all pixels equal in row or column criteria",
+            "all_pixels_not_in criteria",
+            "closest to criteria",
+            "collision criteria",
+            "color match at overlap criteria",
+            "contact criteria",
+            "contains color criteria",
+            "has color criteria",
+            "has grey adjacent to corners",
+            "has only one nonblack color",
+            "inside container criteria",
+            "is adjacent criteria",
+            "is between objects",
+            "is blank criteria",
+            "is color criteria",
+            "is in bounds",
+            "is inside object",
+            "is on bounding box edge criteria",
+            "is opposite edge criteria",
+            "is_aligned",
+            "is_inside_container criteria",
+            "is_not_color",
+            "is_touching",
+            "new pixels criteria",
+            "no collision with",
+            "not",
+            "not equal criteria",
+            "not_equal",
+            "not_in criteria",
+            "occurs_exactly_once",
+            "on edge criteria",
+            "pixel has neighbor in direction criteria",
+            "pixel is inside grid criteria",
+            "shape match criteria",
+            "size criteria",
+            "vertical line beneath object criteria",
+            "full_overlap",
+            "stop at non-black",
+            "stopping criteria"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "color and pattern manipulation",
+      "description": "operations that modify colors, create patterns, and map colors",
+      "subcategories": [
+        {
+          "name": "color operations",
+          "description": "recoloring, mapping, and selecting colors",
+          "concepts": [
+            "recolor object",
+            "fixed color mapping",
+            "map value",
+            "pattern-to-color mapping",
+            "color exclusion",
+            "alternating color pattern",
+            "fill region",
+            "fill region with pattern by grid position",
+            "fill missing pattern pixels with divider color",
+            "flood fill alternating",
+            "set pixel",
+            "logical operation on corresponding pixels"
+          ]
+        },
+        {
+          "name": "pattern generation",
+          "description": "creating patterns, sequences, and periodic structures",
+          "concepts": [
+            "alternating pattern stacking",
+            "create cross",
+            "create periodic hole pattern",
+            "create rectangle",
+            "create square border",
+            "create staircase pattern",
+            "create_hollow_rectangle",
+            "decrementing length pattern",
+            "repeat color sequence in rows",
+            "repeat pattern at periodic offsets",
+            "select every nth element",
+            "remove consecutive duplicates",
+            "unique",
+            "combinations",
+            "all pairs",
+            "custom successors",
+            "interpolate paths",
+            "pathfinding with custom movement rules",
+            "obstacle avoidance path"
+          ]
+        },
+        {
+          "name": "drawing and filling",
+          "description": "drawing lines, borders, and filling regions",
+          "concepts": [
+            "draw border outside",
+            "draw line",
+            "draw line until color",
+            "draw object",
+            "draw objects",
+            "extend colored segment",
+            "append row",
+            "copy rows",
+            "copy grid",
+            "create new grid",
+            "transpose",
+            "concatenate grids",
+            "grid edges",
+            "get row",
+            "within bounds",
+            "in bounds",
+            "border fits within grid",
+            "border is redundant"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "spatial composition and layout",
+      "description": "arranging, combining, and structuring objects in grids",
+      "subcategories": [
+        {
+          "name": "grid partitioning",
+          "description": "splitting grids into regions, quadrants, and subgrids",
+          "concepts": [
+            "split grid",
+            "split into quadrants",
+            "split object",
+            "split on divider lines",
+            "split region grid",
+            "split regions",
+            "split_horizontal_center",
+            "split_vertical_center",
+            "split cross",
+            "arrange regions as grid",
+            "region grid",
+            "sliding window",
+            "divider lines",
+            "frame",
+            "container",
+            "nested layers"
+          ]
+        },
+        {
+          "name": "combining and overlaying",
+          "description": "combining objects, overlaying patterns, and composing grids",
+          "concepts": [
+            "combine objects",
+            "combine regions",
+            "convert region grid to pixel grid",
+            "mask object",
+            "complete partial sprite",
+            "plugged pixel count",
+            "positions_where",
+            "which side of rectangle hit"
+          ]
+        },
+        {
+          "name": "spatial ordering",
+          "description": "sorting, ordering, and arranging objects spatially",
+          "concepts": [
+            "sort objects",
+            "filter objects",
+            "diagonal order",
+            "diagonal neighbors",
+            "orthogonal neighbors",
+            "get neighbor pixel",
+            "get mirror axis",
+            "edges of object",
+            "intersection of lines",
+            "opening of container",
+            "cup (container with opening)",
+            "cup opening"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "object manipulation and deletion",
+      "description": "operations that add, remove, or modify objects in the grid",
+      "subcategories": [
+        {
+          "name": "object removal",
+          "description": "deleting and removing objects from grids",
+          "concepts": [
+            "delete object",
+            "remove object"
+          ]
+        },
+        {
+          "name": "object creation",
+          "description": "creating new objects and structures",
+          "concepts": []
+        }
+      ]
+    },
+    {
+      "name": "structural primitives",
+      "description": "basic structural elements and object types used in ARC tasks",
+      "subcategories": [
+        {
+          "name": "basic shapes",
+          "description": "fundamental shape primitives",
+          "concepts": [
+            "bar",
+            "cross object",
+            "large object",
+            "pixel cluster",
+            "pixel object",
+            "pyramid of lines",
+            "rectangle object",
+            "row",
+            "square object",
+            "stripe",
+            "vertical line",
+            "fixed pattern",
+            "spiral path"
+          ]
+        },
+        {
+          "name": "grid structures",
+          "description": "structural elements related to grid layout",
+          "concepts": [
+            "background"
+          ]
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "num_concepts_total": 270,
+    "num_categories": 6,
+    "num_subcategories": 18,
+    "num_concepts_assigned": 268,
+    "num_unassigned": 2,
+    "unassigned_concepts": [
+      "odd-one-out region",
+      "rectangle shape"
+    ],
+    "num_duplicates_dropped": 29,
+    "wall_time_s": 228.89977558294777
+  }
+}
