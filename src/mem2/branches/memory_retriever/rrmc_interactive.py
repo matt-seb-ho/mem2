@@ -21,9 +21,13 @@ probing question generator; hook point is marked below.
 """
 from __future__ import annotations
 
+import json
+import re
 from collections import Counter
 from dataclasses import dataclass
+from pathlib import Path
 
+from mem2.concepts.artifacts import CONCEPT_MEMORY_DIR
 from mem2.concepts.graph import ConceptGraph
 from mem2.concepts.memory import ConceptMemory
 from mem2.core.entities import (
@@ -33,6 +37,14 @@ from mem2.core.entities import (
     RetrievalBundle,
     RunContext,
 )
+
+WORD_RE = re.compile(r"[A-Za-z][A-Za-z0-9_]+")
+_REPO_ROOT = Path(__file__).resolve().parents[4]
+_DEFAULT_ADAPTED_MEMORY_PATH = CONCEPT_MEMORY_DIR / "ports" / "rrmc_memory_v1.json"
+
+
+def _tokenize(text: str) -> set[str]:
+    return {m.group(0).lower() for m in WORD_RE.finditer(text or "")}
 
 
 @dataclass(frozen=True, slots=True)
@@ -60,6 +72,7 @@ class RRMCInteractiveRetriever:
         skip_cues: bool = False,
         skip_implementation: bool = False,
         usage_threshold: int = 1,
+        adapted_memory_path: str | Path | None = None,
     ) -> None:
         self.top_k = int(top_k)
         self.per_round_k = int(per_round_k)
@@ -69,6 +82,10 @@ class RRMCInteractiveRetriever:
         self.skip_cues = bool(skip_cues)
         self.skip_implementation = bool(skip_implementation)
         self.usage_threshold = int(usage_threshold)
+        self.adapted_memory_path = self._resolve_path(
+            adapted_memory_path,
+            _DEFAULT_ADAPTED_MEMORY_PATH,
+        )
 
     # ----------------------------------------------------------------- #
     def retrieve(
@@ -88,10 +105,17 @@ class RRMCInteractiveRetriever:
             )
 
         graph = ConceptGraph.build_from_memory(concept_mem, min_co_overlap=1)
+        adapted_records, adapted_source = self._load_adapted_records(concept_mem)
+        q_tokens = self._query_tokens(problem, previous_attempts)
 
         # Round 1 — seed: top-k by co-activation degree
         degrees = [
-            (graph.degree(n, kinds=["co_activation"]), n) for n in graph.nodes
+            (
+                self._adapted_round_score(adapted_records.get(n), q_tokens, round_index=1)
+                + graph.degree(n, kinds=["co_activation"]),
+                n,
+            )
+            for n in graph.nodes
         ]
         degrees.sort(reverse=True)
         ordered_by_degree = [n for _, n in degrees]
@@ -121,7 +145,13 @@ class RRMCInteractiveRetriever:
             and len(rounds) < self.max_rounds
             and patience < self.convergence_patience
         ):
-            candidate = self._next_round_candidates(concept_mem, graph, seen)
+            candidate = self._next_round_candidates(
+                concept_mem,
+                graph,
+                seen,
+                adapted_records,
+                q_tokens,
+            )
             added = bump(candidate)
             if not added:
                 break
@@ -134,13 +164,15 @@ class RRMCInteractiveRetriever:
             prev_cov_score = cur_cov_score
 
         names = list(seen)
-        hint_text = concept_mem.to_string(
-            concept_names=names,
-            include_description=self.include_description,
-            skip_cues=self.skip_cues,
-            skip_implementation=self.skip_implementation,
-            usage_threshold=self.usage_threshold,
-        )
+        hint_text = self._render_adapted_hint(names, adapted_records) if adapted_records else ""
+        if not hint_text:
+            hint_text = concept_mem.to_string(
+                concept_names=names,
+                include_description=self.include_description,
+                skip_cues=self.skip_cues,
+                skip_implementation=self.skip_implementation,
+                usage_threshold=self.usage_threshold,
+            )
         return RetrievalBundle(
             problem_uid=problem.uid,
             hint_text=hint_text or None,
@@ -153,6 +185,9 @@ class RRMCInteractiveRetriever:
                 "rounds": rounds,
                 "coverage_score": prev_cov_score,
                 "converged": patience >= self.convergence_patience,
+                "adapted_memory_source": adapted_source,
+                "adapted_records_loaded": len(adapted_records),
+                "adapted_selector_items_rendered": sum(1 for n in names if n in adapted_records),
             },
         )
 
@@ -188,6 +223,8 @@ class RRMCInteractiveRetriever:
         mem: ConceptMemory,
         graph: ConceptGraph,
         seen: set[str],
+        adapted_records: dict[str, dict],
+        q_tokens: set[str],
     ) -> list[str]:
         """Rank unseen concepts by (unseen-kinds-contributed, unseen-cues-contributed),
         breaking ties by graph degree.
@@ -205,13 +242,135 @@ class RRMCInteractiveRetriever:
             kinds_seen[c.kind] += 1
             cues_seen.update(c.cues)
 
-        scored: list[tuple[tuple[int, int, float], str]] = []
+        scored: list[tuple[tuple[int, int, float, float], str]] = []
         for name, c in mem.concepts.items():
             if name in seen:
                 continue
             new_kind = 1 if kinds_seen.get(c.kind, 0) == 0 else 0
             new_cues = sum(1 for cue in c.cues if cue not in cues_seen)
             degree = graph.degree(name, kinds=["co_activation"])
-            scored.append(((new_kind, new_cues, degree), name))
+            adapted_score = self._adapted_round_score(
+                adapted_records.get(name),
+                q_tokens,
+                round_index=2,
+            )
+            scored.append(((new_kind, new_cues, adapted_score, degree), name))
         scored.sort(key=lambda r: r[0], reverse=True)
         return [name for _, name in scored[: self.per_round_k]]
+
+    @staticmethod
+    def _resolve_path(path: str | Path | None, default: Path) -> Path:
+        if path is None:
+            return default
+        p = Path(path)
+        return p if p.is_absolute() else _REPO_ROOT / p
+
+    def _load_adapted_records(
+        self,
+        mem: ConceptMemory,
+    ) -> tuple[dict[str, dict], str]:
+        path = self.adapted_memory_path
+        if not path.exists():
+            return {}, "flat"
+        try:
+            data = json.loads(path.read_text())
+        except Exception as exc:  # noqa: BLE001 - corrupted local artifact should not be silent
+            raise RuntimeError(f"invalid RRMC adapted memory JSON: {path}") from exc
+        if data.get("schema_version") != "1" or data.get("port") != self.name:
+            raise RuntimeError(f"invalid RRMC adapted memory schema: {path}")
+        records: dict[str, dict] = {}
+        for raw in data.get("adapted_concepts") or []:
+            if not isinstance(raw, dict):
+                continue
+            concept_id = raw.get("concept_id")
+            if not isinstance(concept_id, str) or concept_id not in mem.concepts:
+                continue
+            probes = raw.get("probe_plan")
+            if not isinstance(probes, list) or len(probes) < 2:
+                raise RuntimeError(f"adapted memory missing probe_plan for {concept_id}")
+            records[concept_id] = raw
+        if not records:
+            return {}, "flat"
+        return records, "rrmc_memory_v1"
+
+    @staticmethod
+    def _query_tokens(
+        problem: ProblemSpec,
+        previous_attempts: list[AttemptRecord],
+    ) -> set[str]:
+        parts: list[str] = [str(getattr(problem, "uid", ""))]
+        meta = getattr(problem, "metadata", {}) or {}
+        for value in meta.values():
+            if isinstance(value, str):
+                parts.append(value)
+        for attempt in previous_attempts or []:
+            if getattr(attempt, "error", None):
+                parts.append(str(attempt.error))
+        return _tokenize(" ".join(parts))
+
+    def _adapted_round_score(
+        self,
+        record: dict | None,
+        q_tokens: set[str],
+        *,
+        round_index: int,
+    ) -> float:
+        if not record:
+            return 0.0
+        key = "round_1_relevance" if round_index <= 1 else "round_2_relevance"
+        try:
+            relevance = float(record.get(key, 0.0))
+        except (TypeError, ValueError):
+            relevance = 0.0
+        overlap = len(q_tokens & _tokenize(self._adapted_record_text(record))) if q_tokens else 0
+        return relevance + float(overlap)
+
+    @staticmethod
+    def _adapted_record_text(record: dict) -> str:
+        parts: list[str] = [
+            str(record.get("selector_role") or ""),
+            str(record.get("convergence_signal") or ""),
+            str(record.get("retrieval_notes") or ""),
+        ]
+        parts.extend(str(item) for item in record.get("coverage_targets") or [])
+        parts.extend(str(item) for item in record.get("routing_keywords") or [])
+        for probe in record.get("probe_plan") or []:
+            if isinstance(probe, dict):
+                parts.extend(
+                    str(probe.get(key) or "")
+                    for key in ("probe_question", "expected_signal", "selector_update")
+                )
+        return "\n".join(part for part in parts if part.strip())
+
+    @staticmethod
+    def _render_adapted_hint(
+        names: list[str],
+        adapted_records: dict[str, dict],
+    ) -> str:
+        blocks: list[str] = []
+        for name in names:
+            record = adapted_records.get(name)
+            if not record:
+                continue
+            lines = [f"- concept: {name}"]
+            lines.append(f"  rrmc_selector_role: {record.get('selector_role', 'other')}")
+            lines.append(
+                "  round_relevance: "
+                f"r1={float(record.get('round_1_relevance', 0.0)):.2f}, "
+                f"r2={float(record.get('round_2_relevance', 0.0)):.2f}"
+            )
+            targets = [str(t).strip() for t in record.get("coverage_targets") or [] if str(t).strip()]
+            if targets:
+                lines.append("  coverage_targets: " + ", ".join(targets[:5]))
+            for probe in record.get("probe_plan") or []:
+                if not isinstance(probe, dict):
+                    continue
+                round_id = probe.get("round", "?")
+                question = str(probe.get("probe_question") or "").strip()
+                if question:
+                    lines.append(f"  round_{round_id}_probe: {question}")
+            convergence = str(record.get("convergence_signal") or "").strip()
+            if convergence:
+                lines.append(f"  convergence_signal: {convergence}")
+            blocks.append("\n".join(lines))
+        return "\n\n".join(blocks)
