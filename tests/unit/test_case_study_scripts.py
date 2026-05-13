@@ -67,6 +67,22 @@ def test_build_case_study_config_dry_run_uses_axis_condition():
     assert cfg["case_studies"]["axis_config"] == "configs/axes/1.yaml"
 
 
+def test_build_case_study_config_preserves_base_builder_seed_for_builder_conditions():
+    cfg, _ = build_case_study_config(
+        port="accretive_prune",
+        n_problems=3,
+        seed=42,
+        iters=1,
+        base_config=Path("configs/experiments/phase1_arc_base.yaml"),
+        label="unit",
+    )
+
+    assert cfg["pipeline"]["memory_builder"] == "accretive_prune"
+    assert cfg["components"]["memory_builder"]["seed_memory_file"] == "data/arc_agi/concept_memory/compressed_v1.json"
+    assert cfg["components"]["memory_builder"]["domain"] == "arc"
+    assert cfg["components"]["memory_builder"]["max_concepts"] == 200
+
+
 def test_render_markdown_writes_summary(tmp_path):
     run_dir = tmp_path / "run1"
     _write_dummy_run(run_dir)

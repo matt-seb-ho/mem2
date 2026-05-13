@@ -47,9 +47,20 @@ def find_condition(port: str) -> tuple[Path, dict[str, Any]]:
     raise ValueError(f"Unknown port '{port}'. Known ports: {', '.join(sorted(known))}")
 
 
+def _deep_update(base: dict[str, Any], settings: dict[str, Any]) -> dict[str, Any]:
+    merged = copy.deepcopy(base)
+    for key, value in (settings or {}).items():
+        if isinstance(value, dict) and isinstance(merged.get(key), dict):
+            merged[key] = _deep_update(merged[key], value)
+        else:
+            merged[key] = copy.deepcopy(value)
+    return merged
+
+
 def _set_component(cfg: dict[str, Any], *, pipeline_key: str, component_key: str, value: str, settings: dict[str, Any]) -> None:
     cfg.setdefault("pipeline", {})[pipeline_key] = value
-    cfg.setdefault("components", {})[component_key] = copy.deepcopy(settings or {})
+    components = cfg.setdefault("components", {})
+    components[component_key] = _deep_update(components.get(component_key, {}), settings or {})
 
 
 def apply_condition(cfg: dict[str, Any], condition: dict[str, Any]) -> dict[str, Any]:
