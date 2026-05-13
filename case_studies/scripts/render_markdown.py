@@ -11,6 +11,11 @@ for _candidate in [_REPO_ROOT, _REPO_ROOT / "src"]:
     if _text not in sys.path:
         sys.path.insert(0, _text)
 
+from case_studies.scripts._shared.grid_render import (
+    render_pair_markdown,
+    render_palette_legend,
+    validate_grid,
+)
 from case_studies.scripts._common import iter_trace_dirs, load_json, relative_link
 
 
@@ -44,6 +49,148 @@ def _result_rows(run_dir: Path) -> list[dict[str, Any]]:
             }
         )
     return rows
+
+
+def _candidate_problem_files(run_dir: Path, meta: dict[str, Any]) -> list[Path]:
+    candidates = [run_dir / "problems.json"]
+    if meta.get("problems_path"):
+        candidates.append(Path(str(meta["problems_path"])))
+
+    output_dir = meta.get("output_dir")
+    if output_dir:
+        output_path = Path(str(output_dir))
+        if not output_path.is_absolute():
+            candidates.append(_REPO_ROOT / output_path / "problems.json")
+            candidates.append(run_dir / output_path / "problems.json")
+        else:
+            candidates.append(output_path / "problems.json")
+
+    unique: list[Path] = []
+    seen: set[Path] = set()
+    for candidate in candidates:
+        resolved = candidate if candidate.is_absolute() else candidate.resolve()
+        if resolved not in seen:
+            seen.add(resolved)
+            unique.append(candidate)
+    return unique
+
+
+def _normalize_problem_lookup(payload: Any) -> dict[str, dict[str, Any]]:
+    if isinstance(payload, dict):
+        if "uid" in payload and ("train_pairs" in payload or "test_pairs" in payload):
+            return {str(payload["uid"]): payload}
+        lookup: dict[str, dict[str, Any]] = {}
+        for key, value in payload.items():
+            if isinstance(value, dict):
+                value.setdefault("uid", key)
+                lookup[str(key)] = value
+        return lookup
+    if isinstance(payload, list):
+        lookup = {}
+        for item in payload:
+            if isinstance(item, dict) and item.get("uid"):
+                lookup[str(item["uid"])] = item
+        return lookup
+    return {}
+
+
+def _load_problem_lookup(run_dir: Path, meta: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    for path in _candidate_problem_files(run_dir, meta):
+        data = load_json(path, default=None)
+        if data is not None:
+            lookup = _normalize_problem_lookup(data)
+            if lookup:
+                return lookup
+    return {}
+
+
+def _load_problem_for_task(run_dir: Path, task_id: str, lookup: dict[str, dict[str, Any]]) -> dict[str, Any] | None:
+    for path in [
+        run_dir / "problems" / task_id / "problem.json",
+        run_dir / "problems" / task_id / "problem_spec.json",
+    ]:
+        data = load_json(path, default=None)
+        if isinstance(data, dict):
+            return data
+    return lookup.get(task_id)
+
+
+def _pair_has_renderable_grid(pair: Any) -> bool:
+    if not isinstance(pair, dict):
+        return False
+    for key in ("input", "output"):
+        if key in pair:
+            try:
+                validate_grid(pair[key])
+            except ValueError:
+                return False
+    return "input" in pair or "output" in pair
+
+
+def _cell_px_for_problem(problem: dict[str, Any]) -> int:
+    max_dim = 0
+    for pair in list(problem.get("train_pairs") or []) + list(problem.get("test_pairs") or []):
+        if not isinstance(pair, dict):
+            continue
+        for key in ("input", "output"):
+            if key not in pair:
+                continue
+            try:
+                grid = validate_grid(pair[key])
+            except ValueError:
+                continue
+            max_dim = max(max_dim, len(grid), len(grid[0]))
+    if max_dim >= 25:
+        return 5
+    if max_dim >= 16:
+        return 8
+    if max_dim >= 10:
+        return 12
+    return 18
+
+
+def _render_grid_section(run_dir: Path, rows: list[dict[str, Any]], meta: dict[str, Any]) -> list[str]:
+    lookup = _load_problem_lookup(run_dir, meta)
+    rendered: list[str] = []
+    seen: set[str] = set()
+    for row in rows:
+        task_id = str(row["task_id"])
+        if task_id in seen:
+            continue
+        seen.add(task_id)
+        problem = _load_problem_for_task(run_dir, task_id, lookup)
+        if not problem:
+            continue
+        train_pairs = [pair for pair in (problem.get("train_pairs") or []) if _pair_has_renderable_grid(pair)]
+        test_pairs = [pair for pair in (problem.get("test_pairs") or []) if _pair_has_renderable_grid(pair)]
+        if not train_pairs and not test_pairs:
+            continue
+        cell_px = _cell_px_for_problem(problem)
+        rendered.extend(["", f"### {task_id}", ""])
+        for idx, pair in enumerate(train_pairs[:3], start=1):
+            rendered.append(render_pair_markdown(pair, label=f"train {idx}", cell_px=cell_px))
+            rendered.append("")
+        for idx, pair in enumerate(test_pairs[:2], start=1):
+            rendered.append(render_pair_markdown(pair, label=f"test {idx}", cell_px=cell_px))
+            rendered.append("")
+        if len(train_pairs) > 3 or len(test_pairs) > 2:
+            rendered.append("- Additional pairs omitted from summary view.")
+            rendered.append("")
+
+    if not rendered:
+        return []
+    return [
+        "",
+        "## ARC grids",
+        "",
+        "Palette:",
+        "",
+        render_palette_legend(),
+        "",
+        "Rendered grids are included when the case-study run can resolve ARC `problems.json` from `meta.json.output_dir` or per-problem trace files.",
+        "",
+        *rendered,
+    ]
 
 
 def render_summary(run_dir: Path) -> str:
@@ -91,6 +238,8 @@ def render_summary(run_dir: Path) -> str:
             )
     else:
         lines.append("- No problem traces found.")
+
+    lines.extend(_render_grid_section(run_dir, rows, meta))
 
     lines.extend(
         [
