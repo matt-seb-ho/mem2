@@ -8,8 +8,12 @@ from case_studies.scripts.sweep_all_axes import (
     AxisCondition,
     configure_smoke_run,
     engagement_verdict,
+    group_phase_results,
     load_axis_conditions,
+    normalize_args,
+    parse_args,
     render_aggregate,
+    render_phase_g_lite,
     summarize_run,
 )
 
@@ -57,6 +61,32 @@ def test_configure_smoke_run_sets_model_concurrency_and_dotenv(tmp_path):
     assert out["components"]["inference_engine"]["model"] == "deepseek/deepseek-v4-flash"
     assert out["components"]["inference_engine"]["gen_cfg"]["max_tokens"] == 2048
     assert out["components"]["inference_engine"]["gen_cfg"]["batch_size"] == 512
+    assert out["components"]["inference_engine"]["gen_cfg"]["ignore_cache"] is False
+
+
+def test_configure_smoke_run_can_disable_cache(tmp_path):
+    cfg = {"components": {"provider": {}, "inference_engine": {}}}
+    out = configure_smoke_run(
+        cfg,
+        max_workers=512,
+        model="deepseek/deepseek-v4-flash",
+        max_tokens=2048,
+        dotenv_path=tmp_path / ".env",
+        ignore_cache=True,
+    )
+
+    assert out["components"]["inference_engine"]["gen_cfg"]["ignore_cache"] is True
+    assert out["components"]["meta_edit_provider"]["gen_cfg"]["ignore_cache"] is True
+
+
+def test_normalize_args_phase_g_lite_defaults():
+    args = normalize_args(parse_args(["--mode", "phase-g-lite", "--cache", "false"]))
+
+    assert args.n_problems == 50
+    assert args.seed_list == [42, 43]
+    assert args.ignore_cache is True
+    assert args.retries == 1
+    assert args.label == "phase-g-lite-2026-05-13"
 
 
 def test_summarize_run_detects_visible_label_engagement(tmp_path):
@@ -104,3 +134,52 @@ def test_render_aggregate_writes_expected_sections(tmp_path):
     assert "| 1 | graphrag | YES - label visible |" in rendered
     assert "Total LLM calls: 1" in rendered
     assert "$0.0100" in rendered
+
+
+def test_group_phase_results_and_render_phase_g_lite():
+    results = [
+        {
+            "axis": "1",
+            "condition": "graphrag",
+            "parity_grade": "faithful",
+            "parity_note": "",
+            "success": True,
+            "seed": 42,
+            "score": 0.20,
+            "n_total": 50,
+            "llm_calls": 50,
+            "cost_usd": 0.10,
+            "trace_dir": "case_studies/runs/run1",
+        },
+        {
+            "axis": "1",
+            "condition": "graphrag",
+            "parity_grade": "faithful",
+            "parity_note": "",
+            "success": True,
+            "seed": 43,
+            "score": 0.30,
+            "n_total": 50,
+            "llm_calls": 50,
+            "cost_usd": 0.11,
+            "trace_dir": "case_studies/runs/run2",
+        },
+    ]
+
+    grouped = group_phase_results(results)
+    rendered = render_phase_g_lite(
+        results,
+        started_at=datetime(2026, 5, 13, tzinfo=UTC),
+        wall_time_s=120.0,
+        seeds=[42, 43],
+        n_problems=50,
+        iters=1,
+        max_workers=512,
+        ignore_cache=True,
+        model="deepseek/deepseek-v4-flash",
+    )
+
+    assert grouped[0]["mean"] == 0.25
+    assert "# Phase G-Lite Results - 2026-05-13" in rendered
+    assert "- Cache: disabled" in rendered
+    assert "| 1 | graphrag | faithful | 50 | 0.200 | 0.300 | 0.250 |" in rendered
