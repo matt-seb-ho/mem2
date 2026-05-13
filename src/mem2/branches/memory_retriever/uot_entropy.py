@@ -1,4 +1,4 @@
-"""UoT entropy-gated interactive retrieval — axis C.3.
+"""UoT entropy-gated interactive retrieval - axis C.3.
 
 Port of UoT (Hu et al., NeurIPS'24; arxiv 2402.03271).
 
@@ -7,7 +7,7 @@ Repo:  third_party/uot/ (entry: src/uot/uot.py::UoTNode.reward_function + expect
 
 Specifically ported:
     - The *information-gain reward function* from `UoTNode.reward_function`:
-      for a candidate split ratio x ∈ (0, 1),
+      for a candidate split ratio x in (0, 1),
           reward(x) = (-x log2 x - (1-x) log2 (1-x)) / (1 + |2x - 1| / λ)
       (Shannon entropy damped by asymmetry). Peaks at x = 0.5, zero at
       extremes. λ = 0.4 in the paper (higher λ = more symmetric).
@@ -18,9 +18,9 @@ Specifically ported:
 Deliberate simplifications:
     - UoT's full expected-reward TREE search (`expected_reward` recursion,
       `avg_expected` / `max_expected` across n_extend_layers) is NOT ported.
-      We implement the ONE-STEP reward signal — each round's candidate set
+      We implement the ONE-STEP reward signal - each round's candidate set
       is scored via `reward_function` on the kind-distribution entropy; if
-      no candidate yields gain ≥ `min_gain`, abstain. This preserves the
+      no candidate yields gain at least `min_gain`, abstain. This preserves the
       distinctive entropy-based abstention signal while keeping the
       retriever deterministic and LLM-free.
     - The LLM-based question generation is replaced by kind-grouped
@@ -34,14 +34,18 @@ C.3 vs C.4 (MediQ) vs C.2 (RRMC-interactive):
     - UoT (this module): *Shannon-entropy* info-gain signal on the kind
       distribution. A branch with 50/50 split is rewarded highest; a
       saturated kind (all one way) gets zero reward and triggers abstention.
-    - All three share the same interactive-retrieval interface — the
+    - All three share the same interactive-retrieval interface - the
       abstention *mechanics* are the axis-C ablation question.
 """
 from __future__ import annotations
 
+import json
 import math
+import re
 from collections import Counter
+from pathlib import Path
 
+from mem2.concepts.artifacts import CONCEPT_MEMORY_DIR
 from mem2.concepts.graph import ConceptGraph
 from mem2.concepts.memory import ConceptMemory
 from mem2.core.entities import (
@@ -53,8 +57,17 @@ from mem2.core.entities import (
 )
 
 
+WORD_RE = re.compile(r"[A-Za-z][A-Za-z0-9_]+")
+_REPO_ROOT = Path(__file__).resolve().parents[4]
+_DEFAULT_ADAPTED_MEMORY_PATH = CONCEPT_MEMORY_DIR / "ports" / "uot_memory_v1.json"
+
+
+def _tokenize(text: str) -> set[str]:
+    return {m.group(0).lower() for m in WORD_RE.finditer(text or "")}
+
+
 def _entropy_reward(x: float, lamb: float = 0.4) -> float:
-    """UoT's damped-Shannon reward. Zero at x∈{0,1}; peak near x=0.5."""
+    """UoT's damped-Shannon reward. Zero at x in {0,1}; peak near x=0.5."""
     if x <= 0.0 or x >= 1.0:
         return 0.0
     h = -x * math.log2(x) - (1 - x) * math.log2(1 - x)
@@ -79,6 +92,7 @@ class UoTEntropyRetriever:
         skip_cues: bool = False,
         skip_implementation: bool = False,
         usage_threshold: int = 1,
+        adapted_memory_path: str | Path | None = None,
     ) -> None:
         self.top_k = int(top_k)
         self.per_round_k = int(per_round_k)
@@ -89,6 +103,10 @@ class UoTEntropyRetriever:
         self.skip_cues = bool(skip_cues)
         self.skip_implementation = bool(skip_implementation)
         self.usage_threshold = int(usage_threshold)
+        self.adapted_memory_path = self._resolve_path(
+            adapted_memory_path,
+            _DEFAULT_ADAPTED_MEMORY_PATH,
+        )
 
     def retrieve(
         self,
@@ -105,9 +123,14 @@ class UoTEntropyRetriever:
             )
 
         graph = ConceptGraph.build_from_memory(mem, min_co_overlap=1)
+        adapted_records, adapted_source = self._load_adapted_records(mem)
+        q_tokens = self._query_tokens(problem, previous_attempts)
         degree_ranked = sorted(
             mem.concepts.keys(),
-            key=lambda n: graph.degree(n, kinds=["co_activation"]),
+            key=lambda n: (
+                self._adapted_uncertainty_score(adapted_records.get(n), q_tokens),
+                graph.degree(n, kinds=["co_activation"]),
+            ),
             reverse=True,
         )
 
@@ -127,16 +150,27 @@ class UoTEntropyRetriever:
             """Pick `per_round_k` next candidates, score reward of round."""
             # Candidates ranked by (unseen kind contribution, degree)
             kinds_so_far = kind_distribution(seen)
-            scored: list[tuple[tuple[int, float], str, str]] = []
+            scored: list[tuple[tuple[float, int, float], str, str]] = []
             for name, c in mem.concepts.items():
                 if name in seen:
                     continue
                 degree = graph.degree(name, kinds=["co_activation"])
                 kind_is_new = 1 if kinds_so_far.get(c.kind, 0) == 0 else 0
-                scored.append(((kind_is_new, degree), name, c.kind))
+                adapted_score = self._adapted_uncertainty_score(
+                    adapted_records.get(name),
+                    q_tokens,
+                )
+                scored.append(((adapted_score, kind_is_new, degree), name, c.kind))
             scored.sort(key=lambda r: r[0], reverse=True)
             picks = [name for _, name, _ in scored[: self.per_round_k]]
             picked_kinds = [k for _, n, k in scored[: self.per_round_k]]
+            adapted_rewards = [
+                self._adapted_entropy_reward(adapted_records.get(name))
+                for name in picks
+                if name in adapted_records
+            ]
+            if adapted_rewards:
+                return picks, sum(adapted_rewards) / len(adapted_rewards)
 
             # UoT reward: entropy over the KIND distribution AFTER picking.
             post_dist = Counter(kinds_so_far)
@@ -193,13 +227,15 @@ class UoTEntropyRetriever:
                 break
 
         selected = sorted(seen)
-        hint = mem.to_string(
-            concept_names=selected,
-            include_description=self.include_description,
-            skip_cues=self.skip_cues,
-            skip_implementation=self.skip_implementation,
-            usage_threshold=self.usage_threshold,
-        )
+        hint = self._render_adapted_hint(selected, adapted_records) if adapted_records else ""
+        if not hint:
+            hint = mem.to_string(
+                concept_names=selected,
+                include_description=self.include_description,
+                skip_cues=self.skip_cues,
+                skip_implementation=self.skip_implementation,
+                usage_threshold=self.usage_threshold,
+            )
         return RetrievalBundle(
             problem_uid=problem.uid,
             hint_text=hint or None,
@@ -215,6 +251,9 @@ class UoTEntropyRetriever:
                 "lamb": self.lamb,
                 "min_gain": self.min_gain,
                 "num_selected": len(selected),
+                "adapted_memory_source": adapted_source,
+                "adapted_records_loaded": len(adapted_records),
+                "adapted_entropy_items_rendered": sum(1 for n in selected if n in adapted_records),
             },
         )
 
@@ -229,3 +268,133 @@ class UoTEntropyRetriever:
         selector_model: str = "",
     ) -> RetrievalBundle:
         return self.retrieve(ctx, memory, problem, previous_attempts)
+
+    @staticmethod
+    def _resolve_path(path: str | Path | None, default: Path) -> Path:
+        if path is None:
+            return default
+        p = Path(path)
+        return p if p.is_absolute() else _REPO_ROOT / p
+
+    def _load_adapted_records(
+        self,
+        mem: ConceptMemory,
+    ) -> tuple[dict[str, dict], str]:
+        path = self.adapted_memory_path
+        if not path.exists():
+            return {}, "flat"
+        try:
+            data = json.loads(path.read_text())
+        except Exception as exc:  # noqa: BLE001 - corrupted local artifact should not be silent
+            raise RuntimeError(f"invalid UoT adapted memory JSON: {path}") from exc
+        if data.get("schema_version") != "1" or data.get("port") != self.name:
+            raise RuntimeError(f"invalid UoT adapted memory schema: {path}")
+        records: dict[str, dict] = {}
+        for raw in data.get("adapted_concepts") or []:
+            if not isinstance(raw, dict):
+                continue
+            concept_id = raw.get("concept_id")
+            if not isinstance(concept_id, str) or concept_id not in mem.concepts:
+                continue
+            if "candidate_question" not in raw or "entropy_reward" not in raw:
+                raise RuntimeError(f"adapted memory missing UoT fields for {concept_id}")
+            records[concept_id] = raw
+        if not records:
+            return {}, "flat"
+        return records, "uot_memory_v1"
+
+    @staticmethod
+    def _query_tokens(
+        problem: ProblemSpec,
+        previous_attempts: list[AttemptRecord],
+    ) -> set[str]:
+        parts: list[str] = [str(getattr(problem, "uid", ""))]
+        meta = getattr(problem, "metadata", {}) or {}
+        for value in meta.values():
+            if isinstance(value, str):
+                parts.append(value)
+        for attempt in previous_attempts or []:
+            if getattr(attempt, "error", None):
+                parts.append(str(attempt.error))
+        return _tokenize(" ".join(parts))
+
+    def _adapted_uncertainty_score(
+        self,
+        record: dict | None,
+        q_tokens: set[str],
+    ) -> float:
+        if not record:
+            return 0.0
+        entropy_reward = self._adapted_entropy_reward(record)
+        try:
+            expected_yes_ratio = float(record.get("expected_yes_ratio", 0.5))
+        except (TypeError, ValueError):
+            expected_yes_ratio = 0.5
+        split_balance = 1.0 - min(1.0, abs(expected_yes_ratio - 0.5) * 2.0)
+        overlap = len(q_tokens & _tokenize(self._adapted_record_text(record))) if q_tokens else 0
+        return entropy_reward + split_balance + float(overlap)
+
+    @staticmethod
+    def _adapted_entropy_reward(record: dict | None) -> float:
+        if not record:
+            return 0.0
+        try:
+            return max(0.0, min(1.0, float(record.get("entropy_reward", 0.0))))
+        except (TypeError, ValueError):
+            return 0.0
+
+    @staticmethod
+    def _adapted_record_text(record: dict) -> str:
+        parts: list[str] = [
+            str(record.get("uncertainty_state") or ""),
+            str(record.get("candidate_question") or ""),
+            str(record.get("information_gain_target") or ""),
+            str(record.get("simulation_tree_role") or ""),
+            str(record.get("reward_propagation_notes") or ""),
+            str(record.get("retrieval_notes") or ""),
+        ]
+        parts.extend(str(item) for item in record.get("yes_partition_hint") or [])
+        parts.extend(str(item) for item in record.get("no_partition_hint") or [])
+        parts.extend(str(item) for item in record.get("routing_keywords") or [])
+        return "\n".join(part for part in parts if part.strip())
+
+    @staticmethod
+    def _render_adapted_hint(
+        names: list[str],
+        adapted_records: dict[str, dict],
+    ) -> str:
+        blocks: list[str] = []
+        for name in names:
+            record = adapted_records.get(name)
+            if not record:
+                continue
+            lines = [f"- concept: {name}"]
+            lines.append(
+                "  uot_question: "
+                + str(record.get("candidate_question") or "").strip()
+            )
+            lines.append(
+                "  uot_expected_yes_ratio: "
+                f"{float(record.get('expected_yes_ratio', 0.5)):.2f}"
+            )
+            lines.append(
+                "  uot_entropy_reward: "
+                f"{float(record.get('entropy_reward', 0.0)):.2f}"
+            )
+            target = str(record.get("information_gain_target") or "").strip()
+            if target:
+                lines.append(f"  information_gain_target: {target}")
+            role = str(record.get("simulation_tree_role") or "").strip()
+            if role:
+                lines.append(f"  simulation_tree_role: {role}")
+            yes = [str(x).strip() for x in record.get("yes_partition_hint") or [] if str(x).strip()]
+            no = [str(x).strip() for x in record.get("no_partition_hint") or [] if str(x).strip()]
+            if yes:
+                lines.append("  yes_partition_hint: " + ", ".join(yes[:4]))
+            if no:
+                lines.append("  no_partition_hint: " + ", ".join(no[:4]))
+            propagation = str(record.get("reward_propagation_notes") or "").strip()
+            if propagation:
+                lines.append(f"  reward_propagation_notes: {propagation}")
+            blocks.append("\n".join(lines))
+        return "\n\n".join(blocks)
