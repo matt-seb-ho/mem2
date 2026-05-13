@@ -1,0 +1,51 @@
+### response[0]
+```python
+import numpy as np
+
+def transform(input_grid: np.ndarray) -> np.ndarray:
+    # Find the blue (1) object's bounding box
+    blue_coords = np.argwhere(input_grid == 1)
+    if len(blue_coords) == 0:
+        # No blue object; just return a copy (should not happen in this puzzle)
+        return input_grid.copy()
+    
+    min_row = blue_coords[:, 0].min()
+    max_row = blue_coords[:, 0].max()
+    min_col = blue_coords[:, 1].min()
+    max_col = blue_coords[:, 1].max()
+    
+    # Extract the 3x3 pattern (assuming it's exactly 3x3)
+    pattern = input_grid[min_row:max_row+1, min_col:max_col+1]
+    
+    # Define known patterns and their corresponding output colors
+    pattern_A = np.array([[0,1,0],
+                          [1,1,1],
+                          [0,1,0]])
+    pattern_B = np.array([[1,0,1],
+                          [0,1,0],
+                          [1,1,1]])
+    pattern_C = np.array([[1,1,1],
+                          [1,0,1],
+                          [0,1,0]])
+    
+    if np.array_equal(pattern, pattern_A):
+        output_color = 2
+    elif np.array_equal(pattern, pattern_B):
+        output_color = 3
+    elif np.array_equal(pattern, pattern_C):
+        output_color = 7
+    else:
+        # Fallback: use a default color (should not happen)
+        output_color = 2
+    
+    # Create output grid as a copy
+    output_grid = input_grid.copy()
+    
+    # Recolor azure (8) to output_color
+    output_grid[output_grid == 8] = output_color
+    
+    # Remove blue (1) by setting to black (0)
+    output_grid[output_grid == 1] = 0
+    
+    return output_grid
+```

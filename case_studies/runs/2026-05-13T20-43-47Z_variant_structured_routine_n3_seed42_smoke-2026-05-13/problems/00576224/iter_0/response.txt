@@ -1,0 +1,39 @@
+### response[0]
+```python
+import numpy as np
+
+def transform(input_grid: np.ndarray) -> np.ndarray:
+    """
+    Transforms the input grid by tiling it 3x3, with every other row of tiles
+    horizontally mirrored.
+
+    The output grid has dimensions 3*H x 3*W, where H and W are the height and
+    width of the input grid. The tiling pattern is:
+    - For tile rows 0 and 2 (even indices), the original input grid is used.
+    - For tile row 1 (odd index), the input grid is flipped left-right.
+
+    Args:
+        input_grid: A 2D numpy array of integers representing colors.
+
+    Returns:
+        A 2D numpy array of the same dtype as input_grid, with the transformed grid.
+    """
+    H, W = input_grid.shape
+    out_H, out_W = 3 * H, 3 * W
+    output_grid = np.zeros((out_H, out_W), dtype=input_grid.dtype)
+
+    # Precompute the horizontally mirrored version
+    flipped = np.fliplr(input_grid)
+
+    for r in range(3):
+        # Choose tile based on row index
+        tile = input_grid if r % 2 == 0 else flipped
+        row_start = r * H
+        row_end = row_start + H
+        for c in range(3):
+            col_start = c * W
+            col_end = col_start + W
+            output_grid[row_start:row_end, col_start:col_end] = tile
+
+    return output_grid
+```

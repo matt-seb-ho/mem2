@@ -1,0 +1,49 @@
+{
+  "problem_uid": "009d5c81",
+  "hint_text": "- concept: find row\n  mediq_initial_assessment: This concept can diagnose whether a row in the grid satisfies a given criterion, such as being entirely a specific color.\n  question_type: other\n  missing_info_targets: the specific criterion to check, the grid contents\n  atomic_question: What condition should a row meet to be considered a match?\n  ask_when: the criterion is not yet specified or the grid is not fully observed\n  commit_when: the criterion and grid are known and a matching row index can be computed\n  expected_info_gain: 0.60\n\n- concept: size criteria\n  mediq_initial_assessment: This concept can diagnose whether a partial ARC state contains objects that are selected or transformed based on their size relative to a threshold.\n  question_type: object_property\n  missing_info_targets: size threshold value, comparison operator, which objects are being compared\n  atomic_question: What is the size threshold used to select objects?\n  ask_when: the size threshold or comparison operator is unknown, or it is unclear which objects are subject to the size criterion\n  commit_when: the threshold, operator, and target objects are all known and the size condition can be evaluated\n  expected_info_gain: 0.60\n\n- concept: square object\n  mediq_initial_assessment: This concept can diagnose whether a square object in the input is used as a unit for expansion, framing, or patterning in the output.\n  question_type: object_property\n  missing_info_targets: whether the square object is used as a frame or as a fill unit, whether the output grid size is derived from the square object's dimensions\n  atomic_question: Is the square object used as a frame or as a fill unit in the output?\n  ask_when: the grid contains a square object but its role (frame, fill, or size reference) is not yet clear\n  commit_when: the square object's role and its relationship to the output grid are fully determined\n  expected_info_gain: 0.50",
+  "retrieved_items": [
+    {
+      "name": "find row"
+    },
+    {
+      "name": "size criteria"
+    },
+    {
+      "name": "square object"
+    }
+  ],
+  "metadata": {
+    "retriever": "mediq_policy",
+    "scoring_mode": "mediq_policy",
+    "top_k": 3,
+    "num_rounds": 2,
+    "rounds": [
+      {
+        "round": 0,
+        "added": [
+          "find row",
+          "size criteria"
+        ],
+        "coverage": 6
+      },
+      {
+        "round": 1,
+        "added": [
+          "square object",
+          "split grid"
+        ],
+        "coverage": 12
+      }
+    ],
+    "abstained": false,
+    "abstain_reason": "reached top_k cap (3)",
+    "coverage_history": [
+      6,
+      12
+    ],
+    "num_selected": 3,
+    "adapted_memory_source": "mediq_memory_v1",
+    "adapted_records_loaded": 270,
+    "adapted_policy_items_rendered": 3
+  }
+}

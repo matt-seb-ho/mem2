@@ -1,0 +1,251 @@
+### Introduction
+Given a puzzle containing input-output grid pairs as reference examples, carefully observe the patterns to predict the output grid for new test input. Within a puzzle, each pair follows the same transformation rule. Grids are 2D numpy integer arrays with integers representing colors. 0 represents black and is often the background color.
+
+### Your Puzzle Grids
+Here are the input and output grids for the reference examples:
+Example 1
+Input:
+[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 8, 8, 0, 8, 8, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0],
+ [0, 0, 0, 0, 0, 8, 8, 8, 8, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 8, 8, 0, 8, 0, 0, 8, 8, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 8, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 8, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 8, 8, 8, 0, 8, 8, 8, 0],
+ [0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 8, 0],
+ [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+Output:
+[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 2, 2, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0],
+ [0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 2, 2, 0, 2, 0, 0, 2, 2, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 2, 2, 2, 0],
+ [0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+
+Example 2
+Input:
+[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 8, 8, 0, 8, 0, 8, 8, 0, 0, 0],
+ [0, 0, 0, 0, 8, 0, 8, 0, 8, 0, 8, 0, 0, 0],
+ [0, 0, 0, 0, 8, 8, 0, 8, 0, 8, 8, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+Output:
+[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 3, 3, 0, 3, 0, 3, 3, 0, 0, 0],
+ [0, 0, 0, 0, 3, 0, 3, 0, 3, 0, 3, 0, 0, 0],
+ [0, 0, 0, 0, 3, 3, 0, 3, 0, 3, 3, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+
+Example 3
+Input:
+[[0, 0, 0, 8, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0],
+ [0, 8, 0, 8, 0, 8, 0, 8, 0, 8, 0, 0, 0, 0],
+ [0, 8, 8, 8, 8, 8, 8, 8, 8, 8, 0, 0, 0, 0],
+ [0, 8, 0, 8, 0, 8, 0, 8, 0, 8, 0, 0, 0, 0],
+ [0, 8, 0, 0, 0, 8, 0, 0, 0, 8, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+Output:
+[[0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0],
+ [0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0],
+ [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0],
+ [0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0],
+ [0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+
+Example 4
+Input:
+[[0, 0, 0, 0, 0, 0, 0, 8, 8, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 8, 0],
+ [0, 0, 0, 0, 0, 8, 8, 8, 8, 0, 8, 8, 8, 0],
+ [0, 0, 0, 0, 8, 8, 0, 0, 8, 8, 8, 0, 8, 8],
+ [0, 0, 0, 0, 0, 0, 0, 8, 8, 0, 0, 0, 8, 0],
+ [0, 0, 0, 0, 0, 0, 8, 8, 0, 0, 0, 8, 8, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+Output:
+[[0, 0, 0, 0, 0, 0, 0, 7, 7, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 7, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 7, 0],
+ [0, 0, 0, 0, 0, 7, 7, 7, 7, 0, 7, 7, 7, 0],
+ [0, 0, 0, 0, 7, 7, 0, 0, 7, 7, 7, 0, 7, 7],
+ [0, 0, 0, 0, 0, 0, 0, 7, 7, 0, 0, 0, 7, 0],
+ [0, 0, 0, 0, 0, 0, 7, 7, 0, 0, 0, 7, 7, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 7, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+
+Example 5
+Input:
+[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 8, 8, 8, 0, 8, 8, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 8, 0, 8, 8, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 8, 8, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 0, 8, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+Output:
+[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 3, 3, 3, 0, 3, 3, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 3, 0, 3, 3, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 3, 3, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 3, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+
+Here is the input grid for the test example:
+Input:
+[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+ [0, 0, 0, 0, 0, 8, 0, 0, 0, 8, 0, 8, 0, 8],
+ [0, 0, 0, 0, 0, 8, 0, 8, 0, 8, 0, 0, 0, 8],
+ [0, 0, 0, 0, 0, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+### Instructions
+Write a Python function `transform` that converts a given input grid to its corresponding output grid based on the pattern observed in the reference examples. 
+- Your function should have signature: `def transform(input_grid: np.ndarray) -> np.ndarray:`
+- The input and output grids are 2D numpy arrays of integers.
+- Each grid cell is assigned a **color**, represented by an **integer**. These integers **do not have numerical meaning**; they **should not** be used in arithmetic operations. Think of these integers as **labels** rather than numbers.
+- Write your final code response in a markdown python code block (be sure to have "```python" in the line before your code and "```" in the line after your code).
+- No need to provide examples of the function call, just the function definition is sufficient.
+### Concepts from Previously Solved Puzzles
+We recorded concepts about structures and routines we observed in previously solved puzzles. These concepts may or may not be relevant to this puzzle, but they provide useful context to show examples of what structures may appear in the grids, what operations may be used, and how they might be composed. Concepts are annotated with fields like:
+- cues: (short for "relevance cues"), what to look for that might indicate this concept is relevant in this puzzle
+- implementation: notes on how this concept was implemented in past solution programs
+- output typing: what the output of this routine is (e.g. a grid, a list, a number, a bool, etc.)
+- parameters: a list of parameters that describe ways the concept may vary
+We also have some recommendations on how to approach problem solving with these concepts in mind:
+- We label the grid manipulation routines separately-- these directly affect the grids so they are easier to spot (along with structure concepts)
+- You might try to first identify which grid manipulation operations are used, then investigate their parameters
+- The non-grid manipulation routines might describe ways we've seen previous puzzles set parameters, so you can look to these for inspiration
+- There may not be exact matches to this list, so we encourage you to think about variations, novel ways to recombine existing ideas, as well as completely new concepts
+- These concepts and this approach are only suggestions, use them as you see fit
+
+## types
+- axis := Literal["x", "y", "both", "horizontal", "vertical"] | int | float | tuple[axis, int | float]
+- dimensions := tuple[int, int]
+- direction := Literal["up", "down", "left", "right"]
+- list[symmetry := Callable[[position], position]]
+- pattern := str | Callable[[int], grid]
+- shape := Any
+- symmetry := Callable[[position], position]
+
+## grid manipulation routines
+- concept: recolor object
+  kind: routine
+  description: recolor an object based on a color scheme
+  output_typing: grid | object
+- concept: draw object
+  kind: routine
+  description: draw a sprite on top of a base grid, drawing over the base grid with the sprite's non-background pixels
+  output_typing: grid
+- concept: create new grid
+  kind: routine
+  description: create a new grid with specified dimensions, initialized with a fill color
+  output_typing: grid
+- concept: draw line
+  kind: routine
+  description: draw a line between two pixels in a grid, updating the grid accordingly
+  output_typing: grid
+- concept: crop around objects
+  kind: routine
+  description: create a new grid that is a contiguous sub region of the input grid, containing the minimum bounding box of the specified objects
+  output_typing: grid
+
+## other routines
+### intermediate
+- concept: extract objects
+  kind: routine
+- concept: filter objects
+  kind: routine
+  description: filter a list of objects based on some criteria
+- concept: find object
+  kind: routine
+  description: find an object in a list of objects based on some criteria
+- concept: sort objects
+  kind: routine
+  description: sort a list of objects according to a key function, often used to order objects spatially
+  output_typing: list[object]
+### selection criteria
+- concept: is color criteria
+  kind: routine
+  description: condition on whether an object is a given color
+  output_typing: bool

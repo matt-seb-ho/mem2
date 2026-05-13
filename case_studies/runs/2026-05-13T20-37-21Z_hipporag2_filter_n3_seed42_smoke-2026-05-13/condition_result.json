@@ -1,0 +1,27 @@
+{
+  "axis": "1",
+  "condition": "hipporag2_filter",
+  "baseline": false,
+  "success": true,
+  "error": null,
+  "run_id": "2026-05-13T20-37-21Z_hipporag2_filter_n3_seed42_smoke-2026-05-13",
+  "trace_dir": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-13T20-37-21Z_hipporag2_filter_n3_seed42_smoke-2026-05-13",
+  "summary_path": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-13T20-37-21Z_hipporag2_filter_n3_seed42_smoke-2026-05-13/summary.md",
+  "llm_calls": 6,
+  "retrieval_hits": 12,
+  "retrieval_metadata": [
+    "retriever=hipporag2_filter",
+    "scoring_mode=hipporag2_filter",
+    "top_k=10",
+    "damping=0.5",
+    "num_concepts_total=270",
+    "num_selected=3",
+    "num_graph_edges=4427",
+    "fact_graph_edges_used=825"
+  ],
+  "sample_retrieval": "{\"name\": \"fixed pattern\"}",
+  "sample_prompt_snippet": "You are a fact filter. You will see a query and a list of candidate concepts (names + descriptions). Output the subset that is directly relevant. Respond with a JSON list of concept names only: [\"concept_a\", \"concept_...",
+  "engagement_verdict": "YES - label visible",
+  "cost_usd": null,
+  "wall_time_s": 3.328239541966468
+}

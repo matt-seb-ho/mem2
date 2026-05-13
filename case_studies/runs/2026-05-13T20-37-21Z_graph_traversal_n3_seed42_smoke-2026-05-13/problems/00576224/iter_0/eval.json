@@ -1,0 +1,18 @@
+{
+  "records": [
+    {
+      "problem_uid": "00576224",
+      "attempt_idx": 0,
+      "is_correct": false,
+      "train_details": [],
+      "test_details": [],
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    }
+  ],
+  "correct": false
+}

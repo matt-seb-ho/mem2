@@ -1,0 +1,22 @@
+{
+  "problem_uid": "009d5c81",
+  "hint_text": "## types\n- axis := Literal[\"x\", \"y\", \"both\", \"horizontal\", \"vertical\"] | int | float | tuple[axis, int | float]\n- dimensions := tuple[int, int]\n- direction := Literal[\"up\", \"down\", \"left\", \"right\"]\n- list[symmetry := Callable[[position], position]]\n- pattern := str | Callable[[int], grid]\n- shape := Any\n- symmetry := Callable[[position], position]\n\n## grid manipulation routines\n- concept: recolor object\n  description: recolor an object based on a color scheme\n  output_typing: grid | object\n  parameters:\n    - object (type: object)\n    - color scheme (type: dict[color, color])\n    - object | object | position - the object or pixel to recolor\n    - color scheme | dict[color, color] - mapping from original color to new color\n    - color (type: color)\n  cues:\n    - if structures or objects from the input grid appear in the output grid with different colors\n    - if all pixels of one color in the output grid are replaced with another color (systematic color swap)\n    - if regions or objects are recolored based on a property (e.g., size, position, or matching a specific pixel)\n    - if the output grid contains regions filled with a new color not present in the input\n    - if background or other colors are systematically replaced in the output grid\n    - if the output grid is visually similar to the input except for a color swap\n    - if colored pixels or regions appear in the output grid at positions that were black or missing in the input, especially adjacent to colored pixels or aligned with features of input objects\n    - if a region or contiguous area is uniformly recolored, possibly based on a pixel in a special position (e.g., corner, interior of a container)\n    - if an input pixel or object is removed or replaced with background color in the output grid (deletion by recoloring)\n    - if a special color (e.g., grey or yellow) appears at a position determined by the interaction or meeting of input objects or paths\n  implementation:\n    - for a single pixel, set grid[position] = color\n    - after drawing operations that may overwrite a pixel, restore that pixel to its intended color\n    - for each pixel, if its color is in the color scheme, replace it with the mapped color\n    - for a region or object, iterate over its pixels and set each to the target color or according to the color scheme\n    - for a region, if a pixel is background (e.g., black), set it to the specified color; otherwise, leave it unchanged\n    - at special positions (e.g., meeting points or intersections), set the pixel to a designated color (e.g., grey) instead of either input color\n- concept: draw object\n  description: draw a sprite on top of a base grid, drawing over the base grid with the sprite's non-background pixels\n  output_typing: grid\n  parameters:\n    - sprite (type: grid)\n    - base (type: grid)\n    - position (type: position)\n    - background (type: color)\n  cues:\n    - if input objects are replicated or overlaid one or more times in the output\n    - if a sprite, motif, or pattern is drawn or overlaid at a specific position in the output grid\n    - if a completed, modified, or transformed region is overlaid back onto the original grid at its original or a specified position\n    - if colored regions, patterns, or sprites are overlaid at specific positions or inside larger objects/frames in the output grid\n    - if layers or patterns are built up by drawing on top of each other, or objects are redrawn to restore outlines or details\n    - if the output grid is constructed by assembling multiple copies of an object at specified positions\n  implementation:\n    - overlay the sprite's non-background pixels onto the base grid at the specified position, leaving background pixels unchanged\n\n## other routines\n### intermediate\n- concept: extract objects\n  parameters:\n    - input grid (type: grid)\n    - single color (type: bool)\n    - connectivity (type: str)\n    - background color (type: str)\n    - criteria (type: selection criteria := Callable[[object], bool])",
+  "retrieved_items": [
+    {
+      "name": "extract objects"
+    },
+    {
+      "name": "recolor object"
+    },
+    {
+      "name": "draw object"
+    }
+  ],
+  "metadata": {
+    "retriever": "ps_topk",
+    "scoring_mode": "topk",
+    "top_k": 3,
+    "num_concepts_total": 270,
+    "num_selected": 3
+  }
+}

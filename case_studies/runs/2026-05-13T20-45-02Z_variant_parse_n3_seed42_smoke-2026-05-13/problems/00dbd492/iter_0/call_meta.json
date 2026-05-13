@@ -1,0 +1,40 @@
+{
+  "provider": "llmplus",
+  "provider_version": "0.1",
+  "wrapped_provider": "llmplus",
+  "request_kind": "generate",
+  "model": "deepseek/deepseek-v4-flash",
+  "gen_cfg": {
+    "n": 1,
+    "temperature": 0.3,
+    "max_tokens": 2048,
+    "top_p": 1.0,
+    "batch_size": 512,
+    "seed": 42,
+    "ignore_cache": false,
+    "expand_multi": null
+  },
+  "latency_s": 51.483180417097174,
+  "prompt_count": 1,
+  "n_completions": 1,
+  "usage_before": {
+    "deepseek/deepseek-v4-flash": {
+      "input_tokens": 180,
+      "output_tokens": 61,
+      "reasoning_tokens": 0,
+      "requests": 1,
+      "completions": 1
+    }
+  },
+  "usage_after": {
+    "deepseek/deepseek-v4-flash": {
+      "input_tokens": 22729,
+      "output_tokens": 8266,
+      "reasoning_tokens": 5197,
+      "requests": 4,
+      "completions": 4
+    }
+  },
+  "tokens_in_delta": 22549.0,
+  "tokens_out_delta": 8205.0
+}

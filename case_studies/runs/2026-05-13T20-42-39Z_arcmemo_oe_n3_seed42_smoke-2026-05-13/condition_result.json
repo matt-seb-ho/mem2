@@ -1,0 +1,24 @@
+{
+  "axis": "4",
+  "condition": "arcmemo_oe",
+  "baseline": false,
+  "success": true,
+  "error": null,
+  "run_id": "2026-05-13T20-42-39Z_arcmemo_oe_n3_seed42_smoke-2026-05-13",
+  "trace_dir": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-13T20-42-39Z_arcmemo_oe_n3_seed42_smoke-2026-05-13",
+  "summary_path": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-13T20-42-39Z_arcmemo_oe_n3_seed42_smoke-2026-05-13/summary.md",
+  "llm_calls": 3,
+  "retrieval_hits": 0,
+  "retrieval_metadata": [
+    "retriever=oe_topk",
+    "scoring_mode=open_ended_topk",
+    "top_k=3",
+    "history_attempts=0",
+    "scoped_to_problem=False"
+  ],
+  "sample_retrieval": "{\"hint_text\": null, \"metadata\": {\"history_attempts\": 0, \"retriever\": \"oe_topk\", \"scoped_to_problem\": false, \"scoring_mode\": \"open_ended_topk\", \"top_k\": 3}, \"problem_uid\": \"00576224\", \"retrieved_items\": []}",
+  "sample_prompt_snippet": "### Introduction Given a puzzle containing input-output grid pairs as reference examples, carefully observe the patterns to predict the output grid for new test input. Within a puzzle, each pair follows the same trans...",
+  "engagement_verdict": "NO - empty retrieval",
+  "cost_usd": null,
+  "wall_time_s": 18.065193250076845
+}

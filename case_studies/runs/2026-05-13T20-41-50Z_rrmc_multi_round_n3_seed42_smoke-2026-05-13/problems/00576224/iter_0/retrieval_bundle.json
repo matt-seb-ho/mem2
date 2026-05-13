@@ -1,0 +1,38 @@
+{
+  "problem_uid": "00576224",
+  "hint_text": "- concept: recolor object\n  rrmc_selector_role: refinement_probe\n  round_relevance: r1=0.60, r2=0.90\n  coverage_targets: color transformation mapping, object property based recoloring\n  round_1_probe: Does the output grid contain the same object shapes as input but with different colors?\n  round_2_probe: Is there a consistent mapping from original colors to new colors across the whole grid?\n  convergence_signal: All color changes are explained by a single mapping or property-based rule; no further color transformations remain unexplained.\n\n- concept: extract objects\n  rrmc_selector_role: seed_probe\n  round_relevance: r1=0.90, r2=0.50\n  coverage_targets: object decomposition, connected component analysis, background subtraction\n  round_1_probe: Does the task require isolating distinct shapes or blobs from a grid?\n  round_2_probe: Are objects defined by connectivity (4-way or 8-way) or by color uniformity?\n  convergence_signal: No further object extraction variants are needed once connectivity and background are fixed.\n\n- concept: square object\n  rrmc_selector_role: seed_probe\n  round_relevance: r1=0.70, r2=0.40\n  coverage_targets: shape equality, square-based transformations, concentric or nested square regions, square output size determination\n  round_1_probe: Does the grid contain any object with equal height and width?\n  round_2_probe: Is the output grid a square whose size depends on input properties (e.g., width, color count)?\n  convergence_signal: No additional square-related patterns emerge after checking output size derivation and nested regions.",
+  "retrieved_items": [
+    {
+      "name": "recolor object"
+    },
+    {
+      "name": "extract objects"
+    },
+    {
+      "name": "square object"
+    }
+  ],
+  "metadata": {
+    "retriever": "rrmc_interactive",
+    "scoring_mode": "rrmc_multi_round",
+    "num_rounds": 2,
+    "per_round_counts": [
+      2,
+      1
+    ],
+    "rounds": [
+      [
+        "extract objects",
+        "recolor object"
+      ],
+      [
+        "square object"
+      ]
+    ],
+    "coverage_score": 17,
+    "converged": false,
+    "adapted_memory_source": "rrmc_memory_v1",
+    "adapted_records_loaded": 270,
+    "adapted_selector_items_rendered": 3
+  }
+}

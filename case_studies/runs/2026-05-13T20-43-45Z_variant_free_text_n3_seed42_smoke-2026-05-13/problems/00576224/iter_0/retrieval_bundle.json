@@ -1,0 +1,44 @@
+{
+  "problem_uid": "00576224",
+  "hint_text": "Recall the following concepts that may be relevant: extract objects may be relevant. recolor object means recolor an object based on a color scheme. draw object means draw a sprite on top of a base grid, drawing over the base grid with the sprite's non-background pixels. create new grid means create a new grid with specified dimensions, initialized with a fill color. is color criteria means condition on whether an object is a given color. find object means find an object in a list of objects based on some criteria. draw line means draw a line between two pixels in a grid, updating the grid accordingly. filter objects means filter a list of objects based on some criteria. crop around objects means create a new grid that is a contiguous sub region of the input grid, containing the minimum bounding box of the specified objects. sort objects means sort a list of objects according to a key function, often used to order objects spatially.",
+  "retrieved_items": [
+    {
+      "name": "extract objects"
+    },
+    {
+      "name": "recolor object"
+    },
+    {
+      "name": "draw object"
+    },
+    {
+      "name": "create new grid"
+    },
+    {
+      "name": "is color criteria"
+    },
+    {
+      "name": "find object"
+    },
+    {
+      "name": "draw line"
+    },
+    {
+      "name": "filter objects"
+    },
+    {
+      "name": "crop around objects"
+    },
+    {
+      "name": "sort objects"
+    }
+  ],
+  "metadata": {
+    "retriever": "ps_topk",
+    "scoring_mode": "topk",
+    "top_k": 10,
+    "num_concepts_total": 270,
+    "num_selected": 10,
+    "variant": "free_text"
+  }
+}

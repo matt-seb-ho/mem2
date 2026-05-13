@@ -1,0 +1,145 @@
+### Introduction
+Given a puzzle containing input-output grid pairs as reference examples, carefully observe the patterns to predict the output grid for new test input. Within a puzzle, each pair follows the same transformation rule. Grids are 2D numpy integer arrays with integers representing colors. 0 represents black and is often the background color.
+
+### Your Puzzle Grids
+Here are the input and output grids for the reference examples:
+Example 1
+Input:
+[[8, 6],
+ [6, 4]]
+Output:
+[[8, 6, 8, 6, 8, 6],
+ [6, 4, 6, 4, 6, 4],
+ [6, 8, 6, 8, 6, 8],
+ [4, 6, 4, 6, 4, 6],
+ [8, 6, 8, 6, 8, 6],
+ [6, 4, 6, 4, 6, 4]]
+
+Example 2
+Input:
+[[7, 9],
+ [4, 3]]
+Output:
+[[7, 9, 7, 9, 7, 9],
+ [4, 3, 4, 3, 4, 3],
+ [9, 7, 9, 7, 9, 7],
+ [3, 4, 3, 4, 3, 4],
+ [7, 9, 7, 9, 7, 9],
+ [4, 3, 4, 3, 4, 3]]
+
+Here is the input grid for the test example:
+Input:
+[[3, 2],
+ [7, 8]]
+### Instructions
+Write a Python function `transform` that converts a given input grid to its corresponding output grid based on the pattern observed in the reference examples. 
+- Your function should have signature: `def transform(input_grid: np.ndarray) -> np.ndarray:`
+- The input and output grids are 2D numpy arrays of integers.
+- Each grid cell is assigned a **color**, represented by an **integer**. These integers **do not have numerical meaning**; they **should not** be used in arithmetic operations. Think of these integers as **labels** rather than numbers.
+- Write your final code response in a markdown python code block (be sure to have "```python" in the line before your code and "```" in the line after your code).
+- No need to provide examples of the function call, just the function definition is sufficient.
+### Concepts from Previously Solved Puzzles
+We recorded concepts about structures and routines we observed in previously solved puzzles. These concepts may or may not be relevant to this puzzle, but they provide useful context to show examples of what structures may appear in the grids, what operations may be used, and how they might be composed. Concepts are annotated with fields like:
+- cues: (short for "relevance cues"), what to look for that might indicate this concept is relevant in this puzzle
+- implementation: notes on how this concept was implemented in past solution programs
+- output typing: what the output of this routine is (e.g. a grid, a list, a number, a bool, etc.)
+- parameters: a list of parameters that describe ways the concept may vary
+We also have some recommendations on how to approach problem solving with these concepts in mind:
+- We label the grid manipulation routines separately-- these directly affect the grids so they are easier to spot (along with structure concepts)
+- You might try to first identify which grid manipulation operations are used, then investigate their parameters
+- The non-grid manipulation routines might describe ways we've seen previous puzzles set parameters, so you can look to these for inspiration
+- There may not be exact matches to this list, so we encourage you to think about variations, novel ways to recombine existing ideas, as well as completely new concepts
+- These concepts and this approach are only suggestions, use them as you see fit
+
+## types
+- axis := Literal["x", "y", "both", "horizontal", "vertical"] | int | float | tuple[axis, int | float]
+- dimensions := tuple[int, int]
+- direction := Literal["up", "down", "left", "right"]
+- list[symmetry := Callable[[position], position]]
+- pattern := str | Callable[[int], grid]
+- shape := Any
+- symmetry := Callable[[position], position]
+
+## grid manipulation routines
+- concept: recolor object
+  description: recolor an object based on a color scheme
+  output_typing: grid | object
+  parameters:
+    - object (type: object)
+    - color scheme (type: dict[color, color])
+    - object | object | position - the object or pixel to recolor
+    - color scheme | dict[color, color] - mapping from original color to new color
+    - color (type: color)
+  cues:
+    - if structures or objects from the input grid appear in the output grid with different colors
+    - if all pixels of one color in the output grid are replaced with another color (systematic color swap)
+    - if regions or objects are recolored based on a property (e.g., size, position, or matching a specific pixel)
+    - if the output grid contains regions filled with a new color not present in the input
+    - if background or other colors are systematically replaced in the output grid
+    - if the output grid is visually similar to the input except for a color swap
+    - if colored pixels or regions appear in the output grid at positions that were black or missing in the input, especially adjacent to colored pixels or aligned with features of input objects
+    - if a region or contiguous area is uniformly recolored, possibly based on a pixel in a special position (e.g., corner, interior of a container)
+    - if an input pixel or object is removed or replaced with background color in the output grid (deletion by recoloring)
+    - if a special color (e.g., grey or yellow) appears at a position determined by the interaction or meeting of input objects or paths
+  implementation:
+    - for a single pixel, set grid[position] = color
+    - after drawing operations that may overwrite a pixel, restore that pixel to its intended color
+    - for each pixel, if its color is in the color scheme, replace it with the mapped color
+    - for a region or object, iterate over its pixels and set each to the target color or according to the color scheme
+    - for a region, if a pixel is background (e.g., black), set it to the specified color; otherwise, leave it unchanged
+    - at special positions (e.g., meeting points or intersections), set the pixel to a designated color (e.g., grey) instead of either input color
+- concept: create new grid
+  description: create a new grid with specified dimensions, initialized with a fill color
+  output_typing: grid
+  parameters:
+    - dimensions (type: dimensions := tuple[int, int])
+    - fill color (type: color)
+  cues:
+    - if output grid dimensions differ from input grid dimensions
+    - if output grid content is initialized as blank or filled with a single color before further drawing or tiling
+    - if output grid is a fixed size (e.g., 1x1, single row/column, or specific pattern) regardless of input grid size or content
+    - if output grid dimensions depend on the number of objects or layers in the input
+    - if output grid is larger or smaller than any input region and not a direct copy of any input region
+  implementation:
+    - use numpy.full or numpy.zeros to create a new grid with the specified dimensions and fill color
+    - ensure the grid is initialized before any drawing or overlay operations
+    - parameterize the grid size and fill color to allow for flexible reuse in different contexts
+- concept: draw line
+  description: draw a line between two pixels in a grid, updating the grid accordingly
+  output_typing: grid
+  parameters:
+    - start (type: position)
+    - end (type: position)
+    - color (type: color)
+    - direction (type: direction := Literal["up", "down", "left", "right", "up-right", "up-left", "down-right", "down-left"])
+    - length (type: int | str)
+    - grid (type: grid)
+    - stop_at_color (type: color)
+    - step (type: int)
+    - until (type: stopping criteria := Callable[[position, grid], bool])
+    - stop_at (type: object | grid)
+  cues:
+    - output grid contains lines not present in the input grid
+    - output grid contains lines passing through, extending from, or adjacent to specific pixels or objects in the input grid
+    - lines span the entire grid in a direction from a given pixel, or terminate at a colored object or grid edge
+    - lines are drawn in straight, diagonal, or staircase patterns, possibly alternating directions or forming an "X"
+    - lines are drawn from specific points (e.g., object corners, edges, or centers) outward in one or more directions
+    - output grid contains lines connecting objects, pixels, or scattered points to the edge of a region or frame
+    - lines are repeated at regular intervals along a row or column, or show periodic gaps (e.g., every other cell colored)
+    - output grid contains new horizontal or vertical bars aligned with colored pixels in the input grid, possibly replacing single pixels with full-length bars
+    - lines are drawn from or to specific colored pixels and stop at another color, object, or grid boundary
+    - output grid contains lines that "navigate" around obstacles or change direction at the grid edge
+    - output grid shows objects with longer arms or bars than in the input, or arms extended from a central axis
+    - output grid contains new colored bars or lines at the center or top of rectangles or other shapes
+  implementation:
+    - draw the line pixel by pixel from the starting point, updating the position by the direction vector until the end point, grid edge, or stopping condition is met
+    - for lines spanning the grid, set length to grid height (vertical) or grid width (horizontal); for "to_edge", continue until the grid boundary
+    - use a loop to set each pixel along the line to the specified color; for step > 1, color every step-th pixel
+    - for diagonal lines, increment/decrement both x and y according to the direction
+    - for staircase or alternating patterns, update the direction and starting position as needed
+    - stop drawing if the next pixel is the stop_at_color, stop_at object, or if a custom stopping criteria is met
+    - for repeated lines at regular intervals, loop over offsets and call the line-drawing routine for each
+    - for vertical or horizontal bars, fix one coordinate and vary the other across the grid dimension
+    - to extend arms or bars, use the center or relevant object edge as the start and draw in each direction with the desired length
+    - for lines that must avoid obstacles, include logic to change direction or skip blocked positions
+    - return the last position reached (end_pixel) if further processing is needed

@@ -1,0 +1,44 @@
+{
+  "problem_uid": "00576224",
+  "hint_text": "## types\n- axis := Literal[\"x\", \"y\", \"both\", \"horizontal\", \"vertical\"] | int | float | tuple[axis, int | float]\n- dimensions := tuple[int, int]\n- direction := Literal[\"up\", \"down\", \"left\", \"right\"]\n- list[symmetry := Callable[[position], position]]\n- pattern := str | Callable[[int], grid]\n- shape := Any\n- symmetry := Callable[[position], position]\n\n## grid manipulation routines\n- concept: recolor object\n  output_typing: grid | object\n  cues:\n    - if structures or objects from the input grid appear in the output grid with different colors\n    - if all pixels of one color in the output grid are replaced with another color (systematic color swap)\n    - if regions or objects are recolored based on a property (e.g., size, position, or matching a specific pixel)\n    - if the output grid contains regions filled with a new color not present in the input\n    - if background or other colors are systematically replaced in the output grid\n    - if the output grid is visually similar to the input except for a color swap\n    - if colored pixels or regions appear in the output grid at positions that were black or missing in the input, especially adjacent to colored pixels or aligned with features of input objects\n    - if a region or contiguous area is uniformly recolored, possibly based on a pixel in a special position (e.g., corner, interior of a container)\n    - if an input pixel or object is removed or replaced with background color in the output grid (deletion by recoloring)\n    - if a special color (e.g., grey or yellow) appears at a position determined by the interaction or meeting of input objects or paths\n- concept: draw object\n  output_typing: grid\n  cues:\n    - if input objects are replicated or overlaid one or more times in the output\n    - if a sprite, motif, or pattern is drawn or overlaid at a specific position in the output grid\n    - if a completed, modified, or transformed region is overlaid back onto the original grid at its original or a specified position\n    - if colored regions, patterns, or sprites are overlaid at specific positions or inside larger objects/frames in the output grid\n    - if layers or patterns are built up by drawing on top of each other, or objects are redrawn to restore outlines or details\n    - if the output grid is constructed by assembling multiple copies of an object at specified positions\n- concept: create new grid\n  output_typing: grid\n  cues:\n    - if output grid dimensions differ from input grid dimensions\n    - if output grid content is initialized as blank or filled with a single color before further drawing or tiling\n    - if output grid is a fixed size (e.g., 1x1, single row/column, or specific pattern) regardless of input grid size or content\n    - if output grid dimensions depend on the number of objects or layers in the input\n    - if output grid is larger or smaller than any input region and not a direct copy of any input region\n- concept: draw line\n  output_typing: grid\n  cues:\n    - output grid contains lines not present in the input grid\n    - output grid contains lines passing through, extending from, or adjacent to specific pixels or objects in the input grid\n    - lines span the entire grid in a direction from a given pixel, or terminate at a colored object or grid edge\n    - lines are drawn in straight, diagonal, or staircase patterns, possibly alternating directions or forming an \"X\"\n    - lines are drawn from specific points (e.g., object corners, edges, or centers) outward in one or more directions\n    - output grid contains lines connecting objects, pixels, or scattered points to the edge of a region or frame\n    - lines are repeated at regular intervals along a row or column, or show periodic gaps (e.g., every other cell colored)\n    - output grid contains new horizontal or vertical bars aligned with colored pixels in the input grid, possibly replacing single pixels with full-length bars\n    - lines are drawn from or to specific colored pixels and stop at another color, object, or grid boundary\n    - output grid contains lines that \"navigate\" around obstacles or change direction at the grid edge\n    - output grid shows objects with longer arms or bars than in the input, or arms extended from a central axis\n    - output grid contains new colored bars or lines at the center or top of rectangles or other shapes\n- concept: crop around objects\n  output_typing: grid\n  cues:\n    - if the output grid is smaller than the input grid\n    - if the output grid contains only a subset of the objects in the input grid\n    - if the output grid is a contiguous subregion of the input grid, especially one corresponding to a single object, region of interest, frame, or container\n    - if a central pattern or minimal sprite is extracted from a larger grid for further manipulation\n    - if only the content of an object (without surrounding background) is drawn elsewhere in the output grid\n    - if patterns or objects are copied from the input grid but appear tightly cropped in the output\n    - if the output grid is a rectangle bounded by colored lines or a minimal bounding box containing a single object from the input grid\n    - if you need to extract the content of a region or square, ignoring divider lines or background\n\n## other routines\n### intermediate\n- concept: extract objects\n- concept: filter objects\n- concept: find object\n- concept: sort objects\n  output_typing: list[object]\n### selection criteria\n- concept: is color criteria\n  output_typing: bool",
+  "retrieved_items": [
+    {
+      "name": "extract objects"
+    },
+    {
+      "name": "recolor object"
+    },
+    {
+      "name": "draw object"
+    },
+    {
+      "name": "create new grid"
+    },
+    {
+      "name": "is color criteria"
+    },
+    {
+      "name": "find object"
+    },
+    {
+      "name": "draw line"
+    },
+    {
+      "name": "filter objects"
+    },
+    {
+      "name": "crop around objects"
+    },
+    {
+      "name": "sort objects"
+    }
+  ],
+  "metadata": {
+    "retriever": "ps_topk",
+    "scoring_mode": "topk",
+    "top_k": 10,
+    "num_concepts_total": 270,
+    "num_selected": 10,
+    "variant": "cue_heavy"
+  }
+}

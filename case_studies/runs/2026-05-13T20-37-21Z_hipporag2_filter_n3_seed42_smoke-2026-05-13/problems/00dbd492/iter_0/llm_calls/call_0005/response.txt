@@ -1,0 +1,80 @@
+### response[0]
+```python
+import numpy as np
+from collections import deque
+
+def transform(input_grid: np.ndarray) -> np.ndarray:
+    """
+    For each square red frame (border of 2's) that encloses a single red pixel at its center,
+    fill the interior (excluding the border and the central red pixel) with a color that depends
+    on the side length of the frame:
+        side 5 -> azure (8)
+        side 7 -> yellow (4)
+        side 9 -> green (3)
+    """
+    output = input_grid.copy()
+    h, w = input_grid.shape
+    visited = np.zeros((h, w), dtype=bool)
+    
+    # mapping from side length to fill color
+    fill_map = {5: 8, 7: 4, 9: 3}
+    
+    # directions for 4-connectivity
+    dirs = [(1,0), (-1,0), (0,1), (0,-1)]
+    
+    for r in range(h):
+        for c in range(w):
+            if input_grid[r, c] == 2 and not visited[r, c]:
+                # BFS to collect connected component of red pixels
+                comp = []
+                q = deque()
+                q.append((r, c))
+                visited[r, c] = True
+                while q:
+                    cr, cc = q.popleft()
+                    comp.append((cr, cc))
+                    for dr, dc in dirs:
+                        nr, nc = cr + dr, cc + dc
+                        if 0 <= nr < h and 0 <= nc < w and not visited[nr, nc] and input_grid[nr, nc] == 2:
+                            visited[nr, nc] = True
+                            q.append((nr, nc))
+                
+                # compute bounding box
+                rows = [p[0] for p in comp]
+                cols = [p[1] for p in comp]
+                min_r, max_r = min(rows), max(rows)
+                min_c, max_c = min(cols), max(cols)
+                height = max_r - min_r + 1
+                width = max_c - min_c + 1
+                
+                # check if it's a square ring
+                if height == width and height >= 3:
+                    # check that component exactly covers the perimeter of the bounding box
+                    is_ring = True
+                    for rr in range(min_r, max_r+1):
+                        for cc in range(min_c, max_c+1):
+                            on_border = (rr == min_r or rr == max_r or cc == min_c or cc == max_c)
+                            if on_border:
+                                if (rr, cc) not in comp:
+                                    is_ring = False
+                                    break
+                            else:
+                                if (rr, cc) in comp:
+                                    is_ring = False
+                                    break
+                        if not is_ring:
+                            break
+                    
+                    if is_ring:
+                        side = height
+                        if side in fill_map:
+                            fill_color = fill_map[side]
+                            # interior region (excluding border)
+                            center_r = min_r + side // 2
+                            center_c = min_c + side // 2
+                            for rr in range(min_r+1, max_r):
+                                for cc in range(min_c+1, max_c):
+                                    if (rr, cc) != (center_r, center_c):
+                                        output[rr, cc] = fill_color
+    return output
+```

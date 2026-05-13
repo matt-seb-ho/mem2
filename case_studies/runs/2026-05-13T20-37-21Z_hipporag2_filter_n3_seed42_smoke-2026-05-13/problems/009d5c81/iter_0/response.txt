@@ -1,0 +1,2 @@
+### response[0]
+["fixed pattern", "sliding window", "transpose", "extract objects", "find object", "flood fill alternating", "recolor object", "create new grid", "all pairs", "draw object"]

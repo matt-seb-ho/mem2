@@ -1,0 +1,44 @@
+{
+  "problem_uid": "009d5c81",
+  "hint_text": "## types\n- axis := Literal[\"x\", \"y\", \"both\", \"horizontal\", \"vertical\"] | int | float | tuple[axis, int | float]\n- dimensions := tuple[int, int]\n- direction := Literal[\"up\", \"down\", \"left\", \"right\"]\n- list[symmetry := Callable[[position], position]]\n- pattern := str | Callable[[int], grid]\n- shape := Any\n- symmetry := Callable[[position], position]\n\n## grid manipulation routines\n- concept: recolor object\n  kind: routine\n  description: recolor an object based on a color scheme\n  output_typing: grid | object\n- concept: draw object\n  kind: routine\n  description: draw a sprite on top of a base grid, drawing over the base grid with the sprite's non-background pixels\n  output_typing: grid\n- concept: create new grid\n  kind: routine\n  description: create a new grid with specified dimensions, initialized with a fill color\n  output_typing: grid\n- concept: draw line\n  kind: routine\n  description: draw a line between two pixels in a grid, updating the grid accordingly\n  output_typing: grid\n- concept: crop around objects\n  kind: routine\n  description: create a new grid that is a contiguous sub region of the input grid, containing the minimum bounding box of the specified objects\n  output_typing: grid\n\n## other routines\n### intermediate\n- concept: extract objects\n  kind: routine\n- concept: filter objects\n  kind: routine\n  description: filter a list of objects based on some criteria\n- concept: find object\n  kind: routine\n  description: find an object in a list of objects based on some criteria\n- concept: sort objects\n  kind: routine\n  description: sort a list of objects according to a key function, often used to order objects spatially\n  output_typing: list[object]\n### selection criteria\n- concept: is color criteria\n  kind: routine\n  description: condition on whether an object is a given color\n  output_typing: bool",
+  "retrieved_items": [
+    {
+      "name": "extract objects"
+    },
+    {
+      "name": "recolor object"
+    },
+    {
+      "name": "draw object"
+    },
+    {
+      "name": "create new grid"
+    },
+    {
+      "name": "is color criteria"
+    },
+    {
+      "name": "find object"
+    },
+    {
+      "name": "draw line"
+    },
+    {
+      "name": "filter objects"
+    },
+    {
+      "name": "crop around objects"
+    },
+    {
+      "name": "sort objects"
+    }
+  ],
+  "metadata": {
+    "retriever": "ps_topk",
+    "scoring_mode": "topk",
+    "top_k": 10,
+    "num_concepts_total": 270,
+    "num_selected": 10,
+    "variant": "typed_only"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "problem_uid": "00dbd492",
+  "hint_text": "- concept: fixed pattern\n  hipporag_passage: A fixed pattern is a small grid or sprite with a fixed arrangement of colored pixels, used as a motif or patch to be overlaid at a specific position. When solving, the best candidate is selected from a set using a scoring or evaluation function, such as maximizing a specific criterion (e.g., number of holes plugged, largest area). Implementation uses Python's max() function with the key argument.\n  query_nodes: fixed pattern, colored pixels, motif, patch, specific position, overlaid, scoring function, maximizing criterion\n  triples: fixed pattern --is used as-- motif; fixed pattern --is used as-- patch; patch --is overlaid at-- specific position; fixed pattern --is selected using-- scoring function; scoring function --maximizes-- maximizing criterion\n  reset_terms: fixed pattern, motif, patch, overlay, scoring, maximize, candidate selection, colored pixels\n\n- concept: flood fill alternating\n  hipporag_passage: Flood fill alternating is a routine that performs a flood fill from a starting position, coloring reachable path pixels with alternating colors from a provided list, switching color at each step or layer. It uses BFS or DFS from the start position, assigning the next color in the sequence to each pixel. A queue tracks positions and the current color index; for each neighbor satisfying path_criteria, it enqueues the neighbor with the next color. Colors can alternate by depth (distance from start) or by step along the path.\n  query_nodes: flood fill alternating, start, colors, path_criteria, grid, BFS, DFS, alternating colors\n  triples: flood fill alternating --uses-- BFS; flood fill alternating --uses-- DFS; flood fill alternating --parameterizes-- start; flood fill alternating --parameterizes-- colors; flood fill alternating --parameterizes-- path_criteria\n  reset_terms: flood fill, alternating colors, BFS, DFS, path fill, color alternation, start position, path_criteria\n\n- concept: has color criteria\n  hipporag_passage: has color criteria is a routine that checks whether a target object's colors include a given color, returning a boolean. It takes a target object and a color as parameters, and evaluates membership of the color in the object's color set.\n  query_nodes: has color criteria, target, color, target object, colors, include\n  triples: has color criteria --uses-- target; has color criteria --uses-- color; has color criteria --specializes-- is color criteria; target object --has-- colors; colors --include-- color\n  reset_terms: has color criteria, color check, color membership, object contains color, color condition",
+  "retrieved_items": [
+    {
+      "name": "fixed pattern",
+      "ppr_score": 0.13504497857147854
+    },
+    {
+      "name": "flood fill alternating",
+      "ppr_score": 0.10298889424604604
+    },
+    {
+      "name": "has color criteria",
+      "ppr_score": 0.069320027129635
+    }
+  ],
+  "metadata": {
+    "retriever": "hipporag_ppr",
+    "scoring_mode": "ppr",
+    "top_k": 3,
+    "damping": 0.5,
+    "num_concepts_total": 270,
+    "num_selected": 3,
+    "num_graph_edges": 4427,
+    "fact_graph_edges_used": 825,
+    "entity_graph_edges_used": 1763,
+    "num_reset_seeds": 7,
+    "num_fact_reset_matches": 1,
+    "num_entity_reset_matches": 2,
+    "adapted_memory_source": "hipporag_ppr_memory_v1",
+    "adapted_records_loaded": 270,
+    "num_adapted_reset_matches": 5
+  }
+}

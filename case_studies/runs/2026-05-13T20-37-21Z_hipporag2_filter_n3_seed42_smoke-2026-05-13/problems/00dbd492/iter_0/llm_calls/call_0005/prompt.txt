@@ -1,0 +1,171 @@
+### Introduction
+Given a puzzle containing input-output grid pairs as reference examples, carefully observe the patterns to predict the output grid for new test input. Within a puzzle, each pair follows the same transformation rule. Grids are 2D numpy integer arrays with integers representing colors. 0 represents black and is often the background color.
+
+### Your Puzzle Grids
+Here are the input and output grids for the reference examples:
+Example 1
+Input:
+[[2, 2, 2, 2, 2, 0, 0],
+ [2, 0, 0, 0, 2, 0, 0],
+ [2, 0, 2, 0, 2, 0, 0],
+ [2, 0, 0, 0, 2, 0, 0],
+ [2, 2, 2, 2, 2, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0]]
+Output:
+[[2, 2, 2, 2, 2, 0, 0],
+ [2, 8, 8, 8, 2, 0, 0],
+ [2, 8, 2, 8, 2, 0, 0],
+ [2, 8, 8, 8, 2, 0, 0],
+ [2, 2, 2, 2, 2, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0]]
+
+Example 2
+Input:
+[[2, 2, 2, 2, 2, 2, 2, 0, 0],
+ [2, 0, 0, 0, 0, 0, 2, 0, 0],
+ [2, 0, 0, 0, 0, 0, 2, 0, 0],
+ [2, 0, 0, 2, 0, 0, 2, 0, 0],
+ [2, 0, 0, 0, 0, 0, 2, 0, 0],
+ [2, 0, 0, 0, 0, 0, 2, 0, 0],
+ [2, 2, 2, 2, 2, 2, 2, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0]]
+Output:
+[[2, 2, 2, 2, 2, 2, 2, 0, 0],
+ [2, 4, 4, 4, 4, 4, 2, 0, 0],
+ [2, 4, 4, 4, 4, 4, 2, 0, 0],
+ [2, 4, 4, 2, 4, 4, 2, 0, 0],
+ [2, 4, 4, 4, 4, 4, 2, 0, 0],
+ [2, 4, 4, 4, 4, 4, 2, 0, 0],
+ [2, 2, 2, 2, 2, 2, 2, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0]]
+
+Example 3
+Input:
+[[0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+ [0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2],
+ [0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2],
+ [0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2],
+ [0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2],
+ [0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2],
+ [0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2],
+ [0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2],
+ [0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+Output:
+[[0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+ [0, 0, 0, 0, 0, 0, 2, 3, 3, 3, 3, 3, 3, 3, 2],
+ [0, 0, 0, 0, 0, 0, 2, 3, 3, 3, 3, 3, 3, 3, 2],
+ [0, 0, 0, 0, 0, 0, 2, 3, 3, 3, 3, 3, 3, 3, 2],
+ [0, 0, 0, 0, 0, 0, 2, 3, 3, 3, 2, 3, 3, 3, 2],
+ [0, 0, 0, 0, 0, 0, 2, 3, 3, 3, 3, 3, 3, 3, 2],
+ [0, 0, 0, 0, 0, 0, 2, 3, 3, 3, 3, 3, 3, 3, 2],
+ [0, 0, 0, 0, 0, 0, 2, 3, 3, 3, 3, 3, 3, 3, 2],
+ [0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 8, 8, 8, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 8, 2, 8, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 8, 8, 8, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+
+Example 4
+Input:
+[[0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0],
+ [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0],
+ [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0],
+ [0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 2, 0],
+ [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0],
+ [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0],
+ [0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0]]
+Output:
+[[0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 8, 8, 8, 2, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 8, 2, 8, 2, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 8, 8, 8, 2, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0],
+ [0, 0, 0, 0, 0, 2, 4, 4, 4, 4, 4, 2, 0],
+ [0, 0, 0, 0, 0, 2, 4, 4, 4, 4, 4, 2, 0],
+ [0, 0, 0, 0, 0, 2, 4, 4, 2, 4, 4, 2, 0],
+ [0, 0, 0, 0, 0, 2, 4, 4, 4, 4, 4, 2, 0],
+ [0, 0, 0, 0, 0, 2, 4, 4, 4, 4, 4, 2, 0],
+ [0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0]]
+
+Here is the input grid for the test example:
+Input:
+[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 0, 0],
+ [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0],
+ [0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0],
+ [0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0],
+ [0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 2, 2, 2, 2, 0, 0, 0, 0],
+ [0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0],
+ [0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0],
+ [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 2, 0, 2, 0, 2, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0],
+ [0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+### Instructions
+Write a Python function `transform` that converts a given input grid to its corresponding output grid based on the pattern observed in the reference examples. 
+- Your function should have signature: `def transform(input_grid: np.ndarray) -> np.ndarray:`
+- The input and output grids are 2D numpy arrays of integers.
+- Each grid cell is assigned a **color**, represented by an **integer**. These integers **do not have numerical meaning**; they **should not** be used in arithmetic operations. Think of these integers as **labels** rather than numbers.
+- Write your final code response in a markdown python code block (be sure to have "```python" in the line before your code and "```" in the line after your code).
+- No need to provide examples of the function call, just the function definition is sufficient.
+### Concepts from Previously Solved Puzzles
+We recorded concepts about structures and routines we observed in previously solved puzzles. These concepts may or may not be relevant to this puzzle, but they provide useful context to show examples of what structures may appear in the grids, what operations may be used, and how they might be composed. Concepts are annotated with fields like:
+- cues: (short for "relevance cues"), what to look for that might indicate this concept is relevant in this puzzle
+- implementation: notes on how this concept was implemented in past solution programs
+- output typing: what the output of this routine is (e.g. a grid, a list, a number, a bool, etc.)
+- parameters: a list of parameters that describe ways the concept may vary
+We also have some recommendations on how to approach problem solving with these concepts in mind:
+- We label the grid manipulation routines separately-- these directly affect the grids so they are easier to spot (along with structure concepts)
+- You might try to first identify which grid manipulation operations are used, then investigate their parameters
+- The non-grid manipulation routines might describe ways we've seen previous puzzles set parameters, so you can look to these for inspiration
+- There may not be exact matches to this list, so we encourage you to think about variations, novel ways to recombine existing ideas, as well as completely new concepts
+- These concepts and this approach are only suggestions, use them as you see fit
+
+- concept: fixed pattern
+  hipporag2_ppr_passage: A small grid or sprite with a fixed arrangement of colored pixels, used as a motif or patch to be overlaid at a specific position. Selection from a candidate set uses a scoring function (e.g., maximizing number of holes plugged or largest area) via Python's max() with key.
+  filter_profile: This concept is relevant when the task requires overlaying a fixed pattern at a specific position, or when selecting the best candidate from a set based on a maximization criterion.
+  filter_terms: overlay motif, fixed pattern, patch at position, select best candidate, maximizing criterion, scoring function, max() with key, holes plugged
+  filter_evidence: Fixed pattern is a small grid or sprite with fixed colored pixels.; It is used as a motif or patch to be overlaid at a specific position.; Selection involves maximizing a criterion like number of holes plugged or largest area.; Implementation uses Python's max() with key argument.
+  reject_signals: queries about sequence transformations without spatial overlay; queries about counting or arithmetic without candidate selection; queries about color mixing or blending
+
+- concept: sliding window
+  hipporag2_ppr_passage: sliding window generates all possible subgrids of a given shape by sliding a window over the grid. It takes a grid and a window_shape (height, width) as parameters, and outputs a list of subgrids along with their positions. Implementation uses nested loops to extract all subarrays of the specified shape.
+  filter_profile: This concept is essential when the solution requires enumerating or processing every fixed-size region of a grid, such as detecting patterns, applying transformations, or comparing local neighborhoods across the entire grid.
+  filter_terms: subgrid, window, slide, fixed-size region, all possible subgrids, extract subarrays, nested loops, grid partitioning
+  filter_evidence: generates all possible subgrids of a given shape; takes grid and window_shape as parameters; outputs subgrids with their positions; implementation uses nested loops; applies to fixed-size regions throughout the grid
+  reject_signals: queries that involve global transformations without local windowing; queries that require only a single subgrid or crop at a specific location; queries about non-grid data structures (e.g., sequences, graphs)
+
+- concept: transpose
+  hipporag2_ppr_passage: Transpose operation on a 2D grid: converts rows to columns and vice versa. Implemented using zip(*grid). Useful when solution logic processes both rows and columns similarly or the same operation is applied along both axes of a region grid.
+  filter_profile: This concept represents a fundamental grid transformation that swaps axes, enabling symmetry operations and axis-agnostic reasoning in puzzle solutions. It is distinct from operations that only affect one dimension or reorder elements without axis conversion.
+  filter_terms: transpose, swap rows columns, zip(*grid), process rows and columns similarly, same operation along both axes, region grid, convert rows to columns
+  filter_evidence: transpose converts rows to columns and vice versa; transpose operates on a grid parameter; transpose is implemented via zip(*grid); transpose is used when the same operation is applied along both axes of a region grid; transpose is used when solution logic processes both rows and columns in a similar fashion
+  reject_signals: queries that only process a single axis (rows or columns); queries that operate on non-grid 1D data; queries that require reversing elements without axis swapping

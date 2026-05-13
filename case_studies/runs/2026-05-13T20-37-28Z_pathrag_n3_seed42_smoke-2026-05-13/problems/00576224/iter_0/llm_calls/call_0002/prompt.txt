@@ -1,0 +1,129 @@
+### Introduction
+Given a puzzle containing input-output grid pairs as reference examples, carefully observe the patterns to predict the output grid for new test input. Within a puzzle, each pair follows the same transformation rule. Grids are 2D numpy integer arrays with integers representing colors. 0 represents black and is often the background color.
+
+### Your Puzzle Grids
+Here are the input and output grids for the reference examples:
+Example 1
+Input:
+[[8, 6],
+ [6, 4]]
+Output:
+[[8, 6, 8, 6, 8, 6],
+ [6, 4, 6, 4, 6, 4],
+ [6, 8, 6, 8, 6, 8],
+ [4, 6, 4, 6, 4, 6],
+ [8, 6, 8, 6, 8, 6],
+ [6, 4, 6, 4, 6, 4]]
+
+Example 2
+Input:
+[[7, 9],
+ [4, 3]]
+Output:
+[[7, 9, 7, 9, 7, 9],
+ [4, 3, 4, 3, 4, 3],
+ [9, 7, 9, 7, 9, 7],
+ [3, 4, 3, 4, 3, 4],
+ [7, 9, 7, 9, 7, 9],
+ [4, 3, 4, 3, 4, 3]]
+
+Here is the input grid for the test example:
+Input:
+[[3, 2],
+ [7, 8]]
+### Instructions
+Write a Python function `transform` that converts a given input grid to its corresponding output grid based on the pattern observed in the reference examples. 
+- Your function should have signature: `def transform(input_grid: np.ndarray) -> np.ndarray:`
+- The input and output grids are 2D numpy arrays of integers.
+- Each grid cell is assigned a **color**, represented by an **integer**. These integers **do not have numerical meaning**; they **should not** be used in arithmetic operations. Think of these integers as **labels** rather than numbers.
+- Write your final code response in a markdown python code block (be sure to have "```python" in the line before your code and "```" in the line after your code).
+- No need to provide examples of the function call, just the function definition is sufficient.
+### Concepts from Previously Solved Puzzles
+We recorded concepts about structures and routines we observed in previously solved puzzles. These concepts may or may not be relevant to this puzzle, but they provide useful context to show examples of what structures may appear in the grids, what operations may be used, and how they might be composed. Concepts are annotated with fields like:
+- cues: (short for "relevance cues"), what to look for that might indicate this concept is relevant in this puzzle
+- implementation: notes on how this concept was implemented in past solution programs
+- output typing: what the output of this routine is (e.g. a grid, a list, a number, a bool, etc.)
+- parameters: a list of parameters that describe ways the concept may vary
+We also have some recommendations on how to approach problem solving with these concepts in mind:
+- We label the grid manipulation routines separately-- these directly affect the grids so they are easier to spot (along with structure concepts)
+- You might try to first identify which grid manipulation operations are used, then investigate their parameters
+- The non-grid manipulation routines might describe ways we've seen previous puzzles set parameters, so you can look to these for inspiration
+- There may not be exact matches to this list, so we encourage you to think about variations, novel ways to recombine existing ideas, as well as completely new concepts
+- These concepts and this approach are only suggestions, use them as you see fit
+
+## key relational paths (ascending reliability)
+  [0.400] within bounds -> reflect direction --parameterizes-- vertical_towards
+  [0.500] which side of rectangle hit --same_as-- within bounds --related_to-- vertical line beneath object criteria
+  [0.500] which side of rectangle hit --same_as-- within bounds --related_to-- vertical line beneath object criteria
+  [0.500] within bounds --same_as-- pixel is inside grid criteria --same_as-- vertical_towards
+  [0.667] within bounds --related_to-- vertical line beneath object criteria
+
+## adapted PathRAG relational paths (ascending reliability)
+  [0.950] vertical_towards: determine the vertical direction from source to target; vertical_towards parameterizes target; the target object or pixel; target has y-coordinate; vertical position of a pixel; if target.y < source.y then up; direction when target.y < source.y
+  [0.950] vertical_towards: determine the vertical direction from source to target; vertical_towards parameterizes source; the source object or pixel; source has y-coordinate; vertical position of a pixel; if target.y > source.y then down; direction when target.y > source.y
+  [0.950] which side of rectangle hit: determine which side of a rectangle a given position is on; takes position as input; the given position to check; takes rectangle as input; the rectangle to check against; uses bounding box of rectangle; rectangle's bounding box
+  [0.950] vertical line beneath object criteria: condition on whether a pixel is directly beneath an object; checks if pixel is directly beneath object; the pixel being checked; pixel undergoes upward movement; move upward from pixel to check first non-background pixel; upward movement targets first non-background pixel; the first non-background pixel encountered moving upward
+  [0.950] pixel is inside grid criteria: check if a pixel position is within the bounds of the grid; checks parameter; the pixel position to check
+
+## types
+- axis := Literal["x", "y", "both", "horizontal", "vertical"] | int | float | tuple[axis, int | float]
+- dimensions := tuple[int, int]
+- direction := Literal["up", "down", "left", "right"]
+- list[symmetry := Callable[[position], position]]
+- pattern := str | Callable[[int], grid]
+- shape := Any
+- symmetry := Callable[[position], position]
+
+## other routines
+### intermediate
+- concept: within bounds
+  description: check if a given position is within the valid bounds of the grid
+  output_typing: bool
+  parameters:
+    - position (type: position)
+    - grid (type: grid)
+  implementation:
+    - check that 0 <= x < grid width and 0 <= y < grid height
+- concept: reflect direction
+  description: compute the new direction after reflecting off a rectangle side, given the incoming direction and the side hit
+  output_typing: direction
+  parameters:
+    - direction (type: direction)
+    - hit_side (type: Literal["left", "right", "top", "bottom"])
+  implementation:
+    - for each side, reverse the appropriate component of the direction (e.g., hitting "left" or "right" reverses x, "top" or "bottom" reverses y)
+- concept: which side of rectangle hit
+  description: determine which side of a rectangle a given position is on (left, right, top, or bottom)
+  output_typing: Literal["left", "right", "top", "bottom"]
+  parameters:
+    - position (type: position)
+    - rectangle (type: object)
+  implementation:
+    - compare the position to the rectangle's bounding box; if x equals min_x, it's the left side, etc.
+- concept: vertical_towards
+  description: determine the vertical direction ("up" or "down") from the source to the target
+  output_typing: direction := Literal["up", "down"]
+  parameters:
+    - target (type: object | position)
+    - source (type: object | position)
+  implementation:
+    - compare the y-coordinates of source and target; if target.y > source.y, direction is "down", else "up"
+### selection criteria
+- concept: pixel is inside grid criteria
+  description: check if a pixel position is within the bounds of the grid
+  output_typing: bool
+  parameters:
+    - position (type: position)
+    - grid (type: grid)
+  implementation:
+    - check that 0 <= x < grid width and 0 <= y < grid height
+- concept: vertical line beneath object criteria
+  description: condition on whether a pixel is directly beneath an object (e.g., chevron), i.e., moving upward from the pixel encounters the object before any other occurrence of the object color.
+  output_typing: bool
+  parameters:
+    - pixel (type: object)
+    - object (type: object)
+    - grid (type: grid)
+  implementation:
+    - for the given pixel, move upward (decreasing y) and check if the first non-background pixel encountered is part of the object
+    - ensure there are no object pixels between the pixel and the object above

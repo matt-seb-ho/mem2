@@ -1,0 +1,29 @@
+{
+  "run_id": "2026-05-13T20-37-24Z_raptor_n3_seed42_smoke-2026-05-13",
+  "output_dir": "outputs/_runs/case_study/2026-05-13T20-37-24Z_raptor_n3_seed42_smoke-2026-05-13",
+  "trace_dir": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-13T20-37-24Z_raptor_n3_seed42_smoke-2026-05-13",
+  "timestamp_utc": "2026-05-13T20:37:26+00:00",
+  "port": "raptor",
+  "label": "smoke-2026-05-13",
+  "seed": 42,
+  "model": "deepseek/deepseek-v4-flash",
+  "provider": "llmplus",
+  "llm_call_count": 3,
+  "provider_usage": {},
+  "n_problems": 3,
+  "summary": {
+    "accuracy_per_attempt": 0.3333333333333333,
+    "official_score": 1.0,
+    "strict_score": 1.0,
+    "strict_solved_puzzles": 1,
+    "official_score_sum": 1.0,
+    "total_attempts": 3,
+    "correct_attempts": 1,
+    "attempt_count": 3,
+    "feedback_count": 3,
+    "problem_count": 3,
+    "prompt_fingerprint_count": 3,
+    "config_hash": "2353ff4d7be8f6762dcbb9076a28fd438b1efba9e3c4f74c42c42e0e27d15780"
+  },
+  "total_cost_usd": null
+}

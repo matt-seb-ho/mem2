@@ -1,0 +1,162 @@
+### Introduction
+Given a puzzle containing input-output grid pairs as reference examples, carefully observe the patterns to predict the output grid for new test input. Within a puzzle, each pair follows the same transformation rule. Grids are 2D numpy integer arrays with integers representing colors. 0 represents black and is often the background color.
+
+### Your Puzzle Grids
+Here are the input and output grids for the reference examples:
+Example 1
+Input:
+[[8, 6],
+ [6, 4]]
+Output:
+[[8, 6, 8, 6, 8, 6],
+ [6, 4, 6, 4, 6, 4],
+ [6, 8, 6, 8, 6, 8],
+ [4, 6, 4, 6, 4, 6],
+ [8, 6, 8, 6, 8, 6],
+ [6, 4, 6, 4, 6, 4]]
+
+Example 2
+Input:
+[[7, 9],
+ [4, 3]]
+Output:
+[[7, 9, 7, 9, 7, 9],
+ [4, 3, 4, 3, 4, 3],
+ [9, 7, 9, 7, 9, 7],
+ [3, 4, 3, 4, 3, 4],
+ [7, 9, 7, 9, 7, 9],
+ [4, 3, 4, 3, 4, 3]]
+
+Here is the input grid for the test example:
+Input:
+[[3, 2],
+ [7, 8]]
+### Instructions
+Write a Python function `transform` that converts a given input grid to its corresponding output grid based on the pattern observed in the reference examples. 
+- Your function should have signature: `def transform(input_grid: np.ndarray) -> np.ndarray:`
+- The input and output grids are 2D numpy arrays of integers.
+- Each grid cell is assigned a **color**, represented by an **integer**. These integers **do not have numerical meaning**; they **should not** be used in arithmetic operations. Think of these integers as **labels** rather than numbers.
+- Write your final code response in a markdown python code block (be sure to have "```python" in the line before your code and "```" in the line after your code).
+- No need to provide examples of the function call, just the function definition is sufficient.
+### Concepts from Previously Solved Puzzles
+We recorded concepts about structures and routines we observed in previously solved puzzles. These concepts may or may not be relevant to this puzzle, but they provide useful context to show examples of what structures may appear in the grids, what operations may be used, and how they might be composed. Concepts are annotated with fields like:
+- cues: (short for "relevance cues"), what to look for that might indicate this concept is relevant in this puzzle
+- implementation: notes on how this concept was implemented in past solution programs
+- output typing: what the output of this routine is (e.g. a grid, a list, a number, a bool, etc.)
+- parameters: a list of parameters that describe ways the concept may vary
+We also have some recommendations on how to approach problem solving with these concepts in mind:
+- We label the grid manipulation routines separately-- these directly affect the grids so they are easier to spot (along with structure concepts)
+- You might try to first identify which grid manipulation operations are used, then investigate their parameters
+- The non-grid manipulation routines might describe ways we've seen previous puzzles set parameters, so you can look to these for inspiration
+- There may not be exact matches to this list, so we encourage you to think about variations, novel ways to recombine existing ideas, as well as completely new concepts
+- These concepts and this approach are only suggestions, use them as you see fit
+
+## L2_C000 (level 2)
+- **Shared theme:** This community integrates **positional alignment and scaling routines** (adjusted position, aligned_inside, alignment criteria) with **uniformity checks** (all pixels are color criteria, all pixels equal in row or column criteria) and **pairwise comparison** (all pairs), forming a foundation for determining object placement, containment, and row/column consistency within a grid.
+
+- **When to retrieve:** A solver should retrieve this community when the task involves centering or anchoring an object inside a frame, checking if all pixels in a row or column share a color, comparing multiple objects for alignment (same row/column), or scaling/positioning an object relative to a target region.
+
+- **Important child-community distinctions:**
+    - **L1_C000** focuses on **mirroring, symmetry, and edge-based placement** — retrieve when tasks involve detecting axes, holes, or push directions.
+    - **L1_C001** emphasizes **centering, border analysis, and pattern stacking** — retrieve for tasks requiring object positioning within boundaries or layered compositions.
+    - **L1_C002** covers **container detection and directional pattern extension** — retrieve for tasks with openings, diagonal lines, or sliding objects into containers.
+    - **L1_C003** handles **color-based filtering and spatial displacement** — retrieve for tasks involving color exclusion, closest-to-criteria selection, or arranging regions into a grid.
+Concepts: adjusted position, aligned_inside, alignment criteria, all pairs, all pixels are color criteria
+Adapted GraphRAG map cards:
+- adjusted position [L0_C010] position adjustment routine for scaled object placement: adjusted position: compute anchor position for placing a scaled object so its reference point (upper left, center, custom) matches the scaled position. Parameters: position (original position), scale (int or tuple), anchor (alignment mode). Implementation: for upper left, multiply position by scale; for center, adjust by half scaled size minus half original size.
+- aligned_inside [L0_C009] alignment and containment routine: aligned_inside: compute anchor position to center or align an object within a frame's interior region, using size differences to determine offset.
+- alignment criteria [community_1] spatial selection criterion: alignment criteria: condition on whether two objects are aligned (same rows or columns). Parameters: object1, object2. Returns bool. Used for spatial selection and filtering.
+- all pairs [community_5] comparison operator for pairwise object analysis: all pairs: generate all unique unordered pairs from a list of objects using itertools.combinations(objects, 2). Used to compare or process relationships between objects in a row or column, especially when filling or connecting occurs between matching pairs.
+- all pixels are color criteria [community_4] color-based detection condition: all pixels are color criteria: condition on whether all pixels in an object are of the specified color; parameters: target (object), color (color); cues: output grid initialized with a single color, unused or empty grid regions filled with a uniform color.
+
+## L1_C001 (level 1)
+- **Shared theme**: This community integrates **spatial alignment, border analysis, and pattern stacking** — combining routines for positioning objects (centering, anchoring, adjusting scale), detecting uniform rows/columns and borders, and constructing stacked or overlaid patterns. It bridges lower-level concepts like bounding boxes, grid boundaries, and row/column uniformity into higher-level operations for object placement and grid composition.
+
+- **When to retrieve**: A solver should retrieve this community when the task involves **placing one shape relative to another or relative to grid boundaries** (e.g., centering an overlay, aligning to an anchor, fitting inside a border), **detecting or using uniform lines (rows/columns) as dividers or alignment cues**, or **stacking/alternating patterns with a specified anchor or axis**. Also relevant when tasks require checking border redundancy or fitting objects within a frame.
+
+- **Important child-community distinctions**:
+  - **L0_C007** (uniform rows/columns detection) and **L0_C023** (grid partitioning via divider lines) provide the low-level detection of solid-color lines that this community uses for alignment and region separation.
+  - **L0_C016** (positional alignment, centering, overlay) and **L0_C022** (row operations, pattern stacking, flipping) directly feed into the stacking and anchoring routines central to this community.
+  - **L0_C015** (border analysis, cropping, collision) and **L0_C024** (rectangle detection, container alignment) supply the border and bounding-box logic needed for spatial fitting and redundancy checks.
+Concepts: adjusted position, aligned_inside, all pairs, all pixels equal in row or column criteria, all positions within grid
+Adapted GraphRAG map cards:
+- adjusted position [L0_C010] position adjustment routine for scaled object placement: adjusted position: compute anchor position for placing a scaled object so its reference point (upper left, center, custom) matches the scaled position. Parameters: position (original position), scale (int or tuple), anchor (alignment mode). Implementation: for upper left, multiply position by scale; for center, adjust by half scaled size minus half original size.
+- aligned_inside [L0_C009] alignment and containment routine: aligned_inside: compute anchor position to center or align an object within a frame's interior region, using size differences to determine offset.
+- all pairs [community_5] comparison operator for pairwise object analysis: all pairs: generate all unique unordered pairs from a list of objects using itertools.combinations(objects, 2). Used to compare or process relationships between objects in a row or column, especially when filling or connecting occurs between matching pairs.
+- all pixels equal in row or column criteria [L0_C007] Routine for detecting solid-color rows/columns: all pixels equal in row or column criteria: condition on whether all pixels in any row or column are equal to a specified color; used to identify solid-color lines for grid partitioning.
+- all positions within grid [community_7] enumeration routine for candidate placements: all positions within grid: given an object and a grid, slide the object's bounding box over all positions where it remains within the grid's bounds, returning a list of positions.
+
+## L0_C021 (level 0)
+- **Shared theme:** This community centers on **grid manipulation and transformation routines** — operations like stacking, concatenating, copying rows, arranging regions as grids, creating periodic patterns, and performing logical or color-based operations on pixel grids. It also includes symmetry detection and object counting.
+
+- **When to retrieve:** Retrieve this community when the task involves **rearranging, repeating, or combining multiple grids or subgrids**; when operations like copying rows, concatenating along an axis, or applying a periodic hole/staircase pattern are needed; or when the solution requires **logical pixel-wise operations** (AND, XOR, difference) or **symmetry checks**.
+
+- **Important child-community distinctions:**  
+  - **Concatenation vs. copying:** `concatenate grids` focuses on joining multiple grids along an axis, while `copy grid` and `copy rows` deal with duplicating or selectively replicating parts of a single grid.  
+  - **Pattern generation vs. object analysis:** `create periodic hole pattern` and `create staircase pattern` are generative, whereas `count objects`, `find mirror symmetry`, and `odd-one-out region` are analytical.  
+  - **Color/overlap logic:** `color match at overlap criteria` and `logical operation on corresponding pixels` handle pixel-level matching and boolean combinations, distinct from structural transformations.
+Concepts: alternating pattern stacking, arrange regions as grid, centered at, color match at overlap criteria, compute orbit
+Adapted GraphRAG map cards:
+- alternating pattern stacking [L0_C001] parameterized alternating stacking routine: alternating pattern stacking: stack patterns alternately (e.g., original and flipped) along an axis with overlap; parameters: patterns (list[grid]), repetitions (int), overlap (int), axis (vertical/horizontal), base (grid, optional).
+- arrange regions as grid [community_5] grid construction routine: arrange regions as grid: given a list of regions (each a grid), sort by top-left coordinates and group into rows and columns to produce a list of lists of grids. Used when the output requires a 2D arrangement of subgrids based on spatial layout.
+- centered at [L0_C016] positional alignment routine for centering overlays: centered at: given a center_pos (position) and overlay_shape (dimensions), returns the upper-left anchor position such that the overlay's center coincides with center_pos. Used for centering overlays, sprites, or patterns on a grid.
+- color match at overlap criteria [community_7] placement feasibility filter: color match at overlap criteria: condition on whether, at overlapping pixels between the placed object and the mask, the colors match (ignoring background). Parameters: object, position, mask, grid. Implementation: for each overlapping pixel where both object and mask are non-background, check that the colors are equal.
+- compute orbit [L0_C011] geometric transformation routine for repeated symmetry application: compute orbit: given a starting position, a symmetry transformation (e.g., translation), and a grid, returns the set of all positions reachable by repeated application of the transformation within the grid bounds. Used to generate periodic patterns, detect cycles, and support placement search.
+
+## L0_C007 (level 0)
+- **Shared theme**: Detection and analysis of uniform rows/columns, background colors, divider lines, and unique colors in grids; operations include counting, masking, iterating over columns/rows, and overlap checks.  
+- **When to retrieve**: When a task requires identifying solid-color lines (rows/columns), finding background or divider colors, or determining unique colors that separate regions; also when counting objects or checking overlap conditions.  
+- **Important child-community distinctions**: Child communities may specialize in row-based vs. column-based analysis, or focus on specific color-finding routines (e.g., background vs. divider vs. unique color). Some may emphasize object counting (e.g., `count objects`) while others focus on structural line detection (e.g., `find divider line color`).
+Concepts: all pixels equal in row or column criteria, all valid positions, color match at overlap criteria, count objects, create cross
+Adapted GraphRAG map cards:
+- all pixels equal in row or column criteria [L0_C007] Routine for detecting solid-color rows/columns: all pixels equal in row or column criteria: condition on whether all pixels in any row or column are equal to a specified color; used to identify solid-color lines for grid partitioning.
+- all valid positions [community_6] placement and overlap analysis: all valid positions: generate all positions where the sprite can be placed on the grid without overlapping existing non-background pixels. For each position where the sprite's bounding box fits within the grid, check that all sprite pixels would overlay only background pixels.
+- color match at overlap criteria [community_7] placement feasibility filter: color match at overlap criteria: condition on whether, at overlapping pixels between the placed object and the mask, the colors match (ignoring background). Parameters: object, position, mask, grid. Implementation: for each overlapping pixel where both object and mask are non-background, check that the colors are equal.
+- count objects [L0_C004] analytical counting routine: count objects: given a list of objects, optionally filter by criteria and group by attribute (e.g., color), returns integer count or dict mapping attribute to count. Used when output depends on frequency or count of objects, especially by color.
+- create cross [L0_C002] grid construction routine for creating cross/plus shapes: create cross: routine that creates a cross-shaped sprite of given (height, width) and color, with central row and column set to the color and others to background. Used when output requires a centered plus sign.
+
+## L1_C000 (level 1)
+**Shared theme:** This community groups high-level spatial reasoning routines for analyzing object alignment, containment, and positional relationships within grids—including mirror axis detection, push directions, diagonal movement, and edge/line-based placement rules.
+
+**When to retrieve:** Use this community when the task involves comparing object positions relative to a frame or container, detecting symmetry or mirroring, identifying holes or empty regions inside objects, or deciding placement based on alignment criteria (row/column/diagonal).
+
+**Important child-community distinctions:**
+- **L0_C005** focuses on basic alignment (row/column) and boundary detection (border/edge pixels), while **L0_C009** extends this to mirror axes, push directions, and containment within frames.
+- **L0_C011** adds bounding boxes, orbits (repeated symmetry transformations), and color-based filtering (non-black pixels, unique colors) for position validity checks.
+- **L0_C025** specializes in symmetry detection and transformation (rotational/mirror), generating all orientations of a shape.
+Concepts: aligned_inside, alignment criteria, all pairs, all pixels equal in row or column criteria, all positions
+Adapted GraphRAG map cards:
+- aligned_inside [L0_C009] alignment and containment routine: aligned_inside: compute anchor position to center or align an object within a frame's interior region, using size differences to determine offset.
+- alignment criteria [community_1] spatial selection criterion: alignment criteria: condition on whether two objects are aligned (same rows or columns). Parameters: object1, object2. Returns bool. Used for spatial selection and filtering.
+- all pairs [community_5] comparison operator for pairwise object analysis: all pairs: generate all unique unordered pairs from a list of objects using itertools.combinations(objects, 2). Used to compare or process relationships between objects in a row or column, especially when filling or connecting occurs between matching pairs.
+- all pixels equal in row or column criteria [L0_C007] Routine for detecting solid-color rows/columns: all pixels equal in row or column criteria: condition on whether all pixels in any row or column are equal to a specified color; used to identify solid-color lines for grid partitioning.
+- all positions [community_5] spatial enumeration routine: all positions: generate all (row, col) positions where an object fits entirely inside a container by sliding its bounding box over the container's bounding box using nested loops.
+
+## L0_C000 (level 0)
+- **Shared theme**: Spatial reasoning and object manipulation on grids, including detection of symmetry (rotational/mirror), alignment, placement enumeration, and geometric transformations (reflection, rotation, orbit).
+- **When to retrieve**: When the task involves analyzing or modifying object arrangements based on spatial criteria (e.g., nearest neighbor, edge detection, alignment), checking symmetry conditions, or enumerating non-overlapping placements with optional rotation.
+- **Important child-community distinctions**: 
+  - *Detection vs. transformation*: Some entities focus on identifying properties (e.g., `detect rotational symmetry`, `is_aligned`, `has mirror symmetry criteria`), while others apply operations (e.g., `reflect grid`, `move object`, `draw objects`).
+  - *Placement enumeration*: `enumerate nonoverlapping placements` is a distinct routine that combines packing criteria with rotation/permutation, separate from simpler spatial checks.
+  - *Coordinate systems*: `position_along_axis` and `positions_where` provide directional ordering (left-to-right, top-to-bottom), contrasting with center/anchor-based positioning from `create square border` or `closest to criteria`.
+Concepts: closest to criteria, create square border, crop around objects, detect rotational symmetry, draw objects
+Adapted GraphRAG map cards:
+- closest to criteria [community_1] spatial selection criterion: closest to criteria: condition on whether a candidate object is the closest to a reference object among a set; used for spatial proximity selection (e.g., nearest neighbor, frame, anchor).
+- create square border [community_0] structural construction routine for adding centered frames: create square border: given center position, half_width, and color, produce a grid with border pixels set to that color on the four sides of the centered square.
+- crop around objects [community_5] region extraction routine: crop around objects: given a list of objects, compute the minimum bounding box and slice the grid to produce a new grid containing only that region. Optionally trim border pixels or exclude a background color.
+- detect rotational symmetry [L0_C000] symmetry detection routine: detect rotational symmetry: analyze grid for rotational symmetry, return center, angle, order, and rotation function. Used when output grid is a completed symmetric version of input.
+- draw objects [community_7] output rendering routine: draw objects: overlays a list of objects onto a base grid at given positions; if bounding_box_only is True, crops to minimal bounding rectangle.
+
+## L0_C004 (level 0)
+- **Shared theme:** This community groups low-level spatial operations for pixel manipulation, object extraction, and pattern generation on a grid, including drawing lines, counting neighbors/objects, flood-filling, and edge detection. It forms the foundational toolkit for constructing and analyzing grid-based structures.
+
+- **When to retrieve:** Use this community when the task requires direct pixel-level actions (e.g., drawing lines until hitting a color, counting adjacent pixels, extracting connected components, or finding border pixels). It is the go-to set for tasks involving spatial iteration, connectivity, and simple geometric patterns.
+
+- **Important child-community distinctions:** The community contains two distinct sub-groups: (1) **drawing and pattern routines** (e.g., `draw line`, `create staircase pattern`, `extend colored segment`) focused on generating or modifying grid content, and (2) **analysis and filtering routines** (e.g., `count neighbors in object`, `extract objects`, `filter objects`, `find farthest border pixel`) focused on inspecting or selecting existing grid features. A solver should distinguish between these when the task is generative vs. analytical.
+Concepts: argmax_displacement, count neighbors in object, count objects, create staircase pattern, draw line
+Adapted GraphRAG map cards:
+- argmax_displacement [community_6] optimization routine for selecting the best displacement that maximizes a spatial criterion: argmax_displacement: given an object, target, criteria function, and search space of displacements, returns the displacement vector with largest magnitude that satisfies the criteria. Used to maximize movement while achieving a spatial relationship.
+- count neighbors in object [L0_C004] analytical neighbor-counting routine for spatial connectivity analysis: count neighbors in object: given an object and a reference object, count how many pixels of the object are adjacent (4- or 8-connectivity) to pixels in the reference object, optionally filtered by a criteria (e.g., not background color). Used for noise removal, merging, and adjacency-based transformations.
+- count objects [L0_C004] analytical counting routine: count objects: given a list of objects, optionally filter by criteria and group by attribute (e.g., color), returns integer count or dict mapping attribute to count. Used when output depends on frequency or count of objects, especially by color.
+- create staircase pattern [L0_C004] pattern generation routine: create staircase pattern: draws a staircase pattern by alternately drawing lines of fixed length in two directions from a start position, using given step size and color.
+- draw line [community_1] grid manipulation routine for drawing lines between pixels: draw line: routine that draws a line between two pixels on a grid, with parameters for start, end, color, direction, length, stop_at_color, step, until, and stop_at. Supports straight, diagonal, and staircase patterns. Used in tasks involving line generation, object connection, and pattern repetition.

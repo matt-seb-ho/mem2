@@ -1,0 +1,12 @@
+{
+  "problem_uid": "009d5c81",
+  "hint_text": null,
+  "retrieved_items": [],
+  "metadata": {
+    "retriever": "oe_topk",
+    "scoring_mode": "open_ended_topk",
+    "top_k": 3,
+    "history_attempts": 0,
+    "scoped_to_problem": false
+  }
+}

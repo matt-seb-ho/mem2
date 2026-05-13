@@ -1,0 +1,38 @@
+{
+  "problem_uid": "00dbd492",
+  "hint_text": "- concept: fixed pattern\n  hipporag2_ppr_passage: A small grid or sprite with a fixed arrangement of colored pixels, used as a motif or patch to be overlaid at a specific position. Selection from a candidate set uses a scoring function (e.g., maximizing number of holes plugged or largest area) via Python's max() with key.\n  filter_profile: This concept is relevant when the task requires overlaying a fixed pattern at a specific position, or when selecting the best candidate from a set based on a maximization criterion.\n  filter_terms: overlay motif, fixed pattern, patch at position, select best candidate, maximizing criterion, scoring function, max() with key, holes plugged\n  filter_evidence: Fixed pattern is a small grid or sprite with fixed colored pixels.; It is used as a motif or patch to be overlaid at a specific position.; Selection involves maximizing a criterion like number of holes plugged or largest area.; Implementation uses Python's max() with key argument.\n  reject_signals: queries about sequence transformations without spatial overlay; queries about counting or arithmetic without candidate selection; queries about color mixing or blending\n\n- concept: sliding window\n  hipporag2_ppr_passage: sliding window generates all possible subgrids of a given shape by sliding a window over the grid. It takes a grid and a window_shape (height, width) as parameters, and outputs a list of subgrids along with their positions. Implementation uses nested loops to extract all subarrays of the specified shape.\n  filter_profile: This concept is essential when the solution requires enumerating or processing every fixed-size region of a grid, such as detecting patterns, applying transformations, or comparing local neighborhoods across the entire grid.\n  filter_terms: subgrid, window, slide, fixed-size region, all possible subgrids, extract subarrays, nested loops, grid partitioning\n  filter_evidence: generates all possible subgrids of a given shape; takes grid and window_shape as parameters; outputs subgrids with their positions; implementation uses nested loops; applies to fixed-size regions throughout the grid\n  reject_signals: queries that involve global transformations without local windowing; queries that require only a single subgrid or crop at a specific location; queries about non-grid data structures (e.g., sequences, graphs)\n\n- concept: transpose\n  hipporag2_ppr_passage: Transpose operation on a 2D grid: converts rows to columns and vice versa. Implemented using zip(*grid). Useful when solution logic processes both rows and columns similarly or the same operation is applied along both axes of a region grid.\n  filter_profile: This concept represents a fundamental grid transformation that swaps axes, enabling symmetry operations and axis-agnostic reasoning in puzzle solutions. It is distinct from operations that only affect one dimension or reorder elements without axis conversion.\n  filter_terms: transpose, swap rows columns, zip(*grid), process rows and columns similarly, same operation along both axes, region grid, convert rows to columns\n  filter_evidence: transpose converts rows to columns and vice versa; transpose operates on a grid parameter; transpose is implemented via zip(*grid); transpose is used when the same operation is applied along both axes of a region grid; transpose is used when solution logic processes both rows and columns in a similar fashion\n  reject_signals: queries that only process a single axis (rows or columns); queries that operate on non-grid 1D data; queries that require reversing elements without axis swapping",
+  "retrieved_items": [
+    {
+      "name": "fixed pattern"
+    },
+    {
+      "name": "sliding window"
+    },
+    {
+      "name": "transpose"
+    }
+  ],
+  "metadata": {
+    "retriever": "hipporag2_filter",
+    "scoring_mode": "hipporag2_filter",
+    "top_k": 10,
+    "damping": 0.5,
+    "num_concepts_total": 270,
+    "num_selected": 3,
+    "num_graph_edges": 4427,
+    "fact_graph_edges_used": 825,
+    "entity_graph_edges_used": 1763,
+    "num_reset_seeds": 6,
+    "num_fact_reset_matches": 1,
+    "num_entity_reset_matches": 2,
+    "adapted_memory_source": "hipporag2_memory_v1",
+    "adapted_records_loaded": 270,
+    "num_adapted_reset_matches": 2,
+    "first_stage_top_k": 10,
+    "final_top_k": 3,
+    "filter_method": "llm",
+    "fact_aware_filter": true,
+    "post_filter_pool": 10,
+    "adapted_filter_cards_rendered": 3
+  }
+}

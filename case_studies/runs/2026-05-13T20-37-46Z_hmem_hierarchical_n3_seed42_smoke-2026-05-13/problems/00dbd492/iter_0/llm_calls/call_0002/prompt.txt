@@ -1,0 +1,171 @@
+### Introduction
+Given a puzzle containing input-output grid pairs as reference examples, carefully observe the patterns to predict the output grid for new test input. Within a puzzle, each pair follows the same transformation rule. Grids are 2D numpy integer arrays with integers representing colors. 0 represents black and is often the background color.
+
+### Your Puzzle Grids
+Here are the input and output grids for the reference examples:
+Example 1
+Input:
+[[2, 2, 2, 2, 2, 0, 0],
+ [2, 0, 0, 0, 2, 0, 0],
+ [2, 0, 2, 0, 2, 0, 0],
+ [2, 0, 0, 0, 2, 0, 0],
+ [2, 2, 2, 2, 2, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0]]
+Output:
+[[2, 2, 2, 2, 2, 0, 0],
+ [2, 8, 8, 8, 2, 0, 0],
+ [2, 8, 2, 8, 2, 0, 0],
+ [2, 8, 8, 8, 2, 0, 0],
+ [2, 2, 2, 2, 2, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0]]
+
+Example 2
+Input:
+[[2, 2, 2, 2, 2, 2, 2, 0, 0],
+ [2, 0, 0, 0, 0, 0, 2, 0, 0],
+ [2, 0, 0, 0, 0, 0, 2, 0, 0],
+ [2, 0, 0, 2, 0, 0, 2, 0, 0],
+ [2, 0, 0, 0, 0, 0, 2, 0, 0],
+ [2, 0, 0, 0, 0, 0, 2, 0, 0],
+ [2, 2, 2, 2, 2, 2, 2, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0]]
+Output:
+[[2, 2, 2, 2, 2, 2, 2, 0, 0],
+ [2, 4, 4, 4, 4, 4, 2, 0, 0],
+ [2, 4, 4, 4, 4, 4, 2, 0, 0],
+ [2, 4, 4, 2, 4, 4, 2, 0, 0],
+ [2, 4, 4, 4, 4, 4, 2, 0, 0],
+ [2, 4, 4, 4, 4, 4, 2, 0, 0],
+ [2, 2, 2, 2, 2, 2, 2, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0]]
+
+Example 3
+Input:
+[[0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+ [0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2],
+ [0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2],
+ [0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2],
+ [0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2],
+ [0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2],
+ [0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2],
+ [0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2],
+ [0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+Output:
+[[0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+ [0, 0, 0, 0, 0, 0, 2, 3, 3, 3, 3, 3, 3, 3, 2],
+ [0, 0, 0, 0, 0, 0, 2, 3, 3, 3, 3, 3, 3, 3, 2],
+ [0, 0, 0, 0, 0, 0, 2, 3, 3, 3, 3, 3, 3, 3, 2],
+ [0, 0, 0, 0, 0, 0, 2, 3, 3, 3, 2, 3, 3, 3, 2],
+ [0, 0, 0, 0, 0, 0, 2, 3, 3, 3, 3, 3, 3, 3, 2],
+ [0, 0, 0, 0, 0, 0, 2, 3, 3, 3, 3, 3, 3, 3, 2],
+ [0, 0, 0, 0, 0, 0, 2, 3, 3, 3, 3, 3, 3, 3, 2],
+ [0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 8, 8, 8, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 8, 2, 8, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 8, 8, 8, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+
+Example 4
+Input:
+[[0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0],
+ [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0],
+ [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0],
+ [0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 2, 0],
+ [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0],
+ [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0],
+ [0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0]]
+Output:
+[[0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 8, 8, 8, 2, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 8, 2, 8, 2, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 8, 8, 8, 2, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0],
+ [0, 0, 0, 0, 0, 2, 4, 4, 4, 4, 4, 2, 0],
+ [0, 0, 0, 0, 0, 2, 4, 4, 4, 4, 4, 2, 0],
+ [0, 0, 0, 0, 0, 2, 4, 4, 2, 4, 4, 2, 0],
+ [0, 0, 0, 0, 0, 2, 4, 4, 4, 4, 4, 2, 0],
+ [0, 0, 0, 0, 0, 2, 4, 4, 4, 4, 4, 2, 0],
+ [0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0]]
+
+Here is the input grid for the test example:
+Input:
+[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 0, 0],
+ [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0],
+ [0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0],
+ [0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0],
+ [0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 2, 2, 2, 2, 0, 0, 0, 0],
+ [0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0],
+ [0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0],
+ [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 2, 0, 2, 0, 2, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0],
+ [0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+### Instructions
+Write a Python function `transform` that converts a given input grid to its corresponding output grid based on the pattern observed in the reference examples. 
+- Your function should have signature: `def transform(input_grid: np.ndarray) -> np.ndarray:`
+- The input and output grids are 2D numpy arrays of integers.
+- Each grid cell is assigned a **color**, represented by an **integer**. These integers **do not have numerical meaning**; they **should not** be used in arithmetic operations. Think of these integers as **labels** rather than numbers.
+- Write your final code response in a markdown python code block (be sure to have "```python" in the line before your code and "```" in the line after your code).
+- No need to provide examples of the function call, just the function definition is sufficient.
+### Concepts from Previously Solved Puzzles
+We recorded concepts about structures and routines we observed in previously solved puzzles. These concepts may or may not be relevant to this puzzle, but they provide useful context to show examples of what structures may appear in the grids, what operations may be used, and how they might be composed. Concepts are annotated with fields like:
+- cues: (short for "relevance cues"), what to look for that might indicate this concept is relevant in this puzzle
+- implementation: notes on how this concept was implemented in past solution programs
+- output typing: what the output of this routine is (e.g. a grid, a list, a number, a bool, etc.)
+- parameters: a list of parameters that describe ways the concept may vary
+We also have some recommendations on how to approach problem solving with these concepts in mind:
+- We label the grid manipulation routines separately-- these directly affect the grids so they are easier to spot (along with structure concepts)
+- You might try to first identify which grid manipulation operations are used, then investigate their parameters
+- The non-grid manipulation routines might describe ways we've seen previous puzzles set parameters, so you can look to these for inspiration
+- There may not be exact matches to this list, so we encourage you to think about variations, novel ways to recombine existing ideas, as well as completely new concepts
+- These concepts and this approach are only suggestions, use them as you see fit
+
+- concept: extract objects
+  hmem_route: ARC-AGI / object detection and analysis / object extraction
+  memory_trace: Isolate contiguous or non-contiguous pixel groups from a grid, optionally filtering by color, connectivity, or background.
+  episode: Given an input grid and optional parameters (single color, connectivity, background color, criteria), extract objects as sets of pixels that satisfy the specified constraints.
+  route_when: When the task requires isolating distinct objects or regions from a grid, possibly with filtering by color or shape constraints.
+  routing_keywords: extract objects, object detection, segmentation, connected components, grid analysis
+
+- concept: is color criteria
+  hmem_route: ARC-AGI / object detection and analysis / criteria and conditions
+  memory_trace: A boolean test that checks whether an object's color equals a specified target color.
+  episode: Given an object and a color, returns true if the object's color matches the given color, false otherwise.
+  route_when: When the task requires filtering or selecting objects based on a specific color.
+  routing_keywords: color, criteria, filter, object property, selection
+
+- concept: find object
+  hmem_route: ARC-AGI / object detection and analysis / object extraction
+  memory_trace: Given a list of objects, apply a selection criterion to isolate the target object.
+  episode: Find an object in a list of objects based on some criteria, e.g., selecting the largest or smallest region among candidates.
+  route_when: Query involves selecting one object from multiple candidates using a property like size, shape, or color.
+  routing_keywords: find object, select object, criteria, largest, smallest, candidate

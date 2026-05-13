@@ -1,0 +1,11 @@
+You are a MAGMA view policy. Select the best 1-3 views to activate for this query, ordered by priority. Views: semantic, temporal, causal, entity.
+
+Query: 00dbd492
+
+- semantic: 4 candidates — top: ['within bounds', 'which side of rectangle hit', 'vertical_towards']
+- temporal: 0 candidates — top: []
+- causal: 6 candidates — top: ['within bounds', 'which side of rectangle hit', 'vertical_towards']
+- entity: 6 candidates — top: ['place object on opposite side', 'is shape square', 'count neighbors in object']
+- structural: 4 candidates — top: ['unique color', 'unique', 'transpose']
+
+Output JSON list of view names: ["semantic", ...]

@@ -1,0 +1,129 @@
+### response[0]
+```python
+
+import numpy as np
+from typing import List, Tuple, Callable
+
+def extract_objects(grid: np.ndarray,
+                    background: int = 0,
+                    connectivity: str = '4-way',
+                    single_color: bool = False,
+                    criteria: Callable = None) -> List[np.ndarray]:
+    """
+    Extract connected components (objects) from the grid.
+    Returns a list of minimal bounding box grids for each object.
+    """
+    from scipy.ndimage import label, find_objects
+    if connectivity == '4-way':
+        struct = np.array([[0,1,0],[1,1,1],[0,1,0]])
+    else:  # 8-way
+        struct = np.ones((3,3), dtype=int)
+    mask = grid != background
+    labeled, num_features = label(mask, structure=struct)
+    slices = find_objects(labeled)
+    objects = []
+    for i, sl in enumerate(slices):
+        obj = grid[sl]
+        # optionally filter by single color
+        if single_color:
+            colors = np.unique(obj[obj != background])
+            if len(colors) != 1:
+                continue
+        if criteria is not None and not criteria(obj):
+            continue
+        objects.append(obj)
+    return objects
+
+def draw_object(sprite: np.ndarray,
+                base: np.ndarray,
+                position: Tuple[int, int],
+                background: int = 0) -> np.ndarray:
+    """
+    Overlay sprite onto base at given position (top-left corner).
+    Non-background pixels of sprite overwrite base.
+    """
+    result = base.copy()
+    sh, sw = sprite.shape
+    r0, c0 = position
+    for i in range(sh):
+        for j in range(sw):
+            if sprite[i, j] != background:
+                if 0 <= r0+i < result.shape[0] and 0 <= c0+j < result.shape[1]:
+                    result[r0+i, c0+j] = sprite[i, j]
+    return result
+
+def create_new_grid(dimensions: Tuple[int, int],
+                    fill_color: int = 0) -> np.ndarray:
+    """Create a new grid with given dimensions and fill color."""
+    return np.full(dimensions, fill_color, dtype=int)
+
+def transform(input_grid: np.ndarray) -> np.ndarray:
+    """
+    Transformation rule observed from examples:
+    - There is a large pattern made of color 8 (light blue) somewhere in the grid.
+    - There is a small pattern made of color 1 (blue) somewhere else.
+    - The output replaces all color 8 pixels with a new color (different per example)
+      and removes the small pattern (color 1) entirely (sets to background 0).
+    - The new color is determined by the shape of the small pattern? Actually,
+      in each example, the small pattern is a plus-like shape (3x3 with center missing)
+      or a T shape? Let's examine:
+        Example1: small pattern is a plus shape (blue) -> output color 2 (red)
+        Example2: small pattern is a plus shape? Actually it's a 3x3 with center? 
+                  Input: rows 10-12, cols 3-5: pattern:
+                  [0,1,0]  [1,0,1]? Wait from input: row10: [0,0,0,1,0,1,0,...] 
+                  Actually it's a plus shape rotated? Let's check: 
+                  row10: ...0,0,0,1,0,1,0,... -> positions (10,3)=1, (10,5)=1
+                  row11: ...0,0,0,0,1,0,0,... -> (11,4)=1
+                  row12: ...0,0,0,1,1,1,0,... -> (12,3)=1,(12,4)=1,(12,5)=1
+                  That's a T shape? Actually it's like a plus missing the top? 
+                  But output color is 3 (green). So mapping is not simply shape.
+        Example3: small pattern is plus shape (blue) -> output color 2 (red)
+        Example4: small pattern is a plus shape? Actually it's a 3x3 with center missing? 
+                  Input rows 10-12, cols 4-6: 
+                  row10: ...0,0,0,0,1,1,1,0,... -> (10,4)=1,(10,5)=1,(10,6)=1
+                  row11: ...0,0,0,0,1,0,1,0,... -> (11,4)=1,(11,6)=1
+                  row12: ...0,0,0,0,0,1,0,0,... -> (12,5)=1
+                  That's a plus shape (center missing). Output color 7 (orange).
+        Example5: small pattern is a plus shape? Actually it's a 3x3 with center? 
+                  Input rows 8-10, cols 2-4:
+                  row8: ...0,0,1,0,1,0,... -> (8,2)=1,(8,4)=1
+                  row9: ...0,0,0,1,0,0,... -> (9,3)=1
+                  row10: ...0,0,1,1,1,0,... -> (10,2)=1,(10,3)=1,(10,4)=1
+                  That's a T shape? Output color 3 (green).
+        So the mapping from small pattern to output color is not consistent.
+        But note: In each example, the small pattern is always color 1 (blue).
+        The large pattern is always color 8 (light blue).
+        The output replaces all 8 with a new color, and removes the 1's.
+        The new color seems to be the same for all examples? No, it varies.
+        Actually, looking at the outputs:
+        Example1: new color = 2 (red)
+        Example2: new color = 3 (green)
+        Example3: new color = 2 (red)
+        Example4: new color = 7 (orange)
+        Example5: new color = 3 (green)
+        So the new color is not fixed. Perhaps it is determined by the shape of the small pattern?
+        Let's list the small pattern shapes:
+        Ex1: plus shape (center missing) -> color 2
+        Ex2: T shape? Actually it's like a plus with top missing? -> color 3
+        Ex3: plus shape (center missing) -> color 2
+        Ex4: plus shape (center missing) -> color 7
+        Ex5: T shape? -> color 3
+        So plus shape gives 2 or 7, T shape gives 3. Not consistent.
+        Maybe the new color is determined by the position or something else?
+        Another possibility: The small pattern is a "seed" that indicates the color to use for the large pattern. But the seed itself is always blue (1). So maybe the transformation is: replace all 8 with the color that is the most frequent color in the small pattern? But small pattern only has 1's and background. That doesn't work.
+        Wait, maybe the small pattern is actually a "stamp" that is used to color the large pattern? But in output, the small pattern disappears.
+        Let's look at the large pattern shapes:
+        Ex1: large pattern is a complex shape (like a blob) -> output color 2
+        Ex2: large pattern is a plus-like shape (3x3 with center?) Actually it's a 3x3 pattern: 
+             [8,8,0,8,0,8,8]? Wait from input: rows 2-4, cols 4-10: 
+             row2: ...0,0,0,0,8,8,0,8,0,8,8,0,... -> pattern: 8,8,0,8,0,8,8
+             row3: ...0,0,0,0,8,0,8,0,8,0,8,0,... -> 8,0,8,0,8,0,8
+             row4: ...0,0,0,0,8,8,0,8,0,8,8,0,... -> 8,8,0,8,0,8,8
+             That's a plus shape (like a cross). Output color 3.
+        Ex3: large pattern is a plus shape? Actually it's a 5x5 pattern with holes? 
+             Input rows 0-4, cols 3-9: 
+             row0: ...0,0,0,8,0,0,0,8,0,... -> 8,0,0,0,8
+             row1: ...0,8,0,8,0,8,0,8,0,... -> 8,0,8,0,8
+             row2: ...0,8,8,8,8,8,8,8,8,... -> 8,8,8,8,8
+             row3: ...0,8,0,8,0,8,0,8,0,... -> 8,0,8,0,8
+             row4: ...0

@@ -1,0 +1,22 @@
+### response[0]
+```python
+import numpy as np
+
+def transform(input_grid: np.ndarray) -> np.ndarray:
+    """
+    Transforms a 2x2 input grid into a 6x6 output grid by tiling a 3x3 pattern
+    of 2x2 blocks. Blocks in even rows (0 and 2) are the original input; blocks
+    in the odd row (1) are the input horizontally mirrored (columns swapped).
+    """
+    # Create horizontally mirrored version of the input
+    mirrored = np.fliplr(input_grid)  # equivalent to input_grid[:, ::-1]
+
+    # Repeat each version 3 times horizontally to form rows of blocks
+    top_row_blocks = np.tile(input_grid, (1, 3))   # shape (2, 6)
+    middle_row_blocks = np.tile(mirrored, (1, 3))  # shape (2, 6)
+    bottom_row_blocks = top_row_blocks              # same as top
+
+    # Stack vertically to get the final 6x6 output
+    output_grid = np.vstack((top_row_blocks, middle_row_blocks, bottom_row_blocks))
+    return output_grid
+```

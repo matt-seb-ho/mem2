@@ -322,7 +322,10 @@ def _run_condition_subprocess(condition: AxisCondition, args: argparse.Namespace
 
 def render_aggregate(results: list[dict[str, Any]], *, started_at: datetime, wall_time_s: float) -> str:
     success_count = sum(1 for row in results if row.get("success"))
-    engaged_count = sum(1 for row in results if str(row.get("engagement_verdict", "")).startswith("YES"))
+    explicit_yes_count = sum(1 for row in results if str(row.get("engagement_verdict", "")).startswith("YES"))
+    check_count = sum(1 for row in results if str(row.get("engagement_verdict", "")).startswith("CHECK"))
+    baseline_count = sum(1 for row in results if str(row.get("engagement_verdict", "")).startswith("N/A"))
+    no_count = sum(1 for row in results if str(row.get("engagement_verdict", "")).startswith("NO"))
     total_calls = sum(int(row.get("llm_calls") or 0) for row in results)
     known_costs = [float(row["cost_usd"]) for row in results if row.get("cost_usd") is not None]
     total_cost = sum(known_costs) if known_costs else None
@@ -336,7 +339,10 @@ def render_aggregate(results: list[dict[str, Any]], *, started_at: datetime, wal
         "- Model: deepseek/deepseek-v4-flash via OpenRouter",
         f"- Conditions attempted: {len(results)}",
         f"- Conditions succeeded: {success_count}/{len(results)}",
-        f"- Adapted memory engaged verdicts: {engaged_count}/{len(results)} YES",
+        f"- Explicit adapter/source engagement: {explicit_yes_count}/{len(results)} YES",
+        f"- Retrieved content present, needs manual builder-level confirmation: {check_count}/{len(results)} CHECK",
+        f"- Baseline or intentionally memory-free controls: {baseline_count}/{len(results)} N/A",
+        f"- Empty retrieval or failed engagement: {no_count}/{len(results)} NO",
         f"- Started UTC: {started_at.isoformat(timespec='seconds')}",
         "",
         "## Per-condition engagement verdict",
@@ -475,8 +481,12 @@ def main(argv: list[str] | None = None) -> None:
         return
     results = run_sweep(args)
     success_count = sum(1 for row in results if row.get("success"))
-    engaged_count = sum(1 for row in results if str(row.get("engagement_verdict", "")).startswith("YES"))
-    print(f"Wrote {args.out} with {success_count}/{len(results)} successful runs and {engaged_count} YES engagement verdicts.")
+    explicit_yes_count = sum(1 for row in results if str(row.get("engagement_verdict", "")).startswith("YES"))
+    check_count = sum(1 for row in results if str(row.get("engagement_verdict", "")).startswith("CHECK"))
+    print(
+        f"Wrote {args.out} with {success_count}/{len(results)} successful runs, "
+        f"{explicit_yes_count} YES verdicts, and {check_count} CHECK verdicts."
+    )
 
 
 if __name__ == "__main__":

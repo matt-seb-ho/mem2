@@ -1,0 +1,46 @@
+### response[0]
+```python
+
+import numpy as np
+
+def transform(input_grid: np.ndarray) -> np.ndarray:
+    """
+    Transforms a 2x2 input grid into a 6x6 output grid by tiling the input
+    in a 2x2 block pattern, then applying a checkerboard-like swap of the
+    two rows of the 2x2 block in the second and fourth rows of tiles.
+    
+    More precisely:
+    - The output is 6x6, formed by a 3x3 arrangement of 2x2 blocks.
+    - The top-left block is the original input.
+    - The block to its right is the original input (same orientation).
+    - The block below the top-left is the input with its two rows swapped.
+    - The block below the second column is also the input with rows swapped.
+    - This pattern repeats: rows 0,2,4 of blocks use original orientation;
+      rows 1,3,5 of blocks use swapped orientation.
+    """
+    # Input is 2x2
+    h, w = input_grid.shape
+    # Output size: 3 times the input size in each dimension
+    out_h, out_w = h * 3, w * 3
+    output = np.zeros((out_h, out_w), dtype=input_grid.dtype)
+    
+    # Precompute the two row orders
+    normal = input_grid                    # rows as given
+    swapped = input_grid[[1, 0], :]        # rows swapped
+    
+    # Iterate over the 3x3 grid of 2x2 blocks
+    for block_row in range(3):
+        for block_col in range(3):
+            # Determine which 2x2 pattern to use
+            if block_row % 2 == 0:
+                pattern = normal
+            else:
+                pattern = swapped
+            # Place the pattern into the output
+            row_start = block_row * h
+            col_start = block_col * w
+            output[row_start:row_start+h, col_start:col_start+w] = pattern
+    
+    return output
+
+```

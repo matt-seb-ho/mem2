@@ -1,0 +1,27 @@
+{
+  "axis": "1",
+  "condition": "pathrag",
+  "baseline": false,
+  "success": true,
+  "error": null,
+  "run_id": "2026-05-13T20-37-28Z_pathrag_n3_seed42_smoke-2026-05-13",
+  "trace_dir": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-13T20-37-28Z_pathrag_n3_seed42_smoke-2026-05-13",
+  "summary_path": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-13T20-37-28Z_pathrag_n3_seed42_smoke-2026-05-13/summary.md",
+  "llm_calls": 3,
+  "retrieval_hits": 21,
+  "retrieval_metadata": [
+    "retriever=pathrag",
+    "paths_found=51",
+    "paths_rendered=5",
+    "num_selected=6",
+    "min_reliability=0.1",
+    "top_reliability=0.6666666666666666",
+    "adapted_memory_source=pathrag_memory_v1",
+    "adapted_records_loaded=270"
+  ],
+  "sample_retrieval": "{\"name\": \"within bounds\"}",
+  "sample_prompt_snippet": "### Introduction Given a puzzle containing input-output grid pairs as reference examples, carefully observe the patterns to predict the output grid for new test input. Within a puzzle, each pair follows the same trans...",
+  "engagement_verdict": "YES - label visible",
+  "cost_usd": null,
+  "wall_time_s": 87.0637491249945
+}

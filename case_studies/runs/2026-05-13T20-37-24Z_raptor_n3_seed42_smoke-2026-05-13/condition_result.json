@@ -1,0 +1,27 @@
+{
+  "axis": "1",
+  "condition": "raptor",
+  "baseline": false,
+  "success": true,
+  "error": null,
+  "run_id": "2026-05-13T20-37-24Z_raptor_n3_seed42_smoke-2026-05-13",
+  "trace_dir": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-13T20-37-24Z_raptor_n3_seed42_smoke-2026-05-13",
+  "summary_path": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-13T20-37-24Z_raptor_n3_seed42_smoke-2026-05-13/summary.md",
+  "llm_calls": 3,
+  "retrieval_hits": 18,
+  "retrieval_metadata": [
+    "retriever=raptor",
+    "scoring_mode=raptor_tree_descent",
+    "summary_source=raptor_tree_v1",
+    "tree_source=raptor_tree_v1",
+    "tree_depth_used=2",
+    "top_k=3",
+    "num_concepts_total=270",
+    "num_selected=3"
+  ],
+  "sample_retrieval": "{\"name\": \"extract objects\", \"type\": \"leaf\"}",
+  "sample_prompt_snippet": "### Introduction Given a puzzle containing input-output grid pairs as reference examples, carefully observe the patterns to predict the output grid for new test input. Within a puzzle, each pair follows the same trans...",
+  "engagement_verdict": "YES - label visible",
+  "cost_usd": null,
+  "wall_time_s": 1.7136259169783443
+}

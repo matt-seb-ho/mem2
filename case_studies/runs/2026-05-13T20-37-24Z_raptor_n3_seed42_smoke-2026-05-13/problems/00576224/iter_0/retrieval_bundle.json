@@ -1,0 +1,51 @@
+{
+  "problem_uid": "00576224",
+  "hint_text": "## types\n- axis := Literal[\"x\", \"y\", \"both\", \"horizontal\", \"vertical\"] | int | float | tuple[axis, int | float]\n- dimensions := tuple[int, int]\n- direction := Literal[\"up\", \"down\", \"left\", \"right\"]\n- list[symmetry := Callable[[position], position]]\n- pattern := str | Callable[[int], grid]\n- shape := Any\n- symmetry := Callable[[position], position]\n\n## grid manipulation routines\n- concept: draw object\n  description: draw a sprite on top of a base grid, drawing over the base grid with the sprite's non-background pixels\n  output_typing: grid\n  parameters:\n    - sprite (type: grid)\n    - base (type: grid)\n    - position (type: position)\n    - background (type: color)\n  cues:\n    - if input objects are replicated or overlaid one or more times in the output\n    - if a sprite, motif, or pattern is drawn or overlaid at a specific position in the output grid\n    - if a completed, modified, or transformed region is overlaid back onto the original grid at its original or a specified position\n    - if colored regions, patterns, or sprites are overlaid at specific positions or inside larger objects/frames in the output grid\n    - if layers or patterns are built up by drawing on top of each other, or objects are redrawn to restore outlines or details\n    - if the output grid is constructed by assembling multiple copies of an object at specified positions\n  implementation:\n    - overlay the sprite's non-background pixels onto the base grid at the specified position, leaving background pixels unchanged\n- concept: create new grid\n  description: create a new grid with specified dimensions, initialized with a fill color\n  output_typing: grid\n  parameters:\n    - dimensions (type: dimensions := tuple[int, int])\n    - fill color (type: color)\n  cues:\n    - if output grid dimensions differ from input grid dimensions\n    - if output grid content is initialized as blank or filled with a single color before further drawing or tiling\n    - if output grid is a fixed size (e.g., 1x1, single row/column, or specific pattern) regardless of input grid size or content\n    - if output grid dimensions depend on the number of objects or layers in the input\n    - if output grid is larger or smaller than any input region and not a direct copy of any input region\n  implementation:\n    - use numpy.full or numpy.zeros to create a new grid with the specified dimensions and fill color\n    - ensure the grid is initialized before any drawing or overlay operations\n    - parameterize the grid size and fill color to allow for flexible reuse in different contexts\n\n## other routines\n### intermediate\n- concept: extract objects\n  parameters:\n    - input grid (type: grid)\n    - single color (type: bool)\n    - connectivity (type: str)\n    - background color (type: str)\n    - criteria (type: selection criteria := Callable[[object], bool])\n--- RAPTOR recursive tree path ---\n[rt_L1_N000]\n- **Shared solver theme**: Both communities involve constructing or manipulating structured visual patterns from discrete components\u2014objects in one case, symmetric line pyramids in the other\u2014using routines for extraction, transformation, and generation.\n\n- **When retrieval should descend into this parent**: When the task requires operating on multiple independent objects (extracting, transforming, recombining) or generating symmetric, alternating patterns with decreasing lengths, especially if the output involves spatial arrangement, alignment, or composition from parts.\n\n- **Key differences among child nodes**: Community 0 focuses on general object manipulation (extract, rotate, scale, sort) and structural descriptors (rectangles, stripes, frames), while Community 2 is narrowly about a specific symmetric pyramid pattern with alternating colors and decrementing lengths. Community 0 includes property queries and construction operations; Community 2 is purely generative for one pattern type.\n[rt_L0_N000]\n- **Commonality**: This community centers on **object extraction and manipulation**, providing routines to identify, isolate, transform (rotate, reflect, scale, move, split), and recombine discrete objects within a grid, as well as structures that describe common patterns (frames, stripes, nested layers).\n\n- **When to retrieve**: A solver should retrieve this community when the task requires **operating on multiple independent colored objects**, especially when the output is constructed by rearranging, mirroring, scaling, or overlaying these objects, or when the solution involves spatial ordering, alignment, or composition from parts.\n\n- **Key distinction between members**: Member concepts split into **operational routines** (e.g., `extract objects`, `rotate object`, `sort objects`, `draw object`) that define transformations and actions, and **structural descriptors** (e.g., `rectangle object`, `stripe`, `frame`, `nested layers`) that define common shapes or arrangements used as input patterns or output components. Some routines are **property queries** (e.g., `has color criteria`, `is_touching`, `is symmetric`) that guide conditional logic, while others are **construction operations** (e.g., `create new grid`, `create rectangle`, `combine objects`) that build the output.\n--- RAPTOR adapted leaf records ---\n- extract objects [rt_L0_N000] path=['rt_L0_N000', 'rt_L1_N000']: extract objects: Given an input grid (or region), a background color (default black), connectivity (4-way, 8-way, or none), and optional single-color and criteria filters, return a list of objects (contiguous or non-contiguous) that satisfy the criteria. This routine is the foundational step for any task that requires operating on multiple independent colored objects.\n- draw object [rt_L0_N000] path=['rt_L0_N000', 'rt_L1_N000']: draw object: a routine that overlays a sprite's non-background pixels onto a base grid at a specified position, leaving background pixels unchanged. Parameters: sprite (grid), base (grid), position (position), background (color, optional). Used when input objects are replicated or overlaid in the output, or when layers are built up by drawing on top of each other.\n- create new grid [rt_L0_N000] path=['rt_L0_N000', 'rt_L1_N000']: create new grid: routine that creates a new grid with specified dimensions (rows, columns) and an optional fill color (default 0). Used when output grid size differs from input, or when output is initialized as blank or filled before further drawing. Implementation uses numpy.full or numpy.zeros.",
+  "retrieved_items": [
+    {
+      "name": "extract objects",
+      "type": "leaf"
+    },
+    {
+      "name": "draw object",
+      "type": "leaf"
+    },
+    {
+      "name": "create new grid",
+      "type": "leaf"
+    },
+    {
+      "name": "rt_L1_N000",
+      "type": "raptor_tree_node",
+      "member_communities": [
+        "community_0",
+        "community_2"
+      ]
+    },
+    {
+      "name": "rt_L0_N000",
+      "type": "raptor_tree_node",
+      "member_communities": [
+        "community_0"
+      ]
+    }
+  ],
+  "metadata": {
+    "retriever": "raptor",
+    "scoring_mode": "raptor_tree_descent",
+    "summary_source": "raptor_tree_v1",
+    "tree_source": "raptor_tree_v1",
+    "tree_depth_used": 2,
+    "tree_path": [
+      "rt_L1_N000",
+      "rt_L0_N000"
+    ],
+    "top_k": 3,
+    "num_concepts_total": 270,
+    "num_selected": 3,
+    "num_tree_levels": 2,
+    "adapted_memory_source": "raptor_memory_v1",
+    "adapted_records_loaded": 270,
+    "adapted_leaf_records_rendered": 3
+  }
+}

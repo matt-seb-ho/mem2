@@ -1,0 +1,25 @@
+{
+  "axis": "4",
+  "condition": "variant_structured_routine",
+  "baseline": false,
+  "success": true,
+  "error": null,
+  "run_id": "2026-05-13T20-43-47Z_variant_structured_routine_n3_seed42_smoke-2026-05-13",
+  "trace_dir": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-13T20-43-47Z_variant_structured_routine_n3_seed42_smoke-2026-05-13",
+  "summary_path": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-13T20-43-47Z_variant_structured_routine_n3_seed42_smoke-2026-05-13/summary.md",
+  "llm_calls": 3,
+  "retrieval_hits": 33,
+  "retrieval_metadata": [
+    "retriever=ps_topk",
+    "scoring_mode=topk",
+    "top_k=10",
+    "num_concepts_total=270",
+    "num_selected=10",
+    "variant=structured_routine"
+  ],
+  "sample_retrieval": "{\"name\": \"extract objects\"}",
+  "sample_prompt_snippet": "### Introduction Given a puzzle containing input-output grid pairs as reference examples, carefully observe the patterns to predict the output grid for new test input. Within a puzzle, each pair follows the same trans...",
+  "engagement_verdict": "CHECK - retrieved content present",
+  "cost_usd": null,
+  "wall_time_s": 82.80896399996709
+}

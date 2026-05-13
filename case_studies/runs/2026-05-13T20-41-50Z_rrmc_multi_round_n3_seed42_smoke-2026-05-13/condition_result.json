@@ -1,0 +1,27 @@
+{
+  "axis": "3",
+  "condition": "rrmc_multi_round",
+  "baseline": false,
+  "success": true,
+  "error": null,
+  "run_id": "2026-05-13T20-41-50Z_rrmc_multi_round_n3_seed42_smoke-2026-05-13",
+  "trace_dir": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-13T20-41-50Z_rrmc_multi_round_n3_seed42_smoke-2026-05-13",
+  "summary_path": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-13T20-41-50Z_rrmc_multi_round_n3_seed42_smoke-2026-05-13/summary.md",
+  "llm_calls": 3,
+  "retrieval_hits": 12,
+  "retrieval_metadata": [
+    "retriever=rrmc_interactive",
+    "scoring_mode=rrmc_multi_round",
+    "num_rounds=2",
+    "coverage_score=17",
+    "converged=False",
+    "adapted_memory_source=rrmc_memory_v1",
+    "adapted_records_loaded=270",
+    "adapted_selector_items_rendered=3"
+  ],
+  "sample_retrieval": "{\"name\": \"recolor object\"}",
+  "sample_prompt_snippet": "### Introduction Given a puzzle containing input-output grid pairs as reference examples, carefully observe the patterns to predict the output grid for new test input. Within a puzzle, each pair follows the same trans...",
+  "engagement_verdict": "YES - label visible",
+  "cost_usd": null,
+  "wall_time_s": 63.25267383293249
+}

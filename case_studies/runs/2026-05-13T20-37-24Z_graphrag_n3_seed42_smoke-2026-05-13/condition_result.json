@@ -1,0 +1,27 @@
+{
+  "axis": "1",
+  "condition": "graphrag",
+  "baseline": false,
+  "success": true,
+  "error": null,
+  "run_id": "2026-05-13T20-37-24Z_graphrag_n3_seed42_smoke-2026-05-13",
+  "trace_dir": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-13T20-37-24Z_graphrag_n3_seed42_smoke-2026-05-13",
+  "summary_path": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-13T20-37-24Z_graphrag_n3_seed42_smoke-2026-05-13/summary.md",
+  "llm_calls": 3,
+  "retrieval_hits": 24,
+  "retrieval_metadata": [
+    "retriever=graphrag",
+    "scoring_mode=graphrag_hierarchical_reports",
+    "reports_source=hierarchical_v1",
+    "summary_source=hierarchical_reports_v1",
+    "top_k_communities=2",
+    "num_concepts_total=270",
+    "num_reports_selected=7",
+    "num_report_concepts=255"
+  ],
+  "sample_retrieval": "{\"community\": \"L2_C000\", \"level\": 2, \"members\": [\"adjusted position\", \"aligned_inside\", \"alignment criteria\", \"all pairs\", \"all pixels are color criteria\", \"all pixels equal in row or column criteria\", \"all positions\", \"all positions within grid\", \"all vali...",
+  "sample_prompt_snippet": "### Introduction Given a puzzle containing input-output grid pairs as reference examples, carefully observe the patterns to predict the output grid for new test input. Within a puzzle, each pair follows the same trans...",
+  "engagement_verdict": "YES - label visible",
+  "cost_usd": null,
+  "wall_time_s": 49.042549167061225
+}

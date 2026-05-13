@@ -1,0 +1,51 @@
+{
+  "problem_uid": "00576224",
+  "hint_text": "- concept: fixed pattern\n  uot_question: Does the task involve selecting a candidate from a set based on a scoring or evaluation function?\n  uot_expected_yes_ratio: 0.50\n  uot_entropy_reward: 0.90\n  information_gain_target: uncertainty about whether the task is a selection-overlay problem versus a transformation problem\n  simulation_tree_role: root_candidate\n  yes_partition_hint: observations where the solution picks the best candidate by maximizing a criterion like largest area or most holes plugg\n  no_partition_hint: observations where the solution applies a transformation, pattern completion, or rule without explicit candidate scoring\n  reward_propagation_notes: A yes answer strongly suggests the fixed pattern concept is relevant, increasing expected reward for subsequent overlay steps; a no answer prunes this branch entirely.\n\n- concept: is blank criteria\n  uot_question: Does this object consist solely of the specified background color?\n  uot_expected_yes_ratio: 0.50\n  uot_entropy_reward: 0.90\n  information_gain_target: uncertainty about whether object is meaningful or empty\n  simulation_tree_role: root_candidate\n  yes_partition_hint: object with all pixels equal to the background color\n  no_partition_hint: object with at least one pixel different from the background color\n  reward_propagation_notes: If object is blank, it should be discarded; if not blank, further analysis is needed\n\n- concept: is color criteria\n  uot_question: Does the object have the target color?\n  uot_expected_yes_ratio: 0.50\n  uot_entropy_reward: 1.00\n  information_gain_target: uncertainty about the object's color match\n  simulation_tree_role: root_candidate\n  yes_partition_hint: object whose color equals the target color\n  no_partition_hint: object whose color does not equal the target color\n  reward_propagation_notes: A balanced yes/no split yields maximum entropy reduction, making this concept a high-value early discriminator.",
+  "retrieved_items": [
+    {
+      "name": "fixed pattern"
+    },
+    {
+      "name": "is blank criteria"
+    },
+    {
+      "name": "is color criteria"
+    }
+  ],
+  "metadata": {
+    "retriever": "uot_entropy",
+    "top_k": 3,
+    "num_rounds": 2,
+    "rounds": [
+      {
+        "round": 0,
+        "added": [
+          "fixed pattern",
+          "is blank criteria"
+        ],
+        "reward": 1.0
+      },
+      {
+        "round": 1,
+        "added": [
+          "is color criteria",
+          "has color criteria"
+        ],
+        "reward": 1.0,
+        "gain": 0.0
+      }
+    ],
+    "abstained": true,
+    "abstain_reason": "abstained at round 1: info-gain (0.000) < min_gain (0.05)",
+    "reward_history": [
+      1.0,
+      1.0
+    ],
+    "lamb": 0.4,
+    "min_gain": 0.05,
+    "num_selected": 3,
+    "adapted_memory_source": "uot_memory_v1",
+    "adapted_records_loaded": 270,
+    "adapted_entropy_items_rendered": 3
+  }
+}

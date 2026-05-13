@@ -1,0 +1,61 @@
+{
+  "problem_uid": "00576224",
+  "hint_text": "## entities (local)\n- fixed pattern\n  lightrag_local_entities: fixed pattern, colored pixels, motif, patch\n  low_level_keywords: fixed pattern, colored pixels, motif, patch\n  entity_value_summary: The fixed pattern is a small grid or sprite with a fixed arrangement of colored pixels, used as a motif or patch to be overlaid at a specific position.\n- period detection\n  lightrag_local_entities: period detection, grid, axis, repeating pattern, sprite, symmetry\n  low_level_keywords: period detection, grid, axis, repeating pattern, sprite, symmetry\n  entity_value_summary: period detection is a routine that determines the period (height or width) of a repeating pattern in a grid. It takes a grid as input and optionally an axis (horizontal or vertical). The grid is composed of repeated copies of a sprite, possibly with symmetry. The output is the minimal size of the repeating unit. The implementation uses a set to track seen elements and filter duplicates while preserving original order\n- tiling of mirrored sprites\n  lightrag_local_entities: input sprite, mirrored copy, horizontal reflection, vertical reflection, both reflections, regular pattern\n  low_level_keywords: input sprite, mirrored copy, horizontal reflection, vertical reflection, both reflections, regular pattern\n  entity_value_summary: The concept involves an input sprite that is replicated multiple times, with each copy optionally transformed by horizontal reflection, vertical reflection, or both, arranged in a regular pattern such as a 2x3 grid to form an output grid.\n\n## relationships (global)\n- draw object --co-activates-with-- extract objects  (co_activation score 203.8)\n  lightrag_global_relationships: extract objects uses find object\n  relation_value_summary: extract objects uses find object\n- extract objects --co-activates-with-- recolor object  (co_activation score 202.6)\n  lightrag_global_relationships: extract objects uses find object\n  relation_value_summary: extract objects uses find object\n- create new grid --co-activates-with-- extract objects  (co_activation score 168.5)",
+  "retrieved_items": [
+    {
+      "type": "entity",
+      "name": "fixed pattern"
+    },
+    {
+      "type": "entity",
+      "name": "period detection"
+    },
+    {
+      "type": "entity",
+      "name": "tiling of mirrored sprites"
+    },
+    {
+      "type": "edge",
+      "src": "draw object",
+      "dst": "extract objects",
+      "score": 203.8290077707524,
+      "edge_kind": "co_activation",
+      "label": "co-activates-with"
+    },
+    {
+      "type": "edge",
+      "src": "extract objects",
+      "dst": "recolor object",
+      "score": 202.63430134747725,
+      "edge_kind": "co_activation",
+      "label": "co-activates-with"
+    },
+    {
+      "type": "edge",
+      "src": "create new grid",
+      "dst": "extract objects",
+      "score": 168.45909511276008,
+      "edge_kind": "co_activation",
+      "label": "co-activates-with"
+    }
+  ],
+  "metadata": {
+    "retriever": "lightrag",
+    "scoring_mode": "lightrag_dual",
+    "scoring_detail": "dense_primary_sparse_secondary",
+    "dual_signal_used": true,
+    "num_dense_candidates": 270,
+    "num_dense_entity_hits": 2569,
+    "top_k_entities": 3,
+    "top_m_relationships": 3,
+    "num_concepts_total": 270,
+    "num_edges_considered": 5841,
+    "num_edges_ranked": 4687,
+    "num_entities_selected": 3,
+    "num_edges_selected": 3,
+    "adapted_memory_source": "lightrag_memory_v1",
+    "adapted_records_loaded": 270,
+    "adapted_local_items_rendered": 3,
+    "adapted_relationship_items_rendered": 3
+  }
+}

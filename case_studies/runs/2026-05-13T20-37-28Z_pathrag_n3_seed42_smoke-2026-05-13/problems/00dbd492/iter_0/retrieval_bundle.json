@@ -1,0 +1,41 @@
+{
+  "problem_uid": "00dbd492",
+  "hint_text": "## key relational paths (ascending reliability)\n  [0.400] within bounds -> reflect direction --parameterizes-- vertical_towards\n  [0.500] which side of rectangle hit --same_as-- within bounds --related_to-- vertical line beneath object criteria\n  [0.500] which side of rectangle hit --same_as-- within bounds --related_to-- vertical line beneath object criteria\n  [0.500] within bounds --same_as-- pixel is inside grid criteria --same_as-- vertical_towards\n  [0.667] within bounds --related_to-- vertical line beneath object criteria\n\n## adapted PathRAG relational paths (ascending reliability)\n  [0.950] vertical_towards: determine the vertical direction from source to target; vertical_towards parameterizes target; the target object or pixel; target has y-coordinate; vertical position of a pixel; if target.y < source.y then up; direction when target.y < source.y\n  [0.950] vertical_towards: determine the vertical direction from source to target; vertical_towards parameterizes source; the source object or pixel; source has y-coordinate; vertical position of a pixel; if target.y > source.y then down; direction when target.y > source.y\n  [0.950] which side of rectangle hit: determine which side of a rectangle a given position is on; takes position as input; the given position to check; takes rectangle as input; the rectangle to check against; uses bounding box of rectangle; rectangle's bounding box\n  [0.950] vertical line beneath object criteria: condition on whether a pixel is directly beneath an object; checks if pixel is directly beneath object; the pixel being checked; pixel undergoes upward movement; move upward from pixel to check first non-background pixel; upward movement targets first non-background pixel; the first non-background pixel encountered moving upward\n  [0.950] pixel is inside grid criteria: check if a pixel position is within the bounds of the grid; checks parameter; the pixel position to check\n\n## types\n- axis := Literal[\"x\", \"y\", \"both\", \"horizontal\", \"vertical\"] | int | float | tuple[axis, int | float]\n- dimensions := tuple[int, int]\n- direction := Literal[\"up\", \"down\", \"left\", \"right\"]\n- list[symmetry := Callable[[position], position]]\n- pattern := str | Callable[[int], grid]\n- shape := Any\n- symmetry := Callable[[position], position]\n\n## other routines\n### intermediate\n- concept: within bounds\n  description: check if a given position is within the valid bounds of the grid\n  output_typing: bool\n  parameters:\n    - position (type: position)\n    - grid (type: grid)\n  implementation:\n    - check that 0 <= x < grid width and 0 <= y < grid height\n- concept: reflect direction\n  description: compute the new direction after reflecting off a rectangle side, given the incoming direction and the side hit\n  output_typing: direction\n  parameters:\n    - direction (type: direction)\n    - hit_side (type: Literal[\"left\", \"right\", \"top\", \"bottom\"])\n  implementation:\n    - for each side, reverse the appropriate component of the direction (e.g., hitting \"left\" or \"right\" reverses x, \"top\" or \"bottom\" reverses y)\n- concept: which side of rectangle hit\n  description: determine which side of a rectangle a given position is on (left, right, top, or bottom)\n  output_typing: Literal[\"left\", \"right\", \"top\", \"bottom\"]\n  parameters:\n    - position (type: position)\n    - rectangle (type: object)\n  implementation:\n    - compare the position to the rectangle's bounding box; if x equals min_x, it's the left side, etc.\n- concept: vertical_towards\n  description: determine the vertical direction (\"up\" or \"down\") from the source to the target\n  output_typing: direction := Literal[\"up\", \"down\"]\n  parameters:\n    - target (type: object | position)\n    - source (type: object | position)\n  implementation:\n    - compare the y-coordinates of source and target; if target.y > source.y, direction is \"down\", else \"up\"\n### selection criteria\n- concept: pixel is inside grid criteria\n  description: check if a pixel position is within the bounds of the grid\n  output_typing: bool\n  parameters:\n    - position (type: position)\n    - grid (type: grid)\n  implementation:\n    - check that 0 <= x < grid width and 0 <= y < grid height\n- concept: vertical line beneath object criteria\n  description: condition on whether a pixel is directly beneath an object (e.g., chevron), i.e., moving upward from the pixel encounters the object before any other occurrence of the object color.\n  output_typing: bool\n  parameters:\n    - pixel (type: object)\n    - object (type: object)\n    - grid (type: grid)\n  implementation:\n    - for the given pixel, move upward (decreasing y) and check if the first non-background pixel encountered is part of the object\n    - ensure there are no object pixels between the pixel and the object above",
+  "retrieved_items": [
+    {
+      "name": "within bounds"
+    },
+    {
+      "name": "reflect direction"
+    },
+    {
+      "name": "vertical_towards"
+    },
+    {
+      "name": "which side of rectangle hit"
+    },
+    {
+      "name": "vertical line beneath object criteria"
+    },
+    {
+      "name": "pixel is inside grid criteria"
+    }
+  ],
+  "metadata": {
+    "retriever": "pathrag",
+    "seeds": [
+      "within bounds",
+      "which side of rectangle hit",
+      "vertical_towards",
+      "vertical line beneath object criteria"
+    ],
+    "paths_found": 51,
+    "paths_rendered": 5,
+    "num_selected": 6,
+    "min_reliability": 0.1,
+    "top_reliability": 0.6666666666666666,
+    "adapted_memory_source": "pathrag_memory_v1",
+    "adapted_records_loaded": 270,
+    "adapted_paths_rendered": 27
+  }
+}

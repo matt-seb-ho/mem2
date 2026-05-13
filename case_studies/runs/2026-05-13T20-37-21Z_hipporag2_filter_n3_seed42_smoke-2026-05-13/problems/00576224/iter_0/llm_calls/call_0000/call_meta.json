@@ -1,0 +1,16 @@
+{
+  "provider": "llmplus",
+  "provider_version": "0.1",
+  "wrapped_provider": "llmplus",
+  "request_kind": "generate",
+  "model": "deepseek/deepseek-v4-flash",
+  "gen_cfg": {
+    "temperature": 0.3,
+    "max_tokens": 2048
+  },
+  "latency_s": 0.0006462500896304846,
+  "prompt_count": 1,
+  "n_completions": 1,
+  "usage_before": {},
+  "usage_after": {}
+}

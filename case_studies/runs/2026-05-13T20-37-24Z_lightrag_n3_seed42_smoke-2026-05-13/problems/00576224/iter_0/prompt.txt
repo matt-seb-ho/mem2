@@ -1,0 +1,75 @@
+### Introduction
+Given a puzzle containing input-output grid pairs as reference examples, carefully observe the patterns to predict the output grid for new test input. Within a puzzle, each pair follows the same transformation rule. Grids are 2D numpy integer arrays with integers representing colors. 0 represents black and is often the background color.
+
+### Your Puzzle Grids
+Here are the input and output grids for the reference examples:
+Example 1
+Input:
+[[8, 6],
+ [6, 4]]
+Output:
+[[8, 6, 8, 6, 8, 6],
+ [6, 4, 6, 4, 6, 4],
+ [6, 8, 6, 8, 6, 8],
+ [4, 6, 4, 6, 4, 6],
+ [8, 6, 8, 6, 8, 6],
+ [6, 4, 6, 4, 6, 4]]
+
+Example 2
+Input:
+[[7, 9],
+ [4, 3]]
+Output:
+[[7, 9, 7, 9, 7, 9],
+ [4, 3, 4, 3, 4, 3],
+ [9, 7, 9, 7, 9, 7],
+ [3, 4, 3, 4, 3, 4],
+ [7, 9, 7, 9, 7, 9],
+ [4, 3, 4, 3, 4, 3]]
+
+Here is the input grid for the test example:
+Input:
+[[3, 2],
+ [7, 8]]
+### Instructions
+Write a Python function `transform` that converts a given input grid to its corresponding output grid based on the pattern observed in the reference examples. 
+- Your function should have signature: `def transform(input_grid: np.ndarray) -> np.ndarray:`
+- The input and output grids are 2D numpy arrays of integers.
+- Each grid cell is assigned a **color**, represented by an **integer**. These integers **do not have numerical meaning**; they **should not** be used in arithmetic operations. Think of these integers as **labels** rather than numbers.
+- Write your final code response in a markdown python code block (be sure to have "```python" in the line before your code and "```" in the line after your code).
+- No need to provide examples of the function call, just the function definition is sufficient.
+### Concepts from Previously Solved Puzzles
+We recorded concepts about structures and routines we observed in previously solved puzzles. These concepts may or may not be relevant to this puzzle, but they provide useful context to show examples of what structures may appear in the grids, what operations may be used, and how they might be composed. Concepts are annotated with fields like:
+- cues: (short for "relevance cues"), what to look for that might indicate this concept is relevant in this puzzle
+- implementation: notes on how this concept was implemented in past solution programs
+- output typing: what the output of this routine is (e.g. a grid, a list, a number, a bool, etc.)
+- parameters: a list of parameters that describe ways the concept may vary
+We also have some recommendations on how to approach problem solving with these concepts in mind:
+- We label the grid manipulation routines separately-- these directly affect the grids so they are easier to spot (along with structure concepts)
+- You might try to first identify which grid manipulation operations are used, then investigate their parameters
+- The non-grid manipulation routines might describe ways we've seen previous puzzles set parameters, so you can look to these for inspiration
+- There may not be exact matches to this list, so we encourage you to think about variations, novel ways to recombine existing ideas, as well as completely new concepts
+- These concepts and this approach are only suggestions, use them as you see fit
+
+## entities (local)
+- fixed pattern
+  lightrag_local_entities: fixed pattern, colored pixels, motif, patch
+  low_level_keywords: fixed pattern, colored pixels, motif, patch
+  entity_value_summary: The fixed pattern is a small grid or sprite with a fixed arrangement of colored pixels, used as a motif or patch to be overlaid at a specific position.
+- period detection
+  lightrag_local_entities: period detection, grid, axis, repeating pattern, sprite, symmetry
+  low_level_keywords: period detection, grid, axis, repeating pattern, sprite, symmetry
+  entity_value_summary: period detection is a routine that determines the period (height or width) of a repeating pattern in a grid. It takes a grid as input and optionally an axis (horizontal or vertical). The grid is composed of repeated copies of a sprite, possibly with symmetry. The output is the minimal size of the repeating unit. The implementation uses a set to track seen elements and filter duplicates while preserving original order
+- tiling of mirrored sprites
+  lightrag_local_entities: input sprite, mirrored copy, horizontal reflection, vertical reflection, both reflections, regular pattern
+  low_level_keywords: input sprite, mirrored copy, horizontal reflection, vertical reflection, both reflections, regular pattern
+  entity_value_summary: The concept involves an input sprite that is replicated multiple times, with each copy optionally transformed by horizontal reflection, vertical reflection, or both, arranged in a regular pattern such as a 2x3 grid to form an output grid.
+
+## relationships (global)
+- draw object --co-activates-with-- extract objects  (co_activation score 203.8)
+  lightrag_global_relationships: extract objects uses find object
+  relation_value_summary: extract objects uses find object
+- extract objects --co-activates-with-- recolor object  (co_activation score 202.6)
+  lightrag_global_relationships: extract objects uses find object
+  relation_value_summary: extract objects uses find object
+- create new grid --co-activates-with-- extract objects  (co_activation score 168.5)
