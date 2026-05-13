@@ -62,6 +62,7 @@ class PathRAGRetriever:
         max_path_length: int = 3,
         min_reliability: float = 0.1,
         max_paths_rendered: int = 5,
+        edge_kinds: tuple[str, ...] = ("co_activation", "openie_fact"),
         include_description: bool = True,
         skip_cues: bool = False,
         skip_implementation: bool = True,
@@ -71,6 +72,7 @@ class PathRAGRetriever:
         self.max_path_length = int(max_path_length)
         self.min_reliability = float(min_reliability)
         self.max_paths_rendered = int(max_paths_rendered)
+        self.edge_kinds = tuple(edge_kinds)
         self.include_description = bool(include_description)
         self.skip_cues = bool(skip_cues)
         self.skip_implementation = bool(skip_implementation)
@@ -90,7 +92,7 @@ class PathRAGRetriever:
                 metadata={"retriever": self.name, "reason": "empty_memory"},
             )
 
-        graph = ConceptGraph.build_from_memory(mem, min_co_overlap=1)
+        graph = ConceptGraph.build_from_memory(mem, min_co_overlap=1, load_openie_edges=True)
 
         q_toks = self._query_toks(problem, previous_attempts)
 
@@ -140,7 +142,7 @@ class PathRAGRetriever:
             skip_implementation=self.skip_implementation,
             usage_threshold=self.usage_threshold,
         )
-        path_block = self._render_paths(top_paths)
+        path_block = self._render_paths(graph, top_paths)
         hint = (path_block + "\n\n" + (base_hint or "")) if path_block else base_hint
 
         return RetrievalBundle(
@@ -195,7 +197,7 @@ class PathRAGRetriever:
             if len(path) > max_len:
                 continue
             current = path[-1]
-            for nbr, kind, _w in graph.neighbors(current, kinds=["co_activation"]):
+            for nbr, kind, _w in graph.neighbors(current, kinds=self.edge_kinds):
                 if nbr in path:
                     continue
                 new_path = path + [nbr]
@@ -215,17 +217,32 @@ class PathRAGRetriever:
         for i in range(len(path) - 1):
             src, dst = path[i], path[i + 1]
             w = 0.0
-            for nbr, kind, weight in graph.neighbors(src, kinds=["co_activation"]):
+            for nbr, kind, weight in graph.neighbors(src, kinds=self.edge_kinds):
                 if nbr == dst:
                     w = max(w, float(weight))
                     break
             prod *= w
         return prod / (1.0 + len(path))
 
-    def _render_paths(self, paths: list[tuple[float, list[str]]]) -> str:
+    def _render_paths(self, graph: ConceptGraph, paths: list[tuple[float, list[str]]]) -> str:
         if not paths:
             return ""
         lines = ["## key relational paths (ascending reliability)"]
         for rel, p in paths:
-            lines.append(f"  [{rel:.3f}] " + " → ".join(p))
+            lines.append(f"  [{rel:.3f}] " + self._render_path(graph, p))
         return "\n".join(lines)
+
+    def _render_path(self, graph: ConceptGraph, path: list[str]) -> str:
+        if len(path) < 2:
+            return " -> ".join(path)
+        parts = [path[0]]
+        for i in range(len(path) - 1):
+            src, dst = path[i], path[i + 1]
+            edge = graph.edge_between(src, dst, kinds=("openie_fact", "co_activation"))
+            if edge and edge.kind == "openie_fact":
+                predicate = str((edge.metadata or {}).get("predicate") or "relates_to").strip()
+                parts.append(f"--{predicate}--")
+            else:
+                parts.append("->")
+            parts.append(dst)
+        return " ".join(parts)

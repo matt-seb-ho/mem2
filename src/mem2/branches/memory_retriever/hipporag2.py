@@ -39,6 +39,7 @@ import re
 from typing import Any
 
 from mem2.branches.memory_retriever.hipporag_ppr import HippoRAGPPRRetriever
+from mem2.concepts.artifacts import load_openie_facts
 from mem2.concepts.memory import ConceptMemory
 from mem2.core.entities import (
     AttemptRecord,
@@ -92,17 +93,18 @@ class HippoRAG2FilterRetriever(HippoRAGPPRRetriever):
 
         candidates = [it["name"] for it in first_bundle.retrieved_items]
         mem = ConceptMemory.from_payload(memory.payload)
+        facts_by_source = self._facts_by_source(mem)
         query_text = self._build_query_text(problem, previous_attempts)
         provider = self._resolve_provider(ctx)
 
         # Stage 2 — filter rerank
         if provider is not None:
             filtered = self._filter_via_llm(
-                provider, query_text, candidates, mem,
+                provider, query_text, candidates, mem, facts_by_source,
             ) or candidates  # fall back to PPR ordering on failure
             filter_method = "llm"
         else:
-            filtered = self._filter_via_template(query_text, candidates, mem)
+            filtered = self._filter_via_template(query_text, candidates, mem, facts_by_source)
             filter_method = "token_overlap"
 
         selected = filtered[: self.final_top_k]
@@ -121,6 +123,7 @@ class HippoRAG2FilterRetriever(HippoRAGPPRRetriever):
             "first_stage_top_k": self.first_stage_top_k,
             "final_top_k": self.final_top_k,
             "filter_method": filter_method,
+            "fact_aware_filter": bool(facts_by_source),
             "post_filter_pool": len(filtered),
             "num_selected": len(selected),
         })
@@ -149,10 +152,16 @@ class HippoRAG2FilterRetriever(HippoRAGPPRRetriever):
         return " \n ".join(parts)
 
     def _filter_via_llm(
-        self, provider, query: str, candidates: list[str], mem: ConceptMemory,
+        self,
+        provider,
+        query: str,
+        candidates: list[str],
+        mem: ConceptMemory,
+        facts_by_source: dict[str, list[dict[str, Any]]],
     ) -> list[str] | None:
         cand_block = "\n".join(
             f"- {name}: {(mem.concepts[name].description or '')[:140]}"
+            f"{self._render_candidate_facts(name, facts_by_source)}"
             for name in candidates if name in mem.concepts
         )
         prompt = (
@@ -174,7 +183,11 @@ class HippoRAG2FilterRetriever(HippoRAGPPRRetriever):
             return None
 
     def _filter_via_template(
-        self, query: str, candidates: list[str], mem: ConceptMemory,
+        self,
+        query: str,
+        candidates: list[str],
+        mem: ConceptMemory,
+        facts_by_source: dict[str, list[dict[str, Any]]],
     ) -> list[str]:
         """Token-overlap rerank. Preserves PPR order as tiebreak via index."""
         q_toks = {tok.lower() for tok in WORD_RE.findall(query)}
@@ -191,8 +204,35 @@ class HippoRAG2FilterRetriever(HippoRAGPPRRetriever):
                 )
             for cue in c.cues or []:
                 doc_toks.update(tok.lower() for tok in WORD_RE.findall(cue))
+            for fact in facts_by_source.get(name, []):
+                fact_text = " ".join(
+                    str(fact.get(k) or "")
+                    for k in ("subject", "predicate", "object", "supporting_text")
+                )
+                doc_toks.update(tok.lower() for tok in WORD_RE.findall(fact_text))
             overlap = len(q_toks & doc_toks) if q_toks else 0.0
             # Primary: overlap (descending). Secondary: PPR rank (index, ascending).
             scored.append((-overlap, idx, name))
         scored.sort()
         return [name for _, _, name in scored]
+
+    def _facts_by_source(self, mem: ConceptMemory) -> dict[str, list[dict[str, Any]]]:
+        facts_by_source: dict[str, list[dict[str, Any]]] = {}
+        for fact in load_openie_facts(valid_concepts=mem.concepts.keys()):
+            source = fact.get("source_concept")
+            if isinstance(source, str) and source in mem.concepts:
+                facts_by_source.setdefault(source, []).append(fact)
+        return facts_by_source
+
+    def _render_candidate_facts(
+        self, name: str, facts_by_source: dict[str, list[dict[str, Any]]],
+    ) -> str:
+        facts = facts_by_source.get(name, [])[:3]
+        if not facts:
+            return ""
+        rendered = []
+        for fact in facts:
+            rendered.append(
+                f"{fact.get('subject', '')} {fact.get('predicate', '')} {fact.get('object', '')}"
+            )
+        return " | facts: " + "; ".join(rendered)

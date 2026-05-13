@@ -97,7 +97,7 @@ class MAGMAMultiGraphRetriever:
                 metadata={"retriever": self.name, "reason": "empty_memory"},
             )
 
-        graph = ConceptGraph.build_from_memory(mem, min_co_overlap=1)
+        graph = ConceptGraph.build_from_memory(mem, min_co_overlap=1, load_openie_edges=True)
         provider = self._resolve_provider(ctx)
         q_toks = self._query_toks(problem, previous_attempts)
 
@@ -105,7 +105,7 @@ class MAGMAMultiGraphRetriever:
         view_hits: dict[str, list[str]] = {}
         view_hits["semantic"] = self._semantic_view(graph, mem, q_toks)
         view_hits["temporal"] = self._temporal_view(graph, mem, q_toks)
-        view_hits["causal"] = self._causal_view(mem, q_toks)
+        view_hits["causal"] = self._causal_view(graph, mem, q_toks)
         view_hits["entity"] = self._entity_view(mem, q_toks)
 
         # Adaptive policy: rank views by hit count; LLM can override.
@@ -198,14 +198,15 @@ class MAGMAMultiGraphRetriever:
     def _semantic_view(
         self, graph: ConceptGraph, mem: ConceptMemory, q_toks: set[str],
     ) -> list[str]:
-        """Co-activation-weighted nodes scored by token overlap."""
+        """Co-activation and fact-edge nodes scored by token overlap."""
         scored: list[tuple[float, str]] = []
         for name, c in mem.concepts.items():
             overlap = len(q_toks & self._concept_toks(c)) if q_toks else 0
-            if overlap == 0:
+            fact_overlap = self._fact_edge_overlap(graph, name, q_toks)
+            if overlap == 0 and fact_overlap == 0:
                 continue
-            deg = graph.degree(name, kinds=["co_activation"])
-            scored.append((overlap + 0.01 * deg, name))
+            deg = graph.degree(name, kinds=["co_activation", "openie_fact"])
+            scored.append((overlap + fact_overlap + 0.01 * deg, name))
         scored.sort(reverse=True)
         return [n for _, n in scored[: self.top_k_per_view * 2]]
 
@@ -222,19 +223,38 @@ class MAGMAMultiGraphRetriever:
         return [n for _, n in scored[: self.top_k_per_view * 2]]
 
     def _causal_view(
-        self, mem: ConceptMemory, q_toks: set[str],
+        self, graph: ConceptGraph, mem: ConceptMemory, q_toks: set[str],
     ) -> list[str]:
-        """Nodes in dense problem-clusters (concepts reused across many problems)."""
-        scored: list[tuple[int, str]] = []
+        """Nodes in dense problem-clusters or fact-linked causal relations."""
+        scored: list[tuple[float, str]] = []
         for name, c in mem.concepts.items():
-            if not c.used_in:
+            fact_overlap = self._fact_edge_overlap(graph, name, q_toks)
+            fact_degree = graph.degree(name, kinds=["openie_fact"])
+            if not c.used_in and fact_degree <= 0:
                 continue
             overlap = len(q_toks & self._concept_toks(c))
-            if overlap == 0 and len(c.used_in) < 3:
+            if overlap == 0 and fact_overlap == 0 and len(c.used_in) < 3:
                 continue
-            scored.append((len(c.used_in) + overlap, name))
+            scored.append((len(c.used_in) + overlap + fact_overlap + 0.05 * fact_degree, name))
         scored.sort(reverse=True)
         return [n for _, n in scored[: self.top_k_per_view * 2]]
+
+    def _fact_edge_overlap(
+        self, graph: ConceptGraph, name: str, q_toks: set[str],
+    ) -> int:
+        if not q_toks:
+            return 0
+        score = 0
+        for nbr, kind, _weight in graph.neighbors(name, kinds=["openie_fact"]):
+            edge = graph.edge_between(name, nbr, kinds=["openie_fact"])
+            if not edge:
+                continue
+            text = " ".join(
+                str((edge.metadata or {}).get(k) or "")
+                for k in ("subject", "predicate", "object", "supporting_text")
+            )
+            score += len(q_toks & {t.lower() for t in WORD_RE.findall(text)})
+        return score
 
     def _entity_view(
         self, mem: ConceptMemory, q_toks: set[str],

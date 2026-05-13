@@ -95,12 +95,12 @@ class LightRAGRetriever:
         top_entities = [name for name, _ in ranked_entities[: self.top_k_entities]]
 
         # --- Global (relationship-level) scoring ------------------------
-        graph = ConceptGraph.build_from_memory(mem, min_co_overlap=1)
-        edge_scores: list[tuple[str, str, float]] = []
+        graph = ConceptGraph.build_from_memory(mem, min_co_overlap=1, load_openie_edges=True)
+        edge_scores: list[tuple[str, str, float, str, str]] = []
         for edge in graph.edges():
-            if edge.kind != "co_activation":
+            if edge.kind not in {"co_activation", "openie_fact"}:
                 continue
-            if edge.weight < self.min_edge_weight:
+            if edge.kind == "co_activation" and edge.weight < self.min_edge_weight:
                 continue
             e1_score = entity_scores.get(edge.src, 0)
             e2_score = entity_scores.get(edge.dst, 0)
@@ -110,7 +110,8 @@ class LightRAGRetriever:
             # scores to avoid killing asymmetric edges where one endpoint
             # has zero overlap.
             combined = float((e1_score + 1) * (e2_score + 1) * edge.weight)
-            edge_scores.append((edge.src, edge.dst, combined))
+            label = self._relationship_label(edge)
+            edge_scores.append((edge.src, edge.dst, combined, edge.kind, label))
         edge_scores.sort(key=lambda t: t[2], reverse=True)
         top_edges = edge_scores[: self.top_m_relationships]
 
@@ -125,8 +126,8 @@ class LightRAGRetriever:
         if top_edges:
             lines.append("")
             lines.append("## relationships (global)")
-            for src, dst, score in top_edges:
-                lines.append(f"- {src} ↔ {dst}  (co-activation strength {score:.1f})")
+            for src, dst, score, kind, label in top_edges:
+                lines.append(f"- {src} --{label}-- {dst}  ({kind} score {score:.1f})")
         hint = "\n".join(lines) if lines else None
 
         return RetrievalBundle(
@@ -134,7 +135,10 @@ class LightRAGRetriever:
             hint_text=hint,
             retrieved_items=[
                 *[{"type": "entity", "name": n} for n in top_entities],
-                *[{"type": "edge", "src": s, "dst": d, "score": sc} for s, d, sc in top_edges],
+                *[
+                    {"type": "edge", "src": s, "dst": d, "score": sc, "edge_kind": k, "label": label}
+                    for s, d, sc, k, label in top_edges
+                ],
             ],
             metadata={
                 "retriever": self.name,
@@ -160,3 +164,10 @@ class LightRAGRetriever:
         selector_model: str = "",
     ) -> RetrievalBundle:
         return self.retrieve(ctx, memory, problem, previous_attempts)
+
+    def _relationship_label(self, edge) -> str:
+        if edge.kind == "openie_fact":
+            predicate = str((edge.metadata or {}).get("predicate") or "").strip()
+            if predicate:
+                return predicate
+        return "co-activates-with"

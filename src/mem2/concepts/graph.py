@@ -24,9 +24,10 @@ from collections import defaultdict
 from dataclasses import asdict, dataclass, field
 from typing import Callable, Iterable
 
+from mem2.concepts.artifacts import load_openie_facts
 from mem2.concepts.memory import ConceptMemory
 
-EdgeKind = str  # "co_activation" | "embedding_sim" | "authorship_lineage"
+EdgeKind = str  # "co_activation" | "embedding_sim" | "authorship_lineage" | "openie_fact"
 
 
 @dataclass
@@ -192,6 +193,33 @@ class ConceptGraph:
     def edges(self) -> list[Edge]:
         return list(self._edges.values())
 
+    def edge_between(
+        self,
+        src: str,
+        dst: str,
+        *,
+        kinds: Iterable[EdgeKind] | None = None,
+    ) -> Edge | None:
+        ordered_kinds = list(kinds) if kinds else None
+        if ordered_kinds:
+            for wanted_kind in ordered_kinds:
+                for (e_src, e_dst, kind), edge in self._edges.items():
+                    if kind != wanted_kind:
+                        continue
+                    if kind == "authorship_lineage":
+                        if e_src == src and e_dst == dst:
+                            return edge
+                    elif {e_src, e_dst} == {src, dst}:
+                        return edge
+            return None
+        for (e_src, e_dst, kind), edge in self._edges.items():
+            if kind == "authorship_lineage":
+                if e_src == src and e_dst == dst:
+                    return edge
+            elif {e_src, e_dst} == {src, dst}:
+                return edge
+        return None
+
     def num_edges(self) -> int:
         return len(self._edges)
 
@@ -233,11 +261,15 @@ class ConceptGraph:
         embed_max_per_node: int = 8,
         min_co_overlap: int = 1,
         load_typed_edges: bool = True,
+        load_openie_edges: bool = False,
+        openie_facts_path: str | None = None,
     ) -> "ConceptGraph":
         """Convenience: build a graph from a ConceptMemory using co-activation
         (always) + embedding-sim (if ``embed_fn`` provided) + typed semantic
         edges from the prereq concept_graph_v1.json (when present and
-        ``load_typed_edges`` is True).
+        ``load_typed_edges`` is True) + OpenIE fact edges from
+        concept_facts_openie_v1.json (when present and ``load_openie_edges``
+        is True).
 
         Authorship-lineage edges are added by the reorg builder at reorg time.
         """
@@ -253,6 +285,8 @@ class ConceptGraph:
             )
         if load_typed_edges:
             g._maybe_load_typed_edges(mem)
+        if load_openie_edges:
+            g._maybe_load_openie_edges(mem, path=openie_facts_path)
         return g
 
     def _maybe_load_typed_edges(self, mem: ConceptMemory) -> None:
@@ -297,3 +331,39 @@ class ConceptGraph:
             # symmetric. For graph traversal we treat all as
             # undirected by default (kind != authorship_lineage).
             self.add_edge(src, tgt, kind=relation, weight=weight)
+
+    def _maybe_load_openie_edges(self, mem: ConceptMemory, *, path: str | None = None) -> None:
+        """Augment with shared OpenIE fact edges when the artifact exists.
+
+        Each fact connects its source concept to linked concepts using a single
+        ``openie_fact`` edge. The edge metadata carries the fact identity and
+        predicate so retrievers can render relationship text instead of a
+        generic co-activation label.
+        """
+        facts = load_openie_facts(path, valid_concepts=mem.concepts.keys())
+        if not facts:
+            return
+        valid_names = set(mem.concepts.keys())
+        for fact in facts:
+            src = fact.get("source_concept")
+            if not isinstance(src, str) or src not in valid_names:
+                continue
+            linked = fact.get("linked_concepts") or []
+            for dst in linked:
+                if not isinstance(dst, str) or dst == src or dst not in valid_names:
+                    continue
+                self.add_edge(
+                    src,
+                    dst,
+                    kind="openie_fact",
+                    weight=float(fact.get("confidence") or 1.0),
+                    metadata={
+                        "fact_id": fact.get("fact_id"),
+                        "source_concept": src,
+                        "predicate": fact.get("predicate"),
+                        "subject": fact.get("subject"),
+                        "object": fact.get("object"),
+                        "supporting_text": fact.get("supporting_text"),
+                        "relation_kind": fact.get("relation_kind"),
+                    },
+                )

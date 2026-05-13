@@ -35,6 +35,7 @@ from __future__ import annotations
 
 import re
 
+from mem2.concepts.artifacts import load_openie_facts
 from mem2.concepts.graph import ConceptGraph
 from mem2.concepts.memory import ConceptMemory
 from mem2.core.entities import (
@@ -105,6 +106,7 @@ class HippoRAGPPRRetriever:
         usage_threshold: int = 1,
         edge_kinds: tuple[str, ...] = (
             "co_activation",
+            "openie_fact",
             "uses", "is_a", "specializes", "opposite_of", "composed_of",
         ),
     ) -> None:
@@ -135,7 +137,7 @@ class HippoRAGPPRRetriever:
         # Build graph (co-activation edges only by default; embedding-sim
         # edges would need an embed_fn which we don't wire at retrieval
         # time).
-        graph = ConceptGraph.build_from_memory(mem, min_co_overlap=1)
+        graph = ConceptGraph.build_from_memory(mem, min_co_overlap=1, load_openie_edges=True)
 
         # Compute reset-probability vector via query-concept keyword overlap.
         q_tokens = _tokenize(_problem_text(problem))
@@ -148,6 +150,9 @@ class HippoRAGPPRRetriever:
             overlap = len(q_tokens & c_tokens)
             if overlap >= self.min_reset_overlap:
                 reset[name] = float(overlap)
+        fact_reset, fact_reset_matches = self._fact_reset_weights(mem, q_tokens)
+        for name, weight in fact_reset.items():
+            reset[name] = reset.get(name, 0.0) + weight
         total_mass = sum(reset.values())
         if total_mass <= 0:
             # Fall back to uniform: every node seeds PPR equally. Equivalent
@@ -170,10 +175,13 @@ class HippoRAGPPRRetriever:
         G = nx.Graph()
         for n in mem.concepts.keys():
             G.add_node(n)
+        fact_graph_edges_used = 0
         for edge in graph.edges():
             if edge.kind not in self.edge_kinds:
                 continue
             G.add_edge(edge.src, edge.dst, weight=float(edge.weight or 1.0))
+            if edge.kind == "openie_fact":
+                fact_graph_edges_used += 1
 
         # Only include concepts that are actually in the graph in the reset
         # map; extras raise NetworkXError.
@@ -215,7 +223,9 @@ class HippoRAGPPRRetriever:
                 "num_concepts_total": len(mem.concepts),
                 "num_selected": len(top_names),
                 "num_graph_edges": G.number_of_edges(),
+                "fact_graph_edges_used": fact_graph_edges_used,
                 "num_reset_seeds": sum(1 for v in reset_clipped.values() if v > 0),
+                "num_fact_reset_matches": fact_reset_matches,
             },
         )
 
@@ -230,3 +240,27 @@ class HippoRAGPPRRetriever:
         selector_model: str = "",
     ) -> RetrievalBundle:
         return self.retrieve(ctx, memory, problem, previous_attempts)
+
+    def _fact_reset_weights(
+        self,
+        mem: ConceptMemory,
+        q_tokens: set[str],
+    ) -> tuple[dict[str, float], int]:
+        if not q_tokens:
+            return {}, 0
+        weights: dict[str, float] = {}
+        matches = 0
+        for fact in load_openie_facts(valid_concepts=mem.concepts.keys()):
+            text = " ".join(
+                str(fact.get(k) or "")
+                for k in ("subject", "predicate", "object", "supporting_text")
+            )
+            overlap = len(q_tokens & _tokenize(text))
+            if overlap < self.min_reset_overlap:
+                continue
+            matches += 1
+            linked = fact.get("linked_concepts") or []
+            for name in linked:
+                if name in mem.concepts:
+                    weights[name] = weights.get(name, 0.0) + float(overlap)
+        return weights, matches
