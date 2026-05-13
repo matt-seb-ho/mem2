@@ -5,11 +5,13 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from case_studies.scripts.inspect_run import inspect_run
+from case_studies.scripts.link_to_method import link_run_to_method
+from case_studies.scripts.render_diff import write_diff
 from case_studies.scripts.render_markdown import write_summary
 from case_studies.scripts.run_case_study import build_case_study_config, dry_run_summary
 
 
-def _write_dummy_run(run_dir: Path) -> None:
+def _write_dummy_run(run_dir: Path, *, prompt: str = "prompt A", response: str = "response A") -> None:
     iter_dir = run_dir / "problems" / "abc123" / "iter_0"
     iter_dir.mkdir(parents=True)
     (run_dir / "meta.json").write_text(
@@ -41,6 +43,8 @@ def _write_dummy_run(run_dir: Path) -> None:
         json.dumps({"metadata": {"scoring_mode": "unit", "top_k": 3}}) + "\n",
         encoding="utf-8",
     )
+    (iter_dir / "prompt.txt").write_text(prompt, encoding="utf-8")
+    (iter_dir / "response.txt").write_text(response, encoding="utf-8")
 
 
 def test_build_case_study_config_dry_run_uses_axis_condition():
@@ -83,3 +87,32 @@ def test_inspect_run_lists_traces(tmp_path):
 
     assert "Port: graphrag" in rendered
     assert "problems/abc123/iter_0 correct=true" in rendered
+
+
+def test_render_diff_writes_prompt_and_response_diff(tmp_path):
+    left = tmp_path / "left_run"
+    right = tmp_path / "right_run"
+    _write_dummy_run(left, prompt="left prompt", response="left response")
+    _write_dummy_run(right, prompt="right prompt", response="right response")
+
+    out_path = write_diff(left, right)
+
+    rendered = out_path.read_text(encoding="utf-8")
+    assert "# Case Study Diff: left_run vs right_run" in rendered
+    assert "-left prompt" in rendered
+    assert "+right response" in rendered
+
+
+def test_link_to_method_creates_symlink_and_updates_readme(tmp_path):
+    case_root = tmp_path / "case_studies"
+    run_dir = case_root / "runs" / "run1"
+    method_dir = case_root / "by_method" / "graphrag"
+    method_dir.mkdir(parents=True)
+    (method_dir / "README.md").write_text("# Graphrag Case Studies\n\n## Runs\n\nold\n", encoding="utf-8")
+    _write_dummy_run(run_dir)
+
+    link_path = link_run_to_method(run_dir, port="graphrag", case_root=case_root)
+
+    assert link_path.is_symlink()
+    rendered = (method_dir / "README.md").read_text(encoding="utf-8")
+    assert "- [run1](runs/run1/)" in rendered
