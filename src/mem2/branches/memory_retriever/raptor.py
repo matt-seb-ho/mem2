@@ -32,11 +32,12 @@ Interface: matches `ps_topk` + `hipporag_ppr`.
 """
 from __future__ import annotations
 
+import json
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from mem2.concepts.artifacts import load_community_summaries, load_raptor_tree
+from mem2.concepts.artifacts import CONCEPT_MEMORY_DIR, load_community_summaries, load_raptor_tree
 from mem2.concepts.graph import ConceptGraph
 from mem2.concepts.memory import ConceptMemory
 from mem2.core.entities import (
@@ -49,6 +50,8 @@ from mem2.core.entities import (
 
 
 _WORD_RE = re.compile(r"[A-Za-z][A-Za-z0-9_]+")
+_REPO_ROOT = Path(__file__).resolve().parents[4]
+_DEFAULT_ADAPTED_MEMORY_PATH = CONCEPT_MEMORY_DIR / "ports" / "raptor_memory_v1.json"
 
 
 def _tokenize(text: str) -> set[str]:
@@ -113,6 +116,7 @@ class RAPTORRetriever:
         usage_threshold: int = 1,
         community_summaries_path: str | Path | None = None,
         raptor_tree_path: str | Path | None = None,
+        adapted_memory_path: str | Path | None = None,
     ) -> None:
         self.top_k = int(top_k)
         self.parent_ratio = float(parent_ratio)
@@ -123,6 +127,10 @@ class RAPTORRetriever:
         self.usage_threshold = int(usage_threshold)
         self.community_summaries_path = community_summaries_path
         self.raptor_tree_path = raptor_tree_path
+        self.adapted_memory_path = self._resolve_path(
+            adapted_memory_path,
+            _DEFAULT_ADAPTED_MEMORY_PATH,
+        )
 
     # ----------------------------------------------------------------- #
     def retrieve(
@@ -138,6 +146,7 @@ class RAPTORRetriever:
                 problem_uid=problem.uid, hint_text=None, retrieved_items=[],
                 metadata={"retriever": self.name, "reason": "empty_memory"},
             )
+        adapted_records, adapted_source = self._load_adapted_records(mem)
 
         try:
             import networkx as nx
@@ -147,7 +156,7 @@ class RAPTORRetriever:
                 "raptor retriever requires networkx; install with `pip install networkx`."
             ) from exc
 
-        tree_bundle = self._retrieve_from_tree_artifact(mem, problem)
+        tree_bundle = self._retrieve_from_tree_artifact(mem, problem, adapted_records, adapted_source)
         if tree_bundle is not None:
             return tree_bundle
 
@@ -222,7 +231,17 @@ class RAPTORRetriever:
             top_names = [c.name for c in ranked[: self.top_k]]
             return _render_bundle(
                 self, problem, mem, top_names,
-                metadata={"reason": "empty_query_tokens", "summary_source": summary_source},
+                metadata={
+                    "reason": "empty_query_tokens",
+                    "summary_source": summary_source,
+                    "adapted_memory_source": adapted_source,
+                    "adapted_records_loaded": len(adapted_records),
+                    "adapted_leaf_records_rendered": self._count_adapted_records(
+                        top_names,
+                        adapted_records,
+                    ),
+                },
+                adapted_records=adapted_records,
                 graph_edges=G.number_of_edges(), n_clusters=len(clusters),
             )
 
@@ -277,7 +296,14 @@ class RAPTORRetriever:
                 "n_parent_slots": n_parent_slots,
                 "n_leaf_slots": n_leaf_slots,
                 "summary_source": summary_source,
+                "adapted_memory_source": adapted_source,
+                "adapted_records_loaded": len(adapted_records),
+                "adapted_leaf_records_rendered": self._count_adapted_records(
+                    selected,
+                    adapted_records,
+                ),
             },
+            adapted_records=adapted_records,
             graph_edges=G.number_of_edges(),
             n_clusters=len(clusters),
         )
@@ -298,6 +324,8 @@ class RAPTORRetriever:
         self,
         mem: ConceptMemory,
         problem: ProblemSpec,
+        adapted_records: dict[str, dict],
+        adapted_source: str,
     ) -> RetrievalBundle | None:
         tree = load_raptor_tree(self.raptor_tree_path, valid_concepts=mem.concepts.keys())
         levels = tree.get("levels") or []
@@ -319,6 +347,10 @@ class RAPTORRetriever:
                 str(node.get("summary") or ""),
                 " ".join(node.get("member_communities") or []),
                 " ".join(node.get("member_concepts") or []),
+                self._adapted_text_for_concepts(
+                    node.get("member_concepts") or [],
+                    adapted_records,
+                ),
             ])
             toks = _tokenize(text)
             return (len(q_tokens & toks), len(node.get("member_concepts") or []), str(node.get("node_id")))
@@ -357,6 +389,9 @@ class RAPTORRetriever:
         for node in path:
             tree_lines.append(f"[{node['node_id']}]")
             tree_lines.append(str(node.get("summary") or ""))
+        adapted_block = self._render_adapted_records(selected, adapted_records)
+        if adapted_block:
+            tree_lines.append(adapted_block)
         hint = (hint or "") + "\n".join(tree_lines)
         return RetrievalBundle(
             problem_uid=problem.uid,
@@ -382,8 +417,108 @@ class RAPTORRetriever:
                 "num_concepts_total": len(mem.concepts),
                 "num_selected": len(selected),
                 "num_tree_levels": len(levels),
+                "adapted_memory_source": adapted_source,
+                "adapted_records_loaded": len(adapted_records),
+                "adapted_leaf_records_rendered": self._count_adapted_records(
+                    selected,
+                    adapted_records,
+                ),
             },
         )
+
+    @staticmethod
+    def _resolve_path(path: str | Path | None, default: Path) -> Path:
+        if path is None:
+            return default
+        p = Path(path)
+        return p if p.is_absolute() else _REPO_ROOT / p
+
+    def _load_adapted_records(
+        self,
+        mem: ConceptMemory,
+    ) -> tuple[dict[str, dict], str]:
+        path = self.adapted_memory_path
+        if not path.exists():
+            return {}, "flat"
+        try:
+            data = json.loads(path.read_text())
+        except Exception as exc:  # noqa: BLE001 - corrupted local artifact should not be silent
+            raise RuntimeError(f"invalid RAPTOR adapted memory JSON: {path}") from exc
+        if data.get("schema_version") != "1" or data.get("port") != self.name:
+            raise RuntimeError(f"invalid RAPTOR adapted memory schema: {path}")
+        records: dict[str, dict] = {}
+        for raw in data.get("adapted_concepts") or []:
+            if not isinstance(raw, dict):
+                continue
+            concept_id = raw.get("concept_id")
+            if not isinstance(concept_id, str) or concept_id not in mem.concepts:
+                continue
+            leaf_text = raw.get("leaf_text")
+            if not isinstance(leaf_text, str) or not leaf_text.strip():
+                raise RuntimeError(f"adapted memory missing leaf_text for {concept_id}")
+            records[concept_id] = raw
+        if not records:
+            return {}, "flat"
+        return records, "raptor_memory_v1"
+
+    @staticmethod
+    def _adapted_record_text(record: dict) -> str:
+        parts: list[str] = [
+            str(record.get("leaf_node_id") or ""),
+            str(record.get("tree_membership_rationale") or ""),
+            str(record.get("leaf_text") or ""),
+        ]
+        parts.extend(str(item) for item in record.get("collapsed_tree_keywords") or [])
+        parts.extend(str(item) for item in record.get("tree_traversal_cues") or [])
+        for path_item in record.get("path_to_root") or []:
+            if isinstance(path_item, dict):
+                parts.append(" ".join([
+                    str(path_item.get("node_id") or ""),
+                    str(path_item.get("summary_role") or ""),
+                    str(path_item.get("retrieval_text") or ""),
+                ]))
+        return "\n".join(part for part in parts if part.strip())
+
+    @classmethod
+    def _adapted_text_for_concepts(
+        cls,
+        concepts: list[str],
+        adapted_records: dict[str, dict],
+    ) -> str:
+        return "\n".join(
+            cls._adapted_record_text(adapted_records[name])
+            for name in concepts
+            if name in adapted_records
+        )
+
+    @staticmethod
+    def _count_adapted_records(
+        concepts: list[str],
+        adapted_records: dict[str, dict],
+    ) -> int:
+        return sum(1 for name in dict.fromkeys(concepts) if name in adapted_records)
+
+    def _render_adapted_records(
+        self,
+        concepts: list[str],
+        adapted_records: dict[str, dict],
+    ) -> str:
+        lines: list[str] = []
+        for name in concepts:
+            record = adapted_records.get(name)
+            if not record:
+                continue
+            leaf = str(record.get("leaf_node_id") or "").strip()
+            leaf_text = str(record.get("leaf_text") or "").strip()
+            path = [
+                str(item.get("node_id") or "").strip()
+                for item in (record.get("path_to_root") or [])
+                if isinstance(item, dict) and str(item.get("node_id") or "").strip()
+            ]
+            lines.append(f"- {name} [{leaf}] path={path}: {leaf_text}")
+        if not lines:
+            return ""
+        return "--- RAPTOR adapted leaf records ---\n" + "\n".join(lines)
 
 
 def _render_bundle(
@@ -394,6 +529,7 @@ def _render_bundle(
     *,
     clusters: list[_Cluster] | None = None,
     metadata: dict,
+    adapted_records: dict[str, dict] | None = None,
     graph_edges: int,
     n_clusters: int,
 ) -> RetrievalBundle:
@@ -422,6 +558,9 @@ def _render_bundle(
             cluster_blocks.append(block)
         if cluster_blocks:
             hint = (hint or "") + "\n\n--- Hierarchical cluster summaries ---" + "".join(cluster_blocks)
+    adapted_block = r._render_adapted_records(selected, adapted_records or {})
+    if adapted_block:
+        hint = (hint or "") + "\n\n" + adapted_block
     meta = {
         "retriever": r.name,
         "scoring_mode": "raptor_summary",
