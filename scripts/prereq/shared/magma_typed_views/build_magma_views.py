@@ -1,7 +1,7 @@
 """Build typed MAGMA view graphs from ARC concept and entity substrates.
 
 Output:
-  data/arc_agi/concept_memory/magma_typed_views_v1.json
+  data/arc_agi/concept_memory/shared/magma_typed_views_v1.json
 """
 from __future__ import annotations
 
@@ -24,7 +24,14 @@ from mem2.concepts.memory import ConceptMemory
 
 SEED_MEM = ROOT / "data" / "arc_agi" / "concept_memory" / "compressed_v1.json"
 ENTITY_GRAPH = ROOT / "data" / "arc_agi" / "concept_memory" / "shared" / "entity_graph_v1.json"
-OUT_FILE = ROOT / "data" / "arc_agi" / "concept_memory" / "magma_typed_views_v1.json"
+OUT_FILE = (
+    ROOT
+    / "data"
+    / "arc_agi"
+    / "concept_memory"
+    / "shared"
+    / "magma_typed_views_v1.json"
+)
 WORD_RE = re.compile(r"[A-Za-z][A-Za-z0-9_]+")
 VERBS = {
     "align",

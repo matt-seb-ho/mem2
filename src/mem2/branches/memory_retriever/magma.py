@@ -61,7 +61,14 @@ WORD_RE = re.compile(r"\w+")
 
 VIEWS = ("semantic", "temporal", "causal", "entity", "structural")
 _REPO_ROOT = Path(__file__).resolve().parents[4]
-_DEFAULT_TYPED_VIEWS = _REPO_ROOT / "data" / "arc_agi" / "concept_memory" / "magma_typed_views_v1.json"
+_DEFAULT_TYPED_VIEWS = (
+    _REPO_ROOT
+    / "data"
+    / "arc_agi"
+    / "concept_memory"
+    / "shared"
+    / "magma_typed_views_v1.json"
+)
 
 
 class MAGMAMultiGraphRetriever:
