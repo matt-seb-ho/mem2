@@ -17,6 +17,10 @@ class OeTopKRetriever:
         problem: ProblemSpec,
         previous_attempts: list[AttemptRecord],
     ) -> RetrievalBundle:
+        # OE memory is populated by ArcMemoOeMemoryBuilder.update after
+        # completed attempts, or by optional seed lessons at initialization.
+        # An unseeded first pass is intentionally empty: there is no persisted
+        # situation/suggestion history to retrieve yet.
         entries = list(memory.payload.get("entries", []))
         problem_entries = [
             row for row in entries if str(row.get("problem_uid", "")).strip() == problem.uid
