@@ -26,7 +26,9 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
+from pathlib import Path
 
+from mem2.concepts.artifacts import load_community_summaries
 from mem2.concepts.graph import ConceptGraph
 from mem2.concepts.memory import ConceptMemory
 from mem2.core.entities import (
@@ -63,10 +65,12 @@ def _problem_text(problem: ProblemSpec) -> str:
 class _CommunityReport:
     """Pseudo-LLM summary of a community: title + member list + concat text."""
 
+    community_id: str
     title: str
     members: list[str]
     body_tokens: set[str] = field(default_factory=set)
     body_text: str = ""
+    summary_source: str = "template"
 
 
 class GraphRAGRetriever:
@@ -89,11 +93,13 @@ class GraphRAGRetriever:
         min_community_size: int = 2,
         max_members_per_community: int = 5,
         include_description: bool = True,
+        community_summaries_path: str | Path | None = None,
     ) -> None:
         self.top_k_communities = int(top_k_communities)
         self.min_community_size = int(min_community_size)
         self.max_members_per_community = int(max_members_per_community)
         self.include_description = bool(include_description)
+        self.community_summaries_path = community_summaries_path
 
     # ----------------------------------------------------------------- #
     def retrieve(
@@ -127,10 +133,40 @@ class GraphRAGRetriever:
                 continue
             G.add_edge(edge.src, edge.dst, weight=float(edge.weight or 1.0))
 
-        communities = list(nx_community.louvain_communities(G, seed=int(getattr(ctx, "seed", 0))))
-
         reports: list[_CommunityReport] = []
-        for i, comm in enumerate(communities):
+        summary_source = "template"
+        artifact_communities = load_community_summaries(
+            self.community_summaries_path,
+            valid_concepts=mem.concepts.keys(),
+        )
+        if artifact_communities:
+            summary_source = "llm_summaries_v1"
+            for raw in artifact_communities:
+                members = list(raw["member_concepts"])
+                if len(members) < self.min_community_size:
+                    continue
+                community_id = raw["community_id"]
+                seed = raw["seed_concept"]
+                digest = raw.get("member_digest") or ""
+                summary = raw["llm_summary"]
+                body_text = (
+                    f"## {community_id} ({seed})\n"
+                    f"{summary}\n\n"
+                    f"Members: {', '.join(members[: self.max_members_per_community])}"
+                )
+                body_tokens = _tokenize(" ".join([community_id, seed, digest, summary, *members]))
+                reports.append(_CommunityReport(
+                    community_id=community_id,
+                    title=f"{community_id} ({seed})",
+                    members=members,
+                    body_tokens=body_tokens,
+                    body_text=body_text,
+                    summary_source=summary_source,
+                ))
+            communities = [set(r.members) for r in reports]
+        else:
+            communities = list(nx_community.louvain_communities(G, seed=int(getattr(ctx, "seed", 0))))
+        for i, comm in enumerate(communities if summary_source == "template" else []):
             if len(comm) < self.min_community_size:
                 continue
             # Rank members by degree desc, take top-N
@@ -152,10 +188,12 @@ class GraphRAGRetriever:
             body_text = "\n".join(lines)
             body_tokens = _tokenize(" ".join(body_text_parts))
             reports.append(_CommunityReport(
+                community_id=f"community_{i}",
                 title=f"community_{i} ({seed})",
                 members=ordered_members,
                 body_tokens=body_tokens,
                 body_text=body_text,
+                summary_source=summary_source,
             ))
 
         # Score community reports vs query
@@ -188,6 +226,7 @@ class GraphRAGRetriever:
                 "num_communities_all": len(communities),
                 "num_communities_eligible": len(reports),
                 "num_graph_edges": G.number_of_edges(),
+                "summary_source": selected[0].summary_source if selected else summary_source,
             },
         )
 
