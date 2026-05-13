@@ -36,10 +36,11 @@ from __future__ import annotations
 import json
 import logging
 import re
+from pathlib import Path
 from typing import Any
 
 from mem2.branches.memory_retriever.hipporag_ppr import HippoRAGPPRRetriever
-from mem2.concepts.artifacts import load_openie_facts
+from mem2.concepts.artifacts import CONCEPT_MEMORY_DIR, load_openie_facts
 from mem2.concepts.memory import ConceptMemory
 from mem2.core.entities import (
     AttemptRecord,
@@ -52,6 +53,10 @@ from mem2.core.entities import (
 logger = logging.getLogger(__name__)
 
 WORD_RE = re.compile(r"\w+")
+_REPO_ROOT = Path(__file__).resolve().parents[4]
+_DEFAULT_HIPPO2_ADAPTED_MEMORY_PATH = (
+    CONCEPT_MEMORY_DIR / "ports" / "hipporag2_memory_v1.json"
+)
 
 HIPPO2_FILTER_SYSTEM = (
     "You are a fact filter. You will see a query and a list of candidate "
@@ -71,10 +76,15 @@ class HippoRAG2FilterRetriever(HippoRAGPPRRetriever):
         *,
         first_stage_top_k: int = 10,
         top_k: int = 3,
+        adapted_memory_path: str | Path | None = None,
         **kwargs,
     ) -> None:
         # First stage runs PPR with the wider pool.
         kwargs["top_k"] = first_stage_top_k
+        kwargs["adapted_memory_path"] = self._resolve_path(
+            adapted_memory_path,
+            _DEFAULT_HIPPO2_ADAPTED_MEMORY_PATH,
+        )
         super().__init__(**kwargs)
         self.first_stage_top_k = int(first_stage_top_k)
         self.final_top_k = int(top_k)
@@ -94,13 +104,14 @@ class HippoRAG2FilterRetriever(HippoRAGPPRRetriever):
         candidates = [it["name"] for it in first_bundle.retrieved_items]
         mem = ConceptMemory.from_payload(memory.payload)
         facts_by_source = self._facts_by_source(mem)
+        adapted_records, _ = self._load_adapted_records(mem)
         query_text = self._build_query_text(problem, previous_attempts)
         provider = self._resolve_provider(ctx)
 
         # Stage 2 — filter rerank
         if provider is not None:
             filtered = self._filter_via_llm(
-                provider, query_text, candidates, mem, facts_by_source,
+                provider, query_text, candidates, mem, facts_by_source, adapted_records,
             ) or candidates  # fall back to PPR ordering on failure
             filter_method = "llm"
         else:
@@ -108,13 +119,24 @@ class HippoRAG2FilterRetriever(HippoRAGPPRRetriever):
             filter_method = "token_overlap"
 
         selected = filtered[: self.final_top_k]
-        hint = mem.to_string(
-            concept_names=selected,
-            include_description=self.include_description,
-            skip_cues=self.skip_cues,
-            skip_implementation=self.skip_implementation,
-            usage_threshold=self.usage_threshold,
-        )
+        if adapted_records:
+            hint = self._render_adapted_hint(selected, adapted_records)
+            if not hint:
+                hint = mem.to_string(
+                    concept_names=selected,
+                    include_description=self.include_description,
+                    skip_cues=self.skip_cues,
+                    skip_implementation=self.skip_implementation,
+                    usage_threshold=self.usage_threshold,
+                )
+        else:
+            hint = mem.to_string(
+                concept_names=selected,
+                include_description=self.include_description,
+                skip_cues=self.skip_cues,
+                skip_implementation=self.skip_implementation,
+                usage_threshold=self.usage_threshold,
+            )
 
         metadata = dict(first_bundle.metadata or {})
         metadata.update({
@@ -126,6 +148,7 @@ class HippoRAG2FilterRetriever(HippoRAGPPRRetriever):
             "fact_aware_filter": bool(facts_by_source),
             "post_filter_pool": len(filtered),
             "num_selected": len(selected),
+            "adapted_filter_cards_rendered": sum(1 for name in selected if name in adapted_records),
         })
         return RetrievalBundle(
             problem_uid=problem.uid,
@@ -158,10 +181,12 @@ class HippoRAG2FilterRetriever(HippoRAGPPRRetriever):
         candidates: list[str],
         mem: ConceptMemory,
         facts_by_source: dict[str, list[dict[str, Any]]],
+        adapted_records: dict[str, dict[str, Any]],
     ) -> list[str] | None:
         cand_block = "\n".join(
             f"- {name}: {(mem.concepts[name].description or '')[:140]}"
             f"{self._render_candidate_facts(name, facts_by_source)}"
+            f"{self._render_candidate_adapted_profile(name, adapted_records)}"
             for name in candidates if name in mem.concepts
         )
         prompt = (
@@ -191,6 +216,7 @@ class HippoRAG2FilterRetriever(HippoRAGPPRRetriever):
     ) -> list[str]:
         """Token-overlap rerank. Preserves PPR order as tiebreak via index."""
         q_toks = {tok.lower() for tok in WORD_RE.findall(query)}
+        adapted_records, _ = self._load_adapted_records(mem)
         scored: list[tuple[float, int, str]] = []
         for idx, name in enumerate(candidates):
             c = mem.concepts.get(name)
@@ -204,6 +230,11 @@ class HippoRAG2FilterRetriever(HippoRAGPPRRetriever):
                 )
             for cue in c.cues or []:
                 doc_toks.update(tok.lower() for tok in WORD_RE.findall(cue))
+            if name in adapted_records:
+                doc_toks.update(
+                    tok.lower()
+                    for tok in WORD_RE.findall(self._adapted_record_text(adapted_records[name]))
+                )
             for fact in facts_by_source.get(name, []):
                 fact_text = " ".join(
                     str(fact.get(k) or "")
@@ -215,6 +246,105 @@ class HippoRAG2FilterRetriever(HippoRAGPPRRetriever):
             scored.append((-overlap, idx, name))
         scored.sort()
         return [name for _, _, name in scored]
+
+    @staticmethod
+    def _resolve_path(path: str | Path | None, default: Path) -> Path:
+        if path is None:
+            return default
+        p = Path(path)
+        return p if p.is_absolute() else _REPO_ROOT / p
+
+    def _load_adapted_records(
+        self,
+        mem: ConceptMemory,
+    ) -> tuple[dict[str, dict[str, Any]], str]:
+        path = self.adapted_memory_path
+        if not path.exists():
+            return {}, "flat"
+        try:
+            data = json.loads(path.read_text())
+        except Exception as exc:  # noqa: BLE001
+            raise RuntimeError(f"invalid HippoRAG2 adapted memory JSON: {path}") from exc
+        if data.get("schema_version") != "1" or data.get("port") != "hipporag2":
+            raise RuntimeError(f"invalid HippoRAG2 adapted memory schema: {path}")
+        records: dict[str, dict[str, Any]] = {}
+        for raw in data.get("adapted_concepts") or []:
+            if not isinstance(raw, dict):
+                continue
+            concept_id = raw.get("concept_id")
+            passage = raw.get("ppr_passage")
+            if not isinstance(concept_id, str) or concept_id not in mem.concepts:
+                continue
+            if not isinstance(passage, str) or not passage.strip():
+                raise RuntimeError(f"adapted memory missing ppr_passage for {concept_id}")
+            records[concept_id] = raw
+        if not records:
+            return {}, "flat"
+        return records, "hipporag2_memory_v1"
+
+    @staticmethod
+    def _adapted_record_text(record: dict[str, Any]) -> str:
+        parts: list[str] = [
+            str(record.get("ppr_passage") or ""),
+            str(record.get("candidate_profile") or ""),
+            str(record.get("rerank_notes") or ""),
+            " ".join(str(t) for t in record.get("query_filter_terms") or []),
+            " ".join(str(t) for t in record.get("reject_signals") or []),
+        ]
+        for evidence in record.get("filter_evidence") or []:
+            if isinstance(evidence, dict):
+                parts.append(" ".join([
+                    str(evidence.get("claim") or ""),
+                    str(evidence.get("supporting_text") or ""),
+                    str(evidence.get("specificity") or ""),
+                ]))
+        return "\n".join(part for part in parts if part.strip())
+
+    @staticmethod
+    def _render_adapted_hint(
+        top_names: list[str],
+        adapted_records: dict[str, dict[str, Any]],
+    ) -> str:
+        blocks: list[str] = []
+        for name in top_names:
+            record = adapted_records.get(name)
+            if not record:
+                continue
+            lines = [f"- concept: {name}"]
+            passage = str(record.get("ppr_passage") or "").strip()
+            if passage:
+                lines.append(f"  hipporag2_ppr_passage: {passage}")
+            profile = str(record.get("candidate_profile") or "").strip()
+            if profile:
+                lines.append(f"  filter_profile: {profile}")
+            terms = [str(t).strip() for t in (record.get("query_filter_terms") or []) if str(t).strip()]
+            if terms:
+                lines.append("  filter_terms: " + ", ".join(terms[:8]))
+            evidence_lines: list[str] = []
+            for evidence in record.get("filter_evidence") or []:
+                if isinstance(evidence, dict) and evidence.get("claim"):
+                    evidence_lines.append(str(evidence["claim"]).strip())
+            if evidence_lines:
+                lines.append("  filter_evidence: " + "; ".join(evidence_lines[:5]))
+            rejects = [str(t).strip() for t in (record.get("reject_signals") or []) if str(t).strip()]
+            if rejects:
+                lines.append("  reject_signals: " + "; ".join(rejects[:4]))
+            blocks.append("\n".join(lines))
+        return "\n\n".join(blocks)
+
+    @staticmethod
+    def _render_candidate_adapted_profile(
+        name: str,
+        adapted_records: dict[str, dict[str, Any]],
+    ) -> str:
+        record = adapted_records.get(name)
+        if not record:
+            return ""
+        parts = [
+            str(record.get("candidate_profile") or ""),
+            " ".join(str(t) for t in record.get("query_filter_terms") or []),
+        ]
+        return " | adapted: " + " ".join(part for part in parts if part).strip()[:260]
 
     def _facts_by_source(self, mem: ConceptMemory) -> dict[str, list[dict[str, Any]]]:
         facts_by_source: dict[str, list[dict[str, Any]]] = {}
