@@ -768,7 +768,7 @@ def test_magma_selects_multiple_views():
     assert len(active) >= 1
     # Views picked must be in the valid set.
     for v in active:
-        assert v in ("semantic", "temporal", "causal", "entity")
+        assert v in ("semantic", "temporal", "causal", "entity", "structural")
 
 
 # --------------------------------------------------------------------- #

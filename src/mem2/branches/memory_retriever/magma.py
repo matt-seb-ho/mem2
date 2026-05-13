@@ -43,6 +43,7 @@ import json
 import logging
 import re
 from collections import defaultdict
+from pathlib import Path
 
 from mem2.concepts.graph import ConceptGraph
 from mem2.concepts.memory import ConceptMemory
@@ -58,7 +59,9 @@ logger = logging.getLogger(__name__)
 
 WORD_RE = re.compile(r"\w+")
 
-VIEWS = ("semantic", "temporal", "causal", "entity")
+VIEWS = ("semantic", "temporal", "causal", "entity", "structural")
+_REPO_ROOT = Path(__file__).resolve().parents[4]
+_DEFAULT_TYPED_VIEWS = _REPO_ROOT / "data" / "arc_agi" / "concept_memory" / "magma_typed_views_v1.json"
 
 
 class MAGMAMultiGraphRetriever:
@@ -75,6 +78,7 @@ class MAGMAMultiGraphRetriever:
         skip_cues: bool = False,
         skip_implementation: bool = True,
         usage_threshold: int = 0,
+        typed_views_path: str | Path | None = None,
     ) -> None:
         self.top_k_per_view = int(top_k_per_view)
         self.max_active_views = int(max_active_views)
@@ -82,6 +86,7 @@ class MAGMAMultiGraphRetriever:
         self.skip_cues = bool(skip_cues)
         self.skip_implementation = bool(skip_implementation)
         self.usage_threshold = int(usage_threshold)
+        self.typed_views_path = Path(typed_views_path) if typed_views_path else _DEFAULT_TYPED_VIEWS
 
     def retrieve(
         self,
@@ -105,13 +110,21 @@ class MAGMAMultiGraphRetriever:
         )
         provider = self._resolve_provider(ctx)
         q_toks = self._query_toks(problem, previous_attempts)
+        typed_views = self._load_typed_views(mem)
 
         # Per-view candidate sets.
         view_hits: dict[str, list[str]] = {}
-        view_hits["semantic"] = self._semantic_view(graph, mem, q_toks)
+        view_hits["semantic"] = self._merge_candidates(
+            self._typed_view(typed_views, "semantic", mem, q_toks),
+            self._semantic_view(graph, mem, q_toks),
+        )
         view_hits["temporal"] = self._temporal_view(graph, mem, q_toks)
-        view_hits["causal"] = self._causal_view(graph, mem, q_toks)
+        view_hits["causal"] = self._merge_candidates(
+            self._typed_view(typed_views, "causal", mem, q_toks),
+            self._causal_view(graph, mem, q_toks),
+        )
         view_hits["entity"] = self._entity_view(graph, mem, q_toks)
+        view_hits["structural"] = self._typed_view(typed_views, "structural", mem, q_toks)
 
         # Adaptive policy: rank views by hit count; LLM can override.
         policy_ranking = sorted(
@@ -157,9 +170,11 @@ class MAGMAMultiGraphRetriever:
                 "retriever": self.name,
                 "scoring_mode": "magma_multigraph",
                 "active_views": [v for v, _ in active_views],
+                "views_used": [v for v, _ in active_views],
                 "view_hit_counts": {v: len(c) for v, c in view_hits.items()},
                 "num_selected": len(all_selected),
                 "used_llm_policy": provider is not None,
+                "typed_views_source": "magma_typed_views_v1" if typed_views else "template",
             },
         )
 
@@ -199,6 +214,79 @@ class MAGMAMultiGraphRetriever:
         for cue in c.cues or []:
             toks.update(t.lower() for t in WORD_RE.findall(cue))
         return toks
+
+    def _load_typed_views(self, mem: ConceptMemory) -> dict[str, Any]:
+        if not self.typed_views_path.exists():
+            return {}
+        try:
+            data = json.loads(self.typed_views_path.read_text())
+        except Exception:
+            return {}
+        if data.get("schema_version") != "1":
+            return {}
+        views = data.get("views")
+        return views if isinstance(views, dict) else {}
+
+    def _merge_candidates(self, first: list[str], second: list[str]) -> list[str]:
+        out: list[str] = []
+        for name in [*first, *second]:
+            if name not in out:
+                out.append(name)
+        return out[: self.top_k_per_view * 3]
+
+    def _typed_view(
+        self,
+        typed_views: dict[str, Any],
+        view_name: str,
+        mem: ConceptMemory,
+        q_toks: set[str],
+    ) -> list[str]:
+        if not typed_views or view_name not in typed_views:
+            return []
+        view = typed_views.get(view_name) or {}
+        if not isinstance(view, dict):
+            return []
+        node_labels: dict[str, str] = {}
+        for raw in view.get("nodes", []) or []:
+            if not isinstance(raw, dict):
+                continue
+            node_id = str(raw.get("node_id") or "")
+            if not node_id:
+                continue
+            node_labels[node_id] = " ".join(str(raw.get(k) or "") for k in ("label", "node_type", "source_concept", "kind"))
+        scores: dict[str, float] = defaultdict(float)
+        for raw in view.get("edges", []) or []:
+            if not isinstance(raw, dict):
+                continue
+            src = str(raw.get("src") or "")
+            dst = str(raw.get("dst") or "")
+            concepts = [
+                node.split("concept::", 1)[1]
+                for node in (src, dst)
+                if node.startswith("concept::") and node.split("concept::", 1)[1] in mem.concepts
+            ]
+            if not concepts:
+                for node in (src, dst):
+                    label = node_labels.get(node, "")
+                    for concept_name in mem.concepts:
+                        if concept_name in label:
+                            concepts.append(concept_name)
+            text = " ".join([
+                node_labels.get(src, ""),
+                node_labels.get(dst, ""),
+                str(raw.get("edge_type") or ""),
+                str(raw.get("supporting_text") or ""),
+                " ".join(str(v) for v in raw.get("predicates", []) if isinstance(v, str)),
+                " ".join(str(v) for v in raw.get("relation_types", []) if isinstance(v, str)),
+            ])
+            overlap = len(q_toks & {t.lower() for t in WORD_RE.findall(text)}) if q_toks else 0
+            if overlap <= 0:
+                continue
+            weight = float(raw.get("weight") or 1.0)
+            for concept_name in concepts:
+                scores[concept_name] += overlap + 0.01 * weight
+        ranked = sorted(scores.items(), key=lambda kv: kv[1], reverse=True)
+        return [name for name, _ in ranked[: self.top_k_per_view * 2]]
 
     def _semantic_view(
         self, graph: ConceptGraph, mem: ConceptMemory, q_toks: set[str],
