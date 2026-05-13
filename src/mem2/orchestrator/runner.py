@@ -4,7 +4,7 @@ import asyncio
 import copy
 from collections import defaultdict
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 
 from tqdm import tqdm
@@ -45,6 +45,7 @@ class PipelineRunner:
         self._reselect_hint_enabled = bool(
             self.components.inference_engine.include_reselected_lessons
         )
+        self._case_trace_dir = self._resolve_case_trace_dir()
         ok, err = self.retry_policy.is_valid()
         if not ok:
             raise ValueError(f"Invalid retry policy config: {err}")
@@ -53,6 +54,126 @@ class PipelineRunner:
                 f"Invalid execution mode: {self.execution_mode}. "
                 "Supported modes: sequential, arc_batch"
             )
+
+    def _resolve_case_trace_dir(self) -> str | None:
+        case_cfg = self.config.get("case_studies", {}) or {}
+        trace_dir = case_cfg.get("trace_dir")
+        if trace_dir:
+            return str(trace_dir)
+        provider_cfg = self.config.get("components", {}).get("provider", {}) or {}
+        trace_dir = provider_cfg.get("trace_dir")
+        if trace_dir:
+            return str(trace_dir)
+        trace_dir = getattr(self.components.provider, "trace_dir", None)
+        return str(trace_dir) if trace_dir else None
+
+    @staticmethod
+    def _case_iter_id(job: dict, pass_idx: int | None = None) -> str:
+        if pass_idx is None:
+            pass_idx = int(job.get("pass_idx", 0))
+        iter_id = str(pass_idx)
+        round_idx = job.get("round_idx")
+        if round_idx not in (None, 0):
+            iter_id = f"{iter_id}_round_{round_idx}"
+        return iter_id
+
+    def _set_case_trace_context(self, job: dict):
+        if not self._case_trace_dir:
+            return None
+        from case_studies._tracer import set_trace_context
+
+        return set_trace_context(
+            self._case_trace_dir,
+            task_id=job["problem"].uid,
+            iter_id=self._case_iter_id(job),
+        )
+
+    @staticmethod
+    def _reset_case_trace_context(tokens) -> None:
+        if not tokens:
+            return
+        from case_studies._tracer import reset_trace_context
+
+        reset_trace_context(tokens)
+
+    def _write_case_trace_retrieval(self, job: dict, retrieval: RetrievalBundle) -> None:
+        if not self._case_trace_dir:
+            return
+        from case_studies._tracer import write_retrieval_bundle
+
+        write_retrieval_bundle(
+            retrieval,
+            trace_dir=self._case_trace_dir,
+            task_id=job["problem"].uid,
+            iter_id=self._case_iter_id(job),
+        )
+
+    def _write_case_trace_eval(self, job: dict, attempts: list, eval_records: list) -> None:
+        if not self._case_trace_dir:
+            return
+        from case_studies._tracer import write_attempt_eval_trace
+
+        write_attempt_eval_trace(
+            attempts,
+            eval_records,
+            trace_dir=self._case_trace_dir,
+            task_id=job["problem"].uid,
+            iter_id=self._case_iter_id(job),
+        )
+
+    def _write_case_trace_meta(
+        self,
+        ctx,
+        *,
+        problems: dict | None = None,
+        summary: dict | None = None,
+    ) -> None:
+        if not self._case_trace_dir:
+            return
+        from case_studies._tracer import count_llm_calls, write_run_meta
+
+        provider_usage = self._provider_usage_snapshot()
+        case_cfg = self.config.get("case_studies", {}) or {}
+        run_cfg = self.config.get("run", {}) or {}
+        pipeline_cfg = self.config.get("pipeline", {}) or {}
+        meta = {
+            "run_id": ctx.run_id,
+            "output_dir": ctx.output_dir,
+            "trace_dir": self._case_trace_dir,
+            "timestamp_utc": datetime.now(UTC).isoformat(timespec="seconds"),
+            "port": case_cfg.get("port") or pipeline_cfg.get("memory_retriever"),
+            "label": case_cfg.get("label"),
+            "seed": getattr(ctx, "seed", run_cfg.get("seed")),
+            "model": getattr(self.components.inference_engine, "model", None),
+            "provider": getattr(self.components.provider, "name", None),
+            "llm_call_count": count_llm_calls(self._case_trace_dir),
+            "provider_usage": provider_usage,
+        }
+        if problems is not None:
+            meta["n_problems"] = len(problems)
+        if summary is not None:
+            meta["summary"] = summary
+            meta["total_cost_usd"] = self._find_total_cost_usd(provider_usage)
+        write_run_meta(self._case_trace_dir, meta)
+
+    @staticmethod
+    def _find_total_cost_usd(value: object) -> float | None:
+        if isinstance(value, dict):
+            for key, nested in value.items():
+                if str(key).lower() in {"cost_usd", "total_cost_usd", "total_cost", "cost"}:
+                    try:
+                        return float(nested)
+                    except (TypeError, ValueError):
+                        pass
+                found = PipelineRunner._find_total_cost_usd(nested)
+                if found is not None:
+                    return found
+        if isinstance(value, list):
+            for item in value:
+                found = PipelineRunner._find_total_cost_usd(item)
+                if found is not None:
+                    return found
+        return None
 
     @staticmethod
     def _log_ts() -> str:
@@ -447,6 +568,15 @@ class PipelineRunner:
         return accumulated_attempts
 
     async def _one_retrieval_round(self, ctx, job, *, accumulated_history):
+        trace_tokens = self._set_case_trace_context(job)
+        try:
+            return await self._one_retrieval_round_impl(
+                ctx, job, accumulated_history=accumulated_history
+            )
+        finally:
+            self._reset_case_trace_context(trace_tokens)
+
+    async def _one_retrieval_round_impl(self, ctx, job, *, accumulated_history):
         """Single retrieve + infer pass for one problem. Original
         `_run_inference_job` body, factored out for multi-round wrapping.
 
@@ -499,6 +629,7 @@ class PipelineRunner:
         )
         job["retrieval"] = retrieval
         self._record_retrieval_metadata(job, retrieval)
+        self._write_case_trace_retrieval(job, retrieval)
 
         is_retry = bool(history)  # treat any prior round as retry
         if is_retry and history:
@@ -582,6 +713,7 @@ class PipelineRunner:
         for i, rec in enumerate(eval_records):
             rec.metadata["global_step_idx"] = global_step_base + i
             rec.metadata["pass_idx"] = pass_idx
+        self._write_case_trace_eval(job, attempts, eval_records)
 
         feedback_records = await self.components.feedback_engine.generate(
             ctx=ctx,
@@ -635,6 +767,7 @@ class PipelineRunner:
             history = per_problem_attempts[problem.uid]
             feedback_hist = per_problem_feedback[problem.uid]
             job = self._build_problem_job(ctx, memory, problem, history, feedback_hist)
+            job["pass_idx"] = pass_idx
             jobs.append(job)
 
         if not jobs:
@@ -728,6 +861,7 @@ class PipelineRunner:
         problems = self.components.benchmark.load(ctx)
         self.components.benchmark.validate(problems)
         self.components.artifact_sink.write_stage_artifact(ctx, "problems", problems)
+        self._write_case_trace_meta(ctx, problems=problems)
 
         memory = self.components.memory_builder.initialize(ctx, problems)
         self.components.artifact_sink.write_stage_artifact(ctx, "memory/initial", memory)
@@ -837,6 +971,7 @@ class PipelineRunner:
         self.components.artifact_sink.write_run_summary(ctx, summary)
         self._driver_log("__main__", f"Output directory: {run_root}")
         self._write_driver_log_file(run_root)
+        self._write_case_trace_meta(ctx, problems=problems, summary=summary)
 
         return RunBundle(
             task_spec=task_spec,

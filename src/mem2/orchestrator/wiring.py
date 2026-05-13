@@ -135,6 +135,15 @@ def resolve_components(config: dict[str, Any]) -> PipelineComponents:
     _validate_domain_components(benchmark, inference_engine, evaluator, feedback_engine)
 
     router = _build_component(ROUTERS, pipe.get("router", "none"), comp_cfg.get("router", {}))
+    provider = _build_component(PROVIDERS, pipe["provider"], comp_cfg.get("provider", {}))
+    trace_dir = (
+        comp_cfg.get("provider", {}).get("trace_dir")
+        or config.get("case_studies", {}).get("trace_dir")
+    )
+    if trace_dir:
+        from case_studies._tracer import TraceCollectingProviderClient
+
+        provider = TraceCollectingProviderClient(provider, trace_dir=trace_dir)
 
     return PipelineComponents(
         task_adapter=_build_component(TASK_ADAPTERS, pipe["task_adapter"], comp_cfg.get("task_adapter", {})),
@@ -143,7 +152,7 @@ def resolve_components(config: dict[str, Any]) -> PipelineComponents:
         memory_retriever=memory_retriever,
         router=router,
         trajectory_policy=_build_component(TRAJECTORY_POLICIES, pipe["trajectory_policy"], comp_cfg.get("trajectory_policy", {})),
-        provider=_build_component(PROVIDERS, pipe["provider"], comp_cfg.get("provider", {})),
+        provider=provider,
         inference_engine=inference_engine,
         feedback_engine=feedback_engine,
         evaluator=evaluator,
