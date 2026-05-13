@@ -17,7 +17,7 @@ Specifically ported:
 
 Hierarchy mode (preferred, when prereq file exists):
     - Loads `data/arc_agi/concept_memory/concept_hierarchy_v1.json` (built
-      by `scripts/prereq/axis_1/hmem_hierarchical/build_hierarchy.py`).
+      by `scripts/prereq/shared/hmem_hierarchical_prereq/build_hierarchy.py`).
     - Layer 1 = the LLM-built broad themes ("spatial transformations",
       "object detection", etc.).
     - Layer 2 = sub-themes within each picked category.

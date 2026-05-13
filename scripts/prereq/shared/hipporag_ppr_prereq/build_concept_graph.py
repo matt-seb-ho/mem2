@@ -37,7 +37,7 @@ Usage
 -----
   cd mem2
   source .env
-  .venv/bin/python scripts/prereq/axis_1/hipporag_ppr/build_concept_graph.py \
+  .venv/bin/python scripts/prereq/shared/hipporag_ppr_prereq/build_concept_graph.py \
       [--limit N]   # optional: only process first N concepts (for smoketest)
       [--max-targets-per-concept K]  # cap edges per concept (default 15)
 

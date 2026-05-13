@@ -48,9 +48,9 @@ upper-bound cells = 16 cells × $0.25 ≈ ~$4 per seed.
 
 The 4 matching retrievers need their data files built first:
 - `colbert_rerank` → `concept_embeddings_v1.npz` (built by
-  `scripts/prereq/axis_1/colbert_rerank/build_concept_embeddings.py`)
+  `scripts/prereq/shared/colbert_rerank/build_concept_embeddings.py`)
 - `hmem_hierarchical` → `concept_hierarchy_v1.json` (built by
-  `scripts/prereq/axis_1/hmem_hierarchical/build_hierarchy.py`)
+  `scripts/prereq/shared/hmem_hierarchical_prereq/build_hierarchy.py`)
 - `graph_traversal` → reads from `compressed_v1.json` directly + lineage
   from prior reorg (which round 1 provides!)
 - (also requires retriever wiring to LOAD the prereq files — currently

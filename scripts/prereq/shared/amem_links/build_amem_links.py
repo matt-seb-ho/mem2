@@ -4,7 +4,7 @@ Input:
   data/arc_agi/concept_memory/compressed_v1.json
 
 Output:
-  data/arc_agi/concept_memory/amem_link_graph_v1.json
+  data/arc_agi/concept_memory/shared/amem_link_graph_v1.json
 """
 from __future__ import annotations
 
@@ -29,7 +29,7 @@ from mem2.providers.llmplus_client import LLMPlusProviderClient
 
 
 SEED_MEM = ROOT / "data" / "arc_agi" / "concept_memory" / "compressed_v1.json"
-OUT_FILE = ROOT / "data" / "arc_agi" / "concept_memory" / "amem_link_graph_v1.json"
+OUT_FILE = ROOT / "data" / "arc_agi" / "concept_memory" / "shared" / "amem_link_graph_v1.json"
 MODEL = "deepseek/deepseek-v4-flash"
 INPUT_COST_PER_M = 0.14
 OUTPUT_COST_PER_M = 0.28

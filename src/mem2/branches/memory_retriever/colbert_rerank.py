@@ -14,7 +14,7 @@ Specifically ported:
 
 Embedding mode (preferred, when prereq file exists):
     - Loads `data/arc_agi/concept_memory/concept_embeddings_v1.npz` (built
-      by `scripts/prereq/axis_1/colbert_rerank/build_concept_embeddings.py`).
+      by `scripts/prereq/shared/colbert_rerank/build_concept_embeddings.py`).
     - Concept similarity = cosine(query_embedding, concept_embedding) using
       the sentence-transformer that produced the prereq file.
     - This is concept-level (one vec/concept), not full ColBERT's token-level

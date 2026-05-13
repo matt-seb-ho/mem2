@@ -37,8 +37,8 @@ from mem2.core.entities import (
 
 _WORD_RE = re.compile(r"[A-Za-z][A-Za-z0-9_]+")
 _REPO_ROOT = Path(__file__).resolve().parents[4]
-_DEFAULT_EMB_NPZ = _REPO_ROOT / "data" / "arc_agi" / "concept_memory" / "lightrag_embed_v1.npz"
-_DEFAULT_EMB_META = _REPO_ROOT / "data" / "arc_agi" / "concept_memory" / "lightrag_embed_v1.json"
+_DEFAULT_EMB_NPZ = _REPO_ROOT / "data" / "arc_agi" / "concept_memory" / "shared" / "lightrag_embed_v1.npz"
+_DEFAULT_EMB_META = _REPO_ROOT / "data" / "arc_agi" / "concept_memory" / "shared" / "lightrag_embed_v1.json"
 
 
 def _tokenize(text: str) -> set[str]:

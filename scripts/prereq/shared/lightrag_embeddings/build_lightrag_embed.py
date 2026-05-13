@@ -1,8 +1,8 @@
 """Build LightRAG dual-graph dense embeddings for concepts and entities.
 
 Outputs:
-  data/arc_agi/concept_memory/lightrag_embed_v1.npz
-  data/arc_agi/concept_memory/lightrag_embed_v1.json
+  data/arc_agi/concept_memory/shared/lightrag_embed_v1.npz
+  data/arc_agi/concept_memory/shared/lightrag_embed_v1.json
 """
 from __future__ import annotations
 
@@ -28,9 +28,9 @@ from mem2.concepts.memory import ConceptMemory
 
 
 SEED_MEM = ROOT / "data" / "arc_agi" / "concept_memory" / "compressed_v1.json"
-ENTITY_GRAPH = ROOT / "data" / "arc_agi" / "concept_memory" / "concept_entity_graph_v1.json"
-OUT_NPZ = ROOT / "data" / "arc_agi" / "concept_memory" / "lightrag_embed_v1.npz"
-OUT_META = ROOT / "data" / "arc_agi" / "concept_memory" / "lightrag_embed_v1.json"
+ENTITY_GRAPH = ROOT / "data" / "arc_agi" / "concept_memory" / "shared" / "entity_graph_v1.json"
+OUT_NPZ = ROOT / "data" / "arc_agi" / "concept_memory" / "shared" / "lightrag_embed_v1.npz"
+OUT_META = ROOT / "data" / "arc_agi" / "concept_memory" / "shared" / "lightrag_embed_v1.json"
 MODEL = "text-embedding-3-small"
 INPUT_COST_PER_M = 0.02
 

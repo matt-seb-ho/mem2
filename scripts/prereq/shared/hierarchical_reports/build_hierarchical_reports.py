@@ -1,10 +1,10 @@
 """Build hierarchical entity-community reports for GraphRAG-style retrieval.
 
 Inputs:
-  data/arc_agi/concept_memory/concept_entity_graph_v1.json
+  data/arc_agi/concept_memory/shared/entity_graph_v1.json
 
 Output:
-  data/arc_agi/concept_memory/entity_hierarchical_reports_v1.json
+  data/arc_agi/concept_memory/shared/hierarchical_reports_v1.json
 
 The builder clusters the entity graph recursively with Louvain and asks the
 canonical DeepSeek/OpenRouter model for concise community reports at each
@@ -32,8 +32,8 @@ if str(ROOT / "src") not in sys.path:
 from mem2.providers.llmplus_client import LLMPlusProviderClient
 
 
-ENTITY_GRAPH = ROOT / "data" / "arc_agi" / "concept_memory" / "concept_entity_graph_v1.json"
-OUT_FILE = ROOT / "data" / "arc_agi" / "concept_memory" / "entity_hierarchical_reports_v1.json"
+ENTITY_GRAPH = ROOT / "data" / "arc_agi" / "concept_memory" / "shared" / "entity_graph_v1.json"
+OUT_FILE = ROOT / "data" / "arc_agi" / "concept_memory" / "shared" / "hierarchical_reports_v1.json"
 MODEL = "deepseek/deepseek-v4-flash"
 INPUT_COST_PER_M = 0.14
 OUTPUT_COST_PER_M = 0.28

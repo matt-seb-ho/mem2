@@ -33,5 +33,5 @@ Must run AFTER the hipporag_ppr graph build completes (depends on
 
 ```bash
 cd mem2
-.venv/bin/python scripts/prereq/axis_1/magma_multigraph/derive_views.py
+.venv/bin/python scripts/prereq/shared/magma_multigraph_prereq/derive_views.py
 ```

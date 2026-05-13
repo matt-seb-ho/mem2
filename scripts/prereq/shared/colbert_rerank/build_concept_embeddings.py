@@ -40,7 +40,7 @@ texts in seconds. First run downloads model (~90MB).
 Usage
 -----
   cd mem2
-  .venv/bin/python scripts/prereq/axis_1/colbert_rerank/build_concept_embeddings.py
+  .venv/bin/python scripts/prereq/shared/colbert_rerank/build_concept_embeddings.py
 """
 from __future__ import annotations
 

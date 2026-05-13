@@ -26,5 +26,5 @@ DeepSeek V4 Flash, single call, ~$0.05, ~30-90s wall.
 
 ```bash
 cd mem2 && source .env
-.venv/bin/python scripts/prereq/axis_1/hmem_hierarchical/build_hierarchy.py
+.venv/bin/python scripts/prereq/shared/hmem_hierarchical_prereq/build_hierarchy.py
 ```

@@ -42,7 +42,7 @@ Subsequent runs are seconds. Apple Silicon MPS is auto-detected.
 
 ```bash
 cd mem2
-.venv/bin/python scripts/prereq/axis_1/colbert_rerank/build_concept_embeddings.py
+.venv/bin/python scripts/prereq/shared/colbert_rerank/build_concept_embeddings.py
 ```
 
 Optional flags: `--model`, `--device`, `--batch-size`.

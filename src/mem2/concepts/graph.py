@@ -270,8 +270,8 @@ class ConceptGraph:
         (always) + embedding-sim (if ``embed_fn`` provided) + typed semantic
         edges from the prereq concept_graph_v1.json (when present and
         ``load_typed_edges`` is True) + OpenIE fact edges from
-        concept_facts_openie_v1.json (when present and ``load_openie_edges``
-        is True) + LLM entity-graph edges from concept_entity_graph_v1.json
+        shared/openie_facts_v1.json (when present and ``load_openie_edges``
+        is True) + LLM entity-graph edges from shared/entity_graph_v1.json
         (when present and ``load_entity_edges`` is True).
 
         Authorship-lineage edges are added by the reorg builder at reorg time.

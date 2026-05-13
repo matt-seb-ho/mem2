@@ -37,13 +37,13 @@ baseline becomes meaningful.
 ```bash
 cd mem2
 source .env
-.venv/bin/python scripts/prereq/axis_1/hipporag_ppr/build_concept_graph.py
+.venv/bin/python scripts/prereq/shared/hipporag_ppr_prereq/build_concept_graph.py
 ```
 
 Smoketest first 3 concepts:
 
 ```bash
-.venv/bin/python scripts/prereq/axis_1/hipporag_ppr/build_concept_graph.py --limit 3
+.venv/bin/python scripts/prereq/shared/hipporag_ppr_prereq/build_concept_graph.py --limit 3
 ```
 
 ## Once it lands

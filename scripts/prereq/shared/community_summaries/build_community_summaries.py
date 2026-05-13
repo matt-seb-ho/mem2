@@ -4,7 +4,7 @@ Inputs:
   data/arc_agi/concept_memory/compressed_v1.json
 
 Output:
-  data/arc_agi/concept_memory/community_summaries_v1.json
+  data/arc_agi/concept_memory/shared/community_summaries_v1.json
 
 The script builds Louvain communities over the existing co-activation graph,
 asks DeepSeek V4 Flash for one concise report per community, and writes a
@@ -33,7 +33,7 @@ from mem2.providers.llmplus_client import LLMPlusProviderClient
 
 
 SEED_MEM = ROOT / "data" / "arc_agi" / "concept_memory" / "compressed_v1.json"
-OUT_FILE = ROOT / "data" / "arc_agi" / "concept_memory" / "community_summaries_v1.json"
+OUT_FILE = ROOT / "data" / "arc_agi" / "concept_memory" / "shared" / "community_summaries_v1.json"
 MODEL = "deepseek/deepseek-v4-flash"
 INPUT_COST_PER_M = 0.14
 OUTPUT_COST_PER_M = 0.28

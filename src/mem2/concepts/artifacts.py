@@ -14,12 +14,13 @@ from typing import Any, Iterable
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 CONCEPT_MEMORY_DIR = REPO_ROOT / "data" / "arc_agi" / "concept_memory"
-COMMUNITY_SUMMARIES_PATH = CONCEPT_MEMORY_DIR / "community_summaries_v1.json"
-OPENIE_FACTS_PATH = CONCEPT_MEMORY_DIR / "concept_facts_openie_v1.json"
-ENTITY_GRAPH_PATH = CONCEPT_MEMORY_DIR / "concept_entity_graph_v1.json"
-HIERARCHICAL_REPORTS_PATH = CONCEPT_MEMORY_DIR / "entity_hierarchical_reports_v1.json"
-RAPTOR_TREE_PATH = CONCEPT_MEMORY_DIR / "raptor_tree_v1.json"
-AMEM_LINK_GRAPH_PATH = CONCEPT_MEMORY_DIR / "amem_link_graph_v1.json"
+SHARED_CONCEPT_MEMORY_DIR = CONCEPT_MEMORY_DIR / "shared"
+COMMUNITY_SUMMARIES_PATH = SHARED_CONCEPT_MEMORY_DIR / "community_summaries_v1.json"
+OPENIE_FACTS_PATH = SHARED_CONCEPT_MEMORY_DIR / "openie_facts_v1.json"
+ENTITY_GRAPH_PATH = SHARED_CONCEPT_MEMORY_DIR / "entity_graph_v1.json"
+HIERARCHICAL_REPORTS_PATH = SHARED_CONCEPT_MEMORY_DIR / "hierarchical_reports_v1.json"
+RAPTOR_TREE_PATH = SHARED_CONCEPT_MEMORY_DIR / "raptor_tree_v1.json"
+AMEM_LINK_GRAPH_PATH = SHARED_CONCEPT_MEMORY_DIR / "amem_link_graph_v1.json"
 
 
 def _read_json(path: Path) -> dict[str, Any] | None:

@@ -23,7 +23,7 @@ from mem2.concepts.memory import ConceptMemory
 
 
 SEED_MEM = ROOT / "data" / "arc_agi" / "concept_memory" / "compressed_v1.json"
-ENTITY_GRAPH = ROOT / "data" / "arc_agi" / "concept_memory" / "concept_entity_graph_v1.json"
+ENTITY_GRAPH = ROOT / "data" / "arc_agi" / "concept_memory" / "shared" / "entity_graph_v1.json"
 OUT_FILE = ROOT / "data" / "arc_agi" / "concept_memory" / "magma_typed_views_v1.json"
 WORD_RE = re.compile(r"[A-Za-z][A-Za-z0-9_]+")
 VERBS = {

@@ -4,7 +4,7 @@ Inputs:
   data/arc_agi/concept_memory/compressed_v1.json
 
 Output:
-  data/arc_agi/concept_memory/concept_entity_graph_v1.json
+  data/arc_agi/concept_memory/shared/entity_graph_v1.json
 
 The artifact converts each concept-memory entry into a small document with
 typed entity mentions and relation edges. Graph retrievers can then consume a
@@ -34,7 +34,7 @@ from mem2.providers.llmplus_client import LLMPlusProviderClient
 
 
 SEED_MEM = ROOT / "data" / "arc_agi" / "concept_memory" / "compressed_v1.json"
-OUT_FILE = ROOT / "data" / "arc_agi" / "concept_memory" / "concept_entity_graph_v1.json"
+OUT_FILE = ROOT / "data" / "arc_agi" / "concept_memory" / "shared" / "entity_graph_v1.json"
 MODEL = "deepseek/deepseek-v4-flash"
 INPUT_COST_PER_M = 0.14
 OUTPUT_COST_PER_M = 0.28

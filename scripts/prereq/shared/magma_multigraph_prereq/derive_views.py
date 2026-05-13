@@ -30,7 +30,7 @@ Inputs
 ------
 - mem2/data/arc_agi/concept_memory/compressed_v1.json
 - mem2/data/arc_agi/concept_memory/concept_graph_v1.json (built by
-  scripts/prereq/axis_1/hipporag_ppr/build_concept_graph.py)
+  scripts/prereq/shared/hipporag_ppr_prereq/build_concept_graph.py)
 
 Outputs
 -------
