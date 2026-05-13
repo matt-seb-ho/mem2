@@ -168,8 +168,56 @@ def _hierarchical_reports_artifact(tmp_path: Path) -> Path:
     return path
 
 
+def _raptor_tree_artifact(tmp_path: Path) -> Path:
+    path = tmp_path / "raptor_tree_v1.json"
+    path.write_text(json.dumps({
+        "schema_version": "1",
+        "source_seed": "fixture",
+        "model": "fixture",
+        "levels": [
+            {
+                "level": 0,
+                "nodes": [
+                    {
+                        "node_id": "rt_L0_N000",
+                        "summary": "Object extraction and filtering leaf summary.",
+                        "member_communities": ["community_fixture"],
+                        "member_concepts": ["extract_objects", "filter_objects"],
+                        "summary_tokens": 6,
+                    },
+                    {
+                        "node_id": "rt_L0_N001",
+                        "summary": "Recoloring object leaf summary.",
+                        "member_communities": ["community_recolor"],
+                        "member_concepts": ["recolor_objects"],
+                        "summary_tokens": 4,
+                    },
+                ],
+            },
+            {
+                "level": 1,
+                "nodes": [{
+                    "node_id": "rt_L1_N000",
+                    "summary": "Parent summary for object extraction, filtering, and recoloring.",
+                    "member_communities": ["community_fixture", "community_recolor"],
+                    "member_concepts": ["extract_objects", "filter_objects", "recolor_objects"],
+                    "member_node_ids": ["rt_L0_N000", "rt_L0_N001"],
+                    "child_node_ids": ["rt_L0_N000", "rt_L0_N001"],
+                    "summary_tokens": 8,
+                }],
+            },
+        ],
+        "stats": {"num_levels": 2, "nodes_per_level": [2, 1]},
+    }))
+    return path
+
+
 def test_entity_graph_and_hierarchical_report_loaders_accept_artifacts(tmp_path: Path):
-    from mem2.concepts.artifacts import load_entity_graph, load_hierarchical_reports
+    from mem2.concepts.artifacts import (
+        load_entity_graph,
+        load_hierarchical_reports,
+        load_raptor_tree,
+    )
 
     entity_graph = load_entity_graph(
         _entity_graph_artifact(tmp_path),
@@ -179,11 +227,16 @@ def test_entity_graph_and_hierarchical_report_loaders_accept_artifacts(tmp_path:
         _hierarchical_reports_artifact(tmp_path),
         valid_concepts=["extract_objects", "filter_objects"],
     )
+    tree = load_raptor_tree(
+        _raptor_tree_artifact(tmp_path),
+        valid_concepts=["extract_objects", "filter_objects", "recolor_objects"],
+    )
 
     assert entity_graph["schema_version"] == "1"
     assert len(entity_graph["entities"]) == 2
     assert len(entity_graph["edges"]) == 1
     assert len(reports["hierarchy"]) >= 2
+    assert len(tree["levels"]) >= 2
 
 
 def test_graphrag_reports_llm_summary_source_when_artifact_present(tmp_path: Path):
@@ -232,6 +285,23 @@ def test_raptor_renders_llm_summary_when_artifact_present(tmp_path: Path):
 
     assert bundle.metadata["summary_source"] == "llm_summaries_v1"
     assert "LLM artifact summary" in (bundle.hint_text or "")
+
+
+def test_raptor_tree_descent_records_depth_when_artifact_present(tmp_path: Path):
+    from mem2.branches.memory_retriever.raptor import RAPTORRetriever
+
+    mem = _memory()
+    r = RAPTORRetriever(
+        top_k=2,
+        parent_ratio=0.5,
+        min_community_size=2,
+        raptor_tree_path=_raptor_tree_artifact(tmp_path),
+    )
+    bundle = r.retrieve(_ctx(), _state(mem), _problem(), [])
+
+    assert bundle.metadata["summary_source"] == "raptor_tree_v1"
+    assert bundle.metadata["tree_depth_used"] >= 2
+    assert "RAPTOR recursive tree path" in (bundle.hint_text or "")
 
 
 def test_hipporag_ppr_reports_openie_fact_edges_when_artifact_present(tmp_path: Path, monkeypatch):

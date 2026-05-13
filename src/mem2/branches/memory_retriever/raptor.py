@@ -36,7 +36,7 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from mem2.concepts.artifacts import load_community_summaries
+from mem2.concepts.artifacts import load_community_summaries, load_raptor_tree
 from mem2.concepts.graph import ConceptGraph
 from mem2.concepts.memory import ConceptMemory
 from mem2.core.entities import (
@@ -112,6 +112,7 @@ class RAPTORRetriever:
         skip_implementation: bool = False,
         usage_threshold: int = 1,
         community_summaries_path: str | Path | None = None,
+        raptor_tree_path: str | Path | None = None,
     ) -> None:
         self.top_k = int(top_k)
         self.parent_ratio = float(parent_ratio)
@@ -121,6 +122,7 @@ class RAPTORRetriever:
         self.skip_implementation = bool(skip_implementation)
         self.usage_threshold = int(usage_threshold)
         self.community_summaries_path = community_summaries_path
+        self.raptor_tree_path = raptor_tree_path
 
     # ----------------------------------------------------------------- #
     def retrieve(
@@ -144,6 +146,10 @@ class RAPTORRetriever:
             raise RuntimeError(
                 "raptor retriever requires networkx; install with `pip install networkx`."
             ) from exc
+
+        tree_bundle = self._retrieve_from_tree_artifact(mem, problem)
+        if tree_bundle is not None:
+            return tree_bundle
 
         # Build ConceptGraph; project to networkx for community detection
         concept_graph = ConceptGraph.build_from_memory(mem, min_co_overlap=1)
@@ -287,6 +293,97 @@ class RAPTORRetriever:
         selector_model: str = "",
     ) -> RetrievalBundle:
         return self.retrieve(ctx, memory, problem, previous_attempts)
+
+    def _retrieve_from_tree_artifact(
+        self,
+        mem: ConceptMemory,
+        problem: ProblemSpec,
+    ) -> RetrievalBundle | None:
+        tree = load_raptor_tree(self.raptor_tree_path, valid_concepts=mem.concepts.keys())
+        levels = tree.get("levels") or []
+        if len(levels) < 2:
+            return None
+
+        by_id: dict[str, dict] = {
+            node["node_id"]: node
+            for level in levels
+            for node in level.get("nodes", [])
+        }
+        if not by_id:
+            return None
+        q_tokens = _tokenize(_problem_text(problem))
+
+        def score(node: dict) -> tuple[int, int, str]:
+            text = " ".join([
+                str(node.get("node_id") or ""),
+                str(node.get("summary") or ""),
+                " ".join(node.get("member_communities") or []),
+                " ".join(node.get("member_concepts") or []),
+            ])
+            toks = _tokenize(text)
+            return (len(q_tokens & toks), len(node.get("member_concepts") or []), str(node.get("node_id")))
+
+        path: list[dict] = []
+        current = max(levels[-1].get("nodes", []), key=score)
+        path.append(current)
+        while current.get("child_node_ids"):
+            children = [by_id[c] for c in current.get("child_node_ids", []) if c in by_id]
+            if not children:
+                break
+            current = max(children, key=score)
+            path.append(current)
+
+        final = path[-1]
+        selected = [
+            name for name in (final.get("member_concepts") or [])
+            if name in mem.concepts
+        ][: self.top_k]
+        if not selected:
+            selected = [
+                name for node in path for name in (node.get("member_concepts") or [])
+                if name in mem.concepts
+            ][: self.top_k]
+        if not selected:
+            return None
+
+        hint = mem.to_string(
+            concept_names=selected,
+            include_description=self.include_description,
+            skip_cues=self.skip_cues,
+            skip_implementation=self.skip_implementation,
+            usage_threshold=self.usage_threshold,
+        )
+        tree_lines = ["", "--- RAPTOR recursive tree path ---"]
+        for node in path:
+            tree_lines.append(f"[{node['node_id']}]")
+            tree_lines.append(str(node.get("summary") or ""))
+        hint = (hint or "") + "\n".join(tree_lines)
+        return RetrievalBundle(
+            problem_uid=problem.uid,
+            hint_text=hint or None,
+            retrieved_items=[
+                {"name": name, "type": "leaf"} for name in selected
+            ] + [
+                {
+                    "name": node["node_id"],
+                    "type": "raptor_tree_node",
+                    "member_communities": node.get("member_communities") or [],
+                }
+                for node in path
+            ],
+            metadata={
+                "retriever": self.name,
+                "scoring_mode": "raptor_tree_descent",
+                "summary_source": "raptor_tree_v1",
+                "tree_source": "raptor_tree_v1",
+                "tree_depth_used": len(path),
+                "tree_path": [node["node_id"] for node in path],
+                "top_k": self.top_k,
+                "num_concepts_total": len(mem.concepts),
+                "num_selected": len(selected),
+                "num_tree_levels": len(levels),
+            },
+        )
 
 
 def _render_bundle(

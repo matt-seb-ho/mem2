@@ -18,6 +18,7 @@ COMMUNITY_SUMMARIES_PATH = CONCEPT_MEMORY_DIR / "community_summaries_v1.json"
 OPENIE_FACTS_PATH = CONCEPT_MEMORY_DIR / "concept_facts_openie_v1.json"
 ENTITY_GRAPH_PATH = CONCEPT_MEMORY_DIR / "concept_entity_graph_v1.json"
 HIERARCHICAL_REPORTS_PATH = CONCEPT_MEMORY_DIR / "entity_hierarchical_reports_v1.json"
+RAPTOR_TREE_PATH = CONCEPT_MEMORY_DIR / "raptor_tree_v1.json"
 
 
 def _read_json(path: Path) -> dict[str, Any] | None:
@@ -242,5 +243,77 @@ def load_hierarchical_reports(
         "source_graph": data.get("source_graph"),
         "model": data.get("model"),
         "hierarchy": hierarchy,
+        "stats": data.get("stats") or {},
+    }
+
+
+def load_raptor_tree(
+    path: str | Path | None = None,
+    *,
+    valid_concepts: Iterable[str] | None = None,
+) -> dict[str, Any]:
+    artifact_path = _resolve(path, RAPTOR_TREE_PATH)
+    if not artifact_path.exists():
+        return {"levels": []}
+    data = _read_json(artifact_path)
+    if not data or data.get("schema_version") != "1":
+        return {"levels": []}
+
+    valid = set(valid_concepts) if valid_concepts is not None else None
+    levels: list[dict[str, Any]] = []
+    known_node_ids: set[str] = set()
+    for raw_level in data.get("levels", []) or []:
+        if not isinstance(raw_level, dict):
+            continue
+        try:
+            level_idx = int(raw_level.get("level", len(levels)))
+        except (TypeError, ValueError):
+            level_idx = len(levels)
+        nodes: list[dict[str, Any]] = []
+        for raw in raw_level.get("nodes", []) or []:
+            if not isinstance(raw, dict):
+                continue
+            node_id = raw.get("node_id")
+            summary = raw.get("summary")
+            if not isinstance(node_id, str) or not isinstance(summary, str) or not summary.strip():
+                continue
+            member_concepts = [
+                c for c in (raw.get("member_concepts") or [])
+                if isinstance(c, str) and (valid is None or c in valid)
+            ]
+            if valid is not None and not member_concepts:
+                continue
+            child_ids = [
+                c for c in (raw.get("child_node_ids") or raw.get("member_node_ids") or [])
+                if isinstance(c, str)
+            ]
+            nodes.append({
+                "node_id": node_id,
+                "summary": summary.strip(),
+                "member_communities": [
+                    c for c in (raw.get("member_communities") or []) if isinstance(c, str)
+                ],
+                "member_concepts": list(dict.fromkeys(member_concepts)),
+                "member_node_ids": child_ids,
+                "child_node_ids": child_ids,
+                "summary_tokens": raw.get("summary_tokens"),
+            })
+            known_node_ids.add(node_id)
+        if nodes:
+            levels.append({"level": level_idx, "nodes": nodes})
+
+    if len(levels) < 2:
+        return {"levels": []}
+    valid_ids = {n["node_id"] for level in levels for n in level["nodes"]}
+    for level in levels:
+        for node in level["nodes"]:
+            node["member_node_ids"] = [n for n in node["member_node_ids"] if n in valid_ids]
+            node["child_node_ids"] = [n for n in node["child_node_ids"] if n in valid_ids]
+
+    return {
+        "schema_version": "1",
+        "source_seed": data.get("source_seed"),
+        "model": data.get("model"),
+        "levels": sorted(levels, key=lambda level: level["level"]),
         "stats": data.get("stats") or {},
     }
