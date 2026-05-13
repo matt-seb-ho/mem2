@@ -1,4 +1,4 @@
-"""LightRAG dual-level retriever — axis B.7.
+"""LightRAG dual-level retriever - axis B.7.
 
 Port of the dual-level retrieval pattern from LightRAG (Guo et al.).
 
@@ -10,8 +10,8 @@ Specifically ported:
       merged into a single context.
 
 Deliberate simplifications (LLM-free, embed-free):
-    - Entity scoring: paper uses entity-embedding cosine sim → token overlap.
-    - Relationship scoring: paper uses per-edge LLM summary + embedding sim →
+    - Entity scoring: paper uses entity-embedding cosine sim -> token overlap.
+    - Relationship scoring: paper uses per-edge LLM summary + embedding sim ->
       edge score = product of endpoint token-overlap times edge weight.
     - No vector DBs, no LLM summary generation.
     - Hint shape: two blocks, `## entities (local)` + `## relationships (global)`,
@@ -24,6 +24,7 @@ import json
 import re
 from pathlib import Path
 
+from mem2.concepts.artifacts import CONCEPT_MEMORY_DIR
 from mem2.concepts.graph import ConceptGraph
 from mem2.concepts.memory import ConceptMemory
 from mem2.core.entities import (
@@ -39,6 +40,7 @@ _WORD_RE = re.compile(r"[A-Za-z][A-Za-z0-9_]+")
 _REPO_ROOT = Path(__file__).resolve().parents[4]
 _DEFAULT_EMB_NPZ = _REPO_ROOT / "data" / "arc_agi" / "concept_memory" / "shared" / "lightrag_embed_v1.npz"
 _DEFAULT_EMB_META = _REPO_ROOT / "data" / "arc_agi" / "concept_memory" / "shared" / "lightrag_embed_v1.json"
+_DEFAULT_ADAPTED_MEMORY_PATH = CONCEPT_MEMORY_DIR / "ports" / "lightrag_memory_v1.json"
 
 
 def _tokenize(text: str) -> set[str]:
@@ -72,12 +74,17 @@ class LightRAGRetriever:
         min_edge_weight: float = 1.0,
         embedding_npz_path: str | Path | None = None,
         embedding_meta_path: str | Path | None = None,
+        adapted_memory_path: str | Path | None = None,
     ) -> None:
         self.top_k_entities = int(top_k_entities)
         self.top_m_relationships = int(top_m_relationships)
         self.min_edge_weight = float(min_edge_weight)
         self.embedding_npz_path = Path(embedding_npz_path) if embedding_npz_path else _DEFAULT_EMB_NPZ
         self.embedding_meta_path = Path(embedding_meta_path) if embedding_meta_path else _DEFAULT_EMB_META
+        self.adapted_memory_path = self._resolve_path(
+            adapted_memory_path,
+            _DEFAULT_ADAPTED_MEMORY_PATH,
+        )
 
     def retrieve(
         self,
@@ -94,6 +101,7 @@ class LightRAGRetriever:
             )
 
         q_tokens = _tokenize(_problem_text(problem))
+        adapted_records, adapted_source = self._load_adapted_records(mem)
 
         # --- Local (entity-level) scoring -------------------------------
         token_scores: dict[str, int] = {}
@@ -105,11 +113,18 @@ class LightRAGRetriever:
         entity_scores: dict[str, float] = {}
         if dense_scores:
             for name in mem.concepts:
-                entity_scores[name] = dense_scores.get(name, 0.0) + 0.05 * token_scores.get(name, 0)
+                entity_scores[name] = (
+                    dense_scores.get(name, 0.0)
+                    + 0.05 * token_scores.get(name, 0)
+                    + self._adapted_local_score(adapted_records.get(name), q_tokens)
+                )
             ranked_entities = sorted(entity_scores.items(), key=lambda kv: kv[1], reverse=True)
             scoring_detail = "dense_primary_sparse_secondary"
         else:
-            entity_scores = {name: float(score) for name, score in token_scores.items()}
+            entity_scores = {
+                name: float(score) + self._adapted_local_score(adapted_records.get(name), q_tokens)
+                for name, score in token_scores.items()
+            }
             ranked_entities = sorted(entity_scores.items(), key=lambda kv: kv[1], reverse=True)
             scoring_detail = "token_overlap_fallback"
         top_entities = [name for name, _ in ranked_entities[: self.top_k_entities]]
@@ -131,29 +146,42 @@ class LightRAGRetriever:
             e2_score = entity_scores.get(edge.dst, 0.0)
             if e1_score == 0 and e2_score == 0:
                 continue
-            # product of endpoint relevance × edge weight; add 1 to endpoint
+            # product of endpoint relevance times edge weight; add 1 to endpoint
             # scores to avoid killing asymmetric edges where one endpoint
             # has zero overlap.
             combined = float((e1_score + 1) * (e2_score + 1) * edge.weight)
+            combined += self._adapted_relationship_score(
+                adapted_records.get(edge.src),
+                edge.dst,
+                q_tokens,
+            )
+            combined += self._adapted_relationship_score(
+                adapted_records.get(edge.dst),
+                edge.src,
+                q_tokens,
+            )
             label = self._relationship_label(edge)
             edge_scores.append((edge.src, edge.dst, combined, edge.kind, label))
         edge_scores.sort(key=lambda t: t[2], reverse=True)
         top_edges = edge_scores[: self.top_m_relationships]
 
         # --- Render hint ------------------------------------------------
-        lines: list[str] = []
-        if top_entities:
-            lines.append("## entities (local)")
-            for name in top_entities:
-                c = mem.concepts.get(name)
-                desc = (c.description or "") if c else ""
-                lines.append(f"- {name}: {desc}" if desc else f"- {name}")
-        if top_edges:
-            lines.append("")
-            lines.append("## relationships (global)")
-            for src, dst, score, kind, label in top_edges:
-                lines.append(f"- {src} --{label}-- {dst}  ({kind} score {score:.1f})")
-        hint = "\n".join(lines) if lines else None
+        if adapted_records:
+            hint = self._render_adapted_hint(mem, top_entities, top_edges, adapted_records)
+        else:
+            lines: list[str] = []
+            if top_entities:
+                lines.append("## entities (local)")
+                for name in top_entities:
+                    c = mem.concepts.get(name)
+                    desc = (c.description or "") if c else ""
+                    lines.append(f"- {name}: {desc}" if desc else f"- {name}")
+            if top_edges:
+                lines.append("")
+                lines.append("## relationships (global)")
+                for src, dst, score, kind, label in top_edges:
+                    lines.append(f"- {src} --{label}-- {dst}  ({kind} score {score:.1f})")
+            hint = "\n".join(lines) if lines else None
 
         return RetrievalBundle(
             problem_uid=problem.uid,
@@ -179,6 +207,14 @@ class LightRAGRetriever:
                 "num_edges_ranked": len(edge_scores),
                 "num_entities_selected": len(top_entities),
                 "num_edges_selected": len(top_edges),
+                "adapted_memory_source": adapted_source,
+                "adapted_records_loaded": len(adapted_records),
+                "adapted_local_items_rendered": sum(1 for n in top_entities if n in adapted_records),
+                "adapted_relationship_items_rendered": sum(
+                    1
+                    for src, dst, *_ in top_edges
+                    if src in adapted_records or dst in adapted_records
+                ),
             },
         )
 
@@ -204,6 +240,164 @@ class LightRAGRetriever:
             if predicate:
                 return predicate
         return "co-activates-with"
+
+    @staticmethod
+    def _resolve_path(path: str | Path | None, default: Path) -> Path:
+        if path is None:
+            return default
+        p = Path(path)
+        return p if p.is_absolute() else _REPO_ROOT / p
+
+    def _load_adapted_records(
+        self,
+        mem: ConceptMemory,
+    ) -> tuple[dict[str, dict], str]:
+        path = self.adapted_memory_path
+        if not path.exists():
+            return {}, "flat"
+        try:
+            data = json.loads(path.read_text())
+        except Exception as exc:  # noqa: BLE001 - corrupted local artifact should not be silent
+            raise RuntimeError(f"invalid LightRAG adapted memory JSON: {path}") from exc
+        if data.get("schema_version") != "1" or data.get("port") != self.name:
+            raise RuntimeError(f"invalid LightRAG adapted memory schema: {path}")
+        records: dict[str, dict] = {}
+        for raw in data.get("adapted_concepts") or []:
+            if not isinstance(raw, dict):
+                continue
+            concept_id = raw.get("concept_id")
+            if not isinstance(concept_id, str) or concept_id not in mem.concepts:
+                continue
+            if "local_entities" not in raw or "global_relationships" not in raw:
+                raise RuntimeError(f"adapted memory missing LightRAG fields for {concept_id}")
+            records[concept_id] = raw
+        if not records:
+            return {}, "flat"
+        return records, "lightrag_memory_v1"
+
+    def _adapted_local_score(
+        self,
+        record: dict | None,
+        q_tokens: set[str],
+    ) -> float:
+        if not record:
+            return 0.0
+        text = self._adapted_record_text(record, local_only=True)
+        return float(len(q_tokens & _tokenize(text))) + 0.1 * len(record.get("local_entities") or [])
+
+    def _adapted_relationship_score(
+        self,
+        record: dict | None,
+        target: str,
+        q_tokens: set[str],
+    ) -> float:
+        if not record:
+            return 0.0
+        score = 0.0
+        target_tokens = _tokenize(target)
+        for relationship in record.get("global_relationships") or []:
+            if not isinstance(relationship, dict):
+                continue
+            rel_text = " ".join(
+                str(relationship.get(key) or "")
+                for key in ("relation", "target_concept", "relation_summary")
+            )
+            rel_tokens = _tokenize(rel_text)
+            if target_tokens & rel_tokens:
+                score += 1.0
+            score += float(len(q_tokens & rel_tokens))
+            try:
+                score += float(relationship.get("strength", 0.0))
+            except (TypeError, ValueError):
+                pass
+        return score
+
+    @staticmethod
+    def _adapted_record_text(record: dict, *, local_only: bool = False) -> str:
+        parts: list[str] = [
+            str(record.get("entity_value_summary") or ""),
+            str(record.get("chunk_reference") or ""),
+            str(record.get("retrieval_notes") or ""),
+        ]
+        parts.extend(str(item) for item in record.get("low_level_keywords") or [])
+        for entity in record.get("local_entities") or []:
+            if isinstance(entity, dict):
+                parts.extend(
+                    str(entity.get(key) or "")
+                    for key in ("mention", "entity_type", "entity_summary")
+                )
+        if not local_only:
+            parts.append(str(record.get("relation_value_summary") or ""))
+            parts.extend(str(item) for item in record.get("high_level_keywords") or [])
+            parts.extend(str(item) for item in record.get("one_hop_neighbors") or [])
+            for relationship in record.get("global_relationships") or []:
+                if isinstance(relationship, dict):
+                    parts.extend(
+                        str(relationship.get(key) or "")
+                        for key in ("relation", "target_concept", "relation_summary")
+                    )
+        return "\n".join(part for part in parts if part.strip())
+
+    @staticmethod
+    def _render_adapted_hint(
+        mem: ConceptMemory,
+        top_entities: list[str],
+        top_edges: list[tuple[str, str, float, str, str]],
+        adapted_records: dict[str, dict],
+    ) -> str | None:
+        lines: list[str] = []
+        if top_entities:
+            lines.append("## entities (local)")
+            for name in top_entities:
+                record = adapted_records.get(name)
+                if not record:
+                    c = mem.concepts.get(name)
+                    desc = (c.description or "") if c else ""
+                    lines.append(f"- {name}: {desc}" if desc else f"- {name}")
+                    continue
+                local_mentions = [
+                    str(entity.get("mention") or "").strip()
+                    for entity in record.get("local_entities") or []
+                    if isinstance(entity, dict) and str(entity.get("mention") or "").strip()
+                ]
+                keywords = [
+                    str(item).strip()
+                    for item in record.get("low_level_keywords") or []
+                    if str(item).strip()
+                ]
+                lines.append(f"- {name}")
+                lines.append("  lightrag_local_entities: " + ", ".join(local_mentions[:6]))
+                if keywords:
+                    lines.append("  low_level_keywords: " + ", ".join(keywords[:6]))
+                summary = str(record.get("entity_value_summary") or "").strip()
+                if summary:
+                    lines.append(f"  entity_value_summary: {summary}")
+        if top_edges:
+            lines.append("")
+            lines.append("## relationships (global)")
+            for src, dst, score, kind, label in top_edges:
+                lines.append(f"- {src} --{label}-- {dst}  ({kind} score {score:.1f})")
+                for concept_name, target in ((src, dst), (dst, src)):
+                    record = adapted_records.get(concept_name)
+                    if not record:
+                        continue
+                    rendered = False
+                    for relationship in record.get("global_relationships") or []:
+                        if not isinstance(relationship, dict):
+                            continue
+                        target_text = str(relationship.get("target_concept") or "")
+                        if target not in target_text and not (_tokenize(target) & _tokenize(target_text)):
+                            continue
+                        rel = str(relationship.get("relation") or "").strip()
+                        summary = str(relationship.get("relation_summary") or "").strip()
+                        lines.append(f"  lightrag_global_relationships: {concept_name} {rel} {target_text}")
+                        if summary:
+                            lines.append(f"  relation_value_summary: {summary}")
+                        rendered = True
+                        break
+                    if rendered:
+                        break
+        return "\n".join(lines) if lines else None
 
     def _dense_entity_scores(self, mem: ConceptMemory, q_tokens: set[str]) -> tuple[dict[str, float], dict]:
         if not q_tokens:
