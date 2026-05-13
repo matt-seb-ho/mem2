@@ -41,9 +41,11 @@ from __future__ import annotations
 
 import json
 import logging
+from pathlib import Path
 from typing import Any
 
 from mem2.branches.memory_builder.arcmemo_reorg import ArcMemoReorgMemoryBuilder
+from mem2.concepts.artifacts import load_amem_link_graph
 from mem2.concepts.graph import ConceptGraph
 from mem2.concepts.memory import ConceptMemory
 from mem2.core.entities import MemoryState, RunContext
@@ -73,6 +75,7 @@ class AMEMAgenticMemoryBuilder(ArcMemoReorgMemoryBuilder):
         evo_threshold: int = 3,
         min_neighbor_strength: float = 0.1,
         max_notes_per_pass: int = 20,
+        link_graph_path: str | Path | None = None,
         **kwargs,
     ) -> None:
         super().__init__(**kwargs)
@@ -80,6 +83,7 @@ class AMEMAgenticMemoryBuilder(ArcMemoReorgMemoryBuilder):
         self.evo_threshold = int(evo_threshold)
         self.min_neighbor_strength = float(min_neighbor_strength)
         self.max_notes_per_pass = int(max_notes_per_pass)
+        self.link_graph_path = link_graph_path
 
     def consolidate(self, ctx: RunContext, memory: MemoryState) -> MemoryState:
         reorg = memory.payload.get("reorg")
@@ -94,6 +98,7 @@ class AMEMAgenticMemoryBuilder(ArcMemoReorgMemoryBuilder):
         recent = list(mem.concepts.keys())[-self.max_notes_per_pass:]
 
         graph = ConceptGraph.build_from_memory(mem, min_co_overlap=1)
+        artifact_links = self._load_artifact_links(mem)
         actions_log: list[dict[str, Any]] = []
         evo_count = 0
         evolved: list[str] = []
@@ -118,6 +123,7 @@ class AMEMAgenticMemoryBuilder(ArcMemoReorgMemoryBuilder):
             actions = decision.get("actions", [])
             applied = self._apply_actions(
                 mem, note_name, nbrs, decision, actions,
+                artifact_links=artifact_links,
             )
             if applied:
                 evo_count += 1
@@ -182,7 +188,15 @@ class AMEMAgenticMemoryBuilder(ArcMemoReorgMemoryBuilder):
             concept = mem.concepts.get(concept_name)
             if concept is None:
                 return ""
-            return (concept.description or "")[:limit]
+            link_text = "; ".join(
+                f"{link.get('link_type', 'related_to')} {link.get('target_concept')}"
+                for link in (concept.links or [])[:3]
+                if link.get("target_concept")
+            )
+            base = concept.description or ""
+            if link_text:
+                base = f"{base} Links: {link_text}"
+            return base[:limit]
 
         nbr_block = "\n".join(
             f"  {i}: {n} (sim={w:.3f}) - {_short_description(n, 120)}"
@@ -242,6 +256,8 @@ class AMEMAgenticMemoryBuilder(ArcMemoReorgMemoryBuilder):
         nbrs: list[tuple[str, float]],
         decision: dict[str, Any],
         actions: list[str],
+        *,
+        artifact_links: dict[str, list[dict[str, Any]]] | None = None,
     ) -> list[dict[str, Any]]:
         """Apply decided actions; return list of concrete changes."""
         applied: list[dict[str, Any]] = []
@@ -259,6 +275,23 @@ class AMEMAgenticMemoryBuilder(ArcMemoReorgMemoryBuilder):
                 if marker not in (c.description or ""):
                     c.description = (c.description or "") + " " + marker
                     applied.append({"type": "link", "from": note, "to": target})
+                link_applied = self._add_link(
+                    c,
+                    {
+                        "source_concept": note,
+                        "target_concept": target,
+                        "link_type": "related_to",
+                        "rationale": "A-MEM template neighbor strengthening",
+                        "confidence": 1.0,
+                    },
+                )
+                if link_applied:
+                    applied.append({"type": "zettel_link", **link_applied})
+
+            for artifact_link in (artifact_links or {}).get(note, [])[: self.k_neighbors]:
+                link_applied = self._add_link(c, artifact_link)
+                if link_applied:
+                    applied.append({"type": "zettel_link", **link_applied})
 
         if "update_tags" in actions:
             tags = decision.get("tags_to_update", [])
@@ -273,3 +306,45 @@ class AMEMAgenticMemoryBuilder(ArcMemoReorgMemoryBuilder):
                     applied.append({"type": "tags", "note": note, "tags": fresh_tags})
 
         return applied
+
+    def _load_artifact_links(self, mem: ConceptMemory) -> dict[str, list[dict[str, Any]]]:
+        links = load_amem_link_graph(
+            self.link_graph_path,
+            valid_concepts=mem.concepts.keys(),
+        )
+        by_source: dict[str, list[dict[str, Any]]] = {}
+        for link in links:
+            by_source.setdefault(link["source_concept"], []).append(link)
+        for source_links in by_source.values():
+            source_links.sort(key=lambda link: float(link.get("confidence") or 0.0), reverse=True)
+        return by_source
+
+    def _add_link(self, concept, link: dict[str, Any]) -> dict[str, Any] | None:
+        target = str(link.get("target_concept") or "").strip()
+        if not target or target == concept.name:
+            return None
+        link_type = str(link.get("link_type") or "related_to").strip()
+        cleaned = {
+            "source_concept": concept.name,
+            "target_concept": target,
+            "link_type": link_type,
+            "rationale": str(link.get("rationale") or "")[:240],
+            "confidence": float(link.get("confidence") or 1.0),
+        }
+        existing = {
+            (
+                str(raw.get("target_concept") or raw.get("target") or ""),
+                str(raw.get("link_type") or "related_to"),
+            )
+            for raw in concept.links
+            if isinstance(raw, dict)
+        }
+        key = (cleaned["target_concept"], cleaned["link_type"])
+        if key in existing:
+            return None
+        concept.links.append(cleaned)
+        return {
+            "from": concept.name,
+            "to": cleaned["target_concept"],
+            "link_type": cleaned["link_type"],
+        }

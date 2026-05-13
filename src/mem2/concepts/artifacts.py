@@ -19,6 +19,7 @@ OPENIE_FACTS_PATH = CONCEPT_MEMORY_DIR / "concept_facts_openie_v1.json"
 ENTITY_GRAPH_PATH = CONCEPT_MEMORY_DIR / "concept_entity_graph_v1.json"
 HIERARCHICAL_REPORTS_PATH = CONCEPT_MEMORY_DIR / "entity_hierarchical_reports_v1.json"
 RAPTOR_TREE_PATH = CONCEPT_MEMORY_DIR / "raptor_tree_v1.json"
+AMEM_LINK_GRAPH_PATH = CONCEPT_MEMORY_DIR / "amem_link_graph_v1.json"
 
 
 def _read_json(path: Path) -> dict[str, Any] | None:
@@ -317,3 +318,50 @@ def load_raptor_tree(
         "levels": sorted(levels, key=lambda level: level["level"]),
         "stats": data.get("stats") or {},
     }
+
+
+def load_amem_link_graph(
+    path: str | Path | None = None,
+    *,
+    valid_concepts: Iterable[str] | None = None,
+) -> list[dict[str, Any]]:
+    artifact_path = _resolve(path, AMEM_LINK_GRAPH_PATH)
+    if not artifact_path.exists():
+        return []
+    data = _read_json(artifact_path)
+    if not data or data.get("schema_version") != "1":
+        return []
+
+    valid = set(valid_concepts) if valid_concepts is not None else None
+    out: list[dict[str, Any]] = []
+    seen: set[tuple[str, str, str]] = set()
+    for raw in data.get("links", []) or []:
+        if not isinstance(raw, dict):
+            continue
+        source = raw.get("source_concept")
+        target = raw.get("target_concept")
+        link_type = raw.get("link_type")
+        if not isinstance(source, str) or not isinstance(target, str):
+            continue
+        if source == target:
+            continue
+        if valid is not None and (source not in valid or target not in valid):
+            continue
+        if not isinstance(link_type, str) or not link_type.strip():
+            link_type = "related_to"
+        key = (source, target, link_type)
+        if key in seen:
+            continue
+        seen.add(key)
+        try:
+            confidence = float(raw.get("confidence", 1.0))
+        except (TypeError, ValueError):
+            confidence = 1.0
+        out.append({
+            "source_concept": source,
+            "target_concept": target,
+            "link_type": link_type.strip(),
+            "rationale": str(raw.get("rationale") or ""),
+            "confidence": max(0.0, min(1.0, confidence)),
+        })
+    return out

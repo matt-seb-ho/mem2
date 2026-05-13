@@ -8,6 +8,7 @@ Doc 74 §0 finding 5: template-mode tag enrichment was a no-op
 from __future__ import annotations
 
 from pathlib import Path
+import json
 
 import pytest
 
@@ -40,6 +41,33 @@ def _make_ms(mem: ConceptMemory) -> MemoryState:
         schema_name="arcmemo_ps", schema_version="v1",
         payload={**mem.to_payload(), "reorg": {"step": 20, "history": []}},
     )
+
+
+def _amem_link_graph(tmp_path: Path) -> Path:
+    path = tmp_path / "amem_link_graph_v1.json"
+    path.write_text(json.dumps({
+        "schema_version": "1",
+        "source_seed": "fixture",
+        "model": "fixture",
+        "links": [
+            {
+                "source_concept": "concept_0",
+                "target_concept": "concept_1",
+                "link_type": "applied_with",
+                "rationale": "both support color pattern analysis",
+                "confidence": 0.9,
+            },
+            {
+                "source_concept": "concept_1",
+                "target_concept": "concept_2",
+                "link_type": "specializes",
+                "rationale": "concept_2 is a more specific pattern case",
+                "confidence": 0.8,
+            },
+        ],
+        "stats": {"num_links": 2},
+    }))
+    return path
 
 
 def test_amem_template_mode_produces_nonempty_tags():
@@ -119,3 +147,37 @@ def test_amem_no_evolution_below_threshold():
     linked = [c for c in after_mem.concepts.values()
               if "[A-MEM linked:" in (c.description or "")]
     assert len(linked) == 0
+
+
+def test_amem_link_graph_persists_zettelkasten_links(tmp_path: Path):
+    """A-MEM should persist typed Zettelkasten links on evolved concepts."""
+    from mem2.branches.memory_builder.reorg_amem import AMEMAgenticMemoryBuilder
+
+    valid_types = {
+        "generalizes",
+        "specializes",
+        "prerequisite_of",
+        "contrast_with",
+        "applied_with",
+        "related_to",
+    }
+    b = AMEMAgenticMemoryBuilder(
+        every_k=20,
+        trigger="every_k",
+        k_neighbors=3,
+        max_notes_per_pass=6,
+        min_neighbor_strength=0.0,
+        link_graph_path=_amem_link_graph(tmp_path),
+    )
+    mem = _amem_mem()
+    out = b.consolidate(_ctx(), _make_ms(mem))
+    after_mem = ConceptMemory.from_payload(out.payload)
+
+    linked = [
+        link
+        for concept in after_mem.concepts.values()
+        for link in concept.links
+    ]
+    assert linked
+    assert all(link["link_type"] in valid_types for link in linked)
+    assert any(link["link_type"] == "applied_with" for link in linked)

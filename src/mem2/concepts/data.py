@@ -62,6 +62,7 @@ class Concept:
     - cues: list[str]
     - implementation: list[str]
     - used_in: list[str]
+    - links: list[dict]
     """
 
     name: str
@@ -74,6 +75,7 @@ class Concept:
     implementation: list[str] = field(default_factory=list)
     used_in: list[str] = field(default_factory=list)
     tags: list[str] = field(default_factory=list)
+    links: list[dict] = field(default_factory=list)
 
     # ----------------------- Init / validation ------------------------- #
     def __post_init__(self):
@@ -89,11 +91,14 @@ class Concept:
             self.used_in = []
         if self.tags is None:
             self.tags = []
+        if self.links is None:
+            self.links = []
         # cues/implementation may contain dict entries from old serializations
         # (before `_merge_lines` canonicalization). Normalize to strings so
         # downstream dedup / aggregation is hashable-safe.
         self.cues = [_coerce_line(x) for x in self.cues]
         self.implementation = [_coerce_line(x) for x in self.implementation]
+        self.links = [dict(link) for link in self.links if isinstance(link, dict)]
         assert isinstance(self.parameters, list)
         fixed_params: list[ParameterSpec] = []
         for p in self.parameters:
@@ -206,6 +211,19 @@ class Concept:
             lines.append(f"{ind}  implementation:")
             for note in self.implementation:
                 lines.append(f"{ind}    - {note}")
+
+        if self.links:
+            lines.append(f"{ind}  links:")
+            for link in self.links[:5]:
+                target = str(link.get("target_concept") or link.get("target") or "").strip()
+                if not target:
+                    continue
+                link_type = str(link.get("link_type") or "related_to").strip()
+                rationale = str(link.get("rationale") or "").strip()
+                line = f"{ind}    - {link_type}: {target}"
+                if rationale:
+                    line += f" - {rationale[:160]}"
+                lines.append(line)
 
         return "\n".join(lines)
 
