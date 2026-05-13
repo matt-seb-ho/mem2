@@ -82,3 +82,37 @@ def test_variant_free_text_is_paragraph_not_minimal_structure():
     assert "* " not in free_text
     assert "1." not in free_text
     assert "- concept:" in minimal_text
+
+
+def test_variant_parse_kind_overrides_skip_routines_in_ps_topk():
+    from mem2.branches.memory_retriever.ps_topk import PsTopKRetriever
+
+    mem = _memory()
+    flags = dict(RENDER_FLAGS["structured_routine"])
+    flags["parse_kind_overrides"] = {"routine": "skip", "structure": "compact"}
+    bundle = PsTopKRetriever(top_k=2, usage_threshold=0).retrieve(
+        _ctx(),
+        _state(mem, variant="parse_refined_structured_routine", render_flags=flags),
+        _problem(),
+        [],
+    )
+    hint = bundle.hint_text or ""
+    assert "object_transform" not in hint
+    assert "shape_principle" in hint
+
+
+def test_variant_parse_kind_overrides_skip_routines_in_ps_selector():
+    from mem2.branches.memory_retriever.ps_selector import PsSelectorRetriever
+
+    mem = _memory()
+    flags = dict(RENDER_FLAGS["structured_routine"])
+    flags["parse_kind_overrides"] = {"routine": "skip", "structure": "compact"}
+    bundle = PsSelectorRetriever(use_llm_selector=False, render_mode="full").retrieve(
+        _ctx(),
+        _state(mem, variant="parse_refined_structured_routine", render_flags=flags),
+        _problem(),
+        [],
+    )
+    hint = bundle.hint_text or ""
+    assert "object_transform" not in hint
+    assert "shape_principle" in hint

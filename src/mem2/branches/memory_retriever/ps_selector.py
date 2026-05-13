@@ -75,6 +75,54 @@ def _free_text_hint(concept_mem: ConceptMemory, selected_names: list[str] | None
     return "Recall the following concepts that may be relevant: " + " ".join(sentences)
 
 
+def _parse_override_hint(
+    concept_mem: ConceptMemory,
+    selected_names: list[str] | None,
+    parse_kind_overrides: dict,
+    render_flags: dict[str, Any],
+) -> str:
+    names = selected_names or list(concept_mem.concepts.keys())
+    blocks: list[str] = []
+    for name in names:
+        concept = concept_mem.concepts.get(name)
+        if concept is None:
+            continue
+        mode = str(parse_kind_overrides.get(concept.kind, "")).strip()
+        if mode == "skip":
+            continue
+        if mode == "compact":
+            blocks.append(concept.to_string(
+                include_description=True,
+                skip_kind=True,
+                skip_routine_subtype=True,
+                skip_cues=True,
+                skip_implementation=True,
+                skip_parameters=True,
+                skip_parameter_description=True,
+            ))
+        elif mode == "full":
+            blocks.append(concept.to_string(
+                include_description=True,
+                skip_kind=False,
+                skip_routine_subtype=False,
+                skip_cues=False,
+                skip_implementation=False,
+                skip_parameters=False,
+                skip_parameter_description=False,
+            ))
+        else:
+            blocks.append(concept.to_string(
+                include_description=render_flags["include_description"],
+                skip_kind=render_flags["skip_kind"],
+                skip_routine_subtype=render_flags.get("skip_routine_subtype", True),
+                skip_cues=render_flags["skip_cues"],
+                skip_implementation=render_flags["skip_implementation"],
+                skip_parameters=render_flags["skip_parameters"],
+                skip_parameter_description=render_flags["skip_parameter_description"],
+            ))
+    return "\n".join(blocks)
+
+
 class PsSelectorRetriever:
     """PS (Program Synthesis) concept selection retriever.
 
@@ -226,10 +274,25 @@ class PsSelectorRetriever:
                 "skip_parameter_description": variant_flags.get("skip_parameter_description", True),
                 "include_description": variant_flags.get("include_description", True),
                 "skip_kind": variant_flags.get("skip_kind", True),
+                "skip_routine_subtype": variant_flags.get("skip_routine_subtype", True),
             }
         else:
             render_flags = dict(_RENDER_PROFILES.get(self.render_mode, _RENDER_PROFILES["full"]))
             render_flags.setdefault("skip_kind", True)
+            render_flags.setdefault("skip_routine_subtype", True)
+
+        parse_kind_overrides = (
+            variant_flags.get("parse_kind_overrides")
+            if isinstance(variant_flags, dict)
+            else None
+        )
+        if isinstance(parse_kind_overrides, dict) and parse_kind_overrides:
+            return _parse_override_hint(
+                concept_mem,
+                selected_names,
+                parse_kind_overrides,
+                render_flags,
+            )
 
         if selected_names:
             return concept_mem.to_string(

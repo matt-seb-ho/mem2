@@ -38,6 +38,60 @@ def _free_text_hint(mem: ConceptMemory, concept_names: list[str]) -> str:
     return "Recall the following concepts that may be relevant: " + " ".join(sentences)
 
 
+def _parse_override_hint(
+    mem: ConceptMemory,
+    concept_names: list[str],
+    parse_kind_overrides: dict,
+    *,
+    include_description: bool,
+    skip_kind: bool,
+    skip_routine_subtype: bool,
+    skip_cues: bool,
+    skip_implementation: bool,
+    skip_parameters: bool,
+    skip_parameter_description: bool,
+) -> str:
+    blocks: list[str] = []
+    for name in concept_names:
+        concept = mem.concepts.get(name)
+        if concept is None:
+            continue
+        mode = str(parse_kind_overrides.get(concept.kind, "")).strip()
+        if mode == "skip":
+            continue
+        if mode == "compact":
+            blocks.append(concept.to_string(
+                include_description=True,
+                skip_kind=True,
+                skip_routine_subtype=True,
+                skip_cues=True,
+                skip_implementation=True,
+                skip_parameters=True,
+                skip_parameter_description=True,
+            ))
+        elif mode == "full":
+            blocks.append(concept.to_string(
+                include_description=True,
+                skip_kind=False,
+                skip_routine_subtype=False,
+                skip_cues=False,
+                skip_implementation=False,
+                skip_parameters=False,
+                skip_parameter_description=False,
+            ))
+        else:
+            blocks.append(concept.to_string(
+                include_description=include_description,
+                skip_kind=skip_kind,
+                skip_routine_subtype=skip_routine_subtype,
+                skip_cues=skip_cues,
+                skip_implementation=skip_implementation,
+                skip_parameters=skip_parameters,
+                skip_parameter_description=skip_parameter_description,
+            ))
+    return "\n".join(blocks)
+
+
 class PsTopKRetriever:
     name = "ps_topk"
     COMPATIBLE_SCHEMAS = {"arcmemo_ps"}
@@ -95,6 +149,7 @@ class PsTopKRetriever:
             )
             skip_kind = variant_flags.get("skip_kind", True)
             skip_routine_subtype = variant_flags.get("skip_routine_subtype", True)
+            parse_kind_overrides = variant_flags.get("parse_kind_overrides")
             variant = memory.metadata.get("variant")
         else:
             include_description = self.include_description
@@ -104,9 +159,23 @@ class PsTopKRetriever:
             skip_parameter_description = self.skip_parameter_description
             skip_kind = True
             skip_routine_subtype = True
+            parse_kind_overrides = None
             variant = None
         if variant == "free_text":
             hint = _free_text_hint(mem, top)
+        elif isinstance(parse_kind_overrides, dict) and parse_kind_overrides:
+            hint = _parse_override_hint(
+                mem,
+                top,
+                parse_kind_overrides,
+                include_description=include_description,
+                skip_kind=skip_kind,
+                skip_routine_subtype=skip_routine_subtype,
+                skip_cues=skip_cues,
+                skip_implementation=skip_implementation,
+                skip_parameters=skip_parameters,
+                skip_parameter_description=skip_parameter_description,
+            )
         else:
             hint = mem.to_string(
                 concept_names=top,

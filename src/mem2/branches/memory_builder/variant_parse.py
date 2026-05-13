@@ -112,11 +112,14 @@ class PARSESchemaBuilder(VariantFormatBuilder):
 
         # Stamp a composite variant name + per-kind table into metadata.
         composite_name = f"parse_refined_{self.base_variant}"
+        parse_kind_overrides = self._render_modes_from_flag_overrides(per_kind_overrides)
         memory.metadata["variant"] = composite_name
         memory.metadata["render_flags"] = dict(base_flags)
+        memory.metadata["render_flags"]["parse_kind_overrides"] = parse_kind_overrides
         memory.metadata["parse"] = {
             "base_variant": self.base_variant,
             "per_kind_overrides": per_kind_overrides,
+            "parse_kind_overrides": parse_kind_overrides,
             "per_kind_stats": stats,
             "used_llm_architect": provider is not None,
         }
@@ -126,6 +129,22 @@ class PARSESchemaBuilder(VariantFormatBuilder):
         if composite_name not in RENDER_FLAGS:
             RENDER_FLAGS[composite_name] = dict(base_flags)
         return memory
+
+    def _render_modes_from_flag_overrides(
+        self,
+        per_kind_overrides: dict[str, dict[str, Any]],
+    ) -> dict[str, str]:
+        modes: dict[str, str] = {}
+        for kind, flags in per_kind_overrides.items():
+            if not isinstance(flags, dict):
+                continue
+            if flags.get("skip_cues") is False or flags.get("skip_implementation") is False:
+                modes[kind] = "full"
+            elif flags.get("skip_parameters") is True and flags.get("skip_cues") is True:
+                modes[kind] = "compact"
+            else:
+                modes[kind] = "compact"
+        return modes
 
     # ----------------------------------------------------------------- #
     def _resolve_provider(self, ctx: RunContext):

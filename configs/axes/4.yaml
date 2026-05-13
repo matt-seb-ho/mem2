@@ -162,5 +162,5 @@ conditions:
       literature_role: "differentiation_anchor"
       ported_from: "paper ARCHITECT + SCOPE mechanisms — iterative schema refinement based on extraction-error reflection. Per-kind render-flag overrides substitute for per-field JSON schema edits; heuristic performance-based flag flipping replaces ARCHITECT prompt when no LLM provider wired."
       status: {paper: done, repo: na, impl: done, smoke: done, run: todo}
-      parity_grade: reduced-but-honest
-      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
+      parity_grade: partial-with-disclosed-gap
+      parity_note: "Per-kind parse overrides now reach ps_topk and ps_selector at render time via render_flags.parse_kind_overrides. Still substitutes local render modes for PARSE's full ARCHITECT schema edits."
