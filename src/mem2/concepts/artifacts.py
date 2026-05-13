@@ -16,6 +16,8 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 CONCEPT_MEMORY_DIR = REPO_ROOT / "data" / "arc_agi" / "concept_memory"
 COMMUNITY_SUMMARIES_PATH = CONCEPT_MEMORY_DIR / "community_summaries_v1.json"
 OPENIE_FACTS_PATH = CONCEPT_MEMORY_DIR / "concept_facts_openie_v1.json"
+ENTITY_GRAPH_PATH = CONCEPT_MEMORY_DIR / "concept_entity_graph_v1.json"
+HIERARCHICAL_REPORTS_PATH = CONCEPT_MEMORY_DIR / "entity_hierarchical_reports_v1.json"
 
 
 def _read_json(path: Path) -> dict[str, Any] | None:
@@ -118,3 +120,127 @@ def load_openie_facts(
         })
     return out
 
+
+def load_entity_graph(
+    path: str | Path | None = None,
+    *,
+    valid_concepts: Iterable[str] | None = None,
+) -> dict[str, Any]:
+    artifact_path = _resolve(path, ENTITY_GRAPH_PATH)
+    if not artifact_path.exists():
+        return {"entities": [], "edges": [], "stats": {}}
+    data = _read_json(artifact_path)
+    if not data or data.get("schema_version") != "1":
+        return {"entities": [], "edges": [], "stats": {}}
+
+    valid = set(valid_concepts) if valid_concepts is not None else None
+    entities: list[dict[str, Any]] = []
+    entity_ids: set[str] = set()
+    for raw in data.get("entities", []) or []:
+        if not isinstance(raw, dict):
+            continue
+        entity_id = raw.get("entity_id")
+        source = raw.get("source_concept")
+        mention = raw.get("mention_text")
+        if not isinstance(entity_id, str) or not isinstance(source, str):
+            continue
+        if valid is not None and source not in valid:
+            continue
+        if not isinstance(mention, str) or not mention.strip():
+            continue
+        cleaned = {
+            "entity_id": entity_id,
+            "mention_text": mention.strip(),
+            "source_concept": source,
+            "entity_type": str(raw.get("entity_type") or "other"),
+            "attributes": raw.get("attributes") if isinstance(raw.get("attributes"), dict) else {},
+            "supporting_text": str(raw.get("supporting_text") or ""),
+        }
+        entities.append(cleaned)
+        entity_ids.add(entity_id)
+
+    edges: list[dict[str, Any]] = []
+    for raw in data.get("edges", []) or []:
+        if not isinstance(raw, dict):
+            continue
+        src = raw.get("src_entity")
+        dst = raw.get("dst_entity")
+        if not isinstance(src, str) or not isinstance(dst, str):
+            continue
+        if src not in entity_ids or dst not in entity_ids or src == dst:
+            continue
+        try:
+            weight = float(raw.get("weight", 1.0))
+        except (TypeError, ValueError):
+            weight = 1.0
+        edges.append({
+            "src_entity": src,
+            "dst_entity": dst,
+            "edge_type": str(raw.get("edge_type") or "related_to"),
+            "weight": weight,
+            "supporting_text": str(raw.get("supporting_text") or ""),
+        })
+
+    return {
+        "schema_version": "1",
+        "source_seed": data.get("source_seed"),
+        "model": data.get("model"),
+        "entities": entities,
+        "edges": edges,
+        "stats": data.get("stats") or {},
+    }
+
+
+def load_hierarchical_reports(
+    path: str | Path | None = None,
+    *,
+    valid_concepts: Iterable[str] | None = None,
+) -> dict[str, Any]:
+    artifact_path = _resolve(path, HIERARCHICAL_REPORTS_PATH)
+    if not artifact_path.exists():
+        return {"hierarchy": {}}
+    data = _read_json(artifact_path)
+    if not data or data.get("schema_version") != "1":
+        return {"hierarchy": {}}
+
+    valid = set(valid_concepts) if valid_concepts is not None else None
+    hierarchy: dict[str, list[dict[str, Any]]] = {}
+    for level, reports in (data.get("hierarchy") or {}).items():
+        if not isinstance(level, str) or not isinstance(reports, list):
+            continue
+        cleaned_reports: list[dict[str, Any]] = []
+        for raw in reports:
+            if not isinstance(raw, dict):
+                continue
+            summary = raw.get("llm_summary")
+            if not isinstance(summary, str) or not summary.strip():
+                continue
+            source_concepts = [
+                c for c in (raw.get("source_concepts") or [])
+                if isinstance(c, str) and (valid is None or c in valid)
+            ]
+            if valid is not None and not source_concepts:
+                continue
+            cleaned_reports.append({
+                "community_id": str(raw.get("community_id") or f"{level}_{len(cleaned_reports)}"),
+                "level": int(raw.get("level", 0) or 0),
+                "entities": [str(e) for e in (raw.get("entities") or []) if isinstance(e, str)],
+                "source_concepts": list(dict.fromkeys(source_concepts)),
+                "child_communities": [
+                    str(c) for c in (raw.get("child_communities") or [])
+                    if isinstance(c, str)
+                ],
+                "member_digest": str(raw.get("member_digest") or ""),
+                "llm_summary": summary.strip(),
+                "summary_tokens": raw.get("summary_tokens"),
+            })
+        if cleaned_reports:
+            hierarchy[level] = cleaned_reports
+
+    return {
+        "schema_version": "1",
+        "source_graph": data.get("source_graph"),
+        "model": data.get("model"),
+        "hierarchy": hierarchy,
+        "stats": data.get("stats") or {},
+    }

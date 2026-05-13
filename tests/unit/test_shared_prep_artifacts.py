@@ -99,6 +99,93 @@ def _openie_artifact(tmp_path: Path) -> Path:
     return path
 
 
+def _entity_graph_artifact(tmp_path: Path) -> Path:
+    path = tmp_path / "concept_entity_graph_v1.json"
+    path.write_text(json.dumps({
+        "schema_version": "1",
+        "source_seed": "fixture",
+        "model": "fixture",
+        "entities": [
+            {
+                "entity_id": "ent_extract",
+                "mention_text": "object extraction",
+                "source_concept": "extract_objects",
+                "entity_type": "operation",
+                "attributes": {"target": "objects"},
+                "supporting_text": "object extraction",
+            },
+            {
+                "entity_id": "ent_filter",
+                "mention_text": "object filtering",
+                "source_concept": "filter_objects",
+                "entity_type": "operation",
+                "attributes": {"target": "objects"},
+                "supporting_text": "object filtering",
+            },
+        ],
+        "edges": [{
+            "src_entity": "ent_extract",
+            "dst_entity": "ent_filter",
+            "edge_type": "feeds",
+            "weight": 0.9,
+            "supporting_text": "extracted objects feed filtering",
+        }],
+        "stats": {"num_entities": 2, "num_edges": 1},
+    }))
+    return path
+
+
+def _hierarchical_reports_artifact(tmp_path: Path) -> Path:
+    path = tmp_path / "entity_hierarchical_reports_v1.json"
+    path.write_text(json.dumps({
+        "schema_version": "1",
+        "source_graph": "fixture",
+        "model": "fixture",
+        "hierarchy": {
+            "level_0": [{
+                "community_id": "L0_C000",
+                "level": 0,
+                "entities": ["ent_extract", "ent_filter"],
+                "source_concepts": ["extract_objects", "filter_objects"],
+                "child_communities": [],
+                "member_digest": "object extraction and filtering",
+                "llm_summary": "Leaf summary for object extraction and filtering.",
+                "summary_tokens": 7,
+            }],
+            "level_1": [{
+                "community_id": "L1_C000",
+                "level": 1,
+                "entities": ["ent_extract", "ent_filter"],
+                "source_concepts": ["extract_objects", "filter_objects"],
+                "child_communities": ["L0_C000"],
+                "member_digest": "object routines",
+                "llm_summary": "Hierarchical top summary for object routines.",
+                "summary_tokens": 7,
+            }],
+        },
+        "stats": {"num_levels": 2, "num_reports": 2},
+    }))
+    return path
+
+
+def test_entity_graph_and_hierarchical_report_loaders_accept_artifacts(tmp_path: Path):
+    from mem2.concepts.artifacts import load_entity_graph, load_hierarchical_reports
+
+    entity_graph = load_entity_graph(
+        _entity_graph_artifact(tmp_path),
+        valid_concepts=["extract_objects", "filter_objects"],
+    )
+    reports = load_hierarchical_reports(
+        _hierarchical_reports_artifact(tmp_path),
+        valid_concepts=["extract_objects", "filter_objects"],
+    )
+
+    assert entity_graph["schema_version"] == "1"
+    assert len(entity_graph["entities"]) == 2
+    assert len(entity_graph["edges"]) == 1
+    assert len(reports["hierarchy"]) >= 2
+
+
 def test_graphrag_reports_llm_summary_source_when_artifact_present(tmp_path: Path):
     from mem2.branches.memory_retriever.graphrag import GraphRAGRetriever
 
@@ -107,11 +194,28 @@ def test_graphrag_reports_llm_summary_source_when_artifact_present(tmp_path: Pat
         top_k_communities=1,
         min_community_size=2,
         community_summaries_path=_summary_artifact(tmp_path),
+        hierarchical_reports_path=tmp_path / "missing_hierarchical_reports.json",
     )
     bundle = r.retrieve(_ctx(), _state(mem), _problem(), [])
 
     assert bundle.metadata["summary_source"] == "llm_summaries_v1"
     assert "LLM artifact summary" in (bundle.hint_text or "")
+
+
+def test_graphrag_prefers_hierarchical_reports_when_artifact_present(tmp_path: Path):
+    from mem2.branches.memory_retriever.graphrag import GraphRAGRetriever
+
+    mem = _memory()
+    r = GraphRAGRetriever(
+        top_k_communities=1,
+        min_community_size=2,
+        hierarchical_reports_path=_hierarchical_reports_artifact(tmp_path),
+    )
+    bundle = r.retrieve(_ctx(), _state(mem), _problem(), [])
+
+    assert bundle.metadata["reports_source"] == "hierarchical_v1"
+    assert "Hierarchical top summary" in (bundle.hint_text or "")
+    assert "Leaf summary" in (bundle.hint_text or "")
 
 
 def test_raptor_renders_llm_summary_when_artifact_present(tmp_path: Path):
@@ -141,6 +245,19 @@ def test_hipporag_ppr_reports_openie_fact_edges_when_artifact_present(tmp_path: 
 
     assert bundle.metadata["fact_graph_edges_used"] > 0
     assert bundle.metadata["num_fact_reset_matches"] > 0
+
+
+def test_hipporag_ppr_reports_entity_graph_edges_when_artifact_present(tmp_path: Path, monkeypatch):
+    from mem2.branches.memory_retriever.hipporag_ppr import HippoRAGPPRRetriever
+    from mem2.concepts import artifacts
+
+    monkeypatch.setattr(artifacts, "ENTITY_GRAPH_PATH", _entity_graph_artifact(tmp_path))
+    mem = _fact_memory()
+    r = HippoRAGPPRRetriever(top_k=2, min_reset_overlap=1)
+    bundle = r.retrieve(_ctx(), _state(mem), _problem(), [])
+
+    assert bundle.metadata["entity_graph_edges_used"] > 0
+    assert bundle.metadata["num_entity_reset_matches"] > 0
 
 
 def test_pathrag_renders_openie_fact_path_when_artifact_present(tmp_path: Path, monkeypatch):

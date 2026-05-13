@@ -24,10 +24,10 @@ from collections import defaultdict
 from dataclasses import asdict, dataclass, field
 from typing import Callable, Iterable
 
-from mem2.concepts.artifacts import load_openie_facts
+from mem2.concepts.artifacts import load_entity_graph, load_openie_facts
 from mem2.concepts.memory import ConceptMemory
 
-EdgeKind = str  # "co_activation" | "embedding_sim" | "authorship_lineage" | "openie_fact"
+EdgeKind = str  # "co_activation" | "embedding_sim" | "authorship_lineage" | "openie_fact" | "entity_relation"
 
 
 @dataclass
@@ -263,13 +263,16 @@ class ConceptGraph:
         load_typed_edges: bool = True,
         load_openie_edges: bool = False,
         openie_facts_path: str | None = None,
+        load_entity_edges: bool = False,
+        entity_graph_path: str | None = None,
     ) -> "ConceptGraph":
         """Convenience: build a graph from a ConceptMemory using co-activation
         (always) + embedding-sim (if ``embed_fn`` provided) + typed semantic
         edges from the prereq concept_graph_v1.json (when present and
         ``load_typed_edges`` is True) + OpenIE fact edges from
         concept_facts_openie_v1.json (when present and ``load_openie_edges``
-        is True).
+        is True) + LLM entity-graph edges from concept_entity_graph_v1.json
+        (when present and ``load_entity_edges`` is True).
 
         Authorship-lineage edges are added by the reorg builder at reorg time.
         """
@@ -287,6 +290,8 @@ class ConceptGraph:
             g._maybe_load_typed_edges(mem)
         if load_openie_edges:
             g._maybe_load_openie_edges(mem, path=openie_facts_path)
+        if load_entity_edges:
+            g._maybe_load_entity_edges(mem, path=entity_graph_path)
         return g
 
     def _maybe_load_typed_edges(self, mem: ConceptMemory) -> None:
@@ -367,3 +372,52 @@ class ConceptGraph:
                         "relation_kind": fact.get("relation_kind"),
                     },
                 )
+
+    def _maybe_load_entity_edges(self, mem: ConceptMemory, *, path: str | None = None) -> None:
+        """Augment with document-entity graph edges when the artifact exists.
+
+        The artifact is entity-native. For concept-memory retrieval, each
+        relation is projected back to a concept-level ``entity_relation`` edge
+        between the source concepts that own the two entity mentions. Edge
+        metadata keeps the entity IDs and relation label so retrievers can
+        render the richer substrate rather than a generic co-activation link.
+        """
+        entity_graph = load_entity_graph(path, valid_concepts=mem.concepts.keys())
+        entities = entity_graph.get("entities") or []
+        if not entities:
+            return
+        by_id = {
+            e["entity_id"]: e
+            for e in entities
+            if isinstance(e, dict) and isinstance(e.get("entity_id"), str)
+        }
+        valid_names = set(mem.concepts.keys())
+        for raw_edge in entity_graph.get("edges") or []:
+            if not isinstance(raw_edge, dict):
+                continue
+            src_entity = by_id.get(raw_edge.get("src_entity"))
+            dst_entity = by_id.get(raw_edge.get("dst_entity"))
+            if not src_entity or not dst_entity:
+                continue
+            src = src_entity.get("source_concept")
+            dst = dst_entity.get("source_concept")
+            if not isinstance(src, str) or not isinstance(dst, str):
+                continue
+            if src == dst or src not in valid_names or dst not in valid_names:
+                continue
+            self.add_edge(
+                src,
+                dst,
+                kind="entity_relation",
+                weight=float(raw_edge.get("weight") or 1.0),
+                metadata={
+                    "src_entity": src_entity.get("entity_id"),
+                    "dst_entity": dst_entity.get("entity_id"),
+                    "src_mention": src_entity.get("mention_text"),
+                    "dst_mention": dst_entity.get("mention_text"),
+                    "src_entity_type": src_entity.get("entity_type"),
+                    "dst_entity_type": dst_entity.get("entity_type"),
+                    "edge_type": raw_edge.get("edge_type"),
+                    "supporting_text": raw_edge.get("supporting_text"),
+                },
+            )

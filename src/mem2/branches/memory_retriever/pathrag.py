@@ -62,7 +62,7 @@ class PathRAGRetriever:
         max_path_length: int = 3,
         min_reliability: float = 0.1,
         max_paths_rendered: int = 5,
-        edge_kinds: tuple[str, ...] = ("co_activation", "openie_fact"),
+        edge_kinds: tuple[str, ...] = ("co_activation", "openie_fact", "entity_relation"),
         include_description: bool = True,
         skip_cues: bool = False,
         skip_implementation: bool = True,
@@ -92,7 +92,12 @@ class PathRAGRetriever:
                 metadata={"retriever": self.name, "reason": "empty_memory"},
             )
 
-        graph = ConceptGraph.build_from_memory(mem, min_co_overlap=1, load_openie_edges=True)
+        graph = ConceptGraph.build_from_memory(
+            mem,
+            min_co_overlap=1,
+            load_openie_edges=True,
+            load_entity_edges=True,
+        )
 
         q_toks = self._query_toks(problem, previous_attempts)
 
@@ -238,11 +243,14 @@ class PathRAGRetriever:
         parts = [path[0]]
         for i in range(len(path) - 1):
             src, dst = path[i], path[i + 1]
-            edge = graph.edge_between(src, dst, kinds=("openie_fact", "co_activation"))
+            edge = graph.edge_between(src, dst, kinds=("entity_relation", "openie_fact", "co_activation"))
+            if edge and edge.kind == "entity_relation":
+                label = str((edge.metadata or {}).get("edge_type") or "entity_relates_to").strip()
+                parts.append(f"--{label}--")
             if edge and edge.kind == "openie_fact":
                 predicate = str((edge.metadata or {}).get("predicate") or "relates_to").strip()
                 parts.append(f"--{predicate}--")
-            else:
+            elif not edge or edge.kind != "entity_relation":
                 parts.append("->")
             parts.append(dst)
         return " ".join(parts)

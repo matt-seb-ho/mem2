@@ -28,7 +28,7 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from mem2.concepts.artifacts import load_community_summaries
+from mem2.concepts.artifacts import load_community_summaries, load_hierarchical_reports
 from mem2.concepts.graph import ConceptGraph
 from mem2.concepts.memory import ConceptMemory
 from mem2.core.entities import (
@@ -94,12 +94,14 @@ class GraphRAGRetriever:
         max_members_per_community: int = 5,
         include_description: bool = True,
         community_summaries_path: str | Path | None = None,
+        hierarchical_reports_path: str | Path | None = None,
     ) -> None:
         self.top_k_communities = int(top_k_communities)
         self.min_community_size = int(min_community_size)
         self.max_members_per_community = int(max_members_per_community)
         self.include_description = bool(include_description)
         self.community_summaries_path = community_summaries_path
+        self.hierarchical_reports_path = hierarchical_reports_path
 
     # ----------------------------------------------------------------- #
     def retrieve(
@@ -114,6 +116,110 @@ class GraphRAGRetriever:
             return RetrievalBundle(
                 problem_uid=problem.uid, hint_text=None, retrieved_items=[],
                 metadata={"retriever": self.name, "reason": "empty_memory"},
+            )
+
+        q_tokens = _tokenize(_problem_text(problem))
+        hierarchical_reports = load_hierarchical_reports(
+            self.hierarchical_reports_path,
+            valid_concepts=mem.concepts.keys(),
+        )
+        hierarchy = hierarchical_reports.get("hierarchy") or {}
+        if hierarchy:
+            report_by_id = {
+                report["community_id"]: report
+                for reports in hierarchy.values()
+                for report in reports
+            }
+
+            def report_tokens(report: dict) -> set[str]:
+                return _tokenize(" ".join([
+                    str(report.get("community_id") or ""),
+                    str(report.get("llm_summary") or ""),
+                    str(report.get("member_digest") or ""),
+                    " ".join(report.get("source_concepts") or []),
+                ]))
+
+            def score_report(report: dict) -> tuple[int, int, str]:
+                if q_tokens:
+                    return (
+                        len(q_tokens & report_tokens(report)),
+                        len(report.get("entities") or []),
+                        str(report.get("community_id") or ""),
+                    )
+                return (
+                    len(report.get("entities") or []),
+                    len(report.get("source_concepts") or []),
+                    str(report.get("community_id") or ""),
+                )
+
+            top_level = max(
+                hierarchy.values(),
+                key=lambda reports: max((int(r.get("level", 0) or 0) for r in reports), default=0),
+            )
+            selected_top = sorted(top_level, key=score_report, reverse=True)[: self.top_k_communities]
+            selected_reports: list[dict] = []
+            seen_reports: set[str] = set()
+
+            def add_report_tree(report: dict, depth: int = 0) -> None:
+                rid = str(report.get("community_id") or "")
+                if not rid or rid in seen_reports:
+                    return
+                seen_reports.add(rid)
+                selected_reports.append(report)
+                if depth >= 2:
+                    return
+                children = [
+                    report_by_id[cid]
+                    for cid in (report.get("child_communities") or [])
+                    if cid in report_by_id
+                ]
+                children.sort(key=score_report, reverse=True)
+                for child in children[: self.top_k_communities]:
+                    add_report_tree(child, depth + 1)
+
+            for report in selected_top:
+                add_report_tree(report)
+
+            lines: list[str] = []
+            for report in selected_reports:
+                rid = report.get("community_id")
+                level = report.get("level", 0)
+                lines.append(f"## {rid} (level {level})")
+                lines.append(str(report.get("llm_summary") or ""))
+                concepts = report.get("source_concepts") or []
+                if concepts:
+                    lines.append(
+                        "Concepts: " + ", ".join(concepts[: self.max_members_per_community])
+                    )
+                lines.append("")
+            member_concepts = list(dict.fromkeys(
+                concept
+                for report in selected_reports
+                for concept in (report.get("source_concepts") or [])
+                if concept in mem.concepts
+            ))
+            return RetrievalBundle(
+                problem_uid=problem.uid,
+                hint_text="\n".join(lines).strip() or None,
+                retrieved_items=[
+                    {
+                        "community": report.get("community_id"),
+                        "level": report.get("level"),
+                        "members": report.get("source_concepts") or [],
+                    }
+                    for report in selected_reports
+                ],
+                metadata={
+                    "retriever": self.name,
+                    "scoring_mode": "graphrag_hierarchical_reports",
+                    "reports_source": "hierarchical_v1",
+                    "summary_source": "hierarchical_reports_v1",
+                    "top_k_communities": self.top_k_communities,
+                    "num_concepts_total": len(mem.concepts),
+                    "num_reports_selected": len(selected_reports),
+                    "num_report_concepts": len(member_concepts),
+                    "num_report_levels": len(hierarchy),
+                },
             )
 
         try:
@@ -197,7 +303,6 @@ class GraphRAGRetriever:
             ))
 
         # Score community reports vs query
-        q_tokens = _tokenize(_problem_text(problem))
         if not q_tokens:
             # Fall back: take the largest communities
             reports.sort(key=lambda r: len(r.members), reverse=True)
@@ -226,6 +331,7 @@ class GraphRAGRetriever:
                 "num_communities_all": len(communities),
                 "num_communities_eligible": len(reports),
                 "num_graph_edges": G.number_of_edges(),
+                "reports_source": "flat_v1" if selected and selected[0].summary_source == "llm_summaries_v1" else "template",
                 "summary_source": selected[0].summary_source if selected else summary_source,
             },
         )

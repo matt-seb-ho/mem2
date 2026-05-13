@@ -35,7 +35,7 @@ from __future__ import annotations
 
 import re
 
-from mem2.concepts.artifacts import load_openie_facts
+from mem2.concepts.artifacts import load_entity_graph, load_openie_facts
 from mem2.concepts.graph import ConceptGraph
 from mem2.concepts.memory import ConceptMemory
 from mem2.core.entities import (
@@ -107,6 +107,7 @@ class HippoRAGPPRRetriever:
         edge_kinds: tuple[str, ...] = (
             "co_activation",
             "openie_fact",
+            "entity_relation",
             "uses", "is_a", "specializes", "opposite_of", "composed_of",
         ),
     ) -> None:
@@ -137,7 +138,12 @@ class HippoRAGPPRRetriever:
         # Build graph (co-activation edges only by default; embedding-sim
         # edges would need an embed_fn which we don't wire at retrieval
         # time).
-        graph = ConceptGraph.build_from_memory(mem, min_co_overlap=1, load_openie_edges=True)
+        graph = ConceptGraph.build_from_memory(
+            mem,
+            min_co_overlap=1,
+            load_openie_edges=True,
+            load_entity_edges=True,
+        )
 
         # Compute reset-probability vector via query-concept keyword overlap.
         q_tokens = _tokenize(_problem_text(problem))
@@ -152,6 +158,9 @@ class HippoRAGPPRRetriever:
                 reset[name] = float(overlap)
         fact_reset, fact_reset_matches = self._fact_reset_weights(mem, q_tokens)
         for name, weight in fact_reset.items():
+            reset[name] = reset.get(name, 0.0) + weight
+        entity_reset, entity_reset_matches = self._entity_reset_weights(mem, q_tokens)
+        for name, weight in entity_reset.items():
             reset[name] = reset.get(name, 0.0) + weight
         total_mass = sum(reset.values())
         if total_mass <= 0:
@@ -176,12 +185,15 @@ class HippoRAGPPRRetriever:
         for n in mem.concepts.keys():
             G.add_node(n)
         fact_graph_edges_used = 0
+        entity_graph_edges_used = 0
         for edge in graph.edges():
             if edge.kind not in self.edge_kinds:
                 continue
             G.add_edge(edge.src, edge.dst, weight=float(edge.weight or 1.0))
             if edge.kind == "openie_fact":
                 fact_graph_edges_used += 1
+            elif edge.kind == "entity_relation":
+                entity_graph_edges_used += 1
 
         # Only include concepts that are actually in the graph in the reset
         # map; extras raise NetworkXError.
@@ -224,8 +236,10 @@ class HippoRAGPPRRetriever:
                 "num_selected": len(top_names),
                 "num_graph_edges": G.number_of_edges(),
                 "fact_graph_edges_used": fact_graph_edges_used,
+                "entity_graph_edges_used": entity_graph_edges_used,
                 "num_reset_seeds": sum(1 for v in reset_clipped.values() if v > 0),
                 "num_fact_reset_matches": fact_reset_matches,
+                "num_entity_reset_matches": entity_reset_matches,
             },
         )
 
@@ -263,4 +277,31 @@ class HippoRAGPPRRetriever:
             for name in linked:
                 if name in mem.concepts:
                     weights[name] = weights.get(name, 0.0) + float(overlap)
+        return weights, matches
+
+    def _entity_reset_weights(
+        self,
+        mem: ConceptMemory,
+        q_tokens: set[str],
+    ) -> tuple[dict[str, float], int]:
+        if not q_tokens:
+            return {}, 0
+        weights: dict[str, float] = {}
+        matches = 0
+        entity_graph = load_entity_graph(valid_concepts=mem.concepts.keys())
+        for entity in entity_graph.get("entities") or []:
+            source = entity.get("source_concept")
+            if not isinstance(source, str) or source not in mem.concepts:
+                continue
+            text = " ".join([
+                str(entity.get("mention_text") or ""),
+                str(entity.get("entity_type") or ""),
+                str(entity.get("supporting_text") or ""),
+                " ".join(str(v) for v in (entity.get("attributes") or {}).values()),
+            ])
+            overlap = len(q_tokens & _tokenize(text))
+            if overlap < self.min_reset_overlap:
+                continue
+            matches += 1
+            weights[source] = weights.get(source, 0.0) + float(overlap)
         return weights, matches

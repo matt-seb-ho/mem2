@@ -95,10 +95,15 @@ class LightRAGRetriever:
         top_entities = [name for name, _ in ranked_entities[: self.top_k_entities]]
 
         # --- Global (relationship-level) scoring ------------------------
-        graph = ConceptGraph.build_from_memory(mem, min_co_overlap=1, load_openie_edges=True)
+        graph = ConceptGraph.build_from_memory(
+            mem,
+            min_co_overlap=1,
+            load_openie_edges=True,
+            load_entity_edges=True,
+        )
         edge_scores: list[tuple[str, str, float, str, str]] = []
         for edge in graph.edges():
-            if edge.kind not in {"co_activation", "openie_fact"}:
+            if edge.kind not in {"co_activation", "openie_fact", "entity_relation"}:
                 continue
             if edge.kind == "co_activation" and edge.weight < self.min_edge_weight:
                 continue
@@ -166,6 +171,10 @@ class LightRAGRetriever:
         return self.retrieve(ctx, memory, problem, previous_attempts)
 
     def _relationship_label(self, edge) -> str:
+        if edge.kind == "entity_relation":
+            edge_type = str((edge.metadata or {}).get("edge_type") or "").strip()
+            if edge_type:
+                return edge_type
         if edge.kind == "openie_fact":
             predicate = str((edge.metadata or {}).get("predicate") or "").strip()
             if predicate:

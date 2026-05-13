@@ -97,7 +97,12 @@ class MAGMAMultiGraphRetriever:
                 metadata={"retriever": self.name, "reason": "empty_memory"},
             )
 
-        graph = ConceptGraph.build_from_memory(mem, min_co_overlap=1, load_openie_edges=True)
+        graph = ConceptGraph.build_from_memory(
+            mem,
+            min_co_overlap=1,
+            load_openie_edges=True,
+            load_entity_edges=True,
+        )
         provider = self._resolve_provider(ctx)
         q_toks = self._query_toks(problem, previous_attempts)
 
@@ -106,7 +111,7 @@ class MAGMAMultiGraphRetriever:
         view_hits["semantic"] = self._semantic_view(graph, mem, q_toks)
         view_hits["temporal"] = self._temporal_view(graph, mem, q_toks)
         view_hits["causal"] = self._causal_view(graph, mem, q_toks)
-        view_hits["entity"] = self._entity_view(mem, q_toks)
+        view_hits["entity"] = self._entity_view(graph, mem, q_toks)
 
         # Adaptive policy: rank views by hit count; LLM can override.
         policy_ranking = sorted(
@@ -205,7 +210,7 @@ class MAGMAMultiGraphRetriever:
             fact_overlap = self._fact_edge_overlap(graph, name, q_toks)
             if overlap == 0 and fact_overlap == 0:
                 continue
-            deg = graph.degree(name, kinds=["co_activation", "openie_fact"])
+            deg = graph.degree(name, kinds=["co_activation", "openie_fact", "entity_relation"])
             scored.append((overlap + fact_overlap + 0.01 * deg, name))
         scored.sort(reverse=True)
         return [n for _, n in scored[: self.top_k_per_view * 2]]
@@ -257,19 +262,39 @@ class MAGMAMultiGraphRetriever:
         return score
 
     def _entity_view(
-        self, mem: ConceptMemory, q_toks: set[str],
+        self, graph: ConceptGraph, mem: ConceptMemory, q_toks: set[str],
     ) -> list[str]:
-        """Kind-based view: for each kind, pick the top query-overlap concept."""
+        """Entity-graph view: prioritize concepts with matching entity relations."""
         by_kind = defaultdict(list)
         for name, c in mem.concepts.items():
             overlap = len(q_toks & self._concept_toks(c))
-            by_kind[c.kind].append((overlap, name))
+            entity_overlap = self._entity_edge_overlap(graph, name, q_toks)
+            entity_degree = graph.degree(name, kinds=["entity_relation"])
+            score = overlap + entity_overlap + 0.05 * entity_degree
+            by_kind[c.kind].append((score, name))
         picks: list[str] = []
         for kind, items in by_kind.items():
             items.sort(reverse=True)
             if items and items[0][0] > 0:
                 picks.extend(name for _, name in items[: self.top_k_per_view])
         return picks[: self.top_k_per_view * 2]
+
+    def _entity_edge_overlap(
+        self, graph: ConceptGraph, name: str, q_toks: set[str],
+    ) -> int:
+        if not q_toks:
+            return 0
+        score = 0
+        for nbr, kind, _weight in graph.neighbors(name, kinds=["entity_relation"]):
+            edge = graph.edge_between(name, nbr, kinds=["entity_relation"])
+            if not edge:
+                continue
+            text = " ".join(
+                str((edge.metadata or {}).get(k) or "")
+                for k in ("src_mention", "dst_mention", "edge_type", "supporting_text")
+            )
+            score += len(q_toks & {t.lower() for t in WORD_RE.findall(text)})
+        return score
 
     def _policy_via_llm(
         self, provider, problem: ProblemSpec, view_hits: dict[str, list[str]],
