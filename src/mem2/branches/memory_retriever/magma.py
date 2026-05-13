@@ -69,6 +69,14 @@ _DEFAULT_TYPED_VIEWS = (
     / "shared"
     / "magma_typed_views_v1.json"
 )
+_DEFAULT_ADAPTED_MEMORY = (
+    _REPO_ROOT
+    / "data"
+    / "arc_agi"
+    / "concept_memory"
+    / "ports"
+    / "magma_memory_v1.json"
+)
 
 
 class MAGMAMultiGraphRetriever:
@@ -86,6 +94,7 @@ class MAGMAMultiGraphRetriever:
         skip_implementation: bool = True,
         usage_threshold: int = 0,
         typed_views_path: str | Path | None = None,
+        adapted_memory_path: str | Path | None = None,
     ) -> None:
         self.top_k_per_view = int(top_k_per_view)
         self.max_active_views = int(max_active_views)
@@ -94,6 +103,10 @@ class MAGMAMultiGraphRetriever:
         self.skip_implementation = bool(skip_implementation)
         self.usage_threshold = int(usage_threshold)
         self.typed_views_path = Path(typed_views_path) if typed_views_path else _DEFAULT_TYPED_VIEWS
+        self.adapted_memory_path = self._resolve_path(
+            adapted_memory_path,
+            _DEFAULT_ADAPTED_MEMORY,
+        )
 
     def retrieve(
         self,
@@ -118,20 +131,36 @@ class MAGMAMultiGraphRetriever:
         provider = self._resolve_provider(ctx)
         q_toks = self._query_toks(problem, previous_attempts)
         typed_views = self._load_typed_views(mem)
+        adapted_records, adapted_source = self._load_adapted_records(mem)
 
         # Per-view candidate sets.
         view_hits: dict[str, list[str]] = {}
         view_hits["semantic"] = self._merge_candidates(
-            self._typed_view(typed_views, "semantic", mem, q_toks),
-            self._semantic_view(graph, mem, q_toks),
+            self._adapted_view("semantic", mem, q_toks, adapted_records),
+            self._merge_candidates(
+                self._typed_view(typed_views, "semantic", mem, q_toks),
+                self._semantic_view(graph, mem, q_toks),
+            ),
         )
-        view_hits["temporal"] = self._temporal_view(graph, mem, q_toks)
+        view_hits["temporal"] = self._merge_candidates(
+            self._adapted_view("temporal", mem, q_toks, adapted_records),
+            self._temporal_view(graph, mem, q_toks),
+        )
         view_hits["causal"] = self._merge_candidates(
-            self._typed_view(typed_views, "causal", mem, q_toks),
-            self._causal_view(graph, mem, q_toks),
+            self._adapted_view("causal", mem, q_toks, adapted_records),
+            self._merge_candidates(
+                self._typed_view(typed_views, "causal", mem, q_toks),
+                self._causal_view(graph, mem, q_toks),
+            ),
         )
-        view_hits["entity"] = self._entity_view(graph, mem, q_toks)
-        view_hits["structural"] = self._typed_view(typed_views, "structural", mem, q_toks)
+        view_hits["entity"] = self._merge_candidates(
+            self._adapted_view("entity", mem, q_toks, adapted_records),
+            self._entity_view(graph, mem, q_toks),
+        )
+        view_hits["structural"] = self._merge_candidates(
+            self._adapted_view("structural", mem, q_toks, adapted_records),
+            self._typed_view(typed_views, "structural", mem, q_toks),
+        )
 
         # Adaptive policy: rank views by hit count; LLM can override.
         policy_ranking = sorted(
@@ -162,6 +191,9 @@ class MAGMAMultiGraphRetriever:
                 skip_implementation=self.skip_implementation,
                 usage_threshold=self.usage_threshold,
             )
+            adapted_block = self._render_adapted_cards(v, picks, adapted_records)
+            if adapted_block:
+                hint_block = (hint_block or "") + "\n" + adapted_block
             view_blocks.append(f"## view: {v}\n{hint_block}")
             for p in picks:
                 if p not in seen:
@@ -182,6 +214,12 @@ class MAGMAMultiGraphRetriever:
                 "num_selected": len(all_selected),
                 "used_llm_policy": provider is not None,
                 "typed_views_source": "magma_typed_views_v1" if typed_views else "template",
+                "adapted_memory_source": adapted_source,
+                "adapted_records_loaded": len(adapted_records),
+                "adapted_cards_rendered": self._count_adapted_records(
+                    all_selected,
+                    adapted_records,
+                ),
             },
         )
 
@@ -203,6 +241,13 @@ class MAGMAMultiGraphRetriever:
             return (ctx.config or {}).get("_meta_edit_provider")
         except AttributeError:
             return None
+
+    @staticmethod
+    def _resolve_path(path: str | Path | None, default: Path) -> Path:
+        if path is None:
+            return default
+        p = Path(path)
+        return p if p.is_absolute() else _REPO_ROOT / p
 
     def _query_toks(
         self, problem: ProblemSpec, previous_attempts: list[AttemptRecord],
@@ -240,6 +285,125 @@ class MAGMAMultiGraphRetriever:
             if name not in out:
                 out.append(name)
         return out[: self.top_k_per_view * 3]
+
+    def _load_adapted_records(
+        self,
+        mem: ConceptMemory,
+    ) -> tuple[dict[str, dict], str]:
+        path = self.adapted_memory_path
+        if not path.exists():
+            return {}, "flat"
+        try:
+            data = json.loads(path.read_text())
+        except Exception as exc:  # noqa: BLE001 - corrupted local artifact should not be silent
+            raise RuntimeError(f"invalid MAGMA adapted memory JSON: {path}") from exc
+        if data.get("schema_version") != "1" or data.get("port") != "magma":
+            raise RuntimeError(f"invalid MAGMA adapted memory schema: {path}")
+        records: dict[str, dict] = {}
+        for raw in data.get("adapted_concepts") or []:
+            if not isinstance(raw, dict):
+                continue
+            concept_id = raw.get("concept_id")
+            if not isinstance(concept_id, str) or concept_id not in mem.concepts:
+                continue
+            card = raw.get("graph_linearization_card")
+            if not isinstance(card, str) or not card.strip():
+                raise RuntimeError(f"adapted memory missing graph_linearization_card for {concept_id}")
+            records[concept_id] = raw
+        if not records:
+            return {}, "flat"
+        return records, "magma_memory_v1"
+
+    def _adapted_view(
+        self,
+        view_name: str,
+        mem: ConceptMemory,
+        q_toks: set[str],
+        adapted_records: dict[str, dict],
+    ) -> list[str]:
+        if not adapted_records:
+            return []
+        scored: list[tuple[float, str]] = []
+        for name, record in adapted_records.items():
+            memberships = [
+                m for m in record.get("view_memberships") or []
+                if isinstance(m, dict) and m.get("view") == view_name
+            ]
+            if not memberships or name not in mem.concepts:
+                continue
+            text = self._adapted_record_text(record, view_name=view_name)
+            toks = {t.lower() for t in WORD_RE.findall(text)}
+            overlap = len(q_toks & toks) if q_toks else 1
+            preferred = view_name in ((record.get("policy_hints") or {}).get("preferred_views") or [])
+            if q_toks and overlap <= 0 and not preferred:
+                continue
+            scored.append((overlap + (0.25 if preferred else 0.0) + 0.05 * len(memberships), name))
+        scored.sort(reverse=True)
+        return [name for _, name in scored[: self.top_k_per_view * 2]]
+
+    @staticmethod
+    def _adapted_record_text(record: dict, view_name: str | None = None) -> str:
+        parts: list[str] = []
+        event = record.get("event_node") or {}
+        if isinstance(event, dict):
+            parts.extend(str(event.get(key) or "") for key in ("content", "timestamp_hint"))
+            parts.extend(str(item) for item in event.get("attributes") or [])
+        parts.extend(str(item) for item in record.get("anchor_keywords") or [])
+        policy = record.get("policy_hints") or {}
+        if isinstance(policy, dict):
+            parts.extend(str(item) for item in policy.get("preferred_views") or [])
+            parts.extend(str(policy.get(key) or "") for key in ("why_signal", "when_signal", "entity_signal"))
+        for membership in record.get("view_memberships") or []:
+            if not isinstance(membership, dict):
+                continue
+            if view_name is not None and membership.get("view") != view_name:
+                continue
+            parts.append(str(membership.get("view") or ""))
+            parts.append(str(membership.get("role") or ""))
+            parts.append(str(membership.get("traversal_value") or ""))
+            parts.extend(str(item) for item in membership.get("node_refs") or [])
+            parts.extend(str(item) for item in membership.get("edge_refs") or [])
+            parts.extend(str(item) for item in membership.get("query_intents") or [])
+        parts.append(str(record.get("graph_linearization_card") or ""))
+        return "\n".join(part for part in parts if part.strip())
+
+    @staticmethod
+    def _count_adapted_records(
+        concepts: list[str],
+        adapted_records: dict[str, dict],
+    ) -> int:
+        return sum(1 for name in dict.fromkeys(concepts) if name in adapted_records)
+
+    def _render_adapted_cards(
+        self,
+        view_name: str,
+        concepts: list[str],
+        adapted_records: dict[str, dict],
+    ) -> str:
+        lines: list[str] = []
+        for name in concepts:
+            record = adapted_records.get(name)
+            if not record:
+                continue
+            memberships = [
+                m for m in record.get("view_memberships") or []
+                if isinstance(m, dict) and m.get("view") == view_name
+            ]
+            if not memberships:
+                continue
+            role = str(memberships[0].get("role") or "").strip()
+            card = str(record.get("graph_linearization_card") or "").strip()
+            if not card:
+                continue
+            prefix = f"- {name} [{view_name}]"
+            if role:
+                prefix += f" {role}:"
+            else:
+                prefix += ":"
+            lines.append(f"{prefix} {card}")
+        if not lines:
+            return ""
+        return "Adapted MAGMA view records:\n" + "\n".join(lines)
 
     def _typed_view(
         self,
