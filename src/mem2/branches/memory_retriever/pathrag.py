@@ -33,10 +33,13 @@ B.10 vs B.2 / B.3 / B.7:
 """
 from __future__ import annotations
 
+import json
 import re
 from collections import defaultdict
+from pathlib import Path
 from typing import Iterable
 
+from mem2.concepts.artifacts import CONCEPT_MEMORY_DIR
 from mem2.concepts.graph import ConceptGraph
 from mem2.concepts.memory import ConceptMemory
 from mem2.core.entities import (
@@ -48,6 +51,8 @@ from mem2.core.entities import (
 )
 
 WORD_RE = re.compile(r"\w+")
+_REPO_ROOT = Path(__file__).resolve().parents[4]
+_DEFAULT_ADAPTED_MEMORY_PATH = CONCEPT_MEMORY_DIR / "ports" / "pathrag_memory_v1.json"
 
 
 class PathRAGRetriever:
@@ -67,6 +72,7 @@ class PathRAGRetriever:
         skip_cues: bool = False,
         skip_implementation: bool = True,
         usage_threshold: int = 0,
+        adapted_memory_path: str | Path | None = None,
     ) -> None:
         self.top_k_seeds = int(top_k_seeds)
         self.max_path_length = int(max_path_length)
@@ -77,6 +83,10 @@ class PathRAGRetriever:
         self.skip_cues = bool(skip_cues)
         self.skip_implementation = bool(skip_implementation)
         self.usage_threshold = int(usage_threshold)
+        self.adapted_memory_path = self._resolve_path(
+            adapted_memory_path,
+            _DEFAULT_ADAPTED_MEMORY_PATH,
+        )
 
     def retrieve(
         self,
@@ -91,6 +101,7 @@ class PathRAGRetriever:
                 problem_uid=problem.uid, hint_text=None, retrieved_items=[],
                 metadata={"retriever": self.name, "reason": "empty_memory"},
             )
+        adapted_records, adapted_source = self._load_adapted_records(mem)
 
         graph = ConceptGraph.build_from_memory(
             mem,
@@ -105,10 +116,15 @@ class PathRAGRetriever:
         scored: list[tuple[float, str]] = []
         for name, c in mem.concepts.items():
             doc_toks = {name.lower()}
-            if c.description:
-                doc_toks.update(t.lower() for t in WORD_RE.findall(c.description))
-            for cue in c.cues or []:
-                doc_toks.update(t.lower() for t in WORD_RE.findall(cue))
+            if name in adapted_records:
+                doc_toks.update(t.lower() for t in WORD_RE.findall(
+                    self._adapted_record_text(adapted_records[name])
+                ))
+            else:
+                if c.description:
+                    doc_toks.update(t.lower() for t in WORD_RE.findall(c.description))
+                for cue in c.cues or []:
+                    doc_toks.update(t.lower() for t in WORD_RE.findall(cue))
             overlap = len(q_toks & doc_toks) if q_toks else len(c.used_in or [])
             scored.append((float(overlap), name))
         scored.sort(reverse=True)
@@ -148,7 +164,9 @@ class PathRAGRetriever:
             usage_threshold=self.usage_threshold,
         )
         path_block = self._render_paths(graph, top_paths)
-        hint = (path_block + "\n\n" + (base_hint or "")) if path_block else base_hint
+        adapted_path_block = self._render_adapted_paths(selected_nodes, adapted_records)
+        blocks = [block for block in (path_block, adapted_path_block, base_hint) if block]
+        hint = "\n\n".join(blocks)
 
         return RetrievalBundle(
             problem_uid=problem.uid,
@@ -162,6 +180,12 @@ class PathRAGRetriever:
                 "num_selected": len(selected_nodes),
                 "min_reliability": self.min_reliability,
                 "top_reliability": top_paths[-1][0] if top_paths else 0.0,
+                "adapted_memory_source": adapted_source,
+                "adapted_records_loaded": len(adapted_records),
+                "adapted_paths_rendered": self._count_renderable_adapted_paths(
+                    selected_nodes,
+                    adapted_records,
+                ),
             },
         )
 
@@ -254,3 +278,99 @@ class PathRAGRetriever:
                 parts.append("->")
             parts.append(dst)
         return " ".join(parts)
+
+    @staticmethod
+    def _resolve_path(path: str | Path | None, default: Path) -> Path:
+        if path is None:
+            return default
+        p = Path(path)
+        return p if p.is_absolute() else _REPO_ROOT / p
+
+    def _load_adapted_records(
+        self,
+        mem: ConceptMemory,
+    ) -> tuple[dict[str, dict], str]:
+        path = self.adapted_memory_path
+        if not path.exists():
+            return {}, "flat"
+        try:
+            data = json.loads(path.read_text())
+        except Exception as exc:  # noqa: BLE001 - corrupted local artifact should not be silent
+            raise RuntimeError(f"invalid PathRAG adapted memory JSON: {path}") from exc
+        if data.get("schema_version") != "1" or data.get("port") != self.name:
+            raise RuntimeError(f"invalid PathRAG adapted memory schema: {path}")
+        records: dict[str, dict] = {}
+        for raw in data.get("adapted_concepts") or []:
+            if not isinstance(raw, dict):
+                continue
+            concept_id = raw.get("concept_id")
+            if not isinstance(concept_id, str) or concept_id not in mem.concepts:
+                continue
+            paths = raw.get("entity_paths")
+            if not isinstance(paths, list) or not paths:
+                raise RuntimeError(f"adapted memory missing entity_paths for {concept_id}")
+            records[concept_id] = raw
+        if not records:
+            return {}, "flat"
+        return records, "pathrag_memory_v1"
+
+    @staticmethod
+    def _adapted_record_text(record: dict) -> str:
+        parts: list[str] = []
+        parts.extend(str(item) for item in record.get("query_keywords") or [])
+        for node in record.get("path_nodes") or []:
+            if isinstance(node, dict):
+                parts.append(" ".join([
+                    str(node.get("label") or ""),
+                    str(node.get("text_chunk") or ""),
+                    str(node.get("node_type") or ""),
+                ]))
+        for path in record.get("entity_paths") or []:
+            if isinstance(path, dict):
+                parts.append(str(path.get("textual_path") or ""))
+                for edge in path.get("edges") or []:
+                    if isinstance(edge, dict):
+                        parts.append(" ".join([
+                            str(edge.get("relation") or ""),
+                            str(edge.get("text_chunk") or ""),
+                        ]))
+        return "\n".join(part for part in parts if part.strip())
+
+    @staticmethod
+    def _count_renderable_adapted_paths(
+        selected_nodes: list[str],
+        adapted_records: dict[str, dict],
+    ) -> int:
+        return sum(
+            len(adapted_records.get(name, {}).get("entity_paths") or [])
+            for name in selected_nodes
+        )
+
+    def _render_adapted_paths(
+        self,
+        selected_nodes: list[str],
+        adapted_records: dict[str, dict],
+    ) -> str:
+        rows: list[tuple[float, str, str]] = []
+        for name in selected_nodes:
+            record = adapted_records.get(name)
+            if not record:
+                continue
+            for path in record.get("entity_paths") or []:
+                if not isinstance(path, dict):
+                    continue
+                text = str(path.get("textual_path") or "").strip()
+                if not text:
+                    continue
+                try:
+                    reliability = float(path.get("reliability_hint", 0.0))
+                except (TypeError, ValueError):
+                    reliability = 0.0
+                rows.append((reliability, name, text))
+        if not rows:
+            return ""
+        rows.sort(key=lambda item: item[0])
+        rendered = ["## adapted PathRAG relational paths (ascending reliability)"]
+        for reliability, name, text in rows[-self.max_paths_rendered:]:
+            rendered.append(f"  [{reliability:.3f}] {name}: {text}")
+        return "\n".join(rendered)
