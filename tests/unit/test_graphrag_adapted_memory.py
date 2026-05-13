@@ -45,6 +45,35 @@ def _problem() -> ProblemSpec:
     )
 
 
+def _ranking_mem() -> ConceptMemory:
+    mem = ConceptMemory()
+    mem.concepts["alpha"] = Concept(
+        name="alpha",
+        kind="routine",
+        routine_subtype="intermediate",
+        description="ordinary alpha description",
+        used_in=["p1"],
+    )
+    mem.concepts["beta"] = Concept(
+        name="beta",
+        kind="routine",
+        routine_subtype="intermediate",
+        description="fallback beacon beta description",
+        used_in=["p2"],
+    )
+    mem.categories["routine"] = ["alpha", "beta"]
+    return mem
+
+
+def _ranking_problem() -> ProblemSpec:
+    return ProblemSpec(
+        uid="graph-ranking-problem",
+        train_pairs=[],
+        test_pairs=[],
+        metadata={"prompt": "fallback beta global preserve local object handling map step bridge cluster"},
+    )
+
+
 def _artifact(path: Path) -> Path:
     data = {
         "schema_version": "1",
@@ -87,6 +116,39 @@ def _artifact(path: Path) -> Path:
     return path
 
 
+def _hierarchical_reports(path: Path) -> Path:
+    data = {
+        "schema_version": "1",
+        "source_graph": "fixture",
+        "model": "fixture",
+        "hierarchy": {
+            "level_1": [
+                {
+                    "community_id": "L1_ALPHA",
+                    "level": 1,
+                    "entities": [],
+                    "source_concepts": ["alpha"],
+                    "child_communities": [],
+                    "member_digest": "ordinary alpha",
+                    "llm_summary": "Ordinary alpha report.",
+                },
+                {
+                    "community_id": "L1_BETA",
+                    "level": 1,
+                    "entities": [],
+                    "source_concepts": ["beta"],
+                    "child_communities": [],
+                    "member_digest": "fallback beacon beta",
+                    "llm_summary": "Fallback beacon beta report.",
+                },
+            ]
+        },
+        "stats": {"num_levels": 1, "num_reports": 2},
+    }
+    path.write_text(json.dumps(data))
+    return path
+
+
 def test_graphrag_prefers_adapted_memory_when_present(tmp_path: Path):
     from mem2.branches.memory_retriever.graphrag import GraphRAGRetriever
 
@@ -104,6 +166,37 @@ def test_graphrag_prefers_adapted_memory_when_present(tmp_path: Path):
     assert bundle.metadata["adapted_cards_rendered"] >= 1
     assert "Adapted GraphRAG map cards" in (bundle.hint_text or "")
     assert "bridge cluster operation" in (bundle.hint_text or "")
+
+
+def test_graphrag_adapted_scoring_changes_hierarchical_report_selection(tmp_path: Path):
+    from mem2.branches.memory_retriever.graphrag import GraphRAGRetriever
+
+    reports_path = _hierarchical_reports(tmp_path / "hierarchical_reports_v1.json")
+    mem = _ranking_mem()
+    adapted = GraphRAGRetriever(
+        top_k_communities=1,
+        min_community_size=1,
+        adapted_memory_path=_artifact(tmp_path / "graphrag_memory_v1.json"),
+        hierarchical_reports_path=reports_path,
+        community_summaries_path=tmp_path / "missing_communities.json",
+    ).retrieve(_ctx(), _state(mem), _ranking_problem(), [])
+    fallback = GraphRAGRetriever(
+        top_k_communities=1,
+        min_community_size=1,
+        adapted_memory_path=tmp_path / "missing_adapted.json",
+        hierarchical_reports_path=reports_path,
+        community_summaries_path=tmp_path / "missing_communities.json",
+    ).retrieve(_ctx(), _state(mem), _ranking_problem(), [])
+
+    assert adapted.metadata["scoring_mode"] == "graphrag_hierarchical_reports"
+    assert fallback.metadata["scoring_mode"] == "graphrag_hierarchical_reports"
+    assert adapted.metadata["adapted_memory_source"] == "graphrag_memory_v1"
+    assert fallback.metadata["adapted_memory_source"] == "flat"
+    assert adapted.retrieved_items[0]["members"] == ["alpha"]
+    assert fallback.retrieved_items[0]["members"] == ["beta"]
+    assert adapted.retrieved_items[0]["members"] != fallback.retrieved_items[0]["members"], (
+        "adapted scoring produced the same selected report as the no-adapted path"
+    )
 
 
 def test_graphrag_falls_back_when_adapted_memory_absent(tmp_path: Path):

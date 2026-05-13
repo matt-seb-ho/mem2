@@ -45,6 +45,35 @@ def _problem() -> ProblemSpec:
     )
 
 
+def _ranking_mem() -> ConceptMemory:
+    mem = ConceptMemory()
+    mem.concepts["alpha"] = Concept(
+        name="alpha",
+        kind="routine",
+        routine_subtype="intermediate",
+        description="ordinary alpha description",
+        used_in=["p1"],
+    )
+    mem.concepts["beta"] = Concept(
+        name="beta",
+        kind="routine",
+        routine_subtype="intermediate",
+        description="fallback beacon beta description",
+        used_in=["p2"],
+    )
+    mem.categories["routine"] = ["alpha", "beta"]
+    return mem
+
+
+def _ranking_problem() -> ProblemSpec:
+    return ProblemSpec(
+        uid="raptor-ranking-problem",
+        train_pairs=[],
+        test_pairs=[],
+        metadata={"prompt": "fallback beta bridge traversal summary retrieval query"},
+    )
+
+
 def _artifact(path: Path) -> Path:
     data = {
         "schema_version": "1",
@@ -98,6 +127,49 @@ def _artifact(path: Path) -> Path:
     return path
 
 
+def _tree_artifact(path: Path) -> Path:
+    data = {
+        "schema_version": "1",
+        "source_seed": "fixture",
+        "model": "fixture",
+        "levels": [
+            {
+                "level": 0,
+                "nodes": [
+                    {
+                        "node_id": "rt_L0_ALPHA",
+                        "summary": "Plain alpha leaf.",
+                        "member_communities": ["alpha_comm"],
+                        "member_concepts": ["alpha"],
+                    },
+                    {
+                        "node_id": "rt_L0_BETA",
+                        "summary": "Fallback beacon beta leaf.",
+                        "member_communities": ["beta_comm"],
+                        "member_concepts": ["beta"],
+                    },
+                ],
+            },
+            {
+                "level": 1,
+                "nodes": [
+                    {
+                        "node_id": "rt_L1_ROOT",
+                        "summary": "Root summary.",
+                        "member_communities": ["alpha_comm", "beta_comm"],
+                        "member_concepts": ["alpha", "beta"],
+                        "member_node_ids": ["rt_L0_ALPHA", "rt_L0_BETA"],
+                        "child_node_ids": ["rt_L0_ALPHA", "rt_L0_BETA"],
+                    }
+                ],
+            },
+        ],
+        "stats": {"num_levels": 2, "nodes_per_level": [2, 1]},
+    }
+    path.write_text(json.dumps(data))
+    return path
+
+
 def test_raptor_prefers_adapted_memory_when_present(tmp_path: Path):
     from mem2.branches.memory_retriever.raptor import RAPTORRetriever
 
@@ -114,6 +186,35 @@ def test_raptor_prefers_adapted_memory_when_present(tmp_path: Path):
     assert bundle.metadata["adapted_leaf_records_rendered"] >= 1
     assert "RAPTOR adapted leaf records" in (bundle.hint_text or "")
     assert "bridge tree traversal" in (bundle.hint_text or "")
+
+
+def test_raptor_tree_descent_uses_adapted_text_for_leaf_selection(tmp_path: Path):
+    from mem2.branches.memory_retriever.raptor import RAPTORRetriever
+
+    tree_path = _tree_artifact(tmp_path / "raptor_tree_v1.json")
+    mem = _ranking_mem()
+    adapted = RAPTORRetriever(
+        top_k=1,
+        adapted_memory_path=_artifact(tmp_path / "raptor_memory_v1.json"),
+        raptor_tree_path=tree_path,
+        community_summaries_path=tmp_path / "missing_communities.json",
+    ).retrieve(_ctx(), _state(mem), _ranking_problem(), [])
+    fallback = RAPTORRetriever(
+        top_k=1,
+        adapted_memory_path=tmp_path / "missing_adapted.json",
+        raptor_tree_path=tree_path,
+        community_summaries_path=tmp_path / "missing_communities.json",
+    ).retrieve(_ctx(), _state(mem), _ranking_problem(), [])
+
+    assert adapted.metadata["scoring_mode"] == "raptor_tree_descent"
+    assert fallback.metadata["scoring_mode"] == "raptor_tree_descent"
+    assert adapted.metadata["tree_depth_used"] >= 2
+    assert adapted.metadata["tree_path"][0] == "rt_L1_ROOT"
+    assert adapted.retrieved_items[0]["name"] == "alpha"
+    assert fallback.retrieved_items[0]["name"] == "beta"
+    assert adapted.retrieved_items[0]["name"] != fallback.retrieved_items[0]["name"], (
+        "adapted tree scoring produced the same leaf as the no-adapted path"
+    )
 
 
 def test_raptor_falls_back_when_adapted_memory_absent(tmp_path: Path):
