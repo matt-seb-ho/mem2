@@ -66,6 +66,9 @@ WORD_RE = re.compile(r"\w+")
 # parents: 0=memory_retriever, 1=branches, 2=mem2, 3=src, 4=mem2 root
 _REPO_ROOT = Path(__file__).resolve().parents[4]
 _HIERARCHY_PATH = _REPO_ROOT / "data" / "arc_agi" / "concept_memory" / "concept_hierarchy_v1.json"
+_DEFAULT_ADAPTED_MEMORY_PATH = (
+    _REPO_ROOT / "data" / "arc_agi" / "concept_memory" / "ports" / "hmem_memory_v1.json"
+)
 
 _HIERARCHY_CACHE: dict | None = None
 
@@ -169,6 +172,7 @@ class HMEMHierarchicalRetriever:
         skip_cues: bool = False,
         skip_implementation: bool = False,
         usage_threshold: int = 0,
+        adapted_memory_path: str | Path | None = None,
     ) -> None:
         self.top_k = int(top_k)
         self.per_layer_top_k = int(per_layer_top_k)
@@ -177,6 +181,10 @@ class HMEMHierarchicalRetriever:
         self.skip_cues = bool(skip_cues)
         self.skip_implementation = bool(skip_implementation)
         self.usage_threshold = int(usage_threshold)
+        self.adapted_memory_path = self._resolve_path(
+            adapted_memory_path,
+            _DEFAULT_ADAPTED_MEMORY_PATH,
+        )
 
     def retrieve(
         self,
@@ -195,11 +203,29 @@ class HMEMHierarchicalRetriever:
         query_text = self._query_text(problem, previous_attempts)
         q_toks = _toks(query_text)
 
+        adapted_hierarchy, adapted_records, adapted_source = self._load_adapted_hierarchy(mem)
+        if adapted_hierarchy is not None:
+            return self._retrieve_with_prebuilt_hierarchy(
+                adapted_hierarchy,
+                mem,
+                q_toks,
+                query_text,
+                problem,
+                source="adapted_memory_v1",
+                adapted_records=adapted_records,
+                adapted_memory_source=adapted_source,
+            )
+
         # Prefer freshly-written memtree payload when present; fall back to prereq.
         hdata, hsource = _resolve_hierarchy(memory)
         if hdata is not None:
             return self._retrieve_with_prebuilt_hierarchy(
-                hdata, mem, q_toks, query_text, problem, source=hsource,
+                hdata,
+                mem,
+                q_toks,
+                query_text,
+                problem,
+                source=hsource,
             )
 
         layer_trace: list[dict] = []
@@ -312,8 +338,11 @@ class HMEMHierarchicalRetriever:
         query_text: str,
         problem: ProblemSpec,
         source: str = "prebuilt_v1",
+        adapted_records: dict[str, dict] | None = None,
+        adapted_memory_source: str = "flat",
     ) -> RetrievalBundle:
         """3-level walk: Category → Sub-category → concept."""
+        adapted_records = adapted_records or {}
         layer_trace: list[dict] = []
         cats = hdata.get("categories", []) or []
 
@@ -372,13 +401,15 @@ class HMEMHierarchicalRetriever:
             "layer": 3, "kept_concepts": len(top), "pool_size": len(candidates),
         })
 
-        hint = mem.to_string(
-            concept_names=top,
-            include_description=self.include_description,
-            skip_cues=self.skip_cues,
-            skip_implementation=self.skip_implementation,
-            usage_threshold=self.usage_threshold,
-        )
+        hint = self._render_adapted_hint(top, adapted_records) if adapted_records else ""
+        if not hint:
+            hint = mem.to_string(
+                concept_names=top,
+                include_description=self.include_description,
+                skip_cues=self.skip_cues,
+                skip_implementation=self.skip_implementation,
+                usage_threshold=self.usage_threshold,
+            )
         return RetrievalBundle(
             problem_uid=problem.uid,
             hint_text=hint or None,
@@ -391,6 +422,8 @@ class HMEMHierarchicalRetriever:
                 "num_selected": len(top),
                 "top_k": self.top_k,
                 "per_layer_top_k": self.per_layer_top_k,
+                "adapted_memory_source": adapted_memory_source,
+                "adapted_records_loaded": len(adapted_records),
             },
         )
 
@@ -410,3 +443,100 @@ class HMEMHierarchicalRetriever:
         if not q_toks or not d_toks:
             return 0.0
         return len(q_toks & d_toks)
+
+    @staticmethod
+    def _resolve_path(path: str | Path | None, default: Path) -> Path:
+        if path is None:
+            return default
+        p = Path(path)
+        return p if p.is_absolute() else _REPO_ROOT / p
+
+    def _load_adapted_hierarchy(
+        self,
+        mem: ConceptMemory,
+    ) -> tuple[dict | None, dict[str, dict], str]:
+        path = self.adapted_memory_path
+        if not path.exists():
+            return None, {}, "flat"
+        try:
+            data = json.loads(path.read_text())
+        except Exception as exc:  # noqa: BLE001 - corrupted local artifact should not be silent
+            raise RuntimeError(f"invalid H-MEM adapted memory JSON: {path}") from exc
+        if data.get("schema_version") != "1" or data.get("port") != self.name:
+            raise RuntimeError(f"invalid H-MEM adapted memory schema: {path}")
+        records: dict[str, dict] = {}
+        category_order: list[str] = []
+        sub_order: dict[str, list[str]] = {}
+        grouped: dict[str, dict[str, list[str]]] = defaultdict(lambda: defaultdict(list))
+        descriptions: dict[tuple[str, str | None], str] = {}
+        for raw in data.get("adapted_concepts") or []:
+            if not isinstance(raw, dict):
+                continue
+            concept_id = raw.get("concept_id")
+            if not isinstance(concept_id, str) or concept_id not in mem.concepts:
+                continue
+            category = str(raw.get("category") or "").strip()
+            subcategory = str(raw.get("subcategory") or "").strip()
+            if not category or not subcategory:
+                raise RuntimeError(f"adapted memory missing route for {concept_id}")
+            records[concept_id] = raw
+            if category not in category_order:
+                category_order.append(category)
+            if subcategory not in sub_order.setdefault(category, []):
+                sub_order[category].append(subcategory)
+            grouped[category][subcategory].append(concept_id)
+            trace = raw.get("memory_trace") if isinstance(raw.get("memory_trace"), dict) else {}
+            episode = raw.get("episode") if isinstance(raw.get("episode"), dict) else {}
+            descriptions[(category, None)] = str(raw.get("retrieval_notes") or category)
+            descriptions[(category, subcategory)] = str(
+                trace.get("trace_summary") or episode.get("when_to_route_here") or subcategory
+            )
+        if not records:
+            return None, {}, "flat"
+        categories = []
+        for category in category_order:
+            subs = []
+            for subcategory in sub_order.get(category, []):
+                subs.append({
+                    "name": subcategory,
+                    "description": descriptions.get((category, subcategory), subcategory),
+                    "concepts": grouped[category][subcategory],
+                })
+            categories.append({
+                "name": category,
+                "description": descriptions.get((category, None), category),
+                "subcategories": subs,
+            })
+        return {"categories": categories}, records, "hmem_memory_v1"
+
+    @staticmethod
+    def _render_adapted_hint(
+        top: list[str],
+        adapted_records: dict[str, dict],
+    ) -> str:
+        blocks: list[str] = []
+        for name in top:
+            record = adapted_records.get(name)
+            if not record:
+                continue
+            trace = record.get("memory_trace") if isinstance(record.get("memory_trace"), dict) else {}
+            episode = record.get("episode") if isinstance(record.get("episode"), dict) else {}
+            lines = [f"- concept: {name}"]
+            lines.append(
+                "  hmem_route: "
+                f"{record.get('domain', 'ARC-AGI')} / {record.get('category')} / {record.get('subcategory')}"
+            )
+            trace_summary = str(trace.get("trace_summary") or "").strip()
+            if trace_summary:
+                lines.append(f"  memory_trace: {trace_summary}")
+            episode_summary = str(episode.get("summary") or "").strip()
+            if episode_summary:
+                lines.append(f"  episode: {episode_summary}")
+            route_here = str(episode.get("when_to_route_here") or "").strip()
+            if route_here:
+                lines.append(f"  route_when: {route_here}")
+            keywords = [str(k).strip() for k in record.get("routing_keywords") or [] if str(k).strip()]
+            if keywords:
+                lines.append("  routing_keywords: " + ", ".join(keywords[:8]))
+            blocks.append("\n".join(lines))
+        return "\n\n".join(blocks)
