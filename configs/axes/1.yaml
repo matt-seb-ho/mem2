@@ -76,8 +76,8 @@ conditions:
       literature_role: "scoop"
       ported_from: "src/hipporag/rerank.py::DSPyFilter.rerank (PPR first stage + LLM fact filter; token-overlap fallback when no _meta_edit_provider)"
       status: {paper: done, repo: done, impl: done, smoke: done, run: todo}
-      parity_grade: reduced-but-honest
-      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
+      parity_grade: surface-port-only-disclosed
+      parity_note: "RN-007 downgrade: adapted passages and entity hints engage at runtime, but default second-stage filtering is template token overlap, not the paper's BERT-token-level relevance filter or DSPy/LLM-generated filter prompt loop."
 
   - label: raptor
     override_group: retriever
@@ -180,8 +180,8 @@ conditions:
       literature_role: "scoop"
       ported_from: "paper §Method — path-based retrieval with flow-based pruning. Token-overlap seed selection substitutes keyword-to-node match; path reliability = product of co-activation edge weights, distance-decayed; render paths ascending by reliability (paper's 'lost in the middle' mitigation)."
       status: {paper: done, repo: needs_fetch, impl: done, smoke: done, run: todo}
-      parity_grade: reduced-but-honest
-      parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
+      parity_grade: surface-port-only-disclosed
+      parity_note: "RN-007 downgrade: adapted entity paths are persisted and rendered as seed/context text, but runtime path selection still enumerates ConceptGraph paths and does not use artifact paths as the primary reliability-scored path source."
 
   - label: hmem_hierarchical
     override_group: retriever

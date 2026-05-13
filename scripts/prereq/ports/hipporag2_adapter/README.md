@@ -4,6 +4,23 @@ Paper: From RAG to Memory: Non-Parametric Continual Learning for Large Language 
 
 This adapter rewrites each ARC concept into the native shape used by the HippoRAG2 port: a PPR passage plus candidate-filter evidence. The existing `hipporag2_filter` retriever can then seed its first-stage PPR with adapted text and score the second-stage filter with query-filter terms, candidate profiles, and evidence statements instead of only flat concept descriptions.
 
+## Substrate gap
+
+HippoRAG2 (Gutierrez 2502.14802) natively requires a BERT-token-level
+relevance filter operating over passages, plus a DSPy/LLM-generated
+filter prompt over candidate triples. Our port:
+
+- Reuses the entity-graph + OpenIE fact substrate from `shared/`.
+- Implements the second-stage filter via template overlap heuristic
+  (token-overlap between query and candidate passage text), NOT a learned
+  BERT filter or LLM-generated filter prompt.
+- The DSPy-tuned filter prompt loop is absent.
+
+This port is therefore Surface-port-only-disclosed tier (per RN-007 audit).
+The adapted memory engages at runtime (passages + entity hints surface in the
+retrieval bundle), but the load-bearing mechanism in the paper (learned
+filter) is approximated, not faithfully implemented.
+
 ## Artifact
 
 `data/arc_agi/concept_memory/ports/hipporag2_memory_v1.json`

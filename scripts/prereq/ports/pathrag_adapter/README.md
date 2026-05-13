@@ -4,6 +4,23 @@ Paper: PathRAG: Pruning Graph-Based Retrieval Augmented Generation with Relation
 
 This adapter rewrites each ARC concept into PathRAG's native retrieval unit: query keywords, graph node chunks, graph edge chunks, and textual relational paths. The retriever can then present relation-preserving paths instead of only a flat set of concept descriptions.
 
+## Substrate gap
+
+PathRAG (Chen 2502.14902) selects retrieval paths by reliability scoring over
+an entity-relation knowledge graph. Our port:
+
+- Generates LLM-extracted entity paths per concept and persists them at
+  `data/arc_agi/concept_memory/ports/pathrag_memory_v1.json`.
+- Runtime path selection in `src/mem2/branches/memory_retriever/pathrag.py`
+  still enumerates paths from `ConceptGraph` (co-mention + OpenIE edges), NOT
+  from the LLM-generated artifact paths.
+- The artifact paths surface in the retrieval bundle as seed text / rendered
+  context, but they are NOT load-bearing in the selection algorithm.
+
+This port is therefore Surface-port-only-disclosed tier (per RN-007 audit).
+The adapter is preparation infrastructure for a future faithful PathRAG; the
+current retriever wiring does not consume artifact paths as primary path source.
+
 ## Artifact
 
 `data/arc_agi/concept_memory/ports/pathrag_memory_v1.json`
