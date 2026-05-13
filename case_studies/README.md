@@ -29,3 +29,8 @@ Each `iter_<N>/` directory may contain:
 - Labels should be short, stable, and human-readable.
 - Generated summaries are starting points. Human observations belong in the `Notable observations` section of `summary.md`.
 - Do not commit large generated run traces unless the researcher explicitly asks for that run to become a durable artifact.
+
+## Downstream Analysis
+
+The `analysis/` module consumes `case_studies/runs/<run_id>/` as immutable trace input. Use analysis extractors for derived failure labels, memory-growth records, retrieval telemetry, and provenance reports; keep raw prompts and responses in this directory unchanged.
+
