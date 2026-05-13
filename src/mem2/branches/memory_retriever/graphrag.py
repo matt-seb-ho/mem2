@@ -24,11 +24,16 @@ This is what distinguishes the axis-B ablation.
 """
 from __future__ import annotations
 
+import json
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from mem2.concepts.artifacts import load_community_summaries, load_hierarchical_reports
+from mem2.concepts.artifacts import (
+    CONCEPT_MEMORY_DIR,
+    load_community_summaries,
+    load_hierarchical_reports,
+)
 from mem2.concepts.graph import ConceptGraph
 from mem2.concepts.memory import ConceptMemory
 from mem2.core.entities import (
@@ -41,6 +46,8 @@ from mem2.core.entities import (
 
 
 _WORD_RE = re.compile(r"[A-Za-z][A-Za-z0-9_]+")
+_REPO_ROOT = Path(__file__).resolve().parents[4]
+_DEFAULT_ADAPTED_MEMORY_PATH = CONCEPT_MEMORY_DIR / "ports" / "graphrag_memory_v1.json"
 
 
 def _tokenize(text: str) -> set[str]:
@@ -95,6 +102,7 @@ class GraphRAGRetriever:
         include_description: bool = True,
         community_summaries_path: str | Path | None = None,
         hierarchical_reports_path: str | Path | None = None,
+        adapted_memory_path: str | Path | None = None,
     ) -> None:
         self.top_k_communities = int(top_k_communities)
         self.min_community_size = int(min_community_size)
@@ -102,6 +110,10 @@ class GraphRAGRetriever:
         self.include_description = bool(include_description)
         self.community_summaries_path = community_summaries_path
         self.hierarchical_reports_path = hierarchical_reports_path
+        self.adapted_memory_path = self._resolve_path(
+            adapted_memory_path,
+            _DEFAULT_ADAPTED_MEMORY_PATH,
+        )
 
     # ----------------------------------------------------------------- #
     def retrieve(
@@ -117,6 +129,7 @@ class GraphRAGRetriever:
                 problem_uid=problem.uid, hint_text=None, retrieved_items=[],
                 metadata={"retriever": self.name, "reason": "empty_memory"},
             )
+        adapted_records, adapted_source = self._load_adapted_records(mem)
 
         q_tokens = _tokenize(_problem_text(problem))
         hierarchical_reports = load_hierarchical_reports(
@@ -137,6 +150,10 @@ class GraphRAGRetriever:
                     str(report.get("llm_summary") or ""),
                     str(report.get("member_digest") or ""),
                     " ".join(report.get("source_concepts") or []),
+                    self._adapted_text_for_concepts(
+                        report.get("source_concepts") or [],
+                        adapted_records,
+                    ),
                 ]))
 
             def score_report(report: dict) -> tuple[int, int, str]:
@@ -191,6 +208,9 @@ class GraphRAGRetriever:
                     lines.append(
                         "Concepts: " + ", ".join(concepts[: self.max_members_per_community])
                     )
+                adapted_cards = self._render_adapted_cards(concepts, adapted_records)
+                if adapted_cards:
+                    lines.append(adapted_cards)
                 lines.append("")
             member_concepts = list(dict.fromkeys(
                 concept
@@ -219,6 +239,12 @@ class GraphRAGRetriever:
                     "num_reports_selected": len(selected_reports),
                     "num_report_concepts": len(member_concepts),
                     "num_report_levels": len(hierarchy),
+                    "adapted_memory_source": adapted_source,
+                    "adapted_records_loaded": len(adapted_records),
+                    "adapted_cards_rendered": self._count_adapted_records(
+                        member_concepts,
+                        adapted_records,
+                    ),
                 },
             )
 
@@ -260,7 +286,17 @@ class GraphRAGRetriever:
                     f"{summary}\n\n"
                     f"Members: {', '.join(members[: self.max_members_per_community])}"
                 )
-                body_tokens = _tokenize(" ".join([community_id, seed, digest, summary, *members]))
+                adapted_cards = self._render_adapted_cards(members, adapted_records)
+                if adapted_cards:
+                    body_text += "\n" + adapted_cards
+                body_tokens = _tokenize(" ".join([
+                    community_id,
+                    seed,
+                    digest,
+                    summary,
+                    *members,
+                    self._adapted_text_for_concepts(members, adapted_records),
+                ]))
                 reports.append(_CommunityReport(
                     community_id=community_id,
                     title=f"{community_id} ({seed})",
@@ -291,6 +327,13 @@ class GraphRAGRetriever:
                 desc = c.description or ""
                 lines.append(f"- {m}: {desc}" if desc else f"- {m}")
                 body_text_parts.extend([m, desc])
+            adapted_cards = self._render_adapted_cards(ordered_members, adapted_records)
+            if adapted_cards:
+                lines.append(adapted_cards)
+                body_text_parts.append(self._adapted_text_for_concepts(
+                    ordered_members,
+                    adapted_records,
+                ))
             body_text = "\n".join(lines)
             body_tokens = _tokenize(" ".join(body_text_parts))
             reports.append(_CommunityReport(
@@ -333,6 +376,12 @@ class GraphRAGRetriever:
                 "num_graph_edges": G.number_of_edges(),
                 "reports_source": "flat_v1" if selected and selected[0].summary_source == "llm_summaries_v1" else "template",
                 "summary_source": selected[0].summary_source if selected else summary_source,
+                "adapted_memory_source": adapted_source,
+                "adapted_records_loaded": len(adapted_records),
+                "adapted_cards_rendered": self._count_adapted_records(
+                    [m for report in selected for m in report.members],
+                    adapted_records,
+                ),
             },
         )
 
@@ -347,3 +396,105 @@ class GraphRAGRetriever:
         selector_model: str = "",
     ) -> RetrievalBundle:
         return self.retrieve(ctx, memory, problem, previous_attempts)
+
+    @staticmethod
+    def _resolve_path(path: str | Path | None, default: Path) -> Path:
+        if path is None:
+            return default
+        p = Path(path)
+        return p if p.is_absolute() else _REPO_ROOT / p
+
+    def _load_adapted_records(
+        self,
+        mem: ConceptMemory,
+    ) -> tuple[dict[str, dict], str]:
+        path = self.adapted_memory_path
+        if not path.exists():
+            return {}, "flat"
+        try:
+            data = json.loads(path.read_text())
+        except Exception as exc:  # noqa: BLE001 - corrupted local artifact should not be silent
+            raise RuntimeError(f"invalid GraphRAG adapted memory JSON: {path}") from exc
+        if data.get("schema_version") != "1" or data.get("port") != self.name:
+            raise RuntimeError(f"invalid GraphRAG adapted memory schema: {path}")
+        records: dict[str, dict] = {}
+        for raw in data.get("adapted_concepts") or []:
+            if not isinstance(raw, dict):
+                continue
+            concept_id = raw.get("concept_id")
+            if not isinstance(concept_id, str) or concept_id not in mem.concepts:
+                continue
+            card = raw.get("map_reduce_card")
+            if not isinstance(card, str) or not card.strip():
+                raise RuntimeError(f"adapted memory missing map_reduce_card for {concept_id}")
+            records[concept_id] = raw
+        if not records:
+            return {}, "flat"
+        return records, "graphrag_memory_v1"
+
+    @staticmethod
+    def _adapted_record_text(record: dict) -> str:
+        parts: list[str] = [
+            str(record.get("primary_community_id") or ""),
+            str(record.get("community_role") or ""),
+            str(record.get("contribution_to_cluster") or ""),
+            str(record.get("map_reduce_card") or ""),
+        ]
+        parts.extend(str(item) for item in record.get("query_focus_keywords") or [])
+        for path_item in record.get("summary_path") or []:
+            if isinstance(path_item, dict):
+                parts.append(" ".join([
+                    str(path_item.get("community_id") or ""),
+                    str(path_item.get("role_at_level") or ""),
+                    str(path_item.get("report_connection") or ""),
+                ]))
+        for claim in record.get("entity_relationship_claims") or []:
+            if isinstance(claim, dict):
+                parts.append(str(claim.get("claim") or ""))
+        return "\n".join(part for part in parts if part.strip())
+
+    @classmethod
+    def _adapted_text_for_concepts(
+        cls,
+        concepts: list[str],
+        adapted_records: dict[str, dict],
+    ) -> str:
+        return "\n".join(
+            cls._adapted_record_text(adapted_records[name])
+            for name in concepts
+            if name in adapted_records
+        )
+
+    @staticmethod
+    def _count_adapted_records(
+        concepts: list[str],
+        adapted_records: dict[str, dict],
+    ) -> int:
+        return sum(1 for name in dict.fromkeys(concepts) if name in adapted_records)
+
+    def _render_adapted_cards(
+        self,
+        concepts: list[str],
+        adapted_records: dict[str, dict],
+    ) -> str:
+        cards: list[str] = []
+        for name in concepts[: self.max_members_per_community]:
+            record = adapted_records.get(name)
+            if not record:
+                continue
+            community = str(record.get("primary_community_id") or "").strip()
+            role = str(record.get("community_role") or "").strip()
+            card = str(record.get("map_reduce_card") or "").strip()
+            if not card:
+                continue
+            prefix = f"- {name}"
+            if community:
+                prefix += f" [{community}]"
+            if role:
+                prefix += f" {role}:"
+            else:
+                prefix += ":"
+            cards.append(f"{prefix} {card}")
+        if not cards:
+            return ""
+        return "Adapted GraphRAG map cards:\n" + "\n".join(cards)
