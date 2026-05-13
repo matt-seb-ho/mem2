@@ -8,4 +8,4 @@ Each file should use this shape:
 - Faithfulness gaps and substitutions.
 - Links to thread status and port labels.
 
-Existing markdown notes from `literature/` live here. PDFs remain in `literature/` for now.
+Existing markdown notes from `literature/` live here. PDFs remain in `literature/` until the deferred migration in `origins/papers/README.md` is safe.

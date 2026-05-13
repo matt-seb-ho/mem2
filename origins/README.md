@@ -1,6 +1,6 @@
 # mem2 Origins
 
-`origins/` tracks where research directions came from: Aaron's unpublished ideas, external papers, third-party repositories, prior survey insights, and future candidate threads. It is broader than `literature/`, which remains a legacy paper-file alias and must not be removed.
+`origins/` tracks where research directions came from: Aaron's unpublished ideas, external papers, third-party repositories, prior survey insights, and future candidate threads. It is broader than `literature/`, which remains a legacy paper-file alias during the adapter work.
 
 ## What Counts as an Origin
 
@@ -21,4 +21,4 @@
 - Put thread-level context under `threads/<thread>/`.
 - Put per-paper markdown distillations under `distilled/`.
 - Put notes about `third_party/<repo>/` under `external_repos/`.
-- Keep `literature/` PDFs in place until a later migration explicitly moves them.
+- Keep `literature/` PDFs in place until adapter panes are quiet and `origins/papers/README.md` can be followed safely.
