@@ -58,6 +58,23 @@ _RENDER_PROFILES = {
 }
 
 
+def _free_text_hint(concept_mem: ConceptMemory, selected_names: list[str] | None) -> str:
+    names = selected_names or list(concept_mem.concepts.keys())
+    sentences: list[str] = []
+    for name in names:
+        concept = concept_mem.concepts.get(name)
+        if concept is None:
+            continue
+        desc = (concept.description or "").strip()
+        if desc:
+            sentences.append(f"{concept.name} means {desc.rstrip('.')}.")
+        else:
+            sentences.append(f"{concept.name} may be relevant.")
+    if not sentences:
+        return ""
+    return "Recall the following concepts that may be relevant: " + " ".join(sentences)
+
+
 class PsSelectorRetriever:
     """PS (Program Synthesis) concept selection retriever.
 
@@ -183,7 +200,10 @@ class PsSelectorRetriever:
             return None
         flags = memory.metadata.get("render_flags")
         if flags and isinstance(flags, dict):
-            return flags
+            out = dict(flags)
+            if memory.metadata.get("variant"):
+                out["_variant"] = memory.metadata.get("variant")
+            return out
         return None
 
     def _render_hint_text(
@@ -196,6 +216,8 @@ class PsSelectorRetriever:
         template at prompt-build time — matching arc_memo's pattern.
         """
         profile = self._build_profile(concept_mem)
+        if variant_flags is not None and variant_flags.get("_variant") == "free_text":
+            return _free_text_hint(concept_mem, selected_names)
         if variant_flags is not None:
             render_flags = {
                 "skip_cues": variant_flags.get("skip_cues", False),

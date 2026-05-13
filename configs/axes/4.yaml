@@ -93,6 +93,8 @@ conditions:
     candidate:
       id: "4.3d"
       literature_role: "novelty_seed"
+      parity_grade: partial-with-disclosed-gap
+      parity_note: "free_text now has a substantive paragraph renderer distinct from variant_minimal; it remains a local format ablation rather than a full paper-method port."
       status: {paper: done, repo: na, impl: partial, smoke: done, run: done}
 
   - label: variant_structured_routine

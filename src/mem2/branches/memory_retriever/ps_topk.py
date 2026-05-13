@@ -21,6 +21,23 @@ from mem2.core.entities import (
 )
 
 
+def _free_text_hint(mem: ConceptMemory, concept_names: list[str]) -> str:
+    sentences: list[str] = []
+    for name in concept_names:
+        concept = mem.concepts.get(name)
+        if concept is None:
+            continue
+        desc = (concept.description or "").strip()
+        if desc:
+            sentence = f"{concept.name} means {desc.rstrip('.')}."
+        else:
+            sentence = f"{concept.name} may be relevant."
+        sentences.append(sentence)
+    if not sentences:
+        return ""
+    return "Recall the following concepts that may be relevant: " + " ".join(sentences)
+
+
 class PsTopKRetriever:
     name = "ps_topk"
     COMPATIBLE_SCHEMAS = {"arcmemo_ps"}
@@ -88,17 +105,20 @@ class PsTopKRetriever:
             skip_kind = True
             skip_routine_subtype = True
             variant = None
-        hint = mem.to_string(
-            concept_names=top,
-            include_description=include_description,
-            skip_kind=skip_kind,
-            skip_routine_subtype=skip_routine_subtype,
-            skip_cues=skip_cues,
-            skip_implementation=skip_implementation,
-            skip_parameters=skip_parameters,
-            skip_parameter_description=skip_parameter_description,
-            usage_threshold=self.usage_threshold,
-        )
+        if variant == "free_text":
+            hint = _free_text_hint(mem, top)
+        else:
+            hint = mem.to_string(
+                concept_names=top,
+                include_description=include_description,
+                skip_kind=skip_kind,
+                skip_routine_subtype=skip_routine_subtype,
+                skip_cues=skip_cues,
+                skip_implementation=skip_implementation,
+                skip_parameters=skip_parameters,
+                skip_parameter_description=skip_parameter_description,
+                usage_threshold=self.usage_threshold,
+            )
         meta = {
             "retriever": self.name,
             "scoring_mode": "topk",
