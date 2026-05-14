@@ -726,6 +726,15 @@ def _parse_cache_flag(value: str | bool | None) -> bool:
     raise ValueError(f"Invalid --cache value: {value}")
 
 
+def _parse_condition_filter(ports: list[str] | None, conditions: str | None) -> list[str] | None:
+    values: list[str] = []
+    for item in ports or []:
+        values.extend(part.strip() for part in item.split(","))
+    if conditions:
+        values.extend(part.strip() for part in conditions.split(","))
+    return [value for value in values if value] or None
+
+
 def normalize_args(args: argparse.Namespace) -> argparse.Namespace:
     if args.mode == "phase-g-lite":
         if args.n_problems == 3:
@@ -744,6 +753,7 @@ def normalize_args(args: argparse.Namespace) -> argparse.Namespace:
     args.seed_list = _parse_seeds(args.seeds, args.seed)
     args.cache_enabled = _parse_cache_flag(args.cache)
     args.ignore_cache = not args.cache_enabled
+    args.ports = _parse_condition_filter(args.ports, args.conditions)
     return args
 
 
@@ -823,6 +833,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--mode", choices=["smoke", "phase-g-lite"], default="smoke")
     parser.add_argument("--port", help="Internal single-condition port label")
     parser.add_argument("--ports", nargs="*", default=None, help="Optional subset of condition labels")
+    parser.add_argument("--conditions", default=None, help="Comma-separated alias for --ports")
     parser.add_argument("--n-problems", type=int, default=3)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--seeds", default=None, help="Comma-separated seed list for sweep mode")
