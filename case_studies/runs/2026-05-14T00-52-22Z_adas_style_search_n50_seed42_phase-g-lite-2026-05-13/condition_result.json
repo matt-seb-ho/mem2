@@ -1,0 +1,31 @@
+{
+  "axis": "5",
+  "condition": "adas_style_search",
+  "baseline": false,
+  "parity_grade": "surface-port-only-disclosed",
+  "parity_note": "ADAS's actual algorithm: meta agent iteratively PROGRAMS new agent designs in code, evaluated by RUNNING the generated agent on benchmark tasks (see third_party/adas/_arc/search.py). Our port: iterative reflexion (max 3 rounds) over the same 3-shape JSON edit-plan space as 5.2 alma + MDL local-gate. Reflexion-buffer pattern IS preserved (single ADAS-distinctive bit); search-space (memory edit plans vs agent designs in code) + evaluation (MDL proxy vs benchmark task-success) are SUBSTITUTED. Slightly less reductive than alma since iterative pattern is real, but capability ceiling is bounded by the JSON edit space. Built-in cell-named action labels (adas_meta_search / adas_skipped) \u2014 no silent-fallback bug. Honest meeting framing: 'ADAS-inspired iterative reflexion over schema edits with MDL local-gate proxy'. Cross-check: copilot + Codex #6 audit 2026-05-12 agreed.",
+  "success": true,
+  "error": null,
+  "run_id": "2026-05-14T00-52-22Z_adas_style_search_n50_seed42_phase-g-lite-2026-05-13",
+  "trace_dir": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-14T00-52-22Z_adas_style_search_n50_seed42_phase-g-lite-2026-05-13",
+  "summary_path": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-14T00-52-22Z_adas_style_search_n50_seed42_phase-g-lite-2026-05-13/summary.md",
+  "score_summary_path": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-14T00-52-22Z_adas_style_search_n50_seed42_phase-g-lite-2026-05-13/summary.json",
+  "seed": 42,
+  "score": 0.14,
+  "n_correct": 7,
+  "n_total": 50,
+  "llm_calls": 46,
+  "retrieval_hits": 550,
+  "retrieval_metadata": [
+    "retriever=ps_topk",
+    "scoring_mode=topk",
+    "top_k=10",
+    "num_concepts_total=270",
+    "num_selected=10"
+  ],
+  "sample_retrieval": "{\"name\": \"extract objects\"}",
+  "sample_prompt_snippet": "### Introduction Given a puzzle containing input-output grid pairs as reference examples, carefully observe the patterns to predict the output grid for new test input. Within a puzzle, each pair follows the same trans...",
+  "engagement_verdict": "CHECK - retrieved content present",
+  "cost_usd": null,
+  "wall_time_s": 313.34208550001495
+}

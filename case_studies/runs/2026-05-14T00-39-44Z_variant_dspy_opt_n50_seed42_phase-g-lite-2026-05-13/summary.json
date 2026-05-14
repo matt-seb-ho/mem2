@@ -1,0 +1,672 @@
+{
+  "run_id": "2026-05-14T00-39-44Z_variant_dspy_opt_n50_seed42_phase-g-lite-2026-05-13",
+  "condition": "variant_dspy_opt",
+  "axis": "4",
+  "parity_grade": "faithful",
+  "parity_note": "Optimizer\u2192retriever wire fix landed 2026-04-27 (doc 74 \u00a70 finding 1). Builder now writes render_flags to memory.metadata; ps_selector reads them at render time. The winning variant's flags reach the LLM prompt \u2014 optimization is no longer theatre.",
+  "success": true,
+  "error": null,
+  "seed": 42,
+  "n_problems": 50,
+  "model": "deepseek/deepseek-v4-flash",
+  "llm_calls": 50,
+  "cost_usd": null,
+  "score": 0.06,
+  "n_correct": 3,
+  "n_total": 50,
+  "per_problem": [
+    {
+      "problem_uid": "00576224",
+      "task_id": "00576224",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "009d5c81",
+      "task_id": "009d5c81",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "00dbd492",
+      "task_id": "00dbd492",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "empty completion.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "03560426",
+      "task_id": "03560426",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "05a7bcf2",
+      "task_id": "05a7bcf2",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": null,
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "0607ce86",
+      "task_id": "0607ce86",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "0692e18c",
+      "task_id": "0692e18c",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "empty completion.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "070dd51e",
+      "task_id": "070dd51e",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "08573cc6",
+      "task_id": "08573cc6",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "0934a4d8",
+      "task_id": "0934a4d8",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "09c534e7",
+      "task_id": "09c534e7",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "0a1d4ef5",
+      "task_id": "0a1d4ef5",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "0a2355a6",
+      "task_id": "0a2355a6",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "0b17323b",
+      "task_id": "0b17323b",
+      "iter": "0",
+      "correct": true,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": null,
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "0bb8deee",
+      "task_id": "0bb8deee",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": null,
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "0becf7df",
+      "task_id": "0becf7df",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": null,
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "0c786b71",
+      "task_id": "0c786b71",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": null,
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "0c9aba6e",
+      "task_id": "0c9aba6e",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "0d87d2a6",
+      "task_id": "0d87d2a6",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": null,
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "0e671a1a",
+      "task_id": "0e671a1a",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "0f63c0b9",
+      "task_id": "0f63c0b9",
+      "iter": "0",
+      "correct": true,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": null,
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "103eff5b",
+      "task_id": "103eff5b",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "11e1fe23",
+      "task_id": "11e1fe23",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": null,
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "12422b43",
+      "task_id": "12422b43",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": null,
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "12997ef3",
+      "task_id": "12997ef3",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "empty completion.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "12eac192",
+      "task_id": "12eac192",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "136b0064",
+      "task_id": "136b0064",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "13713586",
+      "task_id": "13713586",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "137f0df0",
+      "task_id": "137f0df0",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": null,
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "140c817e",
+      "task_id": "140c817e",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "empty completion.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "14754a24",
+      "task_id": "14754a24",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "15113be4",
+      "task_id": "15113be4",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "15663ba9",
+      "task_id": "15663ba9",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "empty completion.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "15696249",
+      "task_id": "15696249",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "16b78196",
+      "task_id": "16b78196",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "17b80ad2",
+      "task_id": "17b80ad2",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "17cae0c1",
+      "task_id": "17cae0c1",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "18419cfa",
+      "task_id": "18419cfa",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "empty completion.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "184a9768",
+      "task_id": "184a9768",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "195ba7dc",
+      "task_id": "195ba7dc",
+      "iter": "0",
+      "correct": true,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": null,
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "1990f7a8",
+      "task_id": "1990f7a8",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "empty completion.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "19bb5feb",
+      "task_id": "19bb5feb",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "1a2e2828",
+      "task_id": "1a2e2828",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "1a6449f1",
+      "task_id": "1a6449f1",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "1acc24af",
+      "task_id": "1acc24af",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "1c02dbbe",
+      "task_id": "1c02dbbe",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "empty completion.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "1c0d0a4b",
+      "task_id": "1c0d0a4b",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "empty completion.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "1c56ad9f",
+      "task_id": "1c56ad9f",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "empty completion.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "1d0a4b61",
+      "task_id": "1d0a4b61",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": "no python code block found.",
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    },
+    {
+      "problem_uid": "1d398264",
+      "task_id": "1d398264",
+      "iter": "0",
+      "correct": false,
+      "attempt_idx": 0,
+      "metadata": {
+        "evaluator": "arc_exec",
+        "parsing_error": null,
+        "global_step_idx": 0,
+        "pass_idx": 0
+      }
+    }
+  ],
+  "official_score": 0.06,
+  "official_score_sum": 3.0,
+  "strict_score": 3.0
+}

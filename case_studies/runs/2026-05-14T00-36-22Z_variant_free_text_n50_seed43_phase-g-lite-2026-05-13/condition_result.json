@@ -1,0 +1,32 @@
+{
+  "axis": "4",
+  "condition": "variant_free_text",
+  "baseline": false,
+  "parity_grade": "partial-with-disclosed-gap",
+  "parity_note": "free_text now has a substantive paragraph renderer distinct from variant_minimal; it remains a local format ablation rather than a full paper-method port.",
+  "success": true,
+  "error": null,
+  "run_id": "2026-05-14T00-36-22Z_variant_free_text_n50_seed43_phase-g-lite-2026-05-13",
+  "trace_dir": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-14T00-36-22Z_variant_free_text_n50_seed43_phase-g-lite-2026-05-13",
+  "summary_path": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-14T00-36-22Z_variant_free_text_n50_seed43_phase-g-lite-2026-05-13/summary.md",
+  "score_summary_path": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-14T00-36-22Z_variant_free_text_n50_seed43_phase-g-lite-2026-05-13/summary.json",
+  "seed": 43,
+  "score": 0.1,
+  "n_correct": 5,
+  "n_total": 50,
+  "llm_calls": 50,
+  "retrieval_hits": 550,
+  "retrieval_metadata": [
+    "retriever=ps_topk",
+    "scoring_mode=topk",
+    "top_k=10",
+    "num_concepts_total=270",
+    "num_selected=10",
+    "variant=free_text"
+  ],
+  "sample_retrieval": "{\"name\": \"extract objects\"}",
+  "sample_prompt_snippet": "### Introduction Given a puzzle containing input-output grid pairs as reference examples, carefully observe the patterns to predict the output grid for new test input. Within a puzzle, each pair follows the same trans...",
+  "engagement_verdict": "CHECK - retrieved content present",
+  "cost_usd": null,
+  "wall_time_s": 276.4092749169795
+}

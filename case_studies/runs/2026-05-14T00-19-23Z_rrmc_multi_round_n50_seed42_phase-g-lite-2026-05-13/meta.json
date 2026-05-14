@@ -1,0 +1,37 @@
+{
+  "run_id": "2026-05-14T00-19-23Z_rrmc_multi_round_n50_seed42_phase-g-lite-2026-05-13",
+  "output_dir": "outputs/_runs/case_study/2026-05-14T00-19-23Z_rrmc_multi_round_n50_seed42_phase-g-lite-2026-05-13",
+  "trace_dir": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-14T00-19-23Z_rrmc_multi_round_n50_seed42_phase-g-lite-2026-05-13",
+  "timestamp_utc": "2026-05-14T00:23:34+00:00",
+  "port": "rrmc_multi_round",
+  "label": "phase-g-lite-2026-05-13",
+  "seed": 42,
+  "model": "deepseek/deepseek-v4-flash",
+  "provider": "llmplus",
+  "llm_call_count": 50,
+  "provider_usage": {
+    "deepseek/deepseek-v4-flash": {
+      "input_tokens": 307489,
+      "output_tokens": 265908,
+      "reasoning_tokens": 208739,
+      "requests": 50,
+      "completions": 50
+    }
+  },
+  "n_problems": 50,
+  "summary": {
+    "accuracy_per_attempt": 0.14,
+    "official_score": 7.0,
+    "strict_score": 7.0,
+    "strict_solved_puzzles": 7,
+    "official_score_sum": 7.0,
+    "total_attempts": 50,
+    "correct_attempts": 7,
+    "attempt_count": 50,
+    "feedback_count": 50,
+    "problem_count": 50,
+    "prompt_fingerprint_count": 50,
+    "config_hash": "6a791a6e19e6a38d44d8a2152a547ddc3b9a9ae0042a04a9d8d81be3f02b189f"
+  },
+  "total_cost_usd": null
+}

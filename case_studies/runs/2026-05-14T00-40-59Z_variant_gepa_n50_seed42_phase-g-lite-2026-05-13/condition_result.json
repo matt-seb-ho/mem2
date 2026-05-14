@@ -1,0 +1,32 @@
+{
+  "axis": "4",
+  "condition": "variant_gepa",
+  "baseline": false,
+  "parity_grade": "reduced-but-honest",
+  "parity_note": "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field.",
+  "success": true,
+  "error": null,
+  "run_id": "2026-05-14T00-40-59Z_variant_gepa_n50_seed42_phase-g-lite-2026-05-13",
+  "trace_dir": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-14T00-40-59Z_variant_gepa_n50_seed42_phase-g-lite-2026-05-13",
+  "summary_path": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-14T00-40-59Z_variant_gepa_n50_seed42_phase-g-lite-2026-05-13/summary.md",
+  "score_summary_path": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-14T00-40-59Z_variant_gepa_n50_seed42_phase-g-lite-2026-05-13/summary.json",
+  "seed": 42,
+  "score": 0.04,
+  "n_correct": 2,
+  "n_total": 50,
+  "llm_calls": 49,
+  "retrieval_hits": 550,
+  "retrieval_metadata": [
+    "retriever=ps_topk",
+    "scoring_mode=topk",
+    "top_k=10",
+    "num_concepts_total=270",
+    "num_selected=10",
+    "variant=typed_only"
+  ],
+  "sample_retrieval": "{\"name\": \"extract objects\"}",
+  "sample_prompt_snippet": "### Introduction Given a puzzle containing input-output grid pairs as reference examples, carefully observe the patterns to predict the output grid for new test input. Within a puzzle, each pair follows the same trans...",
+  "engagement_verdict": "CHECK - retrieved content present",
+  "cost_usd": null,
+  "wall_time_s": 553.8356667909538
+}

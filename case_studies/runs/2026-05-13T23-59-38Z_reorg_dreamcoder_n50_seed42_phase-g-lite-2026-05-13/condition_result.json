@@ -1,0 +1,31 @@
+{
+  "axis": "2",
+  "condition": "reorg_dreamcoder",
+  "baseline": false,
+  "parity_grade": "faithful",
+  "parity_note": "scope:accretive\u2192global_rebuild fix landed 2026-04-27 (doc 74 \u00a70 finding 3). DreamCoder compression is inherently global \u2014 fragments REPLACE inlined code in children, reducing MDL. Accretive mode (add-only) made MDL gate reject every fragment by construction.",
+  "success": true,
+  "error": null,
+  "run_id": "2026-05-13T23-59-38Z_reorg_dreamcoder_n50_seed42_phase-g-lite-2026-05-13",
+  "trace_dir": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-13T23-59-38Z_reorg_dreamcoder_n50_seed42_phase-g-lite-2026-05-13",
+  "summary_path": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-13T23-59-38Z_reorg_dreamcoder_n50_seed42_phase-g-lite-2026-05-13/summary.md",
+  "score_summary_path": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-13T23-59-38Z_reorg_dreamcoder_n50_seed42_phase-g-lite-2026-05-13/summary.json",
+  "seed": 42,
+  "score": 0.12,
+  "n_correct": 6,
+  "n_total": 50,
+  "llm_calls": 46,
+  "retrieval_hits": 550,
+  "retrieval_metadata": [
+    "retriever=ps_topk",
+    "scoring_mode=topk",
+    "top_k=10",
+    "num_concepts_total=270",
+    "num_selected=10"
+  ],
+  "sample_retrieval": "{\"name\": \"extract objects\"}",
+  "sample_prompt_snippet": "### Introduction Given a puzzle containing input-output grid pairs as reference examples, carefully observe the patterns to predict the output grid for new test input. Within a puzzle, each pair follows the same trans...",
+  "engagement_verdict": "CHECK - retrieved content present",
+  "cost_usd": null,
+  "wall_time_s": 311.4753547910368
+}

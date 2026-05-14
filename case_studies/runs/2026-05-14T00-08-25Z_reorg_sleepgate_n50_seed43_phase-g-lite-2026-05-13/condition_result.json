@@ -1,0 +1,31 @@
+{
+  "axis": "2",
+  "condition": "reorg_sleepgate",
+  "baseline": false,
+  "parity_grade": "wrong-disclosed",
+  "parity_note": "SleepGate is an architecture-level KV-cache intervention (neural forgetting gate + conflict-aware temporal tagger + slow-wave-sleep-replay consolidation module). The paper operates on transformer hidden state, NOT on a declarative concept memory. Author docstring (reorg_sleepgate.py:1-46) honestly discloses 'This does NOT literally map to mem2 declarative concept memory' and that what is ported is a 'conceptual pattern' (temporal supersession) translated to a hand-rolled rule-based eviction heuristic (older.used_in subset newer.used_in + token-overlap threshold). NO learned components. NO KV-cache operations. NO interference-horizon claims. Phase F R2=14 reflects an always-skipped gate (action='sleepgate_skipped' in Phase F artifact at outputs/two_round_axis_2/s42/ax2_reorg_sleepgate__ps_topk/round1/.../memory/final.json \u2014 evicted 0 concepts; memory unchanged from input). The R2=14 anomaly is most likely single-seed noise (~7pp floor) over no-mutation memory state. Cross-check: copilot read AGREED with Codex #6 verdict=Wrong 2026-05-12 (first surviving Wrong-tier port post-lilo-downgrade). Honest meeting framing: 'SleepGate-inspired concept-bank supersession heuristic (no relation to SleepGate's actual KV-cache mechanism)'.",
+  "success": true,
+  "error": null,
+  "run_id": "2026-05-14T00-08-25Z_reorg_sleepgate_n50_seed43_phase-g-lite-2026-05-13",
+  "trace_dir": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-14T00-08-25Z_reorg_sleepgate_n50_seed43_phase-g-lite-2026-05-13",
+  "summary_path": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-14T00-08-25Z_reorg_sleepgate_n50_seed43_phase-g-lite-2026-05-13/summary.md",
+  "score_summary_path": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-14T00-08-25Z_reorg_sleepgate_n50_seed43_phase-g-lite-2026-05-13/summary.json",
+  "seed": 43,
+  "score": 0.16,
+  "n_correct": 8,
+  "n_total": 50,
+  "llm_calls": 48,
+  "retrieval_hits": 550,
+  "retrieval_metadata": [
+    "retriever=ps_topk",
+    "scoring_mode=topk",
+    "top_k=10",
+    "num_concepts_total=270",
+    "num_selected=10"
+  ],
+  "sample_retrieval": "{\"name\": \"extract objects\"}",
+  "sample_prompt_snippet": "### Introduction Given a puzzle containing input-output grid pairs as reference examples, carefully observe the patterns to predict the output grid for new test input. Within a puzzle, each pair follows the same trans...",
+  "engagement_verdict": "CHECK - retrieved content present",
+  "cost_usd": null,
+  "wall_time_s": 315.5818564579822
+}

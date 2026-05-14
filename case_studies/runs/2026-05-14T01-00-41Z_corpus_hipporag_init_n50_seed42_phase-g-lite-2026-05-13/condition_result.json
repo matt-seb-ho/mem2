@@ -1,0 +1,27 @@
+{
+  "axis": "6",
+  "condition": "corpus_hipporag_init",
+  "baseline": false,
+  "parity_grade": "reduced-but-honest",
+  "parity_note": "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field.",
+  "success": true,
+  "error": null,
+  "run_id": "2026-05-14T01-00-41Z_corpus_hipporag_init_n50_seed42_phase-g-lite-2026-05-13",
+  "trace_dir": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-14T01-00-41Z_corpus_hipporag_init_n50_seed42_phase-g-lite-2026-05-13",
+  "summary_path": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-14T01-00-41Z_corpus_hipporag_init_n50_seed42_phase-g-lite-2026-05-13/summary.md",
+  "score_summary_path": "/private/tmp/mem2-case-deepening-s150/case_studies/runs/2026-05-14T01-00-41Z_corpus_hipporag_init_n50_seed42_phase-g-lite-2026-05-13/summary.json",
+  "seed": 42,
+  "score": 0.04,
+  "n_correct": 2,
+  "n_total": 50,
+  "llm_calls": 48,
+  "retrieval_hits": 0,
+  "retrieval_metadata": [
+    "selector_mode=empty"
+  ],
+  "sample_retrieval": "{\"hint_text\": null, \"metadata\": {\"selector_mode\": \"empty\"}, \"problem_uid\": \"00576224\", \"retrieved_items\": []}",
+  "sample_prompt_snippet": "### Introduction Given a puzzle containing input-output grid pairs as reference examples, carefully observe the patterns to predict the output grid for new test input. Within a puzzle, each pair follows the same trans...",
+  "engagement_verdict": "NO - empty retrieval",
+  "cost_usd": null,
+  "wall_time_s": 304.4041137499735
+}
