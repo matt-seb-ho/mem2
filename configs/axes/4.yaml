@@ -54,6 +54,67 @@ conditions:
       literature_role: "baseline"
       status: {paper: done, repo: na, impl: done, smoke: done, run: done}
 
+  # --- 2nd-cut ArcMemo PS tuning candidates ---------------------------
+  - label: arcmemo_ps_v2_query
+    override_group: combo
+    builder: arcmemo_ps
+    builder_cfg: {}
+    retriever: ps_topk_query
+    retriever_cfg: {top_k: 10, alpha: 0.6, beta: 0.4}
+    parity_grade: tuning-experimental
+    parity_note: "ps_topk_query variant: query-conditioned retrieval using token-overlap x popularity. Tune candidate per D-2026-05-15."
+    candidate:
+      id: "4.2.v2"
+      paper: "ArcMemo"
+      arxiv: "2509.04439"
+      literature_role: "tuning_candidate"
+      status: {paper: done, repo: na, impl: done, smoke: todo, run: todo}
+
+  - label: arcmemo_ps_v3_k5
+    override_group: combo
+    builder: arcmemo_ps
+    builder_cfg: {}
+    retriever: ps_topk
+    retriever_cfg: {top_k: 5}
+    parity_grade: tuning-experimental
+    parity_note: "ps_topk with top_k=5: distractor-surface ablation. Tune candidate per D-2026-05-15."
+    candidate:
+      id: "4.2.v3"
+      paper: "ArcMemo"
+      arxiv: "2509.04439"
+      literature_role: "tuning_candidate"
+      status: {paper: done, repo: na, impl: done, smoke: todo, run: todo}
+
+  - label: arcmemo_ps_v4_both
+    override_group: combo
+    builder: arcmemo_ps
+    builder_cfg: {}
+    retriever: ps_topk_query
+    retriever_cfg: {top_k: 5, alpha: 0.6, beta: 0.4}
+    parity_grade: tuning-experimental
+    parity_note: "H1+H2 stacked: query-conditioned retrieval with top_k=5. Shipping candidate per D-2026-05-15 section 15."
+    candidate:
+      id: "4.2.v4"
+      paper: "ArcMemo"
+      arxiv: "2509.04439"
+      literature_role: "tuning_candidate"
+      status: {paper: done, repo: na, impl: done, smoke: todo, run: todo}
+
+  - label: arcmemo_ps_v3b_k3
+    override_group: combo
+    builder: arcmemo_ps
+    builder_cfg: {}
+    retriever: ps_topk
+    retriever_cfg: {top_k: 3}
+    parity_grade: tuning-experimental
+    parity_note: "ps_topk with top_k=3: paper lower-bound k. Per scholar 2026-05-17 adjustment."
+    candidate:
+      id: "4.2.v3b"
+      paper: "ArcMemo"
+      arxiv: "2509.04439"
+      literature_role: "tuning_candidate"
+      status: {paper: done, repo: na, impl: done, smoke: todo, run: todo}
+
   # --- 5 new format variants (parameterized via variant_format builder) --
   - label: variant_minimal
     override_group: builder
