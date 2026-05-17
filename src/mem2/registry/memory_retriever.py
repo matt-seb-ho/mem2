@@ -12,6 +12,7 @@ from mem2.branches.memory_retriever.none import NoneMemoryRetriever
 from mem2.branches.memory_retriever.oe_selector import OeSelectorRetriever
 from mem2.branches.memory_retriever.ps_selector import PsSelectorRetriever
 from mem2.branches.memory_retriever.ps_topk import PsTopKRetriever
+from mem2.branches.memory_retriever.ps_topk_query import PsTopKQueryRetriever
 from mem2.branches.memory_retriever.oe_topk import OeTopKRetriever
 from mem2.branches.memory_retriever.raptor import RAPTORRetriever
 from mem2.branches.memory_retriever.rrmc_interactive import RRMCInteractiveRetriever
@@ -23,6 +24,7 @@ MEMORY_RETRIEVERS = {
     "oe_selector": OeSelectorRetriever,
     "ps_selector": PsSelectorRetriever,
     "ps_topk": PsTopKRetriever,
+    "ps_topk_query": PsTopKQueryRetriever,
     "colbert_rerank": ColBERTRerankRetriever,
     "graph_traversal": GraphTraversalRetriever,
     "graphrag": GraphRAGRetriever,
