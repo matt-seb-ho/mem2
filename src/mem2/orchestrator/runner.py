@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import copy
+import json
 from collections import defaultdict
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
@@ -46,6 +47,10 @@ class PipelineRunner:
             self.components.inference_engine.include_reselected_lessons
         )
         self._case_trace_dir = self._resolve_case_trace_dir()
+        self._retrieval_from_file_path = self._resolve_retrieval_from_file_path()
+        self._retrieval_from_file = self._load_retrieval_from_file(
+            self._retrieval_from_file_path
+        )
         ok, err = self.retry_policy.is_valid()
         if not ok:
             raise ValueError(f"Invalid retry policy config: {err}")
@@ -66,6 +71,51 @@ class PipelineRunner:
             return str(trace_dir)
         trace_dir = getattr(self.components.provider, "trace_dir", None)
         return str(trace_dir) if trace_dir else None
+
+    def _resolve_retrieval_from_file_path(self) -> str | None:
+        candidates = [
+            self.config.get("retrieval_from_file"),
+            self.config.get("run", {}).get("retrieval_from_file"),
+            self.config.get("components", {})
+            .get("memory_retriever", {})
+            .get("retrieval_from_file"),
+        ]
+        for raw in candidates:
+            if raw:
+                path = Path(str(raw)).expanduser()
+                if not path.is_absolute():
+                    path = Path.cwd() / path
+                return str(path)
+        return None
+
+    @staticmethod
+    def _load_retrieval_from_file(path: str | None) -> dict[str, RetrievalBundle] | None:
+        if not path:
+            return None
+        raw = json.loads(Path(path).read_text(encoding="utf-8"))
+        if not isinstance(raw, dict):
+            raise ValueError(f"retrieval_from_file must contain a JSON object: {path}")
+        bundles: dict[str, RetrievalBundle] = {}
+        for uid, value in raw.items():
+            if not isinstance(value, dict):
+                raise ValueError(f"retrieval_from_file entry for {uid} is not an object")
+            bundle = RetrievalBundle.from_dict(value)
+            if not bundle.problem_uid:
+                bundle.problem_uid = str(uid)
+            bundle.metadata = dict(bundle.metadata or {})
+            bundle.metadata["selector_mode"] = "loaded_from_file"
+            bundle.metadata["retrieval_from_file"] = str(path)
+            bundles[str(uid)] = bundle
+        return bundles
+
+    def _loaded_retrieval_bundle(self, problem_uid: str) -> RetrievalBundle | None:
+        if self._retrieval_from_file is None:
+            return None
+        if problem_uid not in self._retrieval_from_file:
+            raise KeyError(
+                f"retrieval_from_file missing bundle for problem uid '{problem_uid}'"
+            )
+        return copy.deepcopy(self._retrieval_from_file[problem_uid])
 
     @staticmethod
     def _case_iter_id(job: dict, pass_idx: int | None = None) -> str:
@@ -610,15 +660,17 @@ class PipelineRunner:
             job["retrieval"] = retrieval
 
         if retrieval is None:
-            retriever = self.components.memory_retriever
-            retrieval = await retriever.async_retrieve(
-                ctx=ctx,
-                provider=self.components.provider,
-                memory=job["memory_snapshot"],
-                problem=job["problem"],
-                previous_attempts=history,
-                selector_model=self.components.inference_engine.model,
-            )
+            retrieval = self._loaded_retrieval_bundle(problem_uid)
+            if retrieval is None:
+                retriever = self.components.memory_retriever
+                retrieval = await retriever.async_retrieve(
+                    ctx=ctx,
+                    provider=self.components.provider,
+                    memory=job["memory_snapshot"],
+                    problem=job["problem"],
+                    previous_attempts=history,
+                    selector_model=self.components.inference_engine.model,
+                )
             job["retrieval"] = retrieval
 
         retrieval = await self.components.router.route(

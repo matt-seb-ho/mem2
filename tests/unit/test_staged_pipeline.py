@@ -23,6 +23,7 @@ from mem2.core.entities import (
     RetrievalBundle,
     RunContext,
 )
+from mem2.orchestrator.runner import PipelineRunner
 
 
 def _ctx() -> RunContext:
@@ -96,6 +97,41 @@ def test_memory_state_and_retrieval_bundle_dict_round_trip(tmp_path):
     bundle.to_file(bundle_path)
 
     assert RetrievalBundle.from_file(bundle_path) == bundle
+
+
+def test_retrieval_from_file_loader_stamps_loaded_metadata(tmp_path):
+    source = tmp_path / "retrieval.json"
+    source.write_text(
+        """{
+  "p1": {
+    "problem_uid": "p1",
+    "hint_text": "precomputed hint",
+    "retrieved_items": [{"name": "concept_a"}],
+    "metadata": {"retriever": "ps_topk"}
+  }
+}
+""",
+        encoding="utf-8",
+    )
+
+    loaded = PipelineRunner._load_retrieval_from_file(str(source))
+
+    assert loaded is not None
+    assert loaded["p1"].hint_text == "precomputed hint"
+    assert loaded["p1"].metadata["selector_mode"] == "loaded_from_file"
+    assert loaded["p1"].metadata["retrieval_from_file"] == str(source)
+
+
+def test_arcmemo_ps_initialize_loads_full_memory_state_seed(tmp_path):
+    seed = _memory()
+    seed_path = tmp_path / "bank.json"
+    seed.to_file(seed_path)
+
+    builder = ArcMemoPsMemoryBuilder(seed_memory_file=str(seed_path))
+    initialized = builder.initialize(_ctx(), problems={})
+
+    assert "concept_a" in initialized.payload["concepts"]
+    assert initialized.payload["reorg"] == seed.payload["reorg"]
 
 
 def test_freeze_memory_keeps_update_and_consolidate_noop_for_staged_builders():

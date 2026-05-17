@@ -60,6 +60,9 @@ class ArcMemoPsMemoryBuilder:
         if self.seed_memory_file:
             path = self._resolve_path(self.seed_memory_file)
             if path.exists():
+                raw = json.loads(path.read_text(encoding="utf-8"))
+                if isinstance(raw, dict) and isinstance(raw.get("payload"), dict):
+                    return ConceptMemory.from_payload(raw["payload"])
                 mem.load_from_file(path)
                 return mem
 
@@ -92,6 +95,8 @@ class ArcMemoPsMemoryBuilder:
             if seed_path.exists():
                 try:
                     seed_raw = json.loads(seed_path.read_text())
+                    if isinstance(seed_raw, dict) and isinstance(seed_raw.get("payload"), dict):
+                        seed_raw = seed_raw["payload"]
                     canonical = {"concepts", "solutions", "custom_types", "categories"}
                     for k, v in seed_raw.items():
                         if k not in canonical and k not in payload:
