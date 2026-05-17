@@ -65,11 +65,13 @@ class StitchReorgBuilder:
         min_line_frequency: int = 3,
         max_fragments_per_round: int = 10,
         mdl_per_concept_overhead: float = 32.0,
+        freeze_memory: bool = False,
     ):
         self.seed_memory_file = seed_memory_file
         self.seed_annotations_file = seed_annotations_file
         self.domain = domain
         self.max_concepts = int(max_concepts)
+        self._frozen = bool(freeze_memory)
         self.trigger = trigger
         self.plateau_window = int(plateau_window)
         self.plateau_min_delta = float(plateau_min_delta)
@@ -103,6 +105,8 @@ class StitchReorgBuilder:
         eval_records: list[EvalRecord],
         feedback_records: list[FeedbackRecord],
     ) -> MemoryState:
+        if self._frozen:
+            return memory
         mem = ConceptMemory.from_payload(memory.payload)
         state = memory.payload.setdefault("stitch_reorg", {
             "history": [], "step": 0, "outcomes": [],
@@ -122,6 +126,8 @@ class StitchReorgBuilder:
         return memory
 
     def consolidate(self, ctx: RunContext, memory: MemoryState) -> MemoryState:
+        if self._frozen:
+            return memory
         state = memory.payload.get("stitch_reorg")
         if not state or not self._should_trigger(state):
             return memory

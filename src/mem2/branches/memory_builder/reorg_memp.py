@@ -69,6 +69,8 @@ class MempProceduralMemoryBuilder(ArcMemoReorgMemoryBuilder):
         self.reflect_on_failure = bool(reflect_on_failure)
 
     def consolidate(self, ctx: RunContext, memory: MemoryState) -> MemoryState:
+        if getattr(self, "_frozen", False):
+            return memory
         reorg = memory.payload.get("reorg")
         if not reorg or not self._should_reorg(reorg):
             return memory

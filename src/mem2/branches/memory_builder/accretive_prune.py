@@ -47,9 +47,11 @@ class AccretivePruneMemoryBuilder:
         domain: str = "arc",
         max_concepts: int = 200,
         prune_every_consolidate: bool = True,
+        freeze_memory: bool = False,
     ) -> None:
         self.max_concepts = int(max_concepts)
         self.prune_every_consolidate = bool(prune_every_consolidate)
+        self._frozen = bool(freeze_memory)
         self._inner = ArcMemoPsMemoryBuilder(
             seed_memory_file=seed_memory_file,
             seed_annotations_file=seed_annotations_file,
@@ -70,6 +72,8 @@ class AccretivePruneMemoryBuilder:
         eval_records: list[EvalRecord],
         feedback_records: list[FeedbackRecord],
     ) -> MemoryState:
+        if self._frozen:
+            return memory
         # Delegate solution write to the inner PS builder — no concept-level
         # additions happen at update time (concept extraction is offline).
         solutions = memory.payload.get("solutions", {})
@@ -86,6 +90,8 @@ class AccretivePruneMemoryBuilder:
         return memory
 
     def consolidate(self, ctx: RunContext, memory: MemoryState) -> MemoryState:
+        if self._frozen:
+            return memory
         if not self.prune_every_consolidate:
             return memory
         mem = ConceptMemory.from_payload(memory.payload)

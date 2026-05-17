@@ -84,6 +84,8 @@ class SleepGateForgettingBuilder(ArcMemoReorgMemoryBuilder):
         self.require_coverage_inclusion = bool(require_coverage_inclusion)
 
     def consolidate(self, ctx: RunContext, memory: MemoryState) -> MemoryState:
+        if getattr(self, "_frozen", False):
+            return memory
         reorg = memory.payload.get("reorg")
         if not reorg or not self._should_reorg(reorg):
             return memory

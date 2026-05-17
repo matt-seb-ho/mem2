@@ -40,11 +40,13 @@ class ArcMemoPsMemoryBuilder:
         seed_annotations_file: str | None = None,
         domain: str = "arc",
         max_concepts: int = 0,
+        freeze_memory: bool = False,
     ):
         self.seed_memory_file = seed_memory_file
         self.seed_annotations_file = seed_annotations_file
         self.domain = domain
         self.max_concepts = int(max_concepts)
+        self._frozen = bool(freeze_memory)
 
     def _resolve_path(self, raw: str) -> Path:
         p = Path(raw).expanduser()
@@ -119,6 +121,8 @@ class ArcMemoPsMemoryBuilder:
         eval_records: list[EvalRecord],
         feedback_records: list[FeedbackRecord],
     ) -> MemoryState:
+        if self._frozen:
+            return memory
         # For correct solutions: store ProblemSolution in solutions dict
         solutions = memory.payload.get("solutions", {})
         for i, att in enumerate(attempts):
@@ -136,5 +140,7 @@ class ArcMemoPsMemoryBuilder:
         return memory
 
     def consolidate(self, ctx: RunContext, memory: MemoryState) -> MemoryState:
+        if self._frozen:
+            return memory
         # Re-serialize (no-op for concept memory, concepts are stable)
         return memory

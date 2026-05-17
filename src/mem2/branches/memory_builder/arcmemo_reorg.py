@@ -75,11 +75,13 @@ class ArcMemoReorgMemoryBuilder:
         top_k_popular: int = 8,
         min_group_size: int = 2,
         mdl_per_concept_overhead: float = 32.0,
+        freeze_memory: bool = False,
     ):
         self.seed_memory_file = seed_memory_file
         self.seed_annotations_file = seed_annotations_file
         self.domain = domain
         self.max_concepts = int(max_concepts)
+        self._frozen = bool(freeze_memory)
         self.input_basis = input_basis
         self.objective = objective
         self.scope = scope
@@ -124,6 +126,8 @@ class ArcMemoReorgMemoryBuilder:
         eval_records: list[EvalRecord],
         feedback_records: list[FeedbackRecord],
     ) -> MemoryState:
+        if self._frozen:
+            return memory
         mem = ConceptMemory.from_payload(memory.payload)
         reorg = memory.payload.setdefault("reorg", {
             "history": [], "step": 0, "outcomes": [],
@@ -155,6 +159,8 @@ class ArcMemoReorgMemoryBuilder:
         return memory
 
     def consolidate(self, ctx: RunContext, memory: MemoryState) -> MemoryState:
+        if self._frozen:
+            return memory
         reorg = memory.payload.get("reorg")
         if not reorg:
             return memory

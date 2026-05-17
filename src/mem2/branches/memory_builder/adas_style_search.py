@@ -72,6 +72,8 @@ class ADASMetaSearchBuilder(ALMAStyleMetaEditMemoryBuilder):
         self.max_reflexion_rounds = int(max_reflexion_rounds)
 
     def consolidate(self, ctx: RunContext, memory: MemoryState) -> MemoryState:
+        if getattr(self, "_frozen", False):
+            return memory
         reorg = memory.payload.get("reorg")
         if not reorg or not self._should_reorg(reorg):
             return memory
