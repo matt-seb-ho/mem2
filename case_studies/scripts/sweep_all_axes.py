@@ -5,6 +5,7 @@ import concurrent.futures
 import copy
 import json
 import os
+import re
 import statistics
 import subprocess
 import sys
@@ -20,11 +21,16 @@ for _candidate in [_REPO_ROOT, _REPO_ROOT / "src"]:
     if _text not in sys.path:
         sys.path.insert(0, _text)
 
-from case_studies.scripts._common import REPO_ROOT, RUNS_ROOT, load_json, load_yaml, relative_link, write_json
+from case_studies.scripts._common import REPO_ROOT, RUNS_ROOT, load_json, load_yaml, relative_link, slugify, write_json
 from case_studies.scripts.render_markdown import write_summary
 from case_studies.scripts.run_case_study import build_case_study_config
+from mem2.core.entities import RunContext, to_primitive
 from mem2.orchestrator.runner import run_sync
 from mem2.orchestrator.wiring import resolve_components
+from mem2.registry.benchmark import BENCHMARKS
+
+
+_STAGED_SLUG_RE = re.compile(r"[^A-Za-z0-9._-]+")
 
 
 @dataclass(frozen=True)
@@ -97,6 +103,86 @@ def configure_smoke_run(
     gen_cfg.setdefault("n", 1)
     gen_cfg["ignore_cache"] = ignore_cache
     return cfg
+
+
+def _staged_artifact_slug(value: str) -> str:
+    return _STAGED_SLUG_RE.sub("_", value.strip()).strip("_") or "variant"
+
+
+def _staged_root(args: argparse.Namespace) -> Path:
+    return REPO_ROOT / "case_studies" / "staged_artifacts" / slugify(args.label)
+
+
+def _resolve_repo_path(path_value: str | Path) -> Path:
+    path = Path(path_value).expanduser()
+    if not path.is_absolute():
+        path = REPO_ROOT / path
+    return path
+
+
+def _condition_cfg_for_stage(
+    condition: AxisCondition,
+    args: argparse.Namespace,
+    *,
+    seed: int,
+) -> tuple[dict[str, Any], Path]:
+    return build_case_study_config(
+        port=condition.label,
+        n_problems=args.n_problems,
+        seed=seed,
+        iters=args.iters,
+        base_config=args.base_config,
+        label=args.label,
+    )
+
+
+def _staged_bank_path(args: argparse.Namespace, condition: AxisCondition, seed: int) -> Path:
+    return (
+        _staged_root(args)
+        / "banks"
+        / f"bank_reorg_{_staged_artifact_slug(condition.label)}_seed{seed}.json"
+    )
+
+
+def _staged_retrieval_path(args: argparse.Namespace, condition: AxisCondition, seed: int) -> Path:
+    return (
+        _staged_root(args)
+        / "retrieval"
+        / f"{_staged_artifact_slug(condition.label)}_seed{seed}.json"
+    )
+
+
+def _stage_problem_path(args: argparse.Namespace, seed: int) -> Path:
+    return _staged_root(args) / "problems" / f"problems_n{args.n_problems}_seed{seed}.json"
+
+
+def _write_stage_problem_file(
+    args: argparse.Namespace,
+    conditions: list[AxisCondition],
+    *,
+    seed: int,
+) -> Path:
+    out_path = _stage_problem_path(args, seed)
+    if out_path.exists():
+        return out_path
+    if not conditions:
+        raise ValueError("No conditions selected")
+    cfg, _ = _condition_cfg_for_stage(conditions[0], args, seed=seed)
+    benchmark_key = str(cfg.get("pipeline", {}).get("benchmark", ""))
+    if benchmark_key not in BENCHMARKS:
+        raise ValueError(f"Unknown benchmark for staged problems: {benchmark_key}")
+    benchmark_cfg = cfg.get("components", {}).get("benchmark", {}) or {}
+    benchmark = BENCHMARKS[benchmark_key](**benchmark_cfg)
+    ctx = RunContext(
+        run_id=f"staged_problems_seed{seed}",
+        seed=seed,
+        config=cfg,
+        output_dir=str(out_path.parent),
+        tags={"stage": "problems"},
+    )
+    problems = benchmark.load(ctx)
+    write_json(out_path, to_primitive(problems))
+    return out_path
 
 
 def _iter_trace_dirs(run_dir: Path) -> list[Path]:
@@ -318,6 +404,25 @@ def run_one_condition(args: argparse.Namespace) -> dict[str, Any]:
         dotenv_path=args.dotenv_path,
         ignore_cache=args.ignore_cache,
     )
+    if getattr(args, "staged_bank", None):
+        bank_path = _resolve_repo_path(args.staged_bank)
+        cfg.setdefault("components", {}).setdefault("memory_builder", {})[
+            "seed_memory_file"
+        ] = str(bank_path)
+        cfg.setdefault("components", {}).setdefault("memory_builder", {})[
+            "freeze_memory"
+        ] = True
+        cfg.setdefault("case_studies", {}).setdefault("staged", {})[
+            "bank"
+        ] = str(bank_path)
+    if getattr(args, "retrieval_from_file", None):
+        retrieval_path = _resolve_repo_path(args.retrieval_from_file)
+        cfg["retrieval_from_file"] = str(retrieval_path)
+        cfg.setdefault("pipeline", {})["memory_retriever"] = "none"
+        cfg.setdefault("components", {})["memory_retriever"] = {}
+        cfg.setdefault("case_studies", {}).setdefault("staged", {})[
+            "retrieval_from_file"
+        ] = str(retrieval_path)
     trace_dir.mkdir(parents=True, exist_ok=True)
     try:
         components = resolve_components(cfg)
@@ -359,6 +464,10 @@ def _child_command(condition: AxisCondition, args: argparse.Namespace) -> list[s
     ]
     if args.dotenv_path is not None:
         command.extend(["--dotenv-path", str(args.dotenv_path)])
+    if getattr(args, "staged_bank", None):
+        command.extend(["--staged-bank", str(args.staged_bank)])
+    if getattr(args, "retrieval_from_file", None):
+        command.extend(["--retrieval-from-file", str(args.retrieval_from_file)])
     return command
 
 
@@ -750,6 +859,12 @@ def normalize_args(args: argparse.Namespace) -> argparse.Namespace:
             args.parallel_conditions = 5
         if args.retries == 0:
             args.retries = 1
+    if args.mode == "staged":
+        if args.stage is None:
+            raise ValueError("--mode staged requires --stage {2,2.5,3,all}")
+        default_smoke_out = Path("case_studies/synthesis/2026-05-13_smoke_sweep_validation.md")
+        if args.out == default_smoke_out:
+            args.out = Path("case_studies/synthesis/staged_pipeline_results.md")
     args.seed_list = _parse_seeds(args.seeds, args.seed)
     args.cache_enabled = _parse_cache_flag(args.cache)
     args.ignore_cache = not args.cache_enabled
@@ -827,10 +942,341 @@ def run_sweep(args: argparse.Namespace) -> list[dict[str, Any]]:
     return results
 
 
+def _run_stage_script(
+    command: list[str],
+    *,
+    result_prefix: str,
+    timeout_s: int,
+) -> dict[str, Any]:
+    started = time.monotonic()
+    try:
+        proc = subprocess.run(
+            command,
+            cwd=REPO_ROOT,
+            env=os.environ.copy(),
+            text=True,
+            capture_output=True,
+            timeout=timeout_s,
+        )
+    except subprocess.TimeoutExpired as exc:
+        return {
+            "success": False,
+            "error": f"stage script timed out after {timeout_s}s: {_text_preview(str(exc), limit=400)}",
+            "wall_time_s": time.monotonic() - started,
+            "command": command,
+        }
+    wall_time_s = time.monotonic() - started
+    if proc.returncode != 0:
+        return {
+            "success": False,
+            "error": _text_preview((proc.stderr or proc.stdout or "").strip(), limit=700),
+            "wall_time_s": wall_time_s,
+            "command": command,
+        }
+    result_line = ""
+    for line in reversed(proc.stdout.splitlines()):
+        if line.startswith(result_prefix):
+            result_line = line.removeprefix(result_prefix)
+            break
+    try:
+        result = json.loads(result_line)
+    except Exception:
+        result = {
+            "success": False,
+            "error": "stage script completed but result JSON was not parseable",
+            "stdout": _text_preview(proc.stdout, limit=700),
+        }
+    result.setdefault("success", True)
+    result["wall_time_s"] = wall_time_s
+    result["command"] = command
+    return result
+
+
+def run_staged_stage2(args: argparse.Namespace, conditions: list[AxisCondition], seeds: list[int]) -> list[dict[str, Any]]:
+    results: list[dict[str, Any]] = []
+    banks_dir = _staged_root(args) / "banks"
+    for condition in conditions:
+        for seed in seeds:
+            cfg, _ = _condition_cfg_for_stage(condition, args, seed=seed)
+            builder_cfg = cfg.get("components", {}).get("memory_builder", {}) or {}
+            input_bank = _resolve_repo_path(
+                builder_cfg.get("seed_memory_file")
+                or "data/arc_agi/concept_memory/compressed_v1.json"
+            )
+            command = [
+                sys.executable,
+                str(REPO_ROOT / "scripts" / "apply_reorg.py"),
+                "--input-bank",
+                str(input_bank),
+                "--variant",
+                condition.label,
+                "--seed",
+                str(seed),
+                "--output-dir",
+                str(banks_dir),
+                "--builder-cfg",
+                json.dumps(builder_cfg, sort_keys=False),
+                "--provider",
+                str(cfg.get("components", {}).get("provider", {}).get("profile_name", "llmplus_openrouter")),
+                "--model",
+                args.model,
+                "--concurrency",
+                str(max(1, min(args.max_workers, 8))),
+                "--max-tokens",
+                str(args.max_tokens),
+            ]
+            if args.dotenv_path is not None:
+                command.extend(["--dotenv-path", str(args.dotenv_path)])
+            if args.ignore_cache:
+                command.append("--ignore-cache")
+            result = _run_stage_script(
+                command,
+                result_prefix="APPLY_REORG_RESULT_JSON=",
+                timeout_s=args.condition_timeout_s,
+            )
+            result.update(
+                {
+                    "stage": "2",
+                    "axis": condition.axis,
+                    "condition": condition.label,
+                    "seed": seed,
+                    "expected_output": str(_staged_bank_path(args, condition, seed)),
+                }
+            )
+            results.append(result)
+            print(
+                f"[stage 2 {len(results)}/{len(conditions) * len(seeds)}] "
+                f"{condition.label} seed={seed}: success={result.get('success')} "
+                f"output={result.get('output') or result.get('expected_output')}"
+            )
+    return results
+
+
+def run_staged_stage25(args: argparse.Namespace, conditions: list[AxisCondition], seeds: list[int]) -> list[dict[str, Any]]:
+    results: list[dict[str, Any]] = []
+    for condition in conditions:
+        for seed in seeds:
+            cfg, _ = _condition_cfg_for_stage(condition, args, seed=seed)
+            retriever_key = str(cfg.get("pipeline", {}).get("memory_retriever", "ps_topk"))
+            retriever_cfg = cfg.get("components", {}).get("memory_retriever", {}) or {}
+            bank_path = _staged_bank_path(args, condition, seed)
+            output_path = _staged_retrieval_path(args, condition, seed)
+            problems_path = _write_stage_problem_file(args, conditions, seed=seed)
+            if not bank_path.exists():
+                result = _failed_result(
+                    condition,
+                    error=f"missing Stage-2 bank: {bank_path}",
+                    wall_time_s=0.0,
+                    seed=seed,
+                )
+                result["stage"] = "2.5"
+                result["expected_output"] = str(output_path)
+                results.append(result)
+                continue
+            command = [
+                sys.executable,
+                str(REPO_ROOT / "scripts" / "precompute_retrieval.py"),
+                "--input-bank",
+                str(bank_path),
+                "--retriever",
+                retriever_key,
+                "--top-k",
+                str(args.top_k),
+                "--problems",
+                str(problems_path),
+                "--seed",
+                str(seed),
+                "--output",
+                str(output_path),
+                "--retriever-cfg",
+                json.dumps(retriever_cfg, sort_keys=False),
+            ]
+            result = _run_stage_script(
+                command,
+                result_prefix="PRECOMPUTE_RETRIEVAL_RESULT_JSON=",
+                timeout_s=args.condition_timeout_s,
+            )
+            result.update(
+                {
+                    "stage": "2.5",
+                    "axis": condition.axis,
+                    "condition": condition.label,
+                    "seed": seed,
+                    "input_bank": str(bank_path),
+                    "problems": str(problems_path),
+                    "expected_output": str(output_path),
+                }
+            )
+            results.append(result)
+            print(
+                f"[stage 2.5 {len(results)}/{len(conditions) * len(seeds)}] "
+                f"{condition.label} seed={seed}: success={result.get('success')} "
+                f"hints={result.get('non_null_hints')}/{result.get('problem_count')}"
+            )
+    return results
+
+
+def run_staged_stage3(args: argparse.Namespace, conditions: list[AxisCondition], seeds: list[int]) -> list[dict[str, Any]]:
+    results: list[dict[str, Any]] = []
+    with concurrent.futures.ThreadPoolExecutor(max_workers=args.parallel_conditions) as pool:
+        future_to_target: dict[concurrent.futures.Future[dict[str, Any]], tuple[AxisCondition, int]] = {}
+        for condition in conditions:
+            for seed in seeds:
+                bank_path = _staged_bank_path(args, condition, seed)
+                retrieval_path = _staged_retrieval_path(args, condition, seed)
+                if not bank_path.exists() or not retrieval_path.exists():
+                    missing = bank_path if not bank_path.exists() else retrieval_path
+                    result = _failed_result(
+                        condition,
+                        error=f"missing staged artifact: {missing}",
+                        wall_time_s=0.0,
+                        seed=seed,
+                    )
+                    result["stage"] = "3"
+                    results.append(result)
+                    print(
+                        f"[stage 3 {len(results)}/{len(conditions) * len(seeds)}] "
+                        f"{condition.label} seed={seed}: missing artifact"
+                    )
+                    continue
+                child_args = copy.copy(args)
+                child_args.seed = seed
+                child_args.staged_bank = bank_path
+                child_args.retrieval_from_file = retrieval_path
+                future = pool.submit(_run_condition_subprocess, condition, child_args)
+                future_to_target[future] = (condition, seed)
+        for future in concurrent.futures.as_completed(future_to_target):
+            condition, seed = future_to_target[future]
+            try:
+                result = future.result()
+            except Exception as exc:
+                result = _failed_result(condition, error=str(exc), wall_time_s=0.0, seed=seed)
+                result["engagement_verdict"] = "NO - harness failed"
+            result["stage"] = "3"
+            result["staged_bank"] = str(_staged_bank_path(args, condition, seed))
+            result["retrieval_from_file"] = str(_staged_retrieval_path(args, condition, seed))
+            results.append(result)
+            print(
+                f"[stage 3 {len(results)}/{len(conditions) * len(seeds)}] "
+                f"{condition.label} seed={seed}: score={_score_text(result.get('score'))} "
+                f"success={result.get('success')}"
+            )
+    return results
+
+
+def render_staged(
+    results: list[dict[str, Any]],
+    *,
+    started_at: datetime,
+    wall_time_s: float,
+    stages: list[str],
+    seeds: list[int],
+    n_problems: int,
+    model: str,
+) -> str:
+    success_count = sum(1 for row in results if row.get("success"))
+    lines = [
+        "# Staged Pipeline Results",
+        "",
+        "## Configuration",
+        f"- Stages: {', '.join(stages)}",
+        f"- Seeds: {', '.join(str(seed) for seed in seeds)}",
+        f"- Problems per seed: {n_problems}",
+        f"- Model: {model}",
+        f"- Started UTC: {started_at.isoformat(timespec='seconds')}",
+        f"- Wall time: {wall_time_s / 60:.2f} minutes",
+        f"- Successful rows: {success_count}/{len(results)}",
+        "",
+        "## Stage Rows",
+        "",
+        "| Stage | Axis | Condition | Seed | Success | Score | Output | Notes |",
+        "|---|---|---|---:|---|---:|---|---|",
+    ]
+    for row in sorted(results, key=lambda item: (str(item.get("stage")), _axis_sort_key(item.get("axis")), str(item.get("condition")), int(item.get("seed") or 0))):
+        output = (
+            row.get("output")
+            or row.get("expected_output")
+            or row.get("retrieval_from_file")
+            or row.get("trace_dir")
+            or ""
+        )
+        notes = row.get("error") or row.get("engagement_verdict") or "OK"
+        lines.append(
+            "| {stage} | {axis} | {condition} | {seed} | {success} | {score} | {output} | {notes} |".format(
+                stage=row.get("stage", ""),
+                axis=row.get("axis", ""),
+                condition=str(row.get("condition", "")).replace("|", "/"),
+                seed=row.get("seed", ""),
+                success=row.get("success"),
+                score=_score_text(row.get("score")),
+                output=_text_preview(str(output), limit=120).replace("|", "/"),
+                notes=_text_preview(str(notes), limit=220).replace("|", "/"),
+            )
+        )
+    lines.append("")
+    return "\n".join(lines)
+
+
+def run_staged(args: argparse.Namespace) -> list[dict[str, Any]]:
+    conditions = select_conditions(load_axis_conditions(), args.ports)
+    seeds = list(getattr(args, "seed_list", [args.seed]))
+    selected_stages = ["2", "2.5", "3"] if args.stage == "all" else [str(args.stage)]
+    started_at = datetime.now(UTC)
+    start = time.monotonic()
+    results: list[dict[str, Any]] = []
+    for stage in selected_stages:
+        if stage == "2":
+            results.extend(run_staged_stage2(args, conditions, seeds))
+        elif stage == "2.5":
+            results.extend(run_staged_stage25(args, conditions, seeds))
+        elif stage == "3":
+            results.extend(run_staged_stage3(args, conditions, seeds))
+        else:
+            raise ValueError(f"Unknown staged stage: {stage}")
+
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    wall_time_s = time.monotonic() - start
+    args.out.write_text(
+        render_staged(
+            results,
+            started_at=started_at,
+            wall_time_s=wall_time_s,
+            stages=selected_stages,
+            seeds=seeds,
+            n_problems=args.n_problems,
+            model=args.model,
+        ),
+        encoding="utf-8",
+    )
+    write_json(
+        args.out.with_suffix(".json"),
+        {
+            "mode": "staged",
+            "stage": args.stage,
+            "stages": selected_stages,
+            "config": {
+                "n_problems": args.n_problems,
+                "seeds": seeds,
+                "iters": args.iters,
+                "cache": args.cache_enabled,
+                "ignore_cache": args.ignore_cache,
+                "max_workers": args.max_workers,
+                "model": args.model,
+                "started_at_utc": started_at.isoformat(timespec="seconds"),
+                "wall_time_s": wall_time_s,
+                "artifact_root": str(_staged_root(args)),
+            },
+            "results": results,
+        },
+    )
+    return results
+
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run a trace-enabled smoke sweep across all axis conditions")
     parser.add_argument("--run-one", action="store_true", help=argparse.SUPPRESS)
-    parser.add_argument("--mode", choices=["smoke", "phase-g-lite"], default="smoke")
+    parser.add_argument("--mode", choices=["smoke", "phase-g-lite", "staged"], default="smoke")
+    parser.add_argument("--stage", choices=["2", "2.5", "3", "all"], default=None)
     parser.add_argument("--port", help="Internal single-condition port label")
     parser.add_argument("--ports", nargs="*", default=None, help="Optional subset of condition labels")
     parser.add_argument("--conditions", default=None, help="Comma-separated alias for --ports")
@@ -843,11 +1289,14 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--model", default="deepseek/deepseek-v4-flash")
     parser.add_argument("--max-workers", type=int, default=512)
     parser.add_argument("--max-tokens", type=int, default=2048)
+    parser.add_argument("--top-k", type=int, default=10)
     parser.add_argument("--cache", default="true", help="Set false to force fresh LLM calls via ignore_cache=true")
     parser.add_argument("--parallel-conditions", type=int, default=4)
     parser.add_argument("--retries", type=int, default=0)
     parser.add_argument("--condition-timeout-s", type=int, default=900)
     parser.add_argument("--dotenv-path", type=Path, default=None)
+    parser.add_argument("--staged-bank", type=Path, default=None, help=argparse.SUPPRESS)
+    parser.add_argument("--retrieval-from-file", type=Path, default=None, help=argparse.SUPPRESS)
     parser.add_argument("--out", type=Path, default=Path("case_studies/synthesis/2026-05-13_smoke_sweep_validation.md"))
     return parser.parse_args(argv)
 
@@ -858,6 +1307,13 @@ def main(argv: list[str] | None = None) -> None:
         if not args.port:
             raise ValueError("--run-one requires --port")
         run_one_condition(args)
+        return
+    if args.mode == "staged":
+        results = run_staged(args)
+        success_count = sum(1 for row in results if row.get("success"))
+        print(
+            f"Wrote {args.out} with {success_count}/{len(results)} successful staged rows."
+        )
         return
     results = run_sweep(args)
     success_count = sum(1 for row in results if row.get("success"))
