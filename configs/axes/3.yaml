@@ -87,3 +87,24 @@ conditions:
       status: {paper: done, repo: done, impl: done, smoke: done, run: todo}
       parity_grade: reduced-but-honest
       parity_note: "Behavioral test verified 2026-04-27; substitutions disclosed in ported_from field."
+
+  - label: gepa_hsea_pipeline
+    override_group: inference_engine
+    inference_engine: gepa_hsea
+    inference_engine_cfg:
+      max_retries: 3
+      max_hypothesize_attempts: 1
+    retriever: ps_topk
+    retriever_cfg:
+      top_k: 10
+    candidate:
+      id: "3.5"
+      paper: "GEPA"
+      arxiv: null
+      repo: "https://github.com/gepa-ai/gepa/tree/main/examples/arc_agi"
+      local_repo: null
+      literature_role: "ingredient_source"
+      ported_from: "static implementation of the H→S→E→D→A architecture that GEPA's optimize_anything evolved to; NOT the outer-loop search itself (see Path A / Path B distinction in meeting HTML §1.3.3)"
+      status: {paper: done, repo: done, impl: done, smoke: done, run: todo}
+      parity_grade: reduced-but-honest
+      parity_note: "Architecture matches diagram from GEPA docs (5 stages, all-train-pass gate, max_retries debug loop). Prompts are our own — GEPA's evolved prompts are not in the repo source (only in evolved best_agent.py output)."
