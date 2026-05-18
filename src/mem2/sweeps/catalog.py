@@ -15,7 +15,8 @@ Design
 - `ConditionSpec.to_overrides()` produces the dotted-path override dict
   the sweep driver's `apply_condition` already consumes — so the driver's
   downstream code is unchanged.
-- `override_group`: one of {"builder", "retriever", "combo"}. The `combo`
+- `override_group`: one of {"builder", "retriever", "inference_engine",
+  "combo"}. The `combo`
   shape swaps both builder and retriever atomically — absorbs axis 4's
   (format; was axis D pre-rename) special `arcmemo_oe` case (PS builder →
   OE builder + ps_topk retriever → oe_topk retriever) without a Python
@@ -84,7 +85,7 @@ from typing import Any
 import yaml
 
 
-VALID_OVERRIDE_GROUPS = {"builder", "retriever", "combo"}
+VALID_OVERRIDE_GROUPS = {"builder", "retriever", "inference_engine", "combo"}
 
 
 @dataclass(slots=True)
@@ -153,7 +154,9 @@ class ConditionSpec:
     The override pattern is selected by `override_group`:
       - `builder`: set pipeline.memory_builder + merge into components.memory_builder
       - `retriever`: set pipeline.memory_retriever + merge into components.memory_retriever
-      - `combo`: both atomically
+      - `inference_engine`: set pipeline.inference_engine + merge into
+        components.inference_engine
+      - `combo`: builder and retriever atomically
     """
 
     label: str
@@ -162,6 +165,8 @@ class ConditionSpec:
     builder_cfg: dict[str, Any] = field(default_factory=dict)
     retriever: str | None = None
     retriever_cfg: dict[str, Any] = field(default_factory=dict)
+    inference_engine: str | None = None
+    inference_engine_cfg: dict[str, Any] = field(default_factory=dict)
     baseline: bool = False
     spec_only: bool = False
     candidate: CandidateMetadata = field(default_factory=CandidateMetadata)
@@ -184,6 +189,11 @@ class ConditionSpec:
                 f"condition '{raw.get('label', '?')}' has override_group={og!r} "
                 "but no `retriever` key"
             )
+        if og == "inference_engine" and not raw.get("inference_engine"):
+            raise ValueError(
+                f"condition '{raw.get('label', '?')}' has override_group={og!r} "
+                "but no `inference_engine` key"
+            )
         return cls(
             label=str(raw["label"]),
             override_group=og,
@@ -191,6 +201,8 @@ class ConditionSpec:
             builder_cfg=dict(raw.get("builder_cfg") or {}),
             retriever=raw.get("retriever"),
             retriever_cfg=dict(raw.get("retriever_cfg") or {}),
+            inference_engine=raw.get("inference_engine"),
+            inference_engine_cfg=dict(raw.get("inference_engine_cfg") or {}),
             baseline=bool(raw.get("baseline", False)),
             spec_only=bool(raw.get("spec_only", False)),
             candidate=CandidateMetadata.from_dict(raw.get("candidate")),
@@ -212,6 +224,10 @@ class ConditionSpec:
             out["pipeline.memory_retriever"] = self.retriever
             for k, v in (self.retriever_cfg or {}).items():
                 out[f"components.memory_retriever.{k}"] = v
+        if self.override_group == "inference_engine":
+            out["pipeline.inference_engine"] = self.inference_engine
+            for k, v in (self.inference_engine_cfg or {}).items():
+                out[f"components.inference_engine.{k}"] = v
         return out
 
 

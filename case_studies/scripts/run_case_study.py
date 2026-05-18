@@ -82,6 +82,14 @@ def apply_condition(cfg: dict[str, Any], condition: dict[str, Any]) -> dict[str,
             value=str(condition["retriever"]),
             settings=condition.get("retriever_cfg") or {},
         )
+    if group == "inference_engine":
+        _set_component(
+            cfg,
+            pipeline_key="inference_engine",
+            component_key="inference_engine",
+            value=str(condition["inference_engine"]),
+            settings=condition.get("inference_engine_cfg") or {},
+        )
     return cfg
 
 
@@ -93,6 +101,7 @@ def build_case_study_config(
     iters: int,
     base_config: Path,
     label: str,
+    output_root: Path | None = None,
     now: datetime | None = None,
 ) -> tuple[dict[str, Any], Path]:
     base_config = base_config.expanduser()
@@ -104,7 +113,10 @@ def build_case_study_config(
 
     label_slug = slugify(label)
     run_id = f"{utc_run_stamp(now)}_{port}_n{n_problems}_seed{seed}_{label_slug}"
-    trace_dir = RUNS_ROOT / run_id
+    trace_base = output_root.expanduser() if output_root is not None else RUNS_ROOT
+    if not trace_base.is_absolute():
+        trace_base = REPO_ROOT / trace_base
+    trace_dir = trace_base / run_id
 
     run_cfg = cfg.setdefault("run", {})
     run_cfg["run_type"] = "case_study"

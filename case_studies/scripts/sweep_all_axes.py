@@ -59,7 +59,14 @@ def load_axis_conditions(axis_dir: Path | None = None) -> list[AxisCondition]:
     return conditions
 
 
-def select_conditions(conditions: list[AxisCondition], ports: list[str] | None) -> list[AxisCondition]:
+def select_conditions(
+    conditions: list[AxisCondition],
+    ports: list[str] | None,
+    axes: list[str] | None = None,
+) -> list[AxisCondition]:
+    if axes:
+        wanted_axes = set(axes)
+        conditions = [condition for condition in conditions if condition.axis in wanted_axes]
     if not ports:
         return conditions
     wanted = set(ports)
@@ -133,6 +140,7 @@ def _condition_cfg_for_stage(
         iters=args.iters,
         base_config=args.base_config,
         label=args.label,
+        output_root=getattr(args, "output_root", None),
     )
 
 
@@ -395,6 +403,7 @@ def run_one_condition(args: argparse.Namespace) -> dict[str, Any]:
         iters=args.iters,
         base_config=args.base_config,
         label=args.label,
+        output_root=getattr(args, "output_root", None),
     )
     cfg = configure_smoke_run(
         cfg,
@@ -462,6 +471,8 @@ def _child_command(condition: AxisCondition, args: argparse.Namespace) -> list[s
         "--cache",
         "false" if args.ignore_cache else "true",
     ]
+    if getattr(args, "output_root", None) is not None:
+        command.extend(["--output-root", str(args.output_root)])
     if args.dotenv_path is not None:
         command.extend(["--dotenv-path", str(args.dotenv_path)])
     if getattr(args, "staged_bank", None):
@@ -844,7 +855,16 @@ def _parse_condition_filter(ports: list[str] | None, conditions: str | None) -> 
     return [value for value in values if value] or None
 
 
+def _parse_axes_filter(axes: str | None) -> list[str] | None:
+    if not axes:
+        return None
+    values = [part.strip() for part in axes.split(",") if part.strip()]
+    return values or None
+
+
 def normalize_args(args: argparse.Namespace) -> argparse.Namespace:
+    if args.mode == "integrated":
+        args.mode = "smoke"
     if args.mode == "phase-g-lite":
         if args.n_problems == 3:
             args.n_problems = 50
@@ -869,11 +889,21 @@ def normalize_args(args: argparse.Namespace) -> argparse.Namespace:
     args.cache_enabled = _parse_cache_flag(args.cache)
     args.ignore_cache = not args.cache_enabled
     args.ports = _parse_condition_filter(args.ports, args.conditions)
+    args.axis_filter = _parse_axes_filter(args.axes)
+    if args.output is not None:
+        args.output_root = args.output
+        if args.label == "smoke-2026-05-13":
+            args.label = args.output.name
+        default_smoke_out = Path("case_studies/synthesis/2026-05-13_smoke_sweep_validation.md")
+        if args.out == default_smoke_out:
+            args.out = args.output / "summary.md"
+    else:
+        args.output_root = args.output_root
     return args
 
 
 def run_sweep(args: argparse.Namespace) -> list[dict[str, Any]]:
-    conditions = select_conditions(load_axis_conditions(), args.ports)
+    conditions = select_conditions(load_axis_conditions(), args.ports, args.axis_filter)
     seeds = list(getattr(args, "seed_list", [args.seed]))
     started_at = datetime.now(UTC)
     start = time.monotonic()
@@ -1218,7 +1248,7 @@ def render_staged(
 
 
 def run_staged(args: argparse.Namespace) -> list[dict[str, Any]]:
-    conditions = select_conditions(load_axis_conditions(), args.ports)
+    conditions = select_conditions(load_axis_conditions(), args.ports, args.axis_filter)
     seeds = list(getattr(args, "seed_list", [args.seed]))
     selected_stages = ["2", "2.5", "3"] if args.stage == "all" else [str(args.stage)]
     started_at = datetime.now(UTC)
@@ -1275,10 +1305,11 @@ def run_staged(args: argparse.Namespace) -> list[dict[str, Any]]:
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run a trace-enabled smoke sweep across all axis conditions")
     parser.add_argument("--run-one", action="store_true", help=argparse.SUPPRESS)
-    parser.add_argument("--mode", choices=["smoke", "phase-g-lite", "staged"], default="smoke")
+    parser.add_argument("--mode", choices=["smoke", "integrated", "phase-g-lite", "staged"], default="smoke")
     parser.add_argument("--stage", choices=["2", "2.5", "3", "all"], default=None)
     parser.add_argument("--port", help="Internal single-condition port label")
     parser.add_argument("--ports", nargs="*", default=None, help="Optional subset of condition labels")
+    parser.add_argument("--axes", default=None, help="Comma-separated axis labels to include")
     parser.add_argument("--conditions", default=None, help="Comma-separated alias for --ports")
     parser.add_argument("--n-problems", type=int, default=3)
     parser.add_argument("--seed", type=int, default=42)
@@ -1295,6 +1326,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--retries", type=int, default=0)
     parser.add_argument("--condition-timeout-s", type=int, default=900)
     parser.add_argument("--dotenv-path", type=Path, default=None)
+    parser.add_argument("--output", type=Path, default=None, help="Directory for run traces and default summary.md")
+    parser.add_argument("--output-root", type=Path, default=None, help=argparse.SUPPRESS)
     parser.add_argument("--staged-bank", type=Path, default=None, help=argparse.SUPPRESS)
     parser.add_argument("--retrieval-from-file", type=Path, default=None, help=argparse.SUPPRESS)
     parser.add_argument("--out", type=Path, default=Path("case_studies/synthesis/2026-05-13_smoke_sweep_validation.md"))

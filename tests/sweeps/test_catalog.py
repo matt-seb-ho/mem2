@@ -61,11 +61,13 @@ def test_all_conditions_valid_override_group():
     for axis in AXIS_LABELS:
         cat = load_axis_catalog(axis, AXES_DIR)
         for c in cat.conditions:
-            assert c.override_group in {"builder", "retriever", "combo"}
+            assert c.override_group in {"builder", "retriever", "inference_engine", "combo"}
             if c.override_group in {"builder", "combo"}:
                 assert c.builder, f"{axis}/{c.label}: builder missing"
             if c.override_group in {"retriever", "combo"}:
                 assert c.retriever, f"{axis}/{c.label}: retriever missing"
+            if c.override_group == "inference_engine":
+                assert c.inference_engine, f"{axis}/{c.label}: inference_engine missing"
 
 
 # --------------------------------------------------------------------- #
@@ -136,6 +138,17 @@ def test_axis_6_init_empty_start_preserves_null_leaves():
     # These explicit nulls must survive into the merged config
     assert ov["components.memory_builder.seed_memory_file"] is None
     assert ov["components.memory_builder.seed_annotations_file"] is None
+
+
+def test_axis_3_gepa_hsea_inference_engine_override():
+    cat = load_axis_catalog("3", AXES_DIR)
+    cond = next((c for c in cat.conditions if c.label == "gepa_hsea_pipeline"), None)
+    assert cond is not None
+    assert cond.override_group == "inference_engine"
+    ov = cond.to_overrides()
+    assert ov["pipeline.inference_engine"] == "gepa_hsea"
+    assert ov["components.inference_engine.max_retries"] == 3
+    assert ov["components.inference_engine.max_hypothesize_attempts"] == 1
 
 
 def test_axis_6_init_auto_advance_flag():
