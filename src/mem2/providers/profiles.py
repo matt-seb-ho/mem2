@@ -19,6 +19,12 @@ _OPENROUTER = ProviderProfile(
     provider="openrouter",
     model="qwen/qwen3-235b-a22b-2507",
     extra_gen_defaults={"n": 1, "temperature": 0.2},
+    # 2026-05-17 anti-storm: default attempts=5 with up to 120s backoff was
+    # bombarding OpenRouter under sustained load. attempts=2 still recovers
+    # from transient hiccups without extending sustained limit pressure.
+    retry_attempts=2,
+    retry_wait_min=2,
+    retry_wait_max=15,
 )
 
 _OPENROUTER_GEMINI25_FLASH_LITE = ProviderProfile(

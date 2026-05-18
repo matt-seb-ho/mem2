@@ -482,6 +482,14 @@ def _child_command(condition: AxisCondition, args: argparse.Namespace) -> list[s
     return command
 
 
+def _effective_condition_timeout_s(condition: AxisCondition, args: argparse.Namespace) -> int:
+    timeout = int(getattr(args, "condition_timeout_s", 900) or 900)
+    engine = str(condition.condition.get("inference_engine") or "")
+    if engine == "gepa_hsea" and timeout <= 900:
+        return max(timeout, 3600)
+    return timeout
+
+
 def _failed_result(condition: AxisCondition, *, error: str, wall_time_s: float, seed: int | None = None) -> dict[str, Any]:
     return {
         "axis": condition.axis,
@@ -512,14 +520,35 @@ def _failed_result(condition: AxisCondition, *, error: str, wall_time_s: float, 
 
 def _run_condition_subprocess_once(condition: AxisCondition, args: argparse.Namespace) -> dict[str, Any]:
     started = time.monotonic()
-    proc = subprocess.run(
-        _child_command(condition, args),
-        cwd=REPO_ROOT,
-        env=os.environ.copy(),
-        text=True,
-        capture_output=True,
-        timeout=args.condition_timeout_s,
-    )
+    timeout_s = _effective_condition_timeout_s(condition, args)
+    try:
+        proc = subprocess.run(
+            _child_command(condition, args),
+            cwd=REPO_ROOT,
+            env=os.environ.copy(),
+            text=True,
+            capture_output=True,
+            timeout=timeout_s,
+        )
+    except subprocess.TimeoutExpired as exc:
+        preview = _text_preview(
+            "\n".join(
+                part
+                for part in [
+                    str(exc),
+                    str(exc.stdout or "").strip(),
+                    str(exc.stderr or "").strip(),
+                ]
+                if part
+            ),
+            limit=500,
+        )
+        return _failed_result(
+            condition,
+            error=f"condition timed out after {timeout_s}s: {preview}",
+            wall_time_s=time.monotonic() - started,
+            seed=args.seed,
+        )
     if proc.returncode != 0:
         return _failed_result(
             condition,

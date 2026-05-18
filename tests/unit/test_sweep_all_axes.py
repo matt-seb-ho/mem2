@@ -15,6 +15,7 @@ from case_studies.scripts.sweep_all_axes import (
     render_aggregate,
     render_phase_g_lite,
     summarize_run,
+    _effective_condition_timeout_s,
 )
 
 
@@ -77,6 +78,28 @@ def test_configure_smoke_run_can_disable_cache(tmp_path):
 
     assert out["components"]["inference_engine"]["gen_cfg"]["ignore_cache"] is True
     assert out["components"]["meta_edit_provider"]["gen_cfg"]["ignore_cache"] is True
+
+
+def test_gepa_hsea_condition_gets_longer_default_timeout():
+    args = parse_args(["--condition-timeout-s", "900"])
+    condition = AxisCondition(
+        axis="3",
+        label="gepa_hsea_pipeline",
+        condition={"label": "gepa_hsea_pipeline", "inference_engine": "gepa_hsea"},
+    )
+
+    assert _effective_condition_timeout_s(condition, args) == 3600
+
+
+def test_gepa_hsea_condition_honors_explicit_long_timeout():
+    args = parse_args(["--condition-timeout-s", "5400"])
+    condition = AxisCondition(
+        axis="3",
+        label="gepa_hsea_pipeline",
+        condition={"label": "gepa_hsea_pipeline", "inference_engine": "gepa_hsea"},
+    )
+
+    assert _effective_condition_timeout_s(condition, args) == 5400
 
 
 def test_normalize_args_phase_g_lite_defaults():

@@ -9,7 +9,9 @@ from case_studies._tracer import (
     count_llm_calls,
     reset_trace_context,
     set_trace_context,
+    write_attempt_eval_trace,
 )
+from mem2.core.entities import AttemptRecord, EvalRecord
 from mem2.cli.run import deep_merge, load_yaml
 from mem2.orchestrator.runner import run_sync
 from mem2.orchestrator.wiring import resolve_components
@@ -77,3 +79,34 @@ def test_runner_opt_in_trace_dir_writes_problem_artifacts(tmp_path):
         "eval.json",
     ]:
         assert (iter_dir / name).exists(), name
+
+
+def test_attempt_eval_trace_promotes_final_attempt_response(tmp_path):
+    trace_dir = tmp_path / "case_run"
+    iter_dir = trace_dir / "problems" / "task1" / "iter_0"
+    iter_dir.mkdir(parents=True)
+    (iter_dir / "response.txt").write_text("Rule: first-stage hypothesis", encoding="utf-8")
+
+    attempt = AttemptRecord(
+        problem_uid="task1",
+        pass_idx=0,
+        branch_id="gepa_hsea",
+        prompt="debug prompt",
+        completion="```python\ndef transform(input_grid):\n    return input_grid\n```",
+        metadata={"gepa_hsea_stage_order": ["hypothesize", "synthesize", "execute", "answer"]},
+    )
+    eval_record = EvalRecord(
+        problem_uid="task1",
+        attempt_idx=0,
+        is_correct=True,
+        train_details=[],
+        test_details=[],
+        metadata={},
+    )
+
+    write_attempt_eval_trace([attempt], [eval_record], trace_dir=trace_dir, task_id="task1", iter_id=0)
+
+    assert "def transform" in (iter_dir / "response.txt").read_text(encoding="utf-8")
+    parsed = json.loads((iter_dir / "parsed.json").read_text(encoding="utf-8"))
+    assert parsed["attempts"][0]["branch_id"] == "gepa_hsea"
+    assert json.loads((iter_dir / "eval.json").read_text(encoding="utf-8"))["correct"] is True

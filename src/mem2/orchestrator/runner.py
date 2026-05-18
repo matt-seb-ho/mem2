@@ -171,6 +171,38 @@ class PipelineRunner:
             iter_id=self._case_iter_id(job),
         )
 
+    def _prepare_attempt_metadata(self, *, pass_idx: int, job: dict, attempts: list) -> None:
+        self._attach_retrieval_metadata(attempts, job)
+        global_step_base = len(job["history"])
+        for att in attempts:
+            att.pass_idx = pass_idx
+        for i, att in enumerate(attempts):
+            global_step_idx = global_step_base + i
+            att.metadata["global_step_idx"] = global_step_idx
+            att.metadata["prompt_fingerprint"] = prompt_fingerprint(att.prompt)
+
+    def _evaluate_attempts_for_job(self, *, ctx, pass_idx: int, job: dict, attempts: list):
+        self._prepare_attempt_metadata(pass_idx=pass_idx, job=job, attempts=attempts)
+        eval_records = self.components.evaluator.evaluate(ctx, job["problem"], attempts)
+        global_step_base = len(job["history"])
+        for i, rec in enumerate(eval_records):
+            rec.metadata["global_step_idx"] = global_step_base + i
+            rec.metadata["pass_idx"] = pass_idx
+        return eval_records
+
+    def _write_case_trace_completed_job(self, *, ctx, job: dict, attempts: list) -> None:
+        if not self._case_trace_dir:
+            return
+        pass_idx = int(job.get("pass_idx", 0))
+        eval_records = self._evaluate_attempts_for_job(
+            ctx=ctx,
+            pass_idx=pass_idx,
+            job=job,
+            attempts=attempts,
+        )
+        job["_case_trace_eval_records"] = eval_records
+        self._write_case_trace_eval(job, attempts, eval_records)
+
     def _write_case_trace_meta(
         self,
         ctx,
@@ -463,7 +495,9 @@ class PipelineRunner:
         async def _indexed_job(index: int, job: dict) -> tuple[int, object]:
             try:
                 out = await self._run_inference_job(ctx, job)
-                return index, out
+                attempts = list(out or [])
+                self._write_case_trace_completed_job(ctx=ctx, job=job, attempts=attempts)
+                return index, attempts
             except Exception as exc:  # keep parity with current error-handling behavior
                 return index, exc
 
@@ -744,14 +778,10 @@ class PipelineRunner:
         problem = job["problem"]
         history = job["history"]
 
-        self._attach_retrieval_metadata(attempts, job)
+        self._prepare_attempt_metadata(pass_idx=pass_idx, job=job, attempts=attempts)
         global_step_base = len(history)
-        for att in attempts:
-            att.pass_idx = pass_idx
         for i, att in enumerate(attempts):
             global_step_idx = global_step_base + i
-            att.metadata["global_step_idx"] = global_step_idx
-            att.metadata["prompt_fingerprint"] = prompt_fingerprint(att.prompt)
             prompt_fingerprints.append(
                 {
                     "problem_uid": problem.uid,
@@ -761,11 +791,13 @@ class PipelineRunner:
                 }
             )
 
-        eval_records = self.components.evaluator.evaluate(ctx, problem, attempts)
-        for i, rec in enumerate(eval_records):
-            rec.metadata["global_step_idx"] = global_step_base + i
-            rec.metadata["pass_idx"] = pass_idx
-        self._write_case_trace_eval(job, attempts, eval_records)
+        eval_records = job.pop("_case_trace_eval_records", None)
+        if eval_records is None:
+            eval_records = self.components.evaluator.evaluate(ctx, problem, attempts)
+            for i, rec in enumerate(eval_records):
+                rec.metadata["global_step_idx"] = global_step_base + i
+                rec.metadata["pass_idx"] = pass_idx
+            self._write_case_trace_eval(job, attempts, eval_records)
 
         feedback_records = await self.components.feedback_engine.generate(
             ctx=ctx,

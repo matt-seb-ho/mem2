@@ -386,6 +386,11 @@ def write_attempt_eval_trace(
             bool(getattr(record, "is_correct", False)) for record in eval_records
         ),
     }
+    if attempts:
+        response_text = _responses_to_text(
+            [getattr(attempt, "completion", "") for attempt in attempts]
+        )
+        (iter_dir / "response.txt").write_text(response_text, encoding="utf-8")
     return {
         "parsed": _write_json(iter_dir / "parsed.json", {"attempts": parsed_attempts}),
         "eval": _write_json(iter_dir / "eval.json", eval_payload),

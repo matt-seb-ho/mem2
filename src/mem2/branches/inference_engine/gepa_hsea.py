@@ -21,7 +21,10 @@ from mem2.utils.code_execution import execute_transform, extract_python_block
 
 logger = logging.getLogger(__name__)
 
-_LLM_CALL_TIMEOUT_S = 300.0
+# HSEA runs several sequential LLM stages per puzzle. At sweep scale the provider
+# semaphore can queue tail-stage calls behind earlier puzzles, so this guard must
+# cover queue wait plus the provider's own per-request timeout/retry budget.
+_LLM_CALL_TIMEOUT_S = 1800.0
 _DEFAULT_HINT_CHAR_LIMIT = 1600
 _TRACE_GRID_CHAR_LIMIT = 500
 
