@@ -1,0 +1,160 @@
+Version: 156
+
+SOLUTIONS, IMPLEMENTATION PATTERNS, AND CODE SNIPPETS
+
+<memory_item>
+<description>
+**Common ARC utility library (Color constants, flood_fill, draw_line, find_connected_components, blit, bounding_box, object_position, crop, translate, symmetry detection, etc.)**  
+Reusable functions for ARC grid manipulation. Color is an integer enum (0‑9). Functions handle background (usually BLACK=0) and connectivity (4‑ or 8‑way). (Q: common)
+</description>
+<example>
+```python
+# Color constants: Color.BLACK=0, BLUE=1, RED=2, GREEN=3, YELLOW=4, GREY=5, PINK=6, ORANGE=7, TEAL=8, MAROON=9
+# flood_fill: fill connected region of same color
+flood_fill(grid, x, y, new_color, connectivity=4)
+# draw_line: draw line from (x,y) in direction, length, or to endpoint
+draw_line(grid, x, y, length=5, direction=(1,0), color=Color.RED, stop_at_color=[Color.BLACK])
+# find_connected_components: list of objects (numpy arrays)
+objects = find_connected_components(grid, background=Color.BLACK, connectivity=8, monochromatic=False)
+# blit: copy sprite onto grid (background treated as transparent)
+blit(output, sprite, x=0, y=0, background=Color.BLACK)
+# bounding_box: (x, y, width, height)
+x, y, w, h = bounding_box(obj, background=Color.BLACK)
+# object_position: anchor point ("upper left", "center", etc.)
+pos_x, pos_y = object_position(obj, anchor="upper left")
+# crop: extract minimal bounding box
+sprite = crop(obj, background=Color.BLACK)
+# translate: shift object by (dx, dy)
+shifted = translate(obj, dx=1, dy=0, background=Color.BLACK)
+# scale_sprite: pixel‑scale by integer factor
+scaled = scale_sprite(sprite, factor=3)
+# detect_translational_symmetry / detect_rotational_symmetry / detect_mirror_symmetry
+sym = detect_rotational_symmetry(grid, ignore_colors=[Color.BLACK])
+# apply symmetry via orbit (list of symmetric points)
+pts = orbit(output_grid, x, y, [sym])
+# random_sprite, random_free_location_for_sprite, etc.
+```
+</description>
+** Count: 7
+
+<memory_item>
+<description>
+**Object detection and selection with predicate, colors, dimensions, overlap handling**  
+`detect_objects(grid, predicate, colors, allowed_dimensions, can_overlap)` returns list of objects (full‑size arrays with non‑background pixels). Automatically resolves overlapping objects by selecting a non‑overlapping subset that covers maximal pixels. (Q: common)
+</description>
+<example>
+```python
+# Find all 3x3 red/blue objects that touch the border
+pred = lambda sprite: sprite.shape==(3,3) and np.any(sprite[0,:]!=0) or np.any(sprite[-1,:]!=0) or np.any(sprite[:,0]!=0) or np.any(sprite[:,-1]!=0)
+objs = detect_objects(grid, predicate=pred, colors=[Color.RED, Color.BLUE], allowed_dimensions=[(3,3)], can_overlap=False)
+```
+</description>
+** Count: 2
+
+<memory_item>
+<description>
+**Symmetry detection and orbit computation**  
+`TranslationalSymmetry`, `RotationalSymmetry`, `MirrorSymmetry` objects with `.apply(x,y,iters)` and `orbit(grid, x, y, symmetries)` that returns all reachable points within canvas. Detection functions return best symmetry (or list). (Q: common)
+</description>
+<example>
+```python
+# Fill in missing pixels using translational symmetry
+syms = detect_translational_symmetry(grid, ignore_colors=[Color.RED])
+for x, y in np.argwhere(grid != Color.BLACK):
+    for nx, ny in orbit(output_grid, x, y, syms):
+        if output_grid[nx, ny] == Color.BLACK:
+            output_grid[nx, ny] = grid[x, y]
+```
+</description>
+** Count: 2
+
+<memory_item>
+<description>
+**Occlusion filling using translational symmetry**  
+When a translationally symmetric pattern is partly occluded by a black rectangle, the missing part can be reconstructed by using the symmetry. Steps: (1) Identify the occluding black rectangle (mask). (2) Detect the translational symmetry of the non‑black part (`background=None` or ignore black). (3) For each occluded pixel, iterate over its symmetric orbits and copy the first non‑occluded color found. (4) Extract the filled region (crop the masked area). The output is the filled‑in sprite (same size as the occluder). (Q: f9012d9b)
+</description>
+<example>
+```python
+def fill_occlusion(input_grid):
+    occlusion_color = Color.BLACK
+    mask = (input_grid == occlusion_color)
+    symmetries = detect_translational_symmetry(input_grid, ignore_colors=[occlusion_color], background=None)
+    output = input_grid.copy()
+    for ox, oy in np.argwhere(mask):
+        for sx, sy in orbit(output, ox, oy, symmetries):
+            if output[sx, sy] != occlusion_color:
+                output[ox, oy] = output[sx, sy]
+                break
+    filled = np.full_like(output, occlusion_color)
+    filled[mask] = output[mask]
+    return crop(filled, background=occlusion_color)
+```
+</description>
+** Count: 1
+
+<memory_item>
+<description>
+**Cup filling and shooting lines from opening (generalized)**  
+Given a single nearly‑enclosed cup shape (outline) with one opening on its boundary, fill its interior with a given color and extend lines outward from the opening pixels. The opening is a contiguous set of background pixels on the boundary of the cup’s bounding box. Implementation steps: (1) isolate the cup object (connected component), (2) compute the interior mask (everything inside the bounding box that is not part of the cup), (3) compute the hole mask (interior pixels that lie on the bounding box edge), (4) fill interior with chosen color, (5) for each hole pixel, draw a line outward in the direction away from the interior (determined by checking which cardinal direction moves into black outside the bounding box). Variations exist: some puzzles also require shooting diagonals from the two extremal opening pixels; adjust as needed. (Q: aba27056, d4f3cd78)
+</description>
+<example>
+```python
+def fill_and_shoot(input_grid, fill_color=Color.TEAL, line_color=Color.TEAL):
+    obj = next(iter(find_connected_components(input_grid, connectivity=4, background=Color.BLACK)))
+    output = input_grid.copy()
+    x, y, w, h = bounding_box(obj)
+    interior = np.zeros_like(input_grid, dtype=bool)
+    interior[x:x+w, y:y+h] = True
+    interior = interior & (obj == Color.BLACK)
+    hole = interior.copy()
+    hole[x+1:x+w-1, y+1:y+h-1] = False
+    output[interior] = fill_color
+    # outward direction: test cardinal directions; pick the one that points away from interior
+    for dx, dy in [(0,1),(0,-1),(1,0),(-1,0)]:
+        cx, cy = x+w//2, y+h//2
+        if interior[cx - dx, cy - dy]:
+            direction = (dx, dy)
+            break
+    for px, py in np.argwhere(hole):
+        draw_line(output, px, py, direction=direction, color=line_color)
+    return output
+```
+</description>
+** Count: 2
+
+<memory_item>
+<description>
+**Counting objects and mapping to fixed output grid with specific pattern**  
+When the output grid is always a small fixed size (e.g., 3x3) and the transformation involves counting objects (e.g., 2x2 red squares) and placing a marker (e.g., blue pixel) at specific positions in the output grid following a certain pattern, precompute the pattern positions (e.g., fill in row‑major order but skip every other column, starting offset per row). Count objects, then place markers up to that count following the pattern. (Q: ff28f65a)
+</description>
+<example>
+```python
+# Given output_size=(3,3), pattern: place markers at positions in order:
+# (0,0), (0,2), (1,1), (2,0), (2,2) ... (i.e., alternating columns, start with first column for even rows, second for odd rows)
+positions = [(r, c) for r in range(H) for c in range(W) if (r+c)%2 == 0]  # For 3x3 gives (0,0),(0,2),(1,1),(2,0),(2,2)
+for i in range(min(count, len(positions))):
+    r, c = positions[i]
+    output[r,c] = marker_color
+```
+</description>
+** Count: 1
+
+GENERAL META-REASONING STRATEGIES
+
+<memory_item>
+<description>
+**Mapping object counts to output grid patterns**  
+When the output is a small fixed grid and the input contains discrete objects (e.g., 2x2 squares), the output often encodes the number of objects in a specific sparse arrangement. Steps: (1) Identify and count objects using standard detection (connected components, monochromatic checks). (2) Determine the output grid size (often given or constant). (3) Compute a list of positions in the output grid according to a deterministic pattern (e.g., row‑major skipping every other column). (4) Place a marker (e.g., blue pixel) at the first N positions. The pattern may involve alternating offsets per row to create a checkerboard‑like sparseness. (Q: ff28f65a)
+</description>
+<example>
+```python
+# General approach:
+output_size = (3,3)  # often fixed
+pattern_offsets = [(r, c) for r in range(output_size[0]) for c in range(output_size[1]) if (r+c)%2 == 0]  # example pattern
+count = len(detect_objects(...))
+out = np.zeros(output_size, dtype=int)
+for i in range(min(count, len(pattern_offsets))):
+    out[pattern_offsets[i]] = Color.BLUE
+```
+</description>
+** Count: 1

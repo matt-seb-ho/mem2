@@ -32,7 +32,7 @@ logger = logging.getLogger(__name__)
 # Wall-clock timeout per meta-edit LLM call. Bounds the consolidation path
 # similarly to python_transform_retry._LLM_CALL_TIMEOUT_S. Guards against
 # tenacity-retry-stack stalls on the meta-edit path. RN-003 F2 follow-up.
-_META_EDIT_TIMEOUT_S = 300.0
+_META_EDIT_TIMEOUT_S = 900.0  # 2026-05-29: 300->900; dsv4f long-reasoning (see client.py)
 
 
 class SyncMetaEditProviderAdapter:

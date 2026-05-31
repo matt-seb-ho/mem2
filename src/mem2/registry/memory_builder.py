@@ -19,6 +19,10 @@ from mem2.branches.memory_builder.variant_dspy_opt import DSPyOptFormatBuilder
 from mem2.branches.memory_builder.variant_formats import VariantFormatBuilder
 from mem2.branches.memory_builder.variant_gepa import GEPAFormatBuilder
 from mem2.branches.memory_builder.variant_parse import PARSESchemaBuilder
+# COLM 2026 rebuttal — new method ports (added 2026-05-27)
+from mem2.branches.memory_builder.ace import AceMemoryBuilder
+from mem2.branches.memory_builder.dc import DcMemoryBuilder
+from mem2.branches.memory_builder.reasoning_bank import ReasoningBankMemoryBuilder
 
 MEMORY_BUILDERS = {
     "none": NoneMemoryBuilder,
@@ -44,4 +48,8 @@ MEMORY_BUILDERS = {
     "variant_parse": PARSESchemaBuilder,
     "concept_ps": ArcMemoPsMemoryBuilder,      # legacy alias
     "arcmemo_ps_v1": ArcMemoPsMemoryBuilder,   # legacy alias
+    # COLM 2026 rebuttal — added 2026-05-27.
+    "ace": AceMemoryBuilder,
+    "dc": DcMemoryBuilder,
+    "reasoning_bank": ReasoningBankMemoryBuilder,
 }

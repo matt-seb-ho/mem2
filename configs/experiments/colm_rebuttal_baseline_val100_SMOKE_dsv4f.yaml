@@ -1,0 +1,58 @@
+# COLM 2026 rebuttal — SMOKETEST for the 900s-timeout fix (2026-05-29).
+# 5 prompts that TIMED OUT (empty) under the old 300s cap + 5 controls.
+# Expectation: with timeouts raised 300->900, the 5 slow ones now return content.
+# If empty rate << 91%, the full val100 one-shot re-run will reproduce ~April.
+_base_: ./arcmemo_arc_strict.yaml
+
+run:
+  max_passes: 1
+  retry_criterion: train
+  retry_policy:
+    max_passes: 1
+    criterion: train
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+  strict_arcmemo_compat: false
+  strict_arcmemo_logic_compat: false
+  seed: 42
+  run_type: colm_rebuttal_baseline_val100_SMOKE_dsv4f
+
+pipeline:
+  provider: llmplus_openrouter_dsv4f
+  memory_builder: none
+  memory_retriever: none
+
+components:
+  provider:
+    profile_name: llmplus_openrouter_dsv4f
+  benchmark:
+    data_root: data/arc_agi/evaluation
+    include_ids:
+      # 5 known-slow (timed out empty under 300s):
+      - '0a2355a6'
+      - '4c177718'
+      - '8719f442'
+      - 'e5c44e8f'
+      - 'fd096ab6'
+      # 5 controls:
+      - '97239e3d'
+      - 'b7f8a4d8'
+      - '351d6448'
+      - '845d6e51'
+      - '84f2aca1'
+    limit: 10
+  inference_engine:
+    model: deepseek/deepseek-v4-flash
+    gen_cfg:
+      batch_size: 10
+      n: 1
+      temperature: 0.3
+      max_tokens: 32768
+      top_p: 1.0
+      seed: 42
+      ignore_cache: true
+    prompt_options:
+      include_hint: false
+      instruction_key: default
+      system_prompt_key: default

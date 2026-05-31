@@ -1,0 +1,43 @@
+# COLM 2026 rebuttal — DC seeded with 270 PS concepts (smoke3 on val100 sample).
+# Frozen mode: no curator updates; just retrieve from the projected 270-concept
+# cheatsheet and feed into the inference engine.
+_base_: ./arcmemo_arc_strict.yaml
+
+pipeline:
+  provider: llmplus_openrouter_dsv4f
+  memory_builder: dc
+  memory_retriever: dc
+
+run:
+  run_type: colm_rebuttal_dc_ps_seeded_smoke3_dsv4f
+  strict_arcmemo_compat: false
+
+components:
+  provider:
+    profile_name: llmplus_openrouter_dsv4f
+  benchmark:
+    data_root: data/arc_agi/evaluation
+    include_ids:
+      - 97239e3d
+      - b7f8a4d8
+      - '351d6448'
+    limit: 3
+  memory_builder:
+    freeze: true
+    max_words: 2500
+    seed_buffer_file: data/colm_rebuttal/dc_ps_seeded.txt
+  inference_engine:
+    model: deepseek/deepseek-v4-flash
+    gen_cfg:
+      batch_size: 3
+      n: 1
+      temperature: 0.3
+      max_tokens: 16000
+      top_p: 1.0
+      seed: 88
+      ignore_cache: false
+    prompt_options:
+      include_hint: true
+      hint_template_key: selected
+      instruction_key: default
+      system_prompt_key: default

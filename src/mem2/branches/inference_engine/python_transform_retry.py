@@ -19,10 +19,14 @@ logger = logging.getLogger(__name__)
 
 # Active-path wall-clock timeout per LLM call. The httpx Timeout in
 # llmplus/client.py guards per-operation reads; this guards total time per
-# call (connect + retries + reads). Set to 5 min — generous for V4 Flash on
-# hard ARC problems but bounds the indefinite-hang failure mode (witnessed
-# 2026-04-30: flat_topk seed 44 iter-3 stalled 18+ min).
-_LLM_CALL_TIMEOUT_S = 300.0
+# call (connect + retries + reads).
+# 2026-05-29: raised 300->900. At 300s this watchdog was the BINDING constraint
+# on the val100 inference path (branch_id=python_transform_retry): dsv4f's
+# long-reasoning draws (30k-55k tokens, temp 0.3 -> high variance) routinely
+# exceed 300s and were killed -> recorded empty -> 91% empty / score 76->19.
+# Confirmed by probe: same prompts that timed out here return full content when
+# given more wall-clock. 900 still bounds the genuine indefinite-hang mode.
+_LLM_CALL_TIMEOUT_S = 3600.0
 
 
 async def _async_generate_bounded(provider, prompt, model, gen_cfg):

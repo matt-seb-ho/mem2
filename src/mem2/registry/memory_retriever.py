@@ -17,6 +17,10 @@ from mem2.branches.memory_retriever.oe_topk import OeTopKRetriever
 from mem2.branches.memory_retriever.raptor import RAPTORRetriever
 from mem2.branches.memory_retriever.rrmc_interactive import RRMCInteractiveRetriever
 from mem2.branches.memory_retriever.uot_entropy import UoTEntropyRetriever
+# COLM 2026 rebuttal — new method ports (added 2026-05-27)
+from mem2.branches.memory_retriever.ace_retriever import AceSelectorRetriever
+from mem2.branches.memory_retriever.dc_retriever import DcSelectorRetriever
+from mem2.branches.memory_retriever.reasoning_bank_retriever import ReasoningBankSelectorRetriever
 
 MEMORY_RETRIEVERS = {
     "none": NoneMemoryRetriever,
@@ -44,4 +48,8 @@ MEMORY_RETRIEVERS = {
     "arcmemo_selector": OeSelectorRetriever,   # legacy alias
     "arcmemo_selector_v1": OeSelectorRetriever,# legacy alias
     "concept_selector": PsSelectorRetriever,   # legacy alias
+    # COLM 2026 rebuttal — added 2026-05-27.
+    "ace": AceSelectorRetriever,
+    "dc": DcSelectorRetriever,
+    "reasoning_bank": ReasoningBankSelectorRetriever,
 }

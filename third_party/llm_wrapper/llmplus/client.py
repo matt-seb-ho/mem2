@@ -47,7 +47,12 @@ class LLMClient:
             # 2026-04-30: flat_topk seed 44 iter-3 stalled 18+ min on a single
             # call). The asyncio.wait_for in async_batch_generate is
             # belt-and-suspenders; this is the suspenders.
-            timeout=httpx.Timeout(300.0, connect=10.0),
+            # 2026-05-29: raised 300->900. The 300s read ceiling (added 2026-04-30)
+            # was silently killing dsv4f's long-reasoning generations mid-stream
+            # (reasoning models can emit 30k-55k tokens > 300s), recorded as empty
+            # completions -> 91% empty on val100 / score collapse 76->19. April's
+            # 76.5 run predated this cap (openai SDK default ~600s). 900 exceeds it.
+            timeout=httpx.Timeout(900.0, connect=10.0),
         )
 
         # default semaphore (used when caller does *not* supply one)
@@ -277,8 +282,9 @@ class LLMClient:
                 resp = await self._client_async.chat.completions.create(
                     model=model_meta.name,
                     messages=msgs,
-                    timeout=300.0,  # explicit per-call total bound; client-level
-                                    # httpx Timeout(read=300) only bounds inter-byte
+                    timeout=900.0,  # 2026-05-29: raised 300->900 (see __init__).
+                                    # explicit per-call total bound; client-level
+                                    # httpx Timeout(read=900) only bounds inter-byte
                                     # gaps, not total wall time.
                     **gen_kwargs,
                 )

@@ -55,6 +55,32 @@ _RENDER_PROFILES = {
         skip_cues=True, skip_implementation=True, skip_parameters=True,
         skip_parameter_description=True, include_description=True,
     ),
+    # COLM 2026 rebuttal — PS field ablation profiles (added 2026-05-27).
+    # Each "ablate_no_<field>" copies "full" then EXCLUDES one field.
+    # Used to identify which concept field is load-bearing for arcmemo-PS.
+    "ablate_no_description": dict(
+        skip_cues=False, skip_implementation=False, skip_parameters=False,
+        skip_parameter_description=True, include_description=False,
+    ),
+    "ablate_no_parameters": dict(
+        skip_cues=False, skip_implementation=False, skip_parameters=True,
+        skip_parameter_description=True, include_description=True,
+    ),
+    "ablate_no_cues": dict(
+        skip_cues=True, skip_implementation=False, skip_parameters=False,
+        skip_parameter_description=True, include_description=True,
+    ),
+    "ablate_no_implementation": dict(
+        skip_cues=False, skip_implementation=True, skip_parameters=False,
+        skip_parameter_description=True, include_description=True,
+    ),
+    # "ablate_with_kind" ADDS kind to "full" (kind is excluded by default).
+    # Tests whether explicit kind labeling helps the inference engine.
+    "ablate_with_kind": dict(
+        skip_cues=False, skip_implementation=False, skip_parameters=False,
+        skip_parameter_description=True, include_description=True,
+        skip_kind=False,
+    ),
 }
 
 

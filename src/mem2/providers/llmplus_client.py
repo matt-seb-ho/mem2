@@ -90,7 +90,7 @@ class LLMPlusProviderClient:
         prompts: list[str | list[dict[str, Any]]],
         model: str,
         gen_cfg: dict[str, Any],
-        request_timeout: float | None = 300.0,
+        request_timeout: float | None = 3600.0,  # 2026-05-29: 300->900; dsv4f long-reasoning
     ) -> list[list[str | None]]:
         final_cfg = dict(self._default_gen)
         final_cfg.update(gen_cfg or {})

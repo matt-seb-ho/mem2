@@ -1,0 +1,54 @@
+# COLM rebuttal — diagnostic: baseline (no memory) on the ALPHA-100 subset
+# that May's 30/100 dsv4f baseline ran on.  Goal: disentangle subset-difficulty
+# from model-regression.  Today's expectation if model is fine and subset is the
+# variable: solve rate ~30/100.  If model has regressed: ~10-15/100.
+# Settings copied EXACTLY from May's llm-only-bare-2026-05-17b run, except
+# batch_size lowered to 20 (Aaron 2026-05-28: low conc to reduce empty rate).
+_base_: ./arcmemo_arc_strict.yaml
+
+run:
+  max_passes: 1
+  retry_criterion: train
+  retry_policy:
+    max_passes: 1
+    criterion: train
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+  strict_arcmemo_compat: false
+  strict_arcmemo_logic_compat: false
+  seed: 42
+
+pipeline:
+  provider: llmplus_openrouter_dsv4f
+  memory_builder: none
+  memory_retriever: none
+
+run:
+  run_type: colm_rebuttal_baseline_alpha100_lowconc_dsv4f
+  strict_arcmemo_compat: false
+  max_passes: 1
+
+components:
+  provider:
+    profile_name: llmplus_openrouter_dsv4f
+    default_max_concurrency: 20
+  benchmark:
+    data_root: data/arc_agi/evaluation
+    # NO include_ids → benchmark loader takes first 100 alphabetically
+    # (matches May's llm-only-bare-2026-05-17b subset)
+    limit: 100
+  inference_engine:
+    model: deepseek/deepseek-v4-flash
+    gen_cfg:
+      batch_size: 20
+      n: 1
+      temperature: 0.3
+      max_tokens: 16384
+      top_p: 1.0
+      seed: 42
+      ignore_cache: true
+    prompt_options:
+      include_hint: false
+      instruction_key: default
+      system_prompt_key: default

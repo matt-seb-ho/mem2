@@ -1,0 +1,22 @@
+# COLM 2026 rebuttal — ReasoningBank on dsv4f.
+# Thin port of Ouyang 2025's success/failure extraction + Jaccard retrieval.
+# Built by the COLM rebuttal worker dispatch rb_port (2026-05-27).
+_base_: ./arcmemo_arc_strict.yaml
+
+pipeline:
+  provider: llmplus_openrouter_dsv4f
+  memory_builder: reasoning_bank
+  memory_retriever: reasoning_bank
+
+run:
+  run_type: colm_rebuttal_rb_dsv4f
+  strict_arcmemo_compat: false  # COLM rebuttal: intentionally on dsv4f, not gpt-4.1
+
+components:
+  provider:
+    profile_name: llmplus_openrouter_dsv4f
+  inference_engine:
+    model: deepseek/deepseek-v4-flash
+    prompt_options:
+      include_hint: true
+      hint_template_key: selected

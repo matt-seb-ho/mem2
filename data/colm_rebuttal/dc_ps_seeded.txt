@@ -1,0 +1,3049 @@
+<cheatsheet>
+
+Version: PS-seeded-v1 (from compressed_v1.json — 270 concepts)
+
+SOLUTIONS, IMPLEMENTATION PATTERNS, AND CODE SNIPPETS
+
+<memory_item>
+<description>
+shape match criteria (routine/selection criteria). condition on whether an object matches the other shape. Parameters: target (object), other (shape), size (dimensions := tuple[int, int]), allow_scale (bool), allow_partial (bool). Cues: if the solution checks if multiple regions or objects are identical, possibly allowing for symmetry, reflection, or scaling; if only objects of a specific size or proportional dimensions are selected for further processing; if the output depends on counting, detecting, or selecting objects of a fixed shape or scaled version of another object. Used in: prelim, 776ffc46, 228f6490, 2dee498d, 1fad071e (+1 more).
+</description>
+<example>
+```python
+compare the object's bounding box dimensions or aspect ratio to the given size or shape
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+recolor object (routine/grid manipulation). recolor an object based on a color scheme. Parameters: object (object), color scheme (dict[color, color]), object | object | position - the object or pixel to recolor (None), color scheme | dict[color, color] - mapping from original color to new color (None), color (color). Cues: if structures or objects from the input grid appear in the output grid with different colors; if all pixels of one color in the output grid are replaced with another color (systematic color swap); if regions or objects are recolored based on a property (e.g., size, position, or matching a specific pixel). Used in: prelim, 776ffc46, 0d3d703e, 4093f84a, 1b60fb0c (+55 more).
+</description>
+<example>
+```python
+for a single pixel, set grid[position] = color
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+draw object (routine/grid manipulation). draw a sprite on top of a base grid, drawing over the base grid with the sprite's non-background pixels. Parameters: sprite (grid), base (grid), position (position), background (color). Cues: if input objects are replicated or overlaid one or more times in the output; if a sprite, motif, or pattern is drawn or overlaid at a specific position in the output grid; if a completed, modified, or transformed region is overlaid back onto the original grid at its original or a specified position. Used in: prelim, cf98881b, 1b60fb0c, 5c2c9af4, 025d127b (+43 more).
+</description>
+<example>
+```python
+overlay the sprite's non-background pixels onto the base grid at the specified position, leaving background pixels unchanged
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+move object (routine/grid manipulation). move an object to a new position in the grid, updating the grid accordingly. Parameters: object (object), position (position), direction (direction), step (int). Cues: if existing structures from the input grid appear in the output grid with different positions; if the output grid is a shifted version of the input grid or of an object in the input grid; if objects are repositioned to align with another object's coordinate (e.g., matching y or x position). Used in: prelim, 228f6490, 25ff71a9, 1caeab9d, 3618c87e (+3 more).
+</description>
+<example>
+```python
+erase the object pixels from the old position before drawing the object at the new position
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+tile object (routine/grid manipulation). repeatedly copy an object in a specified direction. Parameters: object (object), start (position), direction (direction), gap (int), pattern (grid), repetitions (tuple[int, int]). Cues: if an object or motif from the input grid is repeated in a regular, evenly spaced pattern in the output grid (e.g., filling a dimension, forming a rectangular grid, or along a line); if the output grid is larger than the input grid and consists of exact or regularly spaced copies of the input or its sub-objects; if an object is repeatedly moved and drawn at regular intervals in a fixed direction in the output grid. Used in: prelim, e21d9049, 8403a5d5, 017c7c7b, 10fcaaa3 (+1 more).
+</description>
+<example>
+```python
+use numpy.tile or nested loops to repeat the input grid or object the specified number of times along each axis or direction, applying the specified gap between repetitions
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+create new grid (routine/grid manipulation). create a new grid with specified dimensions, initialized with a fill color. Parameters: dimensions (dimensions := tuple[int, int]), fill color (color). Cues: if output grid dimensions differ from input grid dimensions; if output grid content is initialized as blank or filled with a single color before further drawing or tiling; if output grid is a fixed size (e.g., 1x1, single row/column, or specific pattern) regardless of input grid size or content. Used in: prelim, ff28f65a, 44f52bb0, d2abd087, 017c7c7b (+43 more).
+</description>
+<example>
+```python
+use numpy.full or numpy.zeros to create a new grid with the specified dimensions and fill color
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+reflect grid (routine/grid manipulation). reflect a grid across a specified axis, creating a mirrored version of the grid. Parameters: grid (grid), axis (axis := Literal["horizontal", "vertical", "both"]). Cues: if existing structures from the input grid appear in the output grid with mirrored positions. Used in: prelim, 9f236235, 6fa7a44f, eb281b96.
+</description>
+<example>
+```python
+use np.flip
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+rotate object (routine/grid manipulation). rotate an object by a specified angle, updating the grid accordingly. Parameters: object (object), angle (int), center (position). Cues: Presence of an object in the input grid that appears rotated in the output grid; Same object appears multiple times with different rotations; Emergence of rotational symmetry in the output grid not present in the input. Used in: prelim, 1b60fb0c, 97a05b5b, 3bdb4ada, b7249182 (+2 more).
+</description>
+<example>
+```python
+Use numpy functions such as np.rot90 or affine transformations to rotate the object's pixels around the specified center
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+size criteria (routine/selection criteria). condition on whether an object meets a size criteria (numerical comparison on object size against some other value). Parameters: target (object), comparison operator (comparison operator := Literal["==", "!=", "<", "<=", ">", ">="]), comparison value (int). Cues: if objects are colored differently based on their size; if the output grid shows objects of a particular area or pixel count treated specially; if only 1x1, 2x2, or other specific-sized objects are affected in the output. Used in: prelim, 3e980e27, d2abd087, aedd82e4, 6e82a1ae (+7 more).
+</description>
+<example>
+```python
+compare the object's size attribute (such as area or pixel count) to the given value using the specified operator
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+draw line (routine/grid manipulation). draw a line between two pixels in a grid, updating the grid accordingly. Parameters: start (position), end (position), color (color), direction (direction := Literal["up", "down", "left", "right", "up-right", "up-left", "down-right", "down-left"]), length (int | str), grid (grid), stop_at_color (color), step (int), until (stopping criteria := Callable[[position, grid], bool]), stop_at (object | grid). Cues: output grid contains lines not present in the input grid; output grid contains lines passing through, extending from, or adjacent to specific pixels or objects in the input grid; lines span the entire grid in a direction from a given pixel, or terminate at a colored object or grid edge. Used in: prelim, 6cdd2623, 8403a5d5, 8e1813be, 23581191 (+28 more).
+</description>
+<example>
+```python
+draw the line pixel by pixel from the starting point, updating the position by the direction vector until the end point, grid edge, or stopping condition is met
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+inside container criteria (routine/selection criteria). condition on whether an object is inside a container. Parameters: target (object). Used in: 776ffc46.
+</description>
+<example>
+```python
+determine if the grid edge is reachable from the would-be inner object. The inner and outer objects only have the containment relationship if the inner object only reaches the grid edge through outer object pixels.
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+fixed color mapping (routine/color scheme). use a fixed, predetermined mapping from original -> new color. Parameters: input (object). Cues: if a specific color is systematically replaced by another in the output grid; if a specific color is systematically assigned based on object rank or order, or if output grid colors follow a fixed palette in a ranked or ordered fashion. Used in: 0d3d703e, 017c7c7b, 6a1e5592, 08ed6ac7.
+</description>
+<example>
+```python
+assign colors to objects in the order determined by sorting or ranking
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+split on divider lines (routine/splitting scheme). identify lines that divide the grid into regions, extract these regions. Parameters: grid (grid), divider_color (color). Cues: if the grid is visually partitioned into rectangles by lines of a specific color (e.g., black or grey). Used in: cf98881b, 6455b5f5, 29623171, 941d9a10, 1b2d62fb (+6 more).
+</description>
+<example>
+```python
+identify continuous lines of the divider color that span the grid and use them to slice the grid into regions via array slicing
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+get object holes (routine/intermediate). get the holes in an object, i.e. the empty spaces inside the object. Parameters: object (object). Cues: Presence of objects in the input grid with empty regions or cavities inside them.; Output grid distinguishes between objects with internal holes and solid objects.. Used in: 228f6490, 810b9b61, 444801d8, 44d8ac46.
+</description>
+<example>
+```python
+Use a background color mask to identify holes within the object if the background color is known.
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+direction between objects (routine/intermediate). determine the direction from one object to another, often used for sliding or moving objects towards a target. Parameters: object1 (object), object2 (object), allowed_directions (list[direction]). Cues: when you need to determine the direction from one object or part of an object to another, such as from colored to background pixels; when the output depends on the orientation or pointing direction of an object; when movement or transformation is constrained to cardinal directions (up, down, left, right), or output grids show pixels moving only along rows or columns. Used in: 4093f84a, 6e19193c, 1a07d186, a8c38be5, 56dc2b01 (+4 more).
+</description>
+<example>
+```python
+can be applied to positions, such as using the mean position of colored pixels versus background pixels
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+slide object (routine/grid manipulation). moving an object in a specified direction step by step until a stopping condition is met. Parameters: object (object), direction (object), stopping criteria (stopping criteria := Callable[[object, grid], bool]), steps (int). Cues: If objects or structures in the input grid appear in the output grid shifted in a cardinal direction, often stopping just before contacting another object or the grid boundary.; If movement is limited to a certain number of steps, or objects move stepwise in a direction until a condition is met (such as collision or reaching a target).; If pixels or objects move in straight lines toward a target or region, with the output showing their new positions after such movement.. Used in: 4093f84a, 1a07d186, 56dc2b01, 05f2a901, 5168d44c (+1 more).
+</description>
+<example>
+```python
+Move the object one step at a time in the specified direction, checking the stopping_criteria after each step; stop when the criteria is met or after the specified number of steps.
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+collision criteria (routine/stopping criteria). detects a collision when an object is in contact with another object in the direction of movement. Parameters: object (object), grid (grid), other (object). Cues: if movement stops when a pixel contacts a specific object (not just any non-background pixel); if output grid shows pixels stopping at a colored region or object. Used in: 4093f84a, 56dc2b01, 1f642eb9.
+</description>
+<example>
+```python
+check if the object is adjacent to the specified target object in the movement direction after each step
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+split region grid (routine/splitting scheme). split grid into a grid of regions. Parameters: input grid (grid). Used in: 9f236235, 780d0b14.
+</description>
+<example>
+```python
+use divider lines and array slicing to extract regions from the grid
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+convert region grid to pixel grid (routine/grid manipulation). convert a grid of regions into a pixel grid where each pixel corresponds to a region. Parameters: region_grid (list[list[grid]]), color selection (color selection := Callable[[grid], color]). Cues: Input grid contains a region grid, but output grid does not preserve the region grid structure.; Output grid dimensions match the number of regions along each axis of the input region grid (i.e., one output pixel per region).; Output pixel colors correspond to a representative color from each region in the input grid.. Used in: 9f236235, 780d0b14, 90c28cc7.
+</description>
+<example>
+```python
+Create a new grid with the same dimensions as the region grid; for each region, use the color selection logic to determine a representative color (e.g., the color of the top-left pixel or the dominant/only color in the region) and assign it to the corresponding output pixel.
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+split cross (routine/object splitting scheme). split a cross object into its horizontal and vertical bars. Parameters: cross (object). Used in: e21d9049.
+</description>
+<example>
+```python
+identify the center of the cross and split it into horizontal and vertical bars based on the center
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+count objects (routine/intermediate). count the number of objects in a list, optionally filtering by criteria. Parameters: objects (list[object]), criteria (selection criteria), by (str). Cues: if the output depends on the frequency or count of objects of each color; if colors are selected or ordered based on how many objects have that color; if the output grid size or content depends on the number of unique colors in the input grid, excluding background. Used in: ff28f65a, f8b3ba0a, feca6190, 1fad071e.
+</description>
+<example>
+```python
+if by="color", count the number of objects for each color and return a dict mapping color to count
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+draw expandable shape (routine/grid manipulation). draw a pattern on a grid, scaling it based on a specified factor. Parameters: pattern (pattern := str | Callable[[int], grid]), color (color), scale (int), grid (grid). Cues: if a region is extended from an edge or indicator pixel, with width or height matching another object's extent or extending to the grid border in a specific direction; if output grid contains bars or rectangles extending from an object to the grid edge, with size determined by the object's dimensions. Used in: ff28f65a, b527c5c6.
+</description>
+<example>
+```python
+for a "rectangle_bar" pattern, create a rectangle of the appropriate width or height starting at the indicator and extending in the given direction to the grid edge; scale parameter determines the width (if extending horizontally) or height (if vertically)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+reflect object (routine/grid manipulation). reflect an object across a specified axis, updating the grid accordingly. Parameters: object (object), axis (axis), mirror_axis (int | float), mirror_axis | position (int | float | position). Cues: if structures or objects in the input grid appear in the output grid with mirrored orientation; if objects in the output are mirrored versions of input objects, especially when the axis of reflection is not always the grid center; if reflection occurs relative to another object, such as a frame, guide, or adjacent colored pixel. Used in: 3e980e27, 4c5c2cf0, 6855a6e4, 2dee498d, b775ac94 (+3 more).
+</description>
+<example>
+```python
+use np.flip for standard horizontal or vertical axis reflections
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+complete partial sprite (routine/grid manipulation). complete a partial sprite by drawing the full sprite in a position that aligns matching pixels (in the z-axis) with the partial sprite. Parameters: full sprite (object), partial sprite (object). Used in: 3e980e27.
+</description>
+<example>
+```python
+determine the position the full sprite should be drawn to align with the partial sprite and draw it there
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+contact criteria (routine/selection criteria). condition on whether an object is in contact with another object, i.e. they share a pixel or edge. Parameters: target (object), other (object), background (color). Cues: if objects or pixels move until they reach another object in the output grid; if output pixels stop at the edge of a bar or larger object; if the output depends on whether two objects are connected, touching, or form a single contiguous region. Used in: 48d8fb45, 1a07d186, 239be575, 56dc2b01, 05f2a901 (+2 more).
+</description>
+<example>
+```python
+check if the moved object is adjacent to or overlapping the target object after each step
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+crop around objects (routine/grid manipulation). create a new grid that is a contiguous sub region of the input grid, containing the minimum bounding box of the specified objects. Parameters: objects (list[object]), border (int), background (color). Cues: if the output grid is smaller than the input grid; if the output grid contains only a subset of the objects in the input grid; if the output grid is a contiguous subregion of the input grid, especially one corresponding to a single object, region of interest, frame, or container. Used in: 48d8fb45, 8e1813be, f9012d9b, 97a05b5b, 6b9890af (+13 more).
+</description>
+<example>
+```python
+find the extrema for x and y coordinates of the specified objects and use them to slice the grid
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+unique colors (routine/intermediate). extract a list of unique colors from a grid. Parameters: grid (grid), exclude (list[color]). Cues: if a region or object contains a single colored pixel and that color is used elsewhere in the output; if the output grid uses a color that appears only inside another object in the input grid. Used in: 6cdd2623, 29623171, fcc82909, 6d58a25d, 0b148d64 (+3 more).
+</description>
+<example>
+```python
+use np.unique, then filter out excluded colors
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+on edge criteria (routine/selection criteria). check if target object is on the edge of a parent object or grid. Parameters: target (object), parent (grid | object). Cues: if only edge pixels are selected for further processing or movement; if output grid features originate from the border of the input grid; if the process starts from colored pixels on a specific edge (e.g., bottom row). Used in: 6cdd2623, 29c11459, 1f642eb9, 5daaa586, d9f24cd1.
+</description>
+<example>
+```python
+for grid, check if object's pixel positions coincide with the border (i.e., row or column index is 0 or at max index)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+draw border outside (routine/grid manipulation). draw a border around the outside of an object. Parameters: target (object), border color (color). Cues: if input objects appear with extra layer(s) of pixels around them in the output grid; if a single pixel in the input grid is surrounded by a colored border in the output grid, with all other pixels set to background; if the output grid contains a square or rectangular border centered on a unique pixel. Used in: 4258a5f9, 31aa019c.
+</description>
+<example>
+```python
+identify outermost pixels of the object and color their empty neighbors to create the border
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+sort objects (routine/intermediate). sort a list of objects according to a key function, often used to order objects spatially. Parameters: objects (list[object]), key (Callable[[object], Any]), reverse (bool). Cues: if objects or regions need to be processed in a specific spatial order (e.g., top-to-bottom, left-to-right, diagonal, or by position); if objects are processed in an order determined by a property (e.g., size, area, color count, frequency, or another attribute); if the output grid's arrangement, coloring, or features depend on the order or ranking of objects by position, size, or attribute. Used in: 8e1813be, 5c2c9af4, 97a05b5b, 7447852a, 941d9a10 (+11 more).
+</description>
+<example>
+```python
+use Python's sorted() with a lambda function extracting the relevant key (e.g., x or y coordinate, position tuple, size, area, count, or attribute)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+remove consecutive duplicates (routine/intermediate). remove consecutive duplicate elements from a sequence, preserving order. Parameters: sequence (list[Any]). Cues: if a sequence of colors or objects is extracted and consecutive repetitions should be collapsed. Used in: 8e1813be.
+</description>
+<example>
+```python
+iterate through the sequence and only keep an element if it differs from the previous one
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+orientation detection (routine/intermediate). determine if a set of objects are all horizontal (height 1) or all vertical (width 1). Parameters: objects (list[object]). Cues: if objects are all of height 1 or all of width 1; if objects are all aligned in a row or column (e.g., stripes, green dots, lines); if the direction of movement, extension, or symmetry depends on the orientation or alignment of objects. Used in: 8e1813be, 6855a6e4, 2dd70a9a, 8d510a79, 5168d44c (+2 more).
+</description>
+<example>
+```python
+check if all objects have height 1 (horizontal) or width 1 (vertical)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+diagonal order (routine/Callable[[object], int]). ordering objects by their position along the main diagonal (e.g., x+y or x-y). Parameters: object (object). Cues: if objects are arranged along a diagonal in the grid. Used in: 5c2c9af4.
+</description>
+<example>
+```python
+for main diagonal use x+y, for anti-diagonal use x-y
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+create square border (routine/grid manipulation). create a square border (frame) of a specified color centered at a given position, with a specified half-width. Parameters: center (position), half_width (int), color (color). Cues: if output grid contains concentric square frames or borders centered on a point or object; if there are repeated square outlines expanding from a central point; if frames are always a fixed multiple of the object size (e.g., twice as large). Used in: 5c2c9af4, db93a21d.
+</description>
+<example>
+```python
+create a grid with pixels set to the color on the four sides of the square defined by center and half_width
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+distance (routine/intermediate). compute the distance between two positions, often used for spacing or measuring. Parameters: position1 (position), position2 (position). Cues: if spacing or alignment between objects is important. Used in: 5c2c9af4.
+</description>
+<example>
+```python
+use Manhattan or Euclidean distance depending on context
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+border fits within grid (routine/selection criteria). check if a border (or any object) fits entirely within the boundaries of a grid. Parameters: border (grid | object), grid (grid). Cues: if you need to ensure that a drawn object does not exceed the grid dimensions. Used in: 5c2c9af4.
+</description>
+<example>
+```python
+check that all coordinates of the border are within the grid's shape
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+border is redundant (routine/selection criteria). check if a border would not add any new colored pixels to the grid (i.e., is already present). Parameters: border (grid | object), grid (grid). Cues: if repeated drawing of borders could result in no visible change. Used in: 5c2c9af4.
+</description>
+<example>
+```python
+compare the pixels of the border to the grid; if all are already set to the intended color, the border is redundant
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+is symmetric (routine/intermediate). check if a grid is symmetric (mirror symmetry) along a specified axis. Parameters: grid (grid), axis (axis := Literal["horizontal", "vertical", "both", "diagonal", "rotational"]). Cues: if the output depends on whether the input grid is symmetric or not; if the input grid appears unchanged or is referenced as a whole in the output logic; if output grid contains only an object that is symmetric (mirror or rotational) and other objects are omitted. Used in: 44f52bb0, 72ca375d.
+</description>
+<example>
+```python
+compare the grid or object to its reflection along the specified axis using np.flip or similar
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+intersection of lines (structure). the position(s) where two or more lines overlap, often marked with a special color or object. Cues: if output grid contains special markings or a distinct color at the crossing points of lines; if lines of different colors cross and a third color appears at the intersection; if lines cross at a single pixel, especially where a colored pixel exists in the input grid. Used in: 23581191, 623ea044.
+</description>
+<example>
+```python
+Detect line segments in the grid, then identify overlapping positions by checking for shared coordinates among lines
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+detect translational symmetry (routine/intermediate). detect the translational symmetry transformation(s) present in a grid, optionally ignoring specified colors. Parameters: grid (grid), ignore colors (list[color]), direction (Literal["vertical", "horizontal"]), background (color). Cues: presence of a repeating pattern or objects along a specific direction in the grid; output grid fills or reconstructs regions by repeating content from the input; regions of the grid are missing but the rest exhibits a translationally repeating pattern. Used in: f9012d9b, 017c7c7b, caa06a1f, 0dfd9992.
+</description>
+<example>
+```python
+compare shifted versions of the grid, excluding ignored colors, to identify translation vectors that map the pattern onto itself
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+orbit (routine/intermediate). compute the set of positions (the orbit) that a given position maps to under repeated application of a symmetry transformation. Parameters: position (position), symmetry (symmetry := Callable[[position], position]), order (int). Cues: if filling in missing pixels by referencing symmetric positions in the grid; if the output grid contains repeated copies of a pixel or object at positions related by symmetry; if the solution logic involves mapping a pixel to all its symmetric counterparts. Used in: f9012d9b, 11852cab.
+</description>
+<example>
+```python
+repeatedly apply the symmetry transformation to the position, collecting all unique positions until a cycle is detected or for a fixed number of steps (order)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+move position (routine/intermediate). compute the new position by moving from the given position in the specified direction by a given distance. Parameters: position (position), direction (direction := Literal["up", "down", "left", "right"]), distance (int). Cues: if pixels are placed at a fixed offset from a reference position, especially along diagonals; if output grid contains features grown outward from a central pixel in diagonal directions; if a process moves stepwise in a direction, possibly changing direction to avoid obstacles. Used in: d06dbe63, 025d127b, 8d510a79, 25d487eb, 28e73c20 (+3 more).
+</description>
+<example>
+```python
+update the position coordinates according to the direction and distance (e.g., for "up", subtract from row index; for "right", add to column index)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+create staircase pattern (routine/grid manipulation). draw a staircase pattern by alternately drawing lines in two directions from a starting position, with a fixed step size and color. Parameters: start (position), directions (tuple[direction, direction]), step_size (int), color (color), grid (grid). Cues: if output grid contains L-shaped or zigzag patterns extending from a point; if lines in the output are arranged in a staircase or stepped pattern. Used in: d06dbe63.
+</description>
+<example>
+```python
+starting from the given position, alternately draw lines of the specified length in each direction, updating the position after each line
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+bounding box corners (routine/intermediate). compute the four corner positions of the bounding box of an object. Parameters: object (object). Cues: if lines or features in the output originate from the corners of objects; if logic depends on or selects the color of a corner pixel of a cropped or bounded region or object. Used in: 6e19193c, 3de23699.
+</description>
+<example>
+```python
+find min and max x and y coordinates among the object's pixels to determine the four corners
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+bounding box center (routine/intermediate). compute the center position of the bounding box of an object. Parameters: object (object). Cues: if output features are aligned with the center of an object or its bounding box. Used in: 6e19193c.
+</description>
+<example>
+```python
+average the min and max x and y coordinates of the object's pixels
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+mean position (routine/intermediate). compute the mean (average) position of a set of pixels, often used to summarize the "center of mass" of a region. Parameters: pixels (list[position]). Cues: if the solution needs to find the "center" or directionality of a non-rectangular object. Used in: 6e19193c.
+</description>
+<example>
+```python
+compute the average of x and y coordinates separately
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+has mirror symmetry criteria (routine/selection criteria). condition on whether an object is symmetric across specified axes. Parameters: target (object), axes (list[axis]). Cues: if some objects in the grid are symmetric and others are not; if the output grid contains reflected versions of an object. Used in: 4c5c2cf0.
+</description>
+<example>
+```python
+compare the object to its reflection along the specified axes using np.flip or similar
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+detect mirror symmetry (routine/intermediate). detect which axes (horizontal, vertical, both) an object is symmetric across. Parameters: object (object), ignore colors (list[color]), background (color). Cues: if you need to determine the axes of symmetry for an object; if output grid contains reflected versions of an object. Used in: 4c5c2cf0.
+</description>
+<example>
+```python
+for each axis, compare the object to its reflection along that axis, ignoring specified colors
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+reflect pixel across axes (routine/grid manipulation). compute all positions obtained by reflecting a pixel across the specified axes through a given center. Parameters: position (position), axes (list[axis]), center (position). Cues: if output grid contains reflected copies of an object or pixel, especially around the center of a symmetric object; if the output grid restores symmetry by mirroring pixels across an axis; if pixels in the output grid appear in symmetric positions relative to an axis. Used in: 4c5c2cf0, 3345333e.
+</description>
+<example>
+```python
+for each axis, compute the reflected position with respect to the center; for multiple axes, produce all combinations
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+shift pixel within object (routine/grid manipulation). shift pixels within an object in a specified direction if a condition is met for each pixel. Parameters: object (object), direction (direction := Literal["up", "down", "left", "right", "up-right", "up-left", "down-right", "down-left"]), shift condition (shift condition := Callable[[position, object], bool]). Cues: if the output grid shows objects with pixels shifted in a consistent direction, but not all pixels are shifted; if the shape of objects is preserved except for a directional "slide" or "smear" of pixels; if the shifting of pixels depends on the presence or absence of other pixels in a specific direction. Used in: 025d127b.
+</description>
+<example>
+```python
+for each pixel in the object, check the shift condition; if true, move the pixel in the specified direction
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+pixel has neighbor in direction criteria (routine/selection criteria). condition on whether a pixel has another object pixel in a specified direction. Parameters: position (position), object (object), direction (direction). Cues: if pixel-level movement or transformation depends on the presence of other pixels in a direction. Used in: 025d127b.
+</description>
+<example>
+```python
+for the given position, check if there exists another pixel in the object at position offset by the direction
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+draw objects (routine/grid manipulation). draw a list of objects onto a base grid, overlaying each object's pixels at their respective positions. Parameters: objects (list[object]), base (grid), positions (list[position]), bounding_box_only (bool). Cues: if multiple objects are drawn onto a blank or new grid in the output; if the output grid is constructed by overlaying recolored or transformed objects; if the output grid is a minimal bounding rectangle containing all objects, with no empty space. Used in: d2abd087, 681b3aeb.
+</description>
+<example>
+```python
+for each object, draw its pixels onto the base grid at its position, possibly using the draw object routine
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+closest to criteria (routine/selection criteria). condition on whether a candidate object is the closest to a reference object among a set. Parameters: target (object), reference (object). Cues: if each object is paired with its nearest neighbor of a certain type (e.g., frame, anchor); if the output depends on spatial proximity between objects. Used in: 6855a6e4.
+</description>
+<example>
+```python
+compute the distance between the candidate and the reference, and select the minimum among all candidates
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+get mirror axis (routine/intermediate). compute the coordinate of the mirror axis (line of symmetry) for reflection, based on the frame and the object's position. Parameters: frame (object), object (object), orientation (Literal["horizontal", "vertical"]), reference (object). Cues: If the reflection axis is not fixed but depends on the spatial relationship between objects, such as when reflection is determined by the position of another object or pixel.; If mirrored objects appear adjacent to indicator pixels in the output grid.; If the mirror axis must be computed dynamically for each object-frame pair, especially when reflection is not always across the frame center but depends on which side the object is on.. Used in: 6855a6e4, b775ac94.
+</description>
+<example>
+```python
+For vertical or horizontal orientation, determine the mirror axis coordinate (row or column) based on the object's position relative to the frame or indicator; this may be just beyond the object's edge closest to the indicator or relative to the frame's center.
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+has hole criteria (routine/selection criteria). condition on whether an object contains at least one hole (i.e., has empty space inside). Parameters: target (object). Cues: if output grid recolors only objects with cavities or internal empty space; if some objects are visually hollow and are treated differently in the output; if "get object holes" is used and the result is non-empty. Used in: 810b9b61.
+</description>
+<example>
+```python
+use "get object holes" and check if the returned list is non-empty
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+count pixels (routine/intermediate). count the number of pixels of a specific color within an object. Parameters: object (object), color (color), color | criteria (color | Callable[[color], bool]). Cues: if objects or regions are selected, sorted, or processed based on the number of pixels of a certain color or their area (number of colored pixels). Used in: 97a05b5b, 29623171, 6e82a1ae, 1190e5a7, e48d4e1a (+2 more).
+</description>
+<example>
+```python
+count the number of pixels in the object's mask or region that match the specified color or satisfy the given criteria; for regions, count pixels not equal to the background or divider color; can use np.sum or boolean masks for implementation
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+all positions (routine/intermediate). generate all possible positions where an object can be placed within a container such that it fits entirely inside. Parameters: container (object), object (object), grid (grid). Cues: if the solution tries all possible placements of an object within a region; if the output grid is constructed by fitting pieces into a container; if logic iterates over every pixel in a grid. Used in: 97a05b5b, 1b2d62fb, 6a1e5592, 0520fde7.
+</description>
+<example>
+```python
+slide the object's bounding box over all positions where it remains within the container's bounding box, typically using nested loops over the grid's shape to yield all (row, col) positions
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+red pixels (routine/intermediate). extract the positions of all red pixels in an object, optionally offset by a given position. Parameters: object (object), offset (position). Cues: if alignment or matching is based on the positions of pixels of a specific color. Used in: 97a05b5b.
+</description>
+<example>
+```python
+for each pixel in the object, if its color is red, include its position plus offset
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+find farthest border pixel (routine/intermediate). find the border pixel of the object that is farthest from the reference object, often used to identify tips or extremities.. Parameters: object (object), reference_object (object). Cues: if lines are drawn from the tip or extremity of an object towards or away from another object; if the output grid features lines or marks originating from a "corner" or "tip" of an input object. Used in: a78176bb.
+</description>
+<example>
+```python
+for each border pixel of the object, compute the distance to the reference object (e.g., to its pixels or bounding box) and select the one with the maximum distance
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+get diagonal direction (routine/intermediate). determine the diagonal direction (e.g., up-right or down-right) of an object, often used to guide line drawing or pattern extension. Parameters: object (object). Cues: if an object in the input grid is a diagonal line and its orientation determines the direction of new lines in the output; if output lines follow the same diagonal as an input object. Used in: a78176bb.
+</description>
+<example>
+```python
+analyze the object's pixel positions to determine which diagonal direction it spans (e.g., by comparing row and column increments)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+reverse direction (routine/intermediate). compute the opposite of a given direction (e.g., reverse("down-right") -> "up-left"). Parameters: direction (direction := Literal["up-right", "down-right", "up-left", "down-left", "up", "down", "left", "right"]). Cues: if lines or objects are drawn in both a direction and its opposite from a point; if lines or objects change direction at the edge of the grid or upon collision with a wall; if a "bouncing" or reflection effect is observed in the output grid. Used in: a78176bb, e179c5f4, 56dc2b01.
+</description>
+<example>
+```python
+map each direction to its reverse (e.g., "up-right" <-> "down-left", "up" <-> "down", "left" <-> "right")
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+pixel object (structure). an object consisting of a single pixel, often treated as a movable or target entity. Cues: presence of isolated single pixels in the input grid that are moved or removed in the output; output grid is a single pixel (1x1), possibly with its color encoding a result. Used in: 1a07d186, 29c11459, 8d510a79, 239be575, a9f96cdd (+3 more).
+</description>
+<example>
+```python
+represent as a tuple of (row, column, color) or as a mask identifying single non-background pixels
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+delete object (routine/grid manipulation). remove an object from the grid, leaving background color in its place. Parameters: object (object), grid (grid). Cues: if some input objects or pixels disappear in the output grid. Used in: 1a07d186.
+</description>
+<example>
+```python
+set the object's pixels in the grid to the background color (usually 0)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+region size (routine/intermediate). compute the area (number of pixels) of a region. Parameters: region (grid). Cues: if regions are recolored or selected based on their size or area; if the output grid treats the largest or smallest regions differently. Used in: 6455b5f5, 239be575.
+</description>
+<example>
+```python
+count the number of non-background pixels in the region, e.g., using np.sum(region != background_color)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+pixel is inside grid criteria (routine/selection criteria). check if a pixel position is within the bounds of the grid. Parameters: position (position), grid (grid). Cues: if an iterative process (e.g., line drawing or movement) stops when reaching the grid edge; if logic depends on whether a pixel is still inside the grid. Used in: e179c5f4.
+</description>
+<example>
+```python
+check that 0 <= x < grid width and 0 <= y < grid height
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+center (routine/intermediate). compute the center position of an object, optionally restricted to pixels of a specified color or color predicate. Parameters: object (object | grid), color (color | Callable[[color], bool]). Cues: if the solution needs to find the "center" or "center of mass" of a colored region, object, or grid; if movement or direction is determined from the center of one region to another within the same object; if objects are aligned or overlaid at the center of a grid or another object. Used in: a8c38be5, 54d82841, aba27056, 41e4d17e, 0962bcdd (+1 more).
+</description>
+<example>
+```python
+if color is specified, only consider pixels matching the color (or those selected by the predicate)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+slide from center (routine/grid manipulation). compute the position to place an object by starting at the center of the grid and sliding in the given direction until the object reaches the grid edge. Parameters: direction (direction), grid_size (dimensions := tuple[int, int]), object_size (dimensions := tuple[int, int]). Cues: if objects are placed at the edge of a grid, aligned along a direction from the center; if output objects are always at maximal extent in a direction from the center. Used in: a8c38be5.
+</description>
+<example>
+```python
+start from the grid center, move stepwise in the direction until the object would exceed the grid bounds if moved further
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+has shape criteria (routine/selection criteria). condition on whether an object has the specified shape (height, width). Parameters: target (object), shape (dimensions := tuple[int, int]). Cues: if only objects of a specific size are selected for further processing. Used in: a8c38be5, 150deff5.
+</description>
+<example>
+```python
+compare the object's bounding box dimensions to the given shape
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+contains color criteria (routine/selection criteria). condition on whether an object contains at least one pixel of the specified color. Parameters: target (object), color (color). Cues: if only objects containing a certain color are selected. Used in: a8c38be5.
+</description>
+<example>
+```python
+check if the object's color set contains the specified color
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+is blank criteria (routine/selection criteria). condition on whether an object is blank (i.e., contains only the specified color). Parameters: target (object), color (color). Cues: if blank or empty objects are filtered out from further processing. Used in: a8c38be5.
+</description>
+<example>
+```python
+check if all pixels in the object are equal to the specified color
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+fill region (routine/grid manipulation). fill all pixels in a region or object with a specified color. Parameters: region (grid | object), color (color), region | grid | object (grid | object). Cues: if regions, rows, or bars in the output grid are uniformly filled with a single color; if the output grid shows regions recolored based on a property (e.g., size, count, or position); if a bar, region, or path is extended and filled with a color in the output grid. Used in: 29623171, 25d487eb, 941d9a10, bd4472b8, 28e73c20 (+3 more).
+</description>
+<example>
+```python
+set all pixels in the specified region, row, or path to the given color, optionally using array assignment or masking
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+combine regions (routine/grid manipulation). compose a list of regions back into a single grid, placing each region in its original position. Parameters: regions (list[grid]). Cues: if the grid is split into regions for processing and then reconstructed. Used in: 29623171.
+</description>
+<example>
+```python
+create a blank grid and copy each region into its corresponding position
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+not_in criteria (routine/selection criteria). condition on whether a pixel's color is not in a list of excluded colors. Parameters: color (color), exclude (list[color]). Cues: if pixel counting or selection ignores certain colors (e.g., background or divider); if the logic applies to all colors except a specific set (e.g., black and teal, or black and line colors). Used in: 29623171, 10fcaaa3, 6b9890af, 09629e4f, 5daaa586.
+</description>
+<example>
+```python
+return True if color not in exclude
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+is opposite edge criteria (routine/selection criteria). condition on whether a target pixel object is on the edge opposite to a reference pixel object, in the same row or column. Parameters: target (object), reference (object), grid (grid). Cues: if colored pixels on one edge are paired with colored pixels on the opposite edge in the output; if output features connect edge pixels across the grid. Used in: 29c11459.
+</description>
+<example>
+```python
+for a given pixel on an edge, check for another pixel with the same row or column but on the opposite edge of the grid
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+interpolate paths (routine/intermediate). compute the sequences of positions forming straight paths from two endpoints toward each other, meeting in the middle. Parameters: start (position), end (position). Cues: if output grid contains colored trails or lines connecting pairs of edge pixels, meeting at a central point; if two objects or pixels are connected by a path that meets in the middle. Used in: 29c11459.
+</description>
+<example>
+```python
+for pixels aligned in the same row or column, generate the list of positions from each endpoint toward the other
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+pathfinding with custom movement rules (routine/grid manipulation). find a path from a set of initial states to a goal state, expanding successors according to custom movement rules. Parameters: initial_states (list[tuple[position, direction]]), goal_criteria (Callable[[tuple[position, direction]], bool]), successor_fn (Callable[[tuple[position, direction]], list[tuple[position, direction]]]). Cues: output grid contains a path or trail connecting two objects or regions, especially with turns only at specific pixels; movement is constrained by barriers or only allowed to turn at special markers; path is colored in the output grid following a specific rule set. Used in: 2dd70a9a, 28e73c20.
+</description>
+<example>
+```python
+use BFS or DFS to explore possible states, expanding successors according to the movement rules
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+custom successors (routine/Callable[[tuple[position, direction]], list[tuple[position, direction]]]). generate possible successor states for pathfinding, allowing movement in the current direction unless blocked, and only allowing turns at specified pixels (e.g., teal). Parameters: barriers (list[object]), turn_only_on_contact (bool). Cues: if movement in the grid is only allowed to turn at certain colored pixels; if movement is blocked by specific objects or colors. Used in: 2dd70a9a.
+</description>
+<example>
+```python
+for a given state (position, direction), check if the next position in the current direction is blocked by a barrier
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+is adjacent criteria (routine/selection criteria). check if a given position is adjacent (4-connected) to any pixel in the specified object. Parameters: position (position), object (object). Cues: if the goal of a pathfinding or movement process is to reach a position next to an object; if output features stop at the edge of a target object. Used in: 2dd70a9a.
+</description>
+<example>
+```python
+for the given position, check if any of the four neighboring positions are in the object's pixel set
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+alternating color pattern (routine/intermediate). generate a sequence of colors by alternating between the provided colors for the specified length. Parameters: colors (list[color]), length (int). Cues: if output grid contains repeated patterns with alternating colors (e.g., orange, teal, orange, teal); if lines or objects are colored in an alternating sequence. Used in: db3e9e38.
+</description>
+<example>
+```python
+cycle through the colors list, repeating as necessary to reach the desired length
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+decrementing length pattern (routine/intermediate). generate a sequence of decreasing integers starting from start_length, decrementing by 1 each time. Parameters: start_length (int), count (int). Cues: if output grid contains lines or objects whose sizes decrease in a regular fashion away from a central axis; if a pyramid or triangle shape is formed by stacking shorter lines next to longer ones. Used in: db3e9e38.
+</description>
+<example>
+```python
+create a list [start_length - i for i in range(count)] or similar
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+concatenate grids (routine/grid manipulation). concatenate multiple grids along the specified axis to form a single larger grid. Parameters: grids (list[grid]), axis (axis := Literal["horizontal", "vertical"]). Cues: if the output grid contains the input grid repeated or mirrored side by side or stacked; if the output grid is larger than the input grid and appears to be a combination of multiple grids. Used in: 6fa7a44f.
+</description>
+<example>
+```python
+use numpy.concatenate or similar to join the grids along the specified axis
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+is line criteria (routine/selection criteria). condition on whether an object is a line (i.e., height 1 or width 1), optionally with a specified orientation. Parameters: target (object), orientation (Literal["horizontal", "vertical"]). Cues: presence of objects in the grid that are a single row or column in extent; output lines are aligned with or terminate at such single-row or single-column objects. Used in: 8d510a79, 5daaa586.
+</description>
+<example>
+```python
+determine if the object's height is 1 (for horizontal) or width is 1 (for vertical)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+is in bounds (routine/intermediate). check if a given position is within the valid bounds of the grid. Parameters: position (position), grid (grid). Cues: if a process (e.g., line drawing or movement) stops at the grid edge; if logic must avoid out-of-bounds errors when updating grid pixels. Used in: 25d487eb.
+</description>
+<example>
+```python
+check that 0 <= x < grid width and 0 <= y < grid height
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+get neighbor pixel (routine/intermediate). get the neighboring pixel or position in a specified direction. Parameters: pixel (object | position), direction (direction := Literal["up", "down", "left", "right", "up-right", "up-left", "down-right", "down-left"]). Cues: if logic needs to check adjacency or expand from a pixel in a direction. Used in: 25d487eb, 0ca9ddb6.
+</description>
+<example>
+```python
+add the direction offset to the pixel's coordinates
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+is inside object (routine/selection criteria). check if a given position is inside the specified object. Parameters: position (position), object (object). Cues: if logic depends on whether a pixel is part of an object or not; if movement or extension is blocked by an object's boundary. Used in: 25d487eb, aba27056, d4f3cd78.
+</description>
+<example>
+```python
+check if the position is in the object's pixel set or mask
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+opposite direction (routine/intermediate). compute the opposite of a given direction (e.g., "up" <-> "down"). Parameters: direction (direction := Literal["up", "down", "left", "right", "up-right", "up-left", "down-right", "down-left"]). Cues: if an operation needs to extend or move away from a reference point or object; if movement or drawing is performed in the direction opposite to a detected neighbor or boundary. Used in: 25d487eb.
+</description>
+<example>
+```python
+map each direction to its opposite (e.g., "up" <-> "down", "left" <-> "right", etc.)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+is between objects (routine/selection criteria). check if a given position lies spatially between two objects, possibly with a specified padding from each object. Parameters: position (position), object1 (object), object2 (object), padding (int). Cues: if output grid contains a filled path or region connecting two objects, especially if the fill only occurs between them; if black/background pixels between two objects are colored in the output; if two objects are connected by a straight or minimal-width region in the output. Used in: d6ad076f.
+</description>
+<example>
+```python
+compute the bounding boxes of both objects, and check if the position lies within the rectangle defined by their outermost edges (plus padding)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+frame size proportional to object (routine/intermediate). compute the size of a frame or border as a multiple of the object's size, often used for centering or expansion. Parameters: object (object), scale (float | int). Cues: if output frames or borders are always a fixed multiple of the input object's size; if frames are always centered on the object and their size is proportional to the object. Used in: db93a21d.
+</description>
+<example>
+```python
+use max(object.width, object.height) * scale to determine the frame size
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+find color (routine/intermediate). find a color in the grid that matches a given criteria, such as being the only color in a row or column, or not equal to another color. Parameters: grid (grid), criteria (selection criteria := Callable[[color], bool]). Cues: if the solution requires identifying a special color used for bars, dividers, frames, or background; if the grid contains rows or columns that are all the same color; if a color appears in lines that separate or partition regions in the grid. Used in: 1190e5a7, 1e32b0e9, 09629e4f, 5daaa586, 31aa019c (+1 more).
+</description>
+<example>
+```python
+for each unique color in the grid, check if it satisfies the provided criteria function
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+all pixels equal in row or column criteria (routine/selection criteria). condition on whether all pixels in any row or column are equal to the specified color. Parameters: color (color), grid (grid). Cues: if a row or column in the grid is visually a solid color, possibly indicating a divider or bar; if the solution logic depends on identifying a color that forms uninterrupted lines across the grid. Used in: 1190e5a7.
+</description>
+<example>
+```python
+for each row and column, check if all values are equal to the color
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+not equal criteria (routine/selection criteria). condition on whether a color is not equal to a specified excluded color. Parameters: color (color), excluded_color (color). Cues: if the solution must select a color from the grid that is not a special color (e.g., bar or divider). Used in: 1190e5a7.
+</description>
+<example>
+```python
+return True if color != excluded_color
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+diagonal neighbors (routine/intermediate). get the neighboring pixels in all four diagonal directions from a given position. Parameters: position (position), grid (grid). Cues: if the output grid contains changes to pixels that are diagonally adjacent to colored pixels; if diagonal adjacency is relevant for coloring, movement, or pattern extension; if output features or patterns extend from a pixel to its diagonally adjacent positions. Used in: 10fcaaa3, 3ac3eb23, 0ca9ddb6.
+</description>
+<example>
+```python
+for a given (x, y), diagonal neighbors are at (x-1, y-1), (x-1, y+1), (x+1, y-1), (x+1, y+1)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+place object on opposite side (routine/grid manipulation). place an object on the opposite side of a reference object by sliding it in the direction opposite to the reference direction until a stopping condition is met. Parameters: object (object), reference (object), direction (direction), stopping criteria (stopping criteria := Callable[[object, grid], bool]), base (grid). Cues: if an object appears on the opposite side of another object in the output grid, especially after movement or alignment; if the output grid contains symmetric placement of objects relative to a central object. Used in: 56dc2b01.
+</description>
+<example>
+```python
+compute the direction from the reference to the anchor object, reverse it, and slide the object in that direction until the stopping criteria is satisfied (e.g., until it is no longer colliding with other objects)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+get endpoints (routine/intermediate). find the endpoints of a line object and the direction(s) in which the line extends from each endpoint. Parameters: object (object). Cues: if the output grid contains lines or trails extending from the ends of an object in the input grid; if the solution needs to determine where a line "points" or where to start an extension. Used in: 508bd3b6.
+</description>
+<example>
+```python
+for each endpoint (pixel with only one neighbor in the object), determine the direction vector away from the object
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+within bounds (routine/intermediate). check if a given position is within the valid bounds of the grid. Parameters: position (position), grid (grid). Cues: when a process (such as line drawing or movement) interacts with the grid edge or must avoid out-of-bounds errors when updating grid pixels. Used in: 508bd3b6, 28e73c20.
+</description>
+<example>
+```python
+check that 0 <= x < grid width and 0 <= y < grid height
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+draw line until color (routine/grid manipulation). draw a line from a starting position in a given direction, coloring pixels until a pixel of a stop color is encountered or the grid edge is reached; returns the position where stopped and whether a stop color was hit. Parameters: grid (grid), start (position), direction (direction := Literal["up", "down", "left", "right", "up-right", "up-left", "down-right", "down-left"]), color (color), stop_colors (list[color]). Cues: if lines in the output grid are drawn from an endpoint until they hit a barrier or colored object; if a process must stop drawing when a certain color is encountered. Used in: 508bd3b6.
+</description>
+<example>
+```python
+iterate from the start position in the given direction, coloring each pixel, until a pixel of stop_colors or grid edge is reached
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+reflect direction (routine/intermediate). compute the new direction after reflecting off a rectangle side, given the incoming direction and the side hit. Parameters: direction (direction), hit_side (Literal["left", "right", "top", "bottom"]). Cues: if lines or movement in the output grid "bounce" or reflect off the sides of an object; if output lines change direction upon hitting a rectangle or frame. Used in: 508bd3b6.
+</description>
+<example>
+```python
+for each side, reverse the appropriate component of the direction (e.g., hitting "left" or "right" reverses x, "top" or "bottom" reverses y)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+which side of rectangle hit (routine/intermediate). determine which side of a rectangle a given position is on (left, right, top, or bottom). Parameters: position (position), rectangle (object). Cues: if the logic for reflection or bouncing depends on which side of a rectangle is contacted; if output lines reflect differently depending on where they hit an object. Used in: 508bd3b6.
+</description>
+<example>
+```python
+compare the position to the rectangle's bounding box; if x equals min_x, it's the left side, etc.
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+count neighbors in object (routine/intermediate). count the number of neighboring pixels of the given object that are also part of the reference object, using the specified connectivity. Parameters: object (object), reference_object (object), connectivity (int), criteria (Callable[[object], bool]). Cues: if a pixel or object is recolored, merged, or absorbed into another object only when it is adjacent to or touching that object; if output grid shows noise pixels being absorbed into larger objects when adjacent, but deleted otherwise; if isolated pixels are removed from the output grid. Used in: 7e0986d6, 7f4411dc.
+</description>
+<example>
+```python
+for each pixel in the object, check all neighbors (according to connectivity) and count how many are in the reference object's pixel set and satisfy the criteria
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+frame (structure). an object that forms a rectangular border or outline, typically used to contain or highlight another object. Cues: if a small object in the input grid appears larger or smaller in the output, especially filling a frame or container; if the output object is a scaled (enlarged or reduced) version of an input object, with regions that visually match the input but at a different size; if each pixel or object in the input grid is replaced by a larger or smaller version in the output grid. Used in: 6b9890af, 6f8cd79b.
+</description>
+<example>
+```python
+use numpy.kron or similar functions to repeat the object's pixels according to the scaling factor
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+logical operation on corresponding pixels (routine/grid manipulation). create a new grid by applying a logical or arithmetic operation to corresponding pixels from multiple input grids. Parameters: grids (list[grid]), operation (Callable[[list[color]], color]). Cues: if objects, regions, or rectangles are selected or filtered based on being uniformly a single color (e.g., all grey, all black, or another color); if only monochrome regions are processed in the output. Used in: 1b2d62fb, 0520fde7, 3428a4f5.
+</description>
+<example>
+```python
+check if all pixels in the object's mask or region are equal to the specified color
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+copy grid (routine/grid manipulation). create a copy of a grid, often used as a base for further drawing or manipulation. Parameters: grid (grid). Cues: if the output grid is the same shape as input regions and each pixel depends only on the corresponding pixels in the regions; if the output grid is a logical combination (e.g., AND, OR, XOR, NOR, difference) of two regions; if the output grid highlights differences or similarities between two regions or patterns. Used in: 6a1e5592, bd4472b8.
+</description>
+<example>
+```python
+for each position, apply the operation to the list of pixel values from each grid at that position
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+plugged pixel count (routine/intermediate). count the number of black (empty) pixels in the target object that would be covered (plugged) by placing the sprite at the given position, without overlapping existing non-background pixels in the grid. Parameters: sprite (object), position (position), target_object (object), grid (grid). Cues: if puzzle pieces are placed to maximize coverage of holes or empty pixels in a target object; if placement is chosen to maximize the number of filled pixels. Used in: 6a1e5592.
+</description>
+<example>
+```python
+for each candidate position, overlay the sprite and count the number of target_object's black pixels that would be covered
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+all valid positions (routine/intermediate). generate all positions where the sprite can be placed on the grid without overlapping existing non-background pixels. Parameters: sprite (object), grid (grid). Cues: if objects are placed in all possible positions to find the best fit without overlap; if a search is performed over placements that do not collide with existing content. Used in: 6a1e5592.
+</description>
+<example>
+```python
+for each position where the sprite's bounding box fits within the grid, check that all sprite pixels would overlay only background pixels
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+argmax (routine/intermediate). select the element from a sequence that yields the maximum value according to the key function. Parameters: sequence (list[Any]), key (Callable[[Any], Any]). Cues: if the output grid is initialized as a copy of a region or object from the input grid; if further drawing or overlaying is performed on a grid that should preserve the original content. Used in: 6a1e5592, 681b3aeb, 0e206a2e, 57aa92db.
+</description>
+<example>
+```python
+use numpy.copy or similar to duplicate the grid
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+fixed pattern (structure). a small grid or sprite with a fixed arrangement of colored pixels, often used as a motif or patch to be overlaid at a specific position. Cues: when the solution involves selecting the best candidate from a set based on a scoring or evaluation function, such as maximizing a specific criterion (e.g., number of holes plugged, largest area, e.... Used in: a9f96cdd, 6cf79266, 995c5fa3.
+</description>
+<example>
+```python
+use Python's max() function with the key argument to select the element with the maximum value according to the provided key function
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+anchor position for centered overlay (routine/intermediate). compute the upper-left anchor position for overlaying a pattern so that its center aligns with a specified position. Parameters: center_pos (position), overlay_shape (dimensions := tuple[int, int]). Cues: if a fixed-size pattern is centered on a pixel or object in the output grid; if the overlay must be positioned so its center matches a reference position. Used in: a9f96cdd.
+</description>
+<example>
+```python
+subtract half the overlay's height and width (using integer division) from the center position to get the anchor
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+positions_where (routine/intermediate). get the list of positions in an array where a condition holds (e.g., where a mask is True). Parameters: condition (ndarray[bool] | Callable[[Any], bool]). Cues: if you need to iterate over only the positions in a grid that satisfy a certain property (e.g., non-background pixels). Used in: 1e32b0e9, 11852cab.
+</description>
+<example>
+```python
+use numpy's np.argwhere or np.where to get positions matching the condition
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+fill missing pattern pixels with divider color (routine/grid manipulation). for each position where the template pattern has a non-background pixel, if the target pattern is missing or has a different value, fill it with the specified color. Parameters: template_pattern (grid), target_pattern (grid), fill color (color). Cues: if output regions are filled to match a template, with missing pixels replaced by a special color (e.g., divider color); if output grid shows regions that are "completed" using a reference pattern, but with differences filled by a standard color. Used in: 1e32b0e9.
+</description>
+<example>
+```python
+for each position in the template, if the target pattern at that position does not match, set it to the fill color
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+is_not_color (routine/selection criteria). condition on whether a color is not equal to a specified excluded color. Parameters: color (color), excluded_color (color). Cues: if the solution must select or count only non-background pixels; if the logic applies to all colors except a specific one (e.g., black). Used in: 7f4411dc.
+</description>
+<example>
+```python
+return True if color != excluded_color
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+unique (routine/intermediate). extract unique elements from a sequence, preserving order. Parameters: sequence (list[Any]). Cues: If each region in the input grid is filled with a single color (other than the background/divider); If output grid pixels correspond to the color of regions in the input grid. Used in: 90c28cc7, 0b148d64, 0dfd9992.
+</description>
+<example>
+```python
+Use np.unique to find colors in the region, exclude the background/divider color, and return the remaining color
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+period detection (routine/intermediate). determine the period (height or width) of a repeating pattern in the grid, i.e., the minimal size such that the grid is composed of repeated copies of a sprite (possibly with symmetry). Parameters: grid (grid), axis (axis := Literal["horizontal", "vertical"]). Cues: when you need to identify or enumerate unique items (such as positions, colors, or attributes) from a list, especially if the solution logic depends on finding a unique value among candidates (e.g..... Used in: 2dee498d, 3bdb4ada, 0a938d79.
+</description>
+<example>
+```python
+use a set to track seen elements and filter duplicates while preserving the original order of the sequence
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+stopping criteria (routine/stopping criteria). a callable that determines when to stop an iterative process (e.g., drawing a line). Parameters: position (position), grid (grid). Cues: if a process (e.g., line drawing) stops at the grid edge or another condition. Used in: 3ac3eb23.
+</description>
+<example>
+```python
+for out-of-bounds, check that 0 <= x < grid width and 0 <= y < grid height
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+no collision with (routine/stopping criteria). stopping criteria that returns True if moving the object would not result in a collision with any non-background pixel in the grid. Parameters: object (object), grid (grid). Cues: if an object is moved stepwise and must not overlap with other objects or colored pixels in the output grid; if movement must stop before colliding with a fixed set of objects or markers. Used in: 5168d44c.
+</description>
+<example>
+```python
+for each candidate position, check if any of the object's pixels would overlap with non-background pixels in the grid
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+sliding window (routine/intermediate). generate all possible subgrids of a given shape by sliding a window over the grid. Parameters: grid (grid), window_shape (dimensions := tuple[int, int]). Cues: if the output depends on detecting or modifying fixed-size regions throughout the grid; if the solution operates on all possible subgrids of a certain size (e.g., 3x3). Used in: 6cf79266.
+</description>
+<example>
+```python
+use nested loops to extract all subarrays of the specified shape from the grid, along with their positions
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+create cross (routine/grid manipulation). create a cross-shaped sprite of the given dimensions and color, with bars centered in the grid. Parameters: shape (dimensions := tuple[int, int]), color (color). Cues: if the output grid contains a cross (plus sign) shape, possibly centered on a special position; if a cross-shaped pattern appears in the output grid, especially of a fixed size (e.g., 3x3). Used in: e9614598.
+</description>
+<example>
+```python
+create a grid of the specified shape, set the central row and column to the color, others to background
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+midpoint between (routine/intermediate). compute the position exactly halfway between two positions (e.g., for centering a sprite). Parameters: position1 (position), position2 (position). Cues: if an object or pattern is centered between two input features (e.g., colored pixels); if output features are equidistant from two reference points. Used in: e9614598.
+</description>
+<example>
+```python
+average the row and column indices of the two positions (integer division)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+centered at (routine/intermediate). compute the upper-left anchor position for overlaying a pattern so that its center aligns with a specified position. Parameters: center_pos (position), overlay_shape (dimensions := tuple[int, int]). Cues: Presence of repeated regions or sprites in the grid, possibly with reflection.; Output consists of a single tile or sprite extracted from a repeated pattern in the input grid.. Used in: e9614598, b7249182.
+</description>
+<example>
+```python
+For each possible period, partition the grid along the specified axis and check if all regions are identical, allowing for possible reflection symmetry.
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+row (structure). a horizontal sequence of pixels in the grid, often treated as a region or object for per-row processing. Cues: if a fixed-size pattern is centered on a pixel or object in the output grid; if the overlay must be positioned so its center matches a reference position. Used in: 25d8a9c8, 995c5fa3.
+</description>
+<example>
+```python
+subtract half the overlay's height and width (using integer division) from the center position to get the anchor
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+bottom left position (routine/intermediate). compute the (row, column) of the bottom-left pixel of an object's bounding box. Parameters: object (object). Cues: if new objects are placed directly below existing objects in the output grid; if the output grid contains features aligned with the lower edge of input objects. Used in: fcc82909.
+</description>
+<example>
+```python
+find the minimum column and maximum row among the object's pixels
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+rectangle object (structure). an object whose shape is a rectangle, often used for bars, highlights, or as a region to fill. Cues: if the output or solution logic depends on the number of distinct items (e.g., colors, objects) or the frequency of a color in regions or objects. Used in: fcc82909, 3bdb4ada, 3befdf3e, 3eda0437, af902bf9 (+2 more).
+</description>
+<example>
+```python
+use len() on the sequence
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+create periodic hole pattern (routine/grid manipulation). set every nth pixel along the center line (row or column) of an object to a specified color, starting at a given offset. Parameters: object (object), axis (axis := Literal["horizontal", "vertical"]), period (int), offset (int), hole_color (color). Cues: if output rectangles have regularly spaced missing pixels (holes) along their center; if every other pixel (or at another fixed interval) in a row or column is set to black or another color; if a periodic pattern of holes appears in the center of objects in the output grid. Used in: 3bdb4ada.
+</description>
+<example>
+```python
+for the chosen axis (row or column), iterate from offset to the end in steps of period, setting the pixel to hole_color
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+edges of object (routine/intermediate). extract the edges of a rectangular object, providing their orientation, length, and outward position for further drawing. Parameters: object (object). Cues: if rectangles or squares in the output have features added to their edges; if drawing or extending shapes from the border of an object. Used in: 3befdf3e.
+</description>
+<example>
+```python
+for each of the four sides of a rectangle, record the orientation ("top", "bottom", "left", "right"), the length, and the position just outside the edge for drawing extensions
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+create rectangle (routine/grid manipulation). create a filled rectangle of the specified size, color, and orientation. Parameters: size (tuple[int, int]), color (color), orientation (Literal["horizontal", "vertical"]). Cues: if output grid contains new rectangles extending from the edges of existing shapes; if rectangles are added to the border of objects, matching the color and size of other features. Used in: 3befdf3e.
+</description>
+<example>
+```python
+create a numpy array of the given size, filled with the specified color
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+stride for translation (routine/intermediate). compute the largest step size in the given direction such that translating the template keeps it covering the indicator (and not overlapping non-background pixels). Parameters: template (object), indicator (object), direction (direction), background (color). Cues: if an object is repeatedly translated in a direction, with each copy covering a reference pixel; if output grid shows repeated, evenly spaced copies of an object aligned with indicator pixels. Used in: e8dc4411.
+</description>
+<example>
+```python
+for increasing step sizes, translate the template and check if it still covers the indicator and does not overlap non-background pixels
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+alternating pattern stacking (routine/grid manipulation). stack a sequence of patterns (e.g., a grid and its reflection) alternately along an axis, overlapping by a specified number of rows or columns each time. Parameters: patterns (list[grid]), repetitions (int), overlap (int), axis (axis := Literal["vertical", "horizontal"]), base (grid). Cues: if the output grid consists of repeated copies of input and its reflection, stacked with overlap; if the output is a tall or wide strip formed by alternately stacking input and flipped input, with each new copy overlapping the previous; if the output grid is much taller or wider than the input, and the stacking alternates between two patterns. Used in: eb281b96.
+</description>
+<example>
+```python
+for each repetition, select the appropriate pattern (e.g., alternating original and flipped), compute the anchor position based on overlap, and draw it onto the base grid
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+map object corner to output (routine/intermediate). map the corner position of an object in the input grid to the corresponding corner in the output grid, preserving the relative corner (e.g., top-left, top-right, bottom-left, bottom-right). Parameters: object_position (position), input_shape (dimensions := tuple[int, int]), output_shape (dimensions := tuple[int, int]). Cues: if patterns from the four corners of the input grid are copied to the corresponding corners of the output grid; if objects are aligned to corners in both input and output grids. Used in: bc1d5164.
+</description>
+<example>
+```python
+determine which corner (top-left, top-right, bottom-left, bottom-right) the object's position corresponds to in the input grid, and compute the matching corner position in the output grid
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+max (routine/intermediate). compute the maximum value in a sequence, often used to determine the largest dimension among a set of objects. Parameters: sequence (list[int]). Cues: if the output grid size is determined by the largest object in the input grid. Used in: bc1d5164.
+</description>
+<example>
+```python
+use Python's built-in max() function over the relevant attribute (e.g., object.width)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+vertical line beneath object criteria (routine/selection criteria). condition on whether a pixel is directly beneath an object (e.g., chevron), i.e., moving upward from the pixel encounters the object before any other occurrence of the object color.. Parameters: pixel (object), object (object), grid (grid). Cues: if output grid contains vertical lines starting just below a specific object, aligned with colored pixels beneath that object; if colored pixels in the input grid are vertically aligned with a specific object and are extended downward in the output. Used in: 6d58a25d.
+</description>
+<example>
+```python
+for the given pixel, move upward (decreasing y) and check if the first non-background pixel encountered is part of the object
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+color exclusion (routine/intermediate). select a color from a set, excluding specified colors (e.g., background or object color). Parameters: colors (set[color]), exclude (set[color]). Cues: if the output depends on identifying a color present in the input grid but not used for a specific object or background. Used in: 6d58a25d.
+</description>
+<example>
+```python
+subtract the exclude set from the set of candidate colors
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+object_area (routine/intermediate). compute the area (number of pixels) of an object, often used for sorting or ranking objects by size. Parameters: object (object). Cues: when the background color varies and must be inferred from the grid; when object extraction or masking relies on identifying the most common color. Used in: eb5a1d5d, ce602527, 3eda0437.
+</description>
+<example>
+```python
+use numpy or collections.Counter to count color frequencies and select the most common color
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+odd-one-out region (routine/selection criteria). select the region whose property (e.g., color) is unique among all regions. Parameters: regions (list[grid]), key (Callable[[grid], Any]). Cues: if one region among several is visually distinct by color or other property; if the output grid is a copy of the only region with a unique color. Used in: 0b148d64.
+</description>
+<example>
+```python
+for each region, compute the key; select the region whose key occurs exactly once among all regions
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+find unique color (routine/intermediate). find the unique color in a grid, excluding specified colors (e.g., background or marker colors). Parameters: grid (grid), exclude (list[color]). Cues: if the grid contains a single colored object or feature, and other colors are background or markers; if the output depends on identifying a single color that is not background or a special marker. Used in: e48d4e1a.
+</description>
+<example>
+```python
+use np.unique to get all colors in the grid, remove excluded colors, and check if only one remains
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+find row (routine/intermediate). find the index of a row in the grid that matches a given criteria (e.g., all pixels are a specific color). Parameters: grid (grid), criteria (selection criteria := Callable[[object], bool]). Cues: if output grid contains repeated, evenly spaced copies of an object in a straight line, diagonal, or other direction; if an object is "stamped" multiple times in a regular pattern to fill a region, possibly with recoloring. Used in: e48d4e1a, bd4472b8.
+</description>
+<example>
+```python
+for each repetition, compute the new position by adding stride * direction to the start position and draw the object at that position
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+find column (routine/intermediate). find the index of a column in the grid that matches a given criteria (e.g., all pixels are a specific color). Parameters: grid (grid), criteria (selection criteria := Callable[[object], bool]). Cues: if a column in the grid is fully filled with a single color, corresponding to a feature or object; if the output depends on the position of a column with a special property. Used in: e48d4e1a.
+</description>
+<example>
+```python
+iterate over columns and apply the criteria; return the index of the matching column
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+cross object (structure). an object composed of a filled row and a filled column intersecting at a single position, typically forming a plus sign. Cues: if objects are sorted, ranked, or selected based on their size or area; if output depends on comparing the sizes of input objects or regions. Used in: e48d4e1a, 0962bcdd.
+</description>
+<example>
+```python
+count the number of non-background pixels in the object's mask or region
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+shift object position (routine/grid manipulation). compute a new position by shifting the original position by the specified row and column offsets. Parameters: position (position), row_shift (int), col_shift (int). Cues: if an object or pattern in the output grid is a shifted version of one in the input grid, with the shift amount determined by a count or property; if the position of a feature is adjusted by a computed offset. Used in: e48d4e1a.
+</description>
+<example>
+```python
+add row_shift to the row index and col_shift to the column index of the original position
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+find background color (routine/intermediate). determine the background color of a grid, possibly using a specific method such as the most common color on the grid border. Parameters: grid (grid), method (str | Callable). Cues: if the background color is not always black and must be inferred from the grid, especially from the border; if object extraction or masking depends on the background color. Used in: caa06a1f.
+</description>
+<example>
+```python
+extract the border pixels of the grid and count color frequencies to find the most common color
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+compute orbit (routine/intermediate). compute the set of positions that a given position maps to under repeated application of a symmetry transformation, restricted to a grid's bounds. Parameters: position (position), symmetry (symmetry := Callable[[position], position]), grid (grid). Cues: if a row in the grid is fully filled with a single color, corresponding to a feature or object; if the output depends on the position of a row with a special property. Used in: caa06a1f, 0dfd9992.
+</description>
+<example>
+```python
+iterate over rows and apply the criteria; return the index of the matching row
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+crop grid (routine/grid manipulation). create a new grid that is a contiguous subregion of the input grid, specified by row and/or column ranges. Parameters: grid (grid), rows (tuple[int, int]), columns (tuple[int, int]). Cues: if the output grid is a shifted or truncated version of a larger pattern; if the output grid is a subregion of a larger constructed grid. Used in: caa06a1f.
+</description>
+<example>
+```python
+use array slicing to extract the specified rows and columns from the grid
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+get row (routine/intermediate). extract the sequence of colors from a specified row in the grid. Parameters: grid (grid), row (int). Cues: if the output grid's rows repeat or depend on the color sequence of a specific row in the input grid. Used in: bd4472b8, 3618c87e.
+</description>
+<example>
+```python
+use grid[row] to extract the row as a list or array
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+copy rows (routine/grid manipulation). copy specified rows from a grid to another grid, preserving their content and order. Parameters: grid (grid), rows (list[int]). Cues: if the output grid begins with a prefix of rows identical to the input grid; if the top rows of the output grid are unchanged from the input grid. Used in: bd4472b8.
+</description>
+<example>
+```python
+for each row index in rows, copy grid[row] to the corresponding row in the output grid
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+rotate direction (routine/intermediate). rotate a direction by a specified angle (typically 90 degrees for right turns). Parameters: direction (direction := Literal["up", "down", "left", "right", "up-right", "up-left", "down-right", "down-left"]), angle (int). Cues: if an agent or process turns right or left when blocked or at corners; if output patterns involve repeated right-angle turns (e.g., spirals, zigzags). Used in: 28e73c20.
+</description>
+<example>
+```python
+map directions to vectors, apply rotation matrix, map back to direction label
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+bottom row alignment (routine/grid manipulation). compute the position in the bottom row of the grid aligned with a given column index. Parameters: x (int), grid (grid). Cues: if output grid contains colored pixels in the bottom row aligned with the center or another property of input objects; if features in the output are always placed at the bottom of the grid, aligned horizontally with input objects. Used in: 54d82841.
+</description>
+<example>
+```python
+set y to grid.height - 1 and x to the desired column index
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+bounding box (routine/intermediate). compute the minimal rectangle containing all specified objects. Parameters: objects (list[object]). Cues: output grid is filled by extending a pattern using a symmetry transformation (e.g., translation); a motif or colored pixel is repeated at regular intervals in the output grid. Used in: 681b3aeb, aba27056, 3f7978a0, d4f3cd78.
+</description>
+<example>
+```python
+repeatedly apply the symmetry transformation to the starting position, collecting all unique positions within the grid until a cycle is detected or a position goes out of bounds
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+enumerate nonoverlapping placements (routine/intermediate). generate all possible placements of the given objects such that they do not overlap, optionally allowing rotation. Parameters: objects (list[object]), allow_rotation (bool). Cues: if the output grid contains objects packed together with no overlap and no empty space; if the solution requires searching over possible arrangements of objects to optimize a packing criterion. Used in: 681b3aeb.
+</description>
+<example>
+```python
+for each permutation of object positions (and rotations if allowed), check for non-overlapping placements within a bounding rectangle
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+count empty pixels (routine/intermediate). count the number of pixels in a region that are equal to the background color. Parameters: region (grid | object), background (color). Cues: if the solution selects arrangements that minimize empty space in a region; if output grid is a rectangle with no empty (background) pixels between objects. Used in: 681b3aeb.
+</description>
+<example>
+```python
+count the number of pixels in the region that are equal to the background color (e.g., np.sum(region == background))
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+arrange regions as grid (routine/intermediate). arrange a list of regions into a 2D grid structure (list of lists), based on their spatial positions in the original grid. Parameters: regions (list[grid]). Cues: if the grid is partitioned into a regular grid of regions by divider lines, and you need to map regions to a 2D array for further processing; if the output grid is constructed by mapping region positions to a pattern or color. Used in: 09629e4f.
+</description>
+<example>
+```python
+sort regions by their top-left coordinates (row, column) and group them into rows and columns according to their positions
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+fill region with pattern by grid position (routine/grid manipulation). fill each region in a region grid with the corresponding color or pattern from a reference sprite/pattern, matching by region grid position, while preserving divider lines if present. Parameters: region_grid (list[list[grid]]), pattern (grid), divider_color (color), output_grid (grid). Cues: if the output grid is constructed by filling each region with a color or pattern based on its position in a region grid; if divider lines or bars must be preserved in the output; if the output grid is a tiled or mapped version of a reference pattern, aligned to a region grid. Used in: 09629e4f.
+</description>
+<example>
+```python
+for each region at (i, j) in region_grid, set all non-divider pixels in that region to pattern[i, j]
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+is_aligned (routine/selection criteria). check if all objects are aligned along the specified axis (i.e., all share the same row or column). Parameters: objects (list[object]), axis (axis := Literal["horizontal", "vertical"]). Cues: if two or more objects/pixels are in a straight line in the input grid; if the solution logic rotates the grid to align objects for easier processing. Used in: b7249182.
+</description>
+<example>
+```python
+for "horizontal", check if all y-coordinates are equal; for "vertical", check if all x-coordinates are equal
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+position_along_axis (routine/intermediate). returns a function that, given an object, extracts its x or y coordinate (e.g., for sorting). Parameters: axis (axis := Literal["x", "y"]). Cues: if objects are sorted or processed left-to-right or top-to-bottom; if the solution logic needs to order objects by their position along an axis. Used in: b7249182.
+</description>
+<example>
+```python
+for axis "x", return object's minimum x-coordinate; for "y", return minimum y-coordinate
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+create_hollow_rectangle (routine/grid manipulation). create a hollow rectangle (border only, interior empty) with the left and right halves of the border colored differently. Parameters: width (int), height (int), left_color (color), right_color (color). Cues: if output grid contains a rectangle with a border of two colors, each matching a nearby pixel; if a rectangle is centered between two colored pixels, with each half of the border matching the color of the nearest pixel. Used in: b7249182.
+</description>
+<example>
+```python
+create a grid of the given size; set the border pixels in the left half to left_color and in the right half to right_color; leave interior pixels as background
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+border pixels (structure). pixel objects (typically of size 1) located on the edge of the grid, often serving as starting points for movement or transformation. Cues: if only single pixels on the grid edge are selected for movement or manipulation; if output features originate from the border of the input grid. Used in: 1f642eb9.
+</description>
+<example>
+```python
+filter objects of size 1 and check if their position is on the grid edge
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+find pixels (routine/intermediate). extract all pixel objects in a grid of a given color, optionally filtered by additional criteria. Parameters: grid (grid), color (color), criteria (selection criteria := Callable[[object], bool]). Cues: if the solution needs to process only scattered pixels of a specific color inside a region; if output features are drawn from or to specific colored pixels not on lines or borders. Used in: 5daaa586.
+</description>
+<example>
+```python
+for each pixel in the grid, if its color matches and criteria (if any) is satisfied, include it in the result
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+get edge pixel (routine/intermediate). find the first pixel on the edge of a grid or region in the specified direction from a starting position. Parameters: grid (grid), position (position), direction (direction := Literal["up", "down", "left", "right"]). Cues: if the solution draws lines from interior pixels to the edge of a rectangle or frame; if output features connect scattered pixels to the nearest edge in a given direction. Used in: 5daaa586.
+</description>
+<example>
+```python
+from the starting position, move stepwise in the given direction until reaching the edge of the grid or region
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+combinations (routine/intermediate). generate all unique unordered pairs (or r-sized combinations) from a list of objects. Parameters: objects (list[object]), r (int). Cues: if logic compares all pairs of objects for matching or relationship. Used in: ce602527.
+</description>
+<example>
+```python
+use itertools.combinations or nested loops to generate all unique pairs
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+generate rectangles (routine/intermediate). enumerate all possible rectangular subregions of a grid with at least the specified minimum width and height. Parameters: grid (grid), min_width (int), min_height (int). Cues: if the solution involves searching for the largest or smallest rectangle of a certain color in the grid; if the output grid highlights or recolors a contiguous rectangular region. Used in: 3eda0437.
+</description>
+<example>
+```python
+use nested loops to iterate over all possible top-left and bottom-right corners that satisfy the minimum size constraints
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+unique color (routine/intermediate). extract the unique non-background color from a specified row, assuming only one such color exists. Parameters: grid (grid), row (int). Cues: if a row (e.g., the bottom row) is visually a solid color and used as a reference or baseline in the output logic. Used in: 3618c87e.
+</description>
+<example>
+```python
+use np.unique on the specified row, excluding background color if necessary
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+lowest row below (routine/intermediate). find the lowest available row in a column below a given pixel, stopping at the first pixel matching the criteria. Parameters: pixel (object), criteria (selection criteria := Callable[[object], bool]). Cues: if pixels or objects in the output grid "fall" vertically until they reach a baseline or background pixel; if the output grid shows stacking or gravity-like behavior for non-background pixels. Used in: 3618c87e.
+</description>
+<example>
+```python
+iterate from the bottom of the column upward, stopping at the first pixel matching the criteria or at the pixel's current position
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+grid edges (routine/intermediate). generate the four edges of a grid as start and end positions, typically for drawing borders or frames. Parameters: grid (grid). Cues: if the output grid contains a border or frame drawn along all four sides of the grid; if lines are drawn along the perimeter of the grid in the output. Used in: 6f8cd79b.
+</description>
+<example>
+```python
+for a grid of shape (height, width), yield four edges: top (from (0,0) to (0,width-1)), bottom (from (height-1,0) to (height-1,width-1)), left (from (0,0) to (height-1,0)), right (from (0,width-1) to (height-1,width-1))
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+find rectangles from corners (routine/intermediate). find all axis-aligned rectangles whose four corners are present in a set of candidate corner positions. Parameters: corners (list[position]). Cues: if the input grid contains scattered pixels of a special color (e.g., yellow) and the output grid fills rectangles defined by these as corners; if the output grid contains filled rectangles not present in the input, with boundaries matching input pixel positions. Used in: af902bf9.
+</description>
+<example>
+```python
+for each pair of distinct corner positions (x1, y1), (x2, y2) with x1 != x2 and y1 != y2, check if the other two corners ((x1, y2), (x2, y1)) are present in the set
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+rectangle shape (routine/grid manipulation). create a filled rectangle grid of the specified ranges, typically used to define the interior region between rectangle corners. Parameters: x_range (tuple[int, int]), y_range (tuple[int, int]). Cues: if the output grid fills the area inside a rectangle defined by corner pixels; if the solution logic requires constructing a mask or region for a rectangle interior. Used in: af902bf9.
+</description>
+<example>
+```python
+create a grid of zeros with shape (y_range[1] - y_range[0], x_range[1] - x_range[0]), then fill all pixels with the intended color
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+vertical line (structure). a contiguous object that spans a single column from a starting row to an ending row, often used for drawing or filling. Cues: if output grid rows are filled with a repeating or cyclical color pattern derived from an input row, such as lower rows matching the top row's color sequence. Used in: 834ec97d, 3f7978a0.
+</description>
+<example>
+```python
+for each row starting from start_row, fill the row with color_sequence[i % len(color_sequence)]
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+orthogonal neighbors (routine). get the neighboring pixels in the four cardinal (orthogonal) directions from a given position. Parameters: position (position), grid (grid). Cues: if the output grid contains changes to pixels that are directly adjacent (up, down, left, right) to colored pixels; if output features are drawn from a pixel and its four-connected neighbors; if coloring or movement is only allowed in the four cardinal directions. Used in: 0ca9ddb6.
+</description>
+<example>
+```python
+for a given (x, y), orthogonal neighbors are at (x-1, y), (x+1, y), (x, y-1), (x, y+1)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+diagonal direction (routine/intermediate). determine the diagonal direction(s) for line drawing, often used to extend patterns along both diagonals. Parameters: object (object). Cues: if the output grid is a minimal rectangle containing multiple objects; if objects are packed together with no empty space between them in the output; if the region to be cropped is defined by the outermost extent of objects (e.g., lines, bars). Used in: 05269061, ea786f4a, aba27056.
+</description>
+<example>
+```python
+find the minimum and maximum x and y coordinates among all object pixels to define the bounding box, then slice the grid accordingly
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+repeat pattern at periodic offsets (routine/grid manipulation). repeat a drawing or pattern at every nth position along an axis, creating a periodic/interlaced effect. Parameters: pattern (Callable[[position], None]), offsets (list[int]), axis (axis := Literal["x", "y"]), base_position (position). Cues: if output grid contains repeated features at regular intervals (e.g., every third column or row); if a motif or line is repeated at periodic spatial offsets from input features. Used in: 05269061.
+</description>
+<example>
+```python
+for each offset in offsets, compute the new position along the axis and apply the pattern at that position
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+next pixel in direction (routine/intermediate). compute the position immediately adjacent to the given object or pixel in the specified direction. Parameters: object (object), direction (direction := Literal["up", "down", "left", "right"]). Cues: if a line or path starts immediately next to a pixel or object, not including the pixel itself; if a process needs to begin drawing or filling from the neighbor of a reference pixel. Used in: d4a91cb9.
+</description>
+<example>
+```python
+for a pixel object, add the direction vector to its (x, y) position
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+horizontal_towards (routine/intermediate). determine the horizontal direction ("left" or "right") from the source to the target. Parameters: target (object | position), source (object | position). Cues: if a line is drawn horizontally from one pixel to another, and the direction depends on their relative positions. Used in: d4a91cb9.
+</description>
+<example>
+```python
+compare the x-coordinates of source and target; if target.x > source.x, direction is "right", else "left"
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+vertical_towards (routine/intermediate). determine the vertical direction ("up" or "down") from the source to the target. Parameters: target (object | position), source (object | position). Cues: if a line is drawn vertically from one pixel to another, and the direction depends on their relative positions. Used in: d4a91cb9.
+</description>
+<example>
+```python
+compare the y-coordinates of source and target; if target.y > source.y, direction is "down", else "up"
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+find extremal points (routine/intermediate). find the two most distant points (e.g., endpoints) in a set of pixels, often used to identify the edges of an opening or region. Parameters: object (object). Cues: if the solution draws lines from the ends or corners of an opening or region; if output features originate from the most separated points of a boundary. Used in: aba27056.
+</description>
+<example>
+```python
+compute pairwise distances between all pixels and select the pair with the maximum distance
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+stop at non-black (routine/stopping criteria). stopping criteria that returns True if the pixel at the given position is not black (background). Parameters: position (position), grid (grid). Cues: if line drawing or filling stops when encountering a non-background pixel; if lines or patterns extend outward until they hit a colored object or the grid edge. Used in: aba27056.
+</description>
+<example>
+```python
+check if grid[position] != 0 (assuming 0 is black/background)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+distance to grid edge (routine/intermediate). compute the number of steps from a position to the grid edge in the specified direction. Parameters: position (position), direction (direction := Literal["up", "down", "left", "right", "up-right", "up-left", "down-right", "down-left"]), grid (grid). Cues: if lines or regions are extended from a pixel to the grid border; if the extent of a drawn feature is determined by the distance to the grid edge. Used in: b527c5c6.
+</description>
+<example>
+```python
+incrementally move in the given direction from the position until the edge of the grid is reached, counting steps
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+has only one nonblack color (routine/selection criteria). condition on whether an object contains exactly one non-black color. Parameters: target (object). Cues: if an object in the grid is monochrome except for black/background pixels; if the solution distinguishes between objects with a single color and those with multiple colors. Used in: 6ecd11f4.
+</description>
+<example>
+```python
+extract the set of unique colors in the object, remove black (0), and check if the length is 1
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+not (routine/selection criteria). returns a selection criteria that negates the result of another criteria. Parameters: criteria (Callable[[object], bool]). Cues: if objects are selected by being the opposite of a certain property (e.g., not monochrome). Used in: 6ecd11f4, aabf363d, 2204b7a8, b782dc8a, 2bcee788.
+</description>
+<example>
+```python
+return a function that returns not criteria(target)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+crop object (routine/grid manipulation). crop an object to its minimal bounding box, returning the cropped grid or object. Parameters: object (object), background (color). Cues: if the solution requires identifying pixels on the perimeter of a region or object; if lines or features are drawn from the edge of a region or container. Used in: 6ecd11f4, 8d5021e8, f8a8fe49, 3f7978a0, 8e5a5113 (+3 more).
+</description>
+<example>
+```python
+compare the pixel's coordinates to the min/max x and y of the bounding box
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+resize object (routine/grid manipulation). resize an object or grid to new dimensions, optionally using a specified method. Parameters: object (grid | object), new_shape (dimensions := tuple[int, int]), method (str). Cues: if an object in the input grid appears at a different size in the output, especially scaled down or up to match another object's size; if a large object is used as a mask or template for a smaller region. Used in: 6ecd11f4.
+</description>
+<example>
+```python
+for downscaling, use block sampling or nearest neighbor to map larger regions to single pixels
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+mask object (routine/grid manipulation). apply a mask to an object or grid, setting pixels to fill_value where the mask equals mask_value, and keeping original pixels elsewhere. Parameters: object (grid | object), mask (grid), mask_value (int), fill_value (int). Cues: if the output grid is a copy of an object with some pixels zeroed out according to a mask pattern; if a pattern is used to erase or keep pixels in another object. Used in: 6ecd11f4.
+</description>
+<example>
+```python
+for each pixel, if mask at that position equals mask_value, set output to fill_value; else, copy from object
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+all pairs (routine/intermediate). generate all unique unordered pairs from a list of objects, typically used to compare or process relationships between objects in a row or column. Parameters: objects (list[object]). Cues: if the solution logic compares all pairs of objects in a row or column for matching properties; if filling or connecting occurs between pairs of matching objects in a sequence. Used in: 06df4c85.
+</description>
+<example>
+```python
+use itertools.combinations(objects, 2) to generate all unique pairs
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+cells between (routine/intermediate). extract the objects that are strictly between two given objects in an ordered sequence (e.g., cells between two matching-colored cells in a row or column). Parameters: sequence (list[object]), object1 (object), object2 (object). Cues: if all objects or regions between two matching features are recolored or filled in the output grid; if the output grid shows contiguous filling between pairs of objects with the same property. Used in: 06df4c85.
+</description>
+<example>
+```python
+find the indices of object1 and object2 in the sequence, and return all objects between them (exclusive)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+find divider line color (routine/intermediate). identify the color used for divider lines that partition the grid into regions or cells. Parameters: grid (grid). Cues: if the grid is visually partitioned by lines of a single color; if regions or cells are separated by a consistent color not used elsewhere. Used in: 06df4c85.
+</description>
+<example>
+```python
+for each unique color in the grid, check if it forms uninterrupted lines spanning rows or columns; select the color that does so
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+transpose (routine/intermediate). transpose a 2D grid or list of lists, converting rows to columns and vice versa. Parameters: grid (list[list[object]]). Cues: if the solution logic processes both rows and columns in a similar fashion; if the same operation is applied along both axes of a region grid. Used in: 06df4c85.
+</description>
+<example>
+```python
+use zip(*grid) or equivalent to transpose the structure
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+count shape features (routine/intermediate). count the number of specified features (such as bends or corners) present in an object's shape. Parameters: shape (shape := Any), feature (str). Cues: if objects are recolored or categorized based on geometric properties such as number of corners, bends, or endpoints; if output grid colors correspond to the number of turns or L-shaped corners in input objects. Used in: e509e548.
+</description>
+<example>
+```python
+for "bend", traverse the object's contour or pixel sequence and count positions where the direction changes (i.e., L-shaped turns)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+map value (routine/intermediate). map an input value to an output value using a fixed mapping dictionary. Parameters: value (Any), mapping (dict[Any, Any]). Cues: if output grid colors or features are assigned based on a lookup table or fixed mapping from an input property; if a small set of possible input values are mapped to specific output values. Used in: e509e548.
+</description>
+<example>
+```python
+use Python's dict lookup: mapping[value]
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+is hollow rectangle (routine/selection criteria). condition on whether an object is a hollow rectangle, i.e., has a rectangular border and an interior filled with background color. Parameters: target (object), background (color). Cues: if the grid contains rectangular outlines with empty (background) interiors; if the output grid fills only the interiors of hollow rectangles; if rectangles in the input grid are not solid but have a border and empty center. Used in: e73095fd.
+</description>
+<example>
+```python
+crop the object to its bounding box and check that the interior (excluding the border) is all background color
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+has grey adjacent to corners (routine/selection criteria). condition on whether any of the rectangle's corner pixels have a grey pixel adjacent (4- or 8-connected) in the grid. Parameters: target (object), grid (grid). Cues: if rectangles in the input grid have lines or features attached at their corners, and these are treated differently in the output; if only rectangles without attached lines at corners are filled in the output grid. Used in: e73095fd.
+</description>
+<example>
+```python
+for each corner of the object's bounding box, check the neighboring pixels in the grid for the presence of grey
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+find edge with color (routine). find which edge(s) of the grid contain at least one pixel of the specified color. Parameters: grid (grid), color (color). Cues: if the direction of a process depends on which edge contains a certain colored pixel; if colored pixels only appear on a single edge in the input grid. Used in: f15e1fac.
+</description>
+<example>
+```python
+check each edge (first/last row and column) for the presence of the specified color
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+get flow direction (routine). determine the direction in which to "flow" or propagate from a starting edge toward the opposite edge, possibly based on the positions of colored pixels. Parameters: start_edge (Literal["top", "bottom", "left", "right"]), end_edge (Literal["top", "bottom", "left", "right"]). Cues: if a process extends from one edge of the grid toward the opposite edge; if the direction of propagation is determined by the positions of colored pixels on the grid edges. Used in: f15e1fac.
+</description>
+<example>
+```python
+map edge pairs to cardinal directions (e.g., "left" to "right" => "right")
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+get push direction (routine). determine the direction to "push" a process away from a reference edge or set of pixels, typically to avoid or step aside from an obstacle. Parameters: edge (Literal["top", "bottom", "left", "right"]). Cues: if a process is deflected or offset when encountering a row or column containing a special color; if the output grid shows a "bend" or offset when a path aligns with a colored pixel. Used in: f15e1fac.
+</description>
+<example>
+```python
+map the reference edge to the direction away from it (e.g., "top" => "down")
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+in bounds (routine). check if a given position is within the valid bounds of the grid. Parameters: position (position), grid_shape (tuple[int, int]). Cues: if the output grid or a sprite is a tight crop of an object from the input grid; if a region or subregion of the output grid is extracted for further manipulation, such as flipping, tiling, or other transformations; if the output grid contains only the content inside a frame or border, possibly with the border width trimmed. Used in: f15e1fac, 0962bcdd.
+</description>
+<example>
+```python
+find the minimum and maximum x and y coordinates of the object's pixels and slice the grid accordingly
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+set pixel (routine/grid manipulation). set the color of a specific pixel in a grid, overwriting its previous value. Parameters: grid (grid), position (position), color (color). Cues: if the solution logic starts from or processes only colored pixels on the grid edge; if output features originate from the border of the input grid; if distance, adjacency, coloring, or assignment depends on proximity to the edge of a region, object, or the grid itself. Used in: aabf363d, 11852cab, 0962bcdd, 31aa019c.
+</description>
+<example>
+```python
+for each pixel in the grid or object, if its color matches and its position is on the grid edge, or if any neighboring position is not part of the object, include it as an edge pixel
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+is filled rectangle (routine/selection criteria). condition on whether an object is a solid (filled) rectangle, i.e., its bounding box is completely filled with a single color and contains no holes or gaps.. Parameters: target (object). Cues: if an object in the input grid is a solid rectangle that occludes or covers part of another object; if the output grid is missing a rectangular region present in the input grid. Used in: 3345333e.
+</description>
+<example>
+```python
+crop the object to its bounding box and check that all pixels are the same color and there are no background pixels inside
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+remove object (routine/grid manipulation). remove an object from the grid, setting its pixels to the background color. Parameters: grid (grid), object (object). Cues: if an object present in the input grid is missing in the output grid, revealing previously occluded content; if a rectangular region is erased or deleted in the output. Used in: 3345333e.
+</description>
+<example>
+```python
+set all pixels of the object in the grid to the background color (usually 0)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+find mirror symmetry (routine/intermediate). detect mirror symmetry transformations (e.g., vertical, horizontal) present in a grid, optionally ignoring specified colors. Parameters: grid (grid), ignore_colors (list[color]). Cues: if the output grid restores symmetry that is broken in the input grid by an occluding object; if the output grid is symmetric along an axis, but the input grid is not due to an occlusion. Used in: 3345333e.
+</description>
+<example>
+```python
+for each axis, compare the grid to its reflection along that axis, ignoring specified colors
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+not_equal (routine/selection criteria). condition on whether a target object is not equal to a reference object. Parameters: reference (object). Cues: if all objects except one are selected for further processing; if the solution logic distinguishes a central or special object from others. Used in: 045e512c.
+</description>
+<example>
+```python
+for each object, compare to the reference object using identity or equality of properties (e.g., position, color, shape)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+argmax_displacement (routine/intermediate). find the displacement vector that, when applied to the object, maximizes a criterion (e.g., full overlap with target), preferring the largest-magnitude displacement. Parameters: object (object), target (object), criteria (Callable[[object, object, tuple[int, int]], bool]), search_space (list[tuple[int, int]]). Cues: if an object is repeatedly moved in a fixed direction and distance to overlap other objects; if the solution requires maximizing the extent of movement while achieving a spatial relationship. Used in: 045e512c.
+</description>
+<example>
+```python
+for each displacement in the search space, check if moving the object by that displacement satisfies the criteria; select the one with the largest magnitude
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+full_overlap (routine/selection criteria). condition on whether moving the object by the given displacement results in it fully overlapping the target object. Parameters: object (object), target (object), displacement (tuple[int, int]). Cues: if the solution logic requires one object to completely cover another; if movement or tiling is based on achieving exact spatial overlap. Used in: 045e512c.
+</description>
+<example>
+```python
+after applying the displacement, check if all pixels of the moved object coincide with the target object's pixels
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+displacement_direction (routine/intermediate). extract the direction from a displacement vector (e.g., (dx, dy) -> direction label). Parameters: displacement (tuple[int, int]). Cues: if repeated movement is along a fixed direction determined by a displacement. Used in: 045e512c.
+</description>
+<example>
+```python
+map the sign of dx and dy to a direction label (e.g., (1,0) -> "right", (0,1) -> "down", etc.)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+displacement_magnitude (routine/intermediate). compute the magnitude (step size) of a displacement vector for use as the gap in tiling. Parameters: displacement (tuple[int, int]). Cues: if repeated movement is by a fixed number of rows/columns per step. Used in: 045e512c.
+</description>
+<example>
+```python
+use max(abs(dx), abs(dy)) or another norm as appropriate
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+detect rotational symmetry (routine/intermediate). detect the presence and properties of rotational symmetry in a grid, including the center of rotation, angle, and symmetry order.. Parameters: grid (grid), ignore_colors (list[color]). Cues: if the output grid is a completed or restored version of a rotationally symmetric pattern in the input grid; if missing or incomplete regions are filled in the output grid to achieve rotational symmetry; if the input grid exhibits partial rotational symmetry, and the output grid is fully symmetric. Used in: 11852cab.
+</description>
+<example>
+```python
+analyze the grid to find the center of symmetry and the smallest angle of rotation that maps the pattern onto itself
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+append row (routine/grid manipulation). append a new row to the bottom of a grid, increasing its height by one. Parameters: grid (grid), row (list[color]). Cues: if the output grid is taller than the input grid and rows are added sequentially; if the output grid is constructed by stacking rows derived from previous rows. Used in: bbc9ae5d.
+</description>
+<example>
+```python
+use numpy.vstack or concatenate the new row to the grid
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+rightmost pixel (routine/intermediate). find the index of the rightmost pixel of the specified color in a row. Parameters: row (list[color]), color (color). Cues: if the output logic depends on extending or modifying a colored segment in a row; if the rightmost extent of a colored region is incremented in each row. Used in: bbc9ae5d.
+</description>
+<example>
+```python
+iterate from the end of the row backwards to find the first occurrence of the color
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+extend colored segment (routine/grid manipulation). extend a contiguous segment of colored pixels in a row by setting the specified position to the color. Parameters: row (list[color]), color (color), position (int). Cues: if each row in the output grid has a colored segment that is one pixel longer than the previous row; if the output grid shows a growing bar or region along a row or column. Used in: bbc9ae5d.
+</description>
+<example>
+```python
+copy the row, set row[position] = color
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+pattern-to-color mapping (routine/color scheme). assign a color to a pattern object by matching it to a known template and using a fixed mapping. Parameters: pattern (object), color_map (dict[object, color]). Cues: if each input pattern is associated with a unique color in the output grid; if output grid rows are colored according to the identity of input patterns; if a fixed set of templates or patterns are mapped to specific colors. Used in: 995c5fa3.
+</description>
+<example>
+```python
+compare the input pattern to each template in color_map, using shape or pixel-wise comparison
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+split_vertical_center (routine/object splitting scheme). split an object into left and right halves along its vertical center axis. Parameters: object (object). Cues: if a pattern or region is divided into left/right halves for mirroring or placement. Used in: f8a8fe49.
+</description>
+<example>
+```python
+compute the vertical center of the object's bounding box and slice into left/right halves
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+split_horizontal_center (routine/object splitting scheme). split an object into top and bottom halves along its horizontal center axis. Parameters: object (object). Cues: if a pattern or region is divided into top/bottom halves for mirroring or placement. Used in: f8a8fe49.
+</description>
+<example>
+```python
+compute the horizontal center of the object's bounding box and slice into top/bottom halves
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+aligned_inside (routine/intermediate). compute the position to place an object so it is centered or aligned within a frame or container. Parameters: frame (object), object (object). Cues: if the output grid places patterns or sprites exactly inside frames or containers, possibly after transformation; if alignment within a frame is required for correct placement. Used in: f8a8fe49.
+</description>
+<example>
+```python
+compute the anchor position so that the object's bounding box is centered or aligned within the frame's interior region
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+crop region between lines (routine/grid manipulation). crop the region of the grid bounded by two vertical lines, optionally extending the region above and below the lines. Parameters: grid (grid), left_line (object), right_line (object), y_extension (tuple[int, int]). Cues: if the output grid is a subregion defined by two parallel lines (e.g., vertical bars) and possibly extended beyond their bounding boxes; if the crop region is not strictly the bounding box of objects, but includes extra rows or columns. Used in: 3f7978a0.
+</description>
+<example>
+```python
+use the x-coordinates of the left and right lines as crop boundaries
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+min_distance (routine/intermediate). compute the minimum Manhattan distance from a position to a set of positions. Parameters: position1 (position), positions2 (list[position]). Cues: if coloring or assignment is based on proximity to the nearest object or feature in the grid; if output grid recolors pixels to match the nearest object or line. Used in: 2204b7a8.
+</description>
+<example>
+```python
+for each position in positions2, compute the Manhattan distance to position1 and return the minimum
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+flood fill alternating (routine/grid manipulation). flood fill from a starting position, coloring reachable path pixels with alternating colors from the provided list, switching color at each step or layer.. Parameters: start (position), colors (list[color]), path_criteria (selection criteria := Callable[[object], bool]), grid (grid). Cues: if output grid shows a path or region filled with alternating colors, starting from indicator pixels; if a maze or path is colored with two or more colors in an alternating fashion, spreading from one or more sources; if the output grid contains a colored trail or region that alternates between two colors along a path. Used in: b782dc8a.
+</description>
+<example>
+```python
+perform a BFS or DFS from the start position, for each step or layer, assign the next color in the sequence to the pixel
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+other_indicator (routine/intermediate). returns the other indicator object from a list of two, given one of them. Parameters: indicator_pixels (list[object]), indicator (object). Cues: if alternating coloring or logic depends on both indicator pixels and their colors. Used in: b782dc8a.
+</description>
+<example>
+```python
+given a list of two objects, return the one that is not equal to the provided indicator
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+occurs_exactly_once (routine/selection criteria). condition on whether a color appears exactly once in the grid. Parameters: color (color), grid (grid). Cues: if the output grid highlights or processes a pixel that is the only one of its color in the input. Used in: 31aa019c.
+</description>
+<example>
+```python
+count the number of times the color appears in the grid; return True if count == 1
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+find pixel (routine/intermediate). extract the position (object) of a pixel in the grid matching the given criteria. Parameters: grid (grid), criteria (selection criteria := Callable[[object], bool]). Cues: if the output grid is constructed by referencing or centering features on a specific pixel in the input. Used in: 31aa019c.
+</description>
+<example>
+```python
+iterate over all positions in the grid, return the position where criteria is True
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+generate all rotations and flips (routine/intermediate). generate all unique rotations (by 90 degrees) and mirror flips (horizontal, vertical) of an object. Parameters: object (object). Cues: if objects in the output grid appear in multiple orientations or mirrored versions compared to the input; if a matching or placement process tries all possible orientations of an object. Used in: 0e206a2e.
+</description>
+<example>
+```python
+use numpy.rot90 and numpy.flip to generate all 4 rotations and both flips, removing duplicates if necessary
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+all positions within grid (routine/intermediate). generate all positions where an object can be placed within a grid such that it fits entirely inside. Parameters: object (object), grid (grid). Cues: if the solution tries all possible placements of an object within a region or grid; if the output grid is constructed by fitting pieces into a container or matching colored regions. Used in: 0e206a2e.
+</description>
+<example>
+```python
+slide the object's bounding box over all positions where it remains within the grid's bounds
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+color match at overlap criteria (routine/selection criteria). condition on whether, at overlapping pixels between the placed object and the mask, the colors match (ignoring background). Parameters: object (object), position (position), mask (grid), grid (grid). Cues: if the solution only allows placements where overlapping colored pixels match exactly; if output objects must cover target regions without color mismatches. Used in: 0e206a2e.
+</description>
+<example>
+```python
+for each overlapping pixel where both object and mask are non-background, check that the colors are equal
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+all_pixels_not_in criteria (routine/selection criteria). condition on whether all pixels in an object are not in a given list of excluded colors. Parameters: target (object), exclude (list[color]). Cues: if an object is selected for not containing any of a set of colors (e.g., black, green); if a color guide or palette is present and is distinguished by not containing certain colors. Used in: 7c008303.
+</description>
+<example>
+```python
+extract the set of unique colors in the object and check that none are in the exclude list
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+split into quadrants (routine/object splitting scheme). split an object into four equal-sized quadrants (top-left, top-right, bottom-left, bottom-right). Parameters: object (object). Cues: if a pattern or region is divided into four equal parts for recoloring or processing; if output grid shows quadrant-wise transformation or coloring. Used in: 7c008303.
+</description>
+<example>
+```python
+compute the vertical and horizontal midpoints of the object's bounding box and slice into four subregions
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+combine objects (routine/grid manipulation). combine a list of objects (e.g., quadrants) into a single grid, placing each at its original relative position. Parameters: objects (list[object]). Cues: if a pattern is split into parts for processing and then reassembled; if output grid is constructed by merging transformed regions back together. Used in: 7c008303.
+</description>
+<example>
+```python
+create a blank grid of the appropriate size and copy each object's pixels into their corresponding positions
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+is_inside_container criteria (routine/selection criteria). condition on whether an object is fully enclosed within a specified container object (e.g., a boundary). Parameters: target (object), container (object). Cues: if regions in the output grid are recolored only if they are fully surrounded by a boundary of a specific color; if the output grid colors interior regions differently from exterior or touching-the-boundary regions; if the input grid contains colored outlines or boundaries enclosing empty or black regions. Used in: 00d62c1b.
+</description>
+<example>
+```python
+for each candidate region, check that none of its pixels touch or overlap the container's boundary pixels
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+find direction from opening (routine/intermediate). determine the cardinal direction(s) from the opening pixels that lead outside the cup, often used to guide line drawing or pattern extension from the opening. Parameters: cup_interior (object), cup_opening (list[object]). Cues: if lines or features are drawn outward from the opening of a container or cup shape in the output grid; if the output grid extends features from a gap or opening in a closed region. Used in: d4f3cd78.
+</description>
+<example>
+```python
+for each opening pixel, check the four cardinal directions; the direction(s) that immediately leave the cup's interior are considered outward
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+is shape square (routine/selection criteria). condition on whether an object has equal height and width (i.e., is a square). Parameters: target (object). Cues: if only square-shaped regions or holes are treated differently in the output grid; if output grid fills or recolors only square-shaped holes or objects. Used in: 44d8ac46.
+</description>
+<example>
+```python
+check if the object's bounding box has equal height and width
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+obstacle avoidance path (routine/grid manipulation). compute a path from a starting position in a primary direction, but when a pixel of avoid_color is encountered, move in an alternate direction before resuming the primary direction. Parameters: start (position), direction (direction), avoid_color (color), grid (grid), alternate_direction (direction). Cues: if output lines or paths "bend" or "step aside" to avoid obstacles of a specific color; if lines are not straight but deviate around colored regions or pixels; if output features follow a path that detours around obstacles in the input grid. Used in: d9f24cd1.
+</description>
+<example>
+```python
+at each step, check if the next position in the primary direction is blocked by avoid_color; if so, move in the alternate direction instead, then resume
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+all_nonblack_pixels (routine/selection criteria). extract all pixel objects in a grid that are not black (background). Parameters: grid (grid). Cues: if the output grid is cropped tightly around all colored content, ignoring black/background pixels; if the solution logic needs to find all non-background pixels for cropping or further processing. Used in: 137eaa0f.
+</description>
+<example>
+```python
+for each pixel in the grid, include it if its color is not black (0)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+indicator color (routine/intermediate). find the color that is present in every object in a list, typically used as an indicator or anchor for alignment. Parameters: objects (list[object]). Cues: if all objects in the input grid contain a single common color, often in the same relative position; if a color is used as a marker or anchor for alignment or transformation across multiple objects. Used in: 57aa92db.
+</description>
+<example>
+```python
+for each object's color set, compute the intersection across all objects to find the common color
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+indicator region size (routine/intermediate). compute the size (number of pixels) of the region within an object that has the indicator color. Parameters: object (object), indicator_color (color). Cues: if the scale of an overlay or transformation is determined by the size of a colored region within each object; if indicator regions are used for alignment or scaling. Used in: 57aa92db.
+</description>
+<example>
+```python
+count the number of pixels in the object that are equal to the indicator color
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+position (routine/intermediate). get the position (or anchor) of a pixel of the specified color in an object, typically used for alignment. Parameters: object (object), color (color). Cues: if alignment or overlaying is performed based on matching colored pixels between objects; if a colored pixel serves as an anchor for transformation. Used in: 57aa92db.
+</description>
+<example>
+```python
+find the coordinates of the pixel(s) in the object that match the specified color
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+is_touching (routine/selection criteria). condition on whether an object is in contact with another object, i.e. they share a pixel or edge. Parameters: target (object), other (object). Cues: if the output grid shows an object mirrored or transformed to cover another object that is adjacent to it; if the logic depends on detecting adjacency/contact between two objects for further transformation. Used in: 2bcee788.
+</description>
+<example>
+```python
+check if any pixel of the target object is adjacent (4- or 8-connected) to any pixel of the other object
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+axis_perpendicular_to (routine/intermediate). returns the axis (horizontal or vertical) perpendicular to the given direction. Parameters: direction (direction). Cues: if mirroring or reflection is performed across an axis perpendicular to a direction of adjacency/contact. Used in: 2bcee788.
+</description>
+<example>
+```python
+for "left" or "right", return "vertical"; for "up" or "down", return "horizontal"
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+scale grid (routine/grid manipulation). scale an entire grid by a given factor, enlarging or shrinking it proportionally along one or both axes. Parameters: grid (grid), scale (int | tuple[int, int]). Cues: if the entire output grid is a scaled-up or scaled-down version of the input grid or an intermediate result; if the output grid is a larger version of the input, preserving the arrangement of features. Used in: 46f33fce.
+</description>
+<example>
+```python
+use numpy.kron or repeat to scale the grid
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+adjusted position (routine/intermediate). compute the anchor position for placing a scaled object so that its intended reference point (e.g., upper left) matches the scaled position. Parameters: position (position), scale (int | tuple[int, int]), anchor (Literal["upper left", "center", "custom"]). Cues: if scaled objects must be placed so that their upper left corner aligns with the scaled position of the original pixel; if the placement of scaled objects depends on the scaling factor and anchor alignment. Used in: 46f33fce.
+</description>
+<example>
+```python
+for "upper left" anchor, multiply the original position by the scale factor
+```
+</example>
+</memory_item>
+** Count: 1
+
+GENERAL META-REASONING STRATEGIES
+
+<memory_item>
+<description>
+extract objects (routine/intermediate). Parameters: input grid (grid), single color (bool), connectivity (str), background color (str), criteria (selection criteria := Callable[[object], bool]). Used in: prelim, 8e1813be, 5c2c9af4, 23581191, f9012d9b (+91 more).
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+filter objects (routine/intermediate). filter a list of objects based on some criteria. Parameters: input objects (list[object]), criteria (selection criteria := Callable[[object], bool]). Used in: prelim, 8e1813be, 6e19193c, 6855a6e4, 97a05b5b (+25 more).
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+find object (routine/intermediate). find an object in a list of objects based on some criteria. Parameters: input objects (list[object]), criteria (selection criteria). Cues: if the solution selects the largest or smallest region/object among candidates. Used in: prelim, 8e1813be, 23581191, d06dbe63, 4c5c2cf0 (+30 more).
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+split grid (structure). where the grid is split into multiple regions that are treated as distinct. Cues: divider lines (of any color) that span the grid and partition it into regions; visually distinct regions or objects that are processed separately, often separated by colored or black lines, columns, or rows; color-based regions where pixels of a certain color only appear within specific sections of the grid. Used in: prelim, cf98881b, 7447852a, 239be575, 25d8a9c8 (+3 more).
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+split regions (routine/intermediate). Parameters: input grid (grid), splitting scheme (splitting scheme := str | Callable[[grid], list[grid]]). Used in: prelim, cf98881b, 9f236235, 6455b5f5, 29623171 (+10 more).
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+is color criteria (routine/selection criteria). condition on whether an object is a given color. Parameters: target (object), color (color). Used in: prelim, 228f6490, 4093f84a, 48d8fb45, 8e1813be (+37 more).
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+has color criteria (routine/selection criteria). condition on whether a target object's colors include a given color. Parameters: target (object), color (color). Used in: prelim, 3e980e27, 6cdd2623, 1a07d186, 6b9890af (+5 more).
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+container (structure). an object that contains other objects, often used to define a region of interest. Cues: if there is an object with a cavity; if there are objects with an empty interior and a single pixel inside, and the output fills the interior with that pixel's color. Used in: 776ffc46, 444801d8.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+divider lines (structure). lines that divide the grid into regions, often used to define a grid of regions. Cues: if there are lines that span the grid and partition it. Used in: cf98881b, 9f236235, 6455b5f5, 29623171, 941d9a10 (+5 more).
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+hole (structure). an empty space inside an object, often used to define a region of interest. Cues: if there is an object with a cavity. Used in: 228f6490, 810b9b61, 444801d8.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+region grid (structure). where the grid is partitioned into a grid of distinct regions. Cues: presence of horizontal and vertical lines that partition the grid into non-overlapping regions or tiles; input grid is visually organized as a grid of distinct regions, or output grid has one pixel per input region, preserving region order. Used in: 9f236235, 1e32b0e9, 90c28cc7, 0b148d64, 09629e4f (+1 more).
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+split object (routine/intermediate). split an object into two parts based on a specified scheme. Parameters: object (object), object splitting scheme (object splitting scheme := str | Callable[[object], list[object]]). Cues: if a region is divided into two halves along a symmetry axis for further processing; if the output grid contains mirrored or transformed halves of an input pattern. Used in: e21d9049, f8a8fe49, 7c008303.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+new pixels criteria (routine/selection criteria). condition on whether an object is new, i.e. does not exist in the old grid. Parameters: target (object), old (grid). Used in: 1b60fb0c.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+alignment criteria (routine/selection criteria). condition on whether two objects are aligned, i.e. they share the same rows or columns. Parameters: object1 (object), object2 (object). Used in: 6cdd2623.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+stripe (structure). a contiguous object that is either one row (horizontal) or one column (vertical) in extent, often used to fill or pattern a region. Cues: if the grid contains objects that are long and thin, spanning the width or height of a region; if the output grid consists of a single row or column of colored pixels, especially with one color per pixel; if the output grid is a vertical or horizontal line of colors. Used in: 8e1813be, f8b3ba0a, 1fad071e, 746b3537.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+bar (structure). an object that spans the full width or height of the grid, often serving as a target or anchor for other objects. Cues: if the grid contains objects that are as wide or as tall as the grid itself; if output pixels are aligned with or stop at such objects; if the output grid consists of colored rectangles or lines spanning the grid. Used in: 1a07d186, 56dc2b01, 08ed6ac7, 178fcbfb, 0a938d79.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+pyramid of lines (structure). a visual pattern where lines of alternating colors and decreasing lengths are arranged symmetrically around a central axis, forming a pyramid or triangle shape. Cues: if output grid contains a central line with shorter lines extending to both sides, forming a triangle or pyramid shape; if the lengths of lines decrease by one as they move away from the center; if colors alternate between two values in the pattern. Used in: db3e9e38.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+select every nth element (routine/intermediate). select every nth element from a sequence, optionally starting at a given offset. Parameters: sequence (list[Any]), n (int), offset (int). Cues: if the output grid is affected only for every nth region/object in a spatial or ordered list; if output features (e.g., lines or objects) are repeated at regular intervals (e.g., every second or third column); if a pattern is applied periodically across a row or column. Used in: 7447852a, 834ec97d, 05269061.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+square object (structure). an object whose height and width are equal; often used as a unit for expansion, framing, or patterning. Cues: if the grid contains objects that are perfect squares (equal height and width); if the output grid treats square-shaped objects differently, such as centering frames or expansions on them; if the output grid is composed of concentric or nested square regions. Used in: db93a21d, 3befdf3e, eb5a1d5d, feca6190, 44d8ac46.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+scale object (routine/grid manipulation). scale an object by a given factor, enlarging or shrinking it proportionally along one or both axes. Parameters: object (object), factor (int | tuple[int, int]). Cues: if pixels or objects are removed in the output grid by being set to black; if the output grid uses black to represent absence or background. Used in: 6b9890af, 57aa92db, 46f33fce.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+background (structure). the color used as the background or to fill unused grid space, typically 0 (black). Cues: if the output grid contains a rectangular border (often of a specific color) surrounding another object or region; if an object is placed inside a colored rectangular outline in the output; if the output region is cropped to a rectangle containing a border and its contents. Used in: f8b3ba0a, 1e32b0e9, 444801d8.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+all pixels are color criteria (routine/selection criteria). condition on whether all pixels in an object are of the specified color. Parameters: target (object), color (color). Cues: if the output grid is initialized with a single color before other drawing; if unused or empty grid regions are filled with a uniform color. Used in: 150deff5, 6cf79266, 25d8a9c8, e48d4e1a, bd4472b8 (+1 more).
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+pick only color from region (routine/color selection). select the only non-background color present in a region; assumes the region contains exactly one color besides the background (e.g., black). Parameters: region (grid). Cues: if a recognizable, fixed-size pattern or motif (such as a colored square or diagonal) appears in the output grid, especially centered on an input pixel or object, or used to overwrite regions; if the output grid contains motifs or templates of a fixed size (e.g., 4x4) not present in the input, or if patterns are matched to a reference set to determine output properties. Used in: 780d0b14, 90c28cc7, 0b148d64.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+repeated sprite with symmetry (structure). a grid region that is composed of repeated copies of a sprite, where each copy may be reflected or flipped. Cues: if the input grid consists of stacked or tiled regions that are all identical or mirror images of each other; if the output is a single tile or sprite extracted from a repeated pattern in the input grid. Used in: 2dee498d.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+count (routine/intermediate). count the number of elements in a sequence; can be used to count unique colors, objects, etc.. Parameters: sequence (list[Any]). Cues: if the output grid is manipulated or recolored on a row-by-row basis; if each row is processed independently in the solution logic; if each row of the output grid is filled with a single color corresponding to an input pattern. Used in: fcc82909, 0b148d64, 681b3aeb, 0e206a2e.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+symmetry types (structure). the set of symmetry types to check for, such as "rotational", "vertical", "horizontal", or "diagonal". Cues: if the output grid contains regions, objects, or background areas filled with green that are not present in the input. Used in: 72ca375d, 11852cab.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+most common color (routine/intermediate). find the color that appears most frequently in the grid, typically used as the background color. Parameters: grid (grid). Cues: if the output grid contains filled rectangles of a single color, especially adjacent to or below input objects; if new rectangular regions are added in the output grid with dimensions determined by properties of input objects; if the solution searches for or processes rectangular regions in the grid. Used in: e8dc4411, caa06a1f, 3618c87e, 41e4d17e, 0962bcdd.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+repeated translation (routine/grid manipulation). repeatedly translate an object by a fixed stride in a given direction and draw it onto the grid. Parameters: object (object), start_position (position), direction (direction), stride (int), repetitions (int), base (grid). Cues: if the solution distinguishes between different types of symmetry (e.g., mirror vs. rotational); if objects are selected based on being symmetric under one or more transformations. Used in: e8dc4411, 0a938d79, feca6190.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+nested layers (structure). a visual pattern where multiple objects or regions are arranged as concentric layers, each enclosed within the previous one, often with different colors. Cues: if output grid is composed of concentric colored squares or rectangles, with each inner layer surrounded by an outer layer of a different color; if the number of layers matches the number of objects in the input grid; if each layer is one pixel wide and colored according to input object colors. Used in: eb5a1d5d.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+repeat color sequence in rows (routine/grid manipulation). fill each row of a grid (starting from start_row) with colors from a sequence, cycling through the sequence as needed. Parameters: grid (grid), start_row (int), color_sequence (list[color]). Cues: presence of a plus-shaped pattern formed by a row and column of the same color in the grid; output grid is created by drawing a filled row and column intersecting at a specific position. Used in: bd4472b8, bbc9ae5d.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+spiral path (structure). a path that starts at a corner or edge and winds inward, turning at right angles whenever blocked, forming a spiral. Cues: if the output grid contains a continuous colored path that spirals inward from the edge or corner; if coloring proceeds in a spiral, with each turn occurring when the path meets a boundary or previously colored cell. Used in: 28e73c20.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+is on bounding box edge criteria (routine/selection criteria). check if a pixel is on the edge of a bounding box (e.g., to identify the opening of a container). Parameters: position (position), bounding_box (object). Cues: if the output grid contains vertical lines of a single color, especially extending from a pixel to the grid edge; if repeated vertical lines are drawn at regular intervals along a row; if vertical lines are used as boundaries for cropping or region selection. Used in: aba27056, d4f3cd78.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+cup (container with opening) (structure). an object that is a container with an open boundary (opening), typically to be filled or have lines drawn from its opening. Cues: presence of lines or patterns extending in diagonal directions (up-right, down-right, up-left, down-left) from a pixel or object in the output grid; diagonal symmetry or repeated diagonal patterns in the output grid. Used in: aba27056, d4f3cd78.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+opening of container (structure). the set of pixels on the boundary of a container object that are not enclosed, forming the "opening" through which filling or extension occurs. Cues: if lines or features are drawn from a contiguous edge of a container object; if the output grid extends features from a gap in a closed region. Used in: aba27056.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+edge pixels (routine/intermediate). extract all pixel objects in a grid of a given color that are located on the edge of the grid. Parameters: grid (grid), color (color), object (object). Cues: if the grid contains a region bounded on all sides except one (the opening); if the output grid fills a region inside a container and extends features from its open edge. Used in: f15e1fac, 2204b7a8.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+corner pixel (structure). a pixel located at one of the four corners of the grid, often used as a marker or to determine a color for further processing. Cues: if a single pixel in the corner of the input grid is missing or has a special color in the output; if the color of a corner pixel is used elsewhere in the output grid. Used in: aabf363d.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+tiling of mirrored sprites (structure). a grid composed of repeated copies of an input sprite, where each copy may be a reflection (horizontal, vertical, or both), arranged in a regular pattern (e.g., 2x3 grid). Cues: if the output grid is larger than the input and consists of repeated, mirrored, or flipped versions of the input object; if the output grid is constructed by assembling mirrored tiles of an input sprite in a regular arrangement. Used in: 8d5021e8.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+pixel cluster (structure). a small object consisting of a contiguous group of a few pixels (e.g., <= 4), often serving as a target to be covered or matched. Cues: if the grid contains small clusters of colored pixels that are targets for covering or matching by larger objects; if the output grid is constructed by aligning or overlaying larger objects onto small colored regions. Used in: 0e206a2e.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+large object (structure). an object with more than a threshold number of pixels (e.g., > 4), typically used as a movable or transformable piece. Cues: if the grid contains objects of varying sizes and only the larger ones are manipulated or moved in the output; if large objects are used to cover or match smaller pixel clusters in the output grid. Used in: 0e206a2e.
+</description>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+cup opening (structure). the set of pixels on the boundary of a container object that are not enclosed, forming the "opening" through which filling or extension occurs. Cues: if lines or features are drawn from a contiguous edge of a container object; if the output grid extends features from a gap in a closed region. Used in: d4f3cd78.
+</description>
+</memory_item>
+** Count: 1
+
+</cheatsheet>

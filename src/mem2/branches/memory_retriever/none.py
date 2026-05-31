@@ -7,6 +7,12 @@ class NoneMemoryRetriever:
     name = "none"
     COMPATIBLE_SCHEMAS = {"none", "arcmemo_oe", "arcmemo_ps"}
 
+    def __init__(self, **kwargs) -> None:
+        # Accept and ignore any kwargs (e.g. top_k, domain inherited from base
+        # experiment retriever_cfg) so this no-op retriever can be used as a true
+        # bare baseline without requiring the base config to be restructured.
+        del kwargs
+
     def retrieve(
         self,
         ctx: RunContext,

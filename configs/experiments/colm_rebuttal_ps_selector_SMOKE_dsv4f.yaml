@@ -1,0 +1,73 @@
+# COLM 2026 rebuttal — ps_selector SMOKE (n=10), post-fixes (2026-05-29).
+# Tests the PAPER-FAITHFUL LLM-selection retriever. v1 ps_selector failed 159/276
+# (32 empty + 127 no_yaml_block) — diagnosed as TRUNCATION: selector_gen_cfg max_tokens
+# defaulted to 1024, but dsv4f burns ~960 reasoning tokens, cutting the YAML list mid-item.
+# FIX HERE: selector max_tokens 1024 -> 16384 (+ the global 900s wall-clock fix).
+# Expectation: no_yaml_block / empty_completion drop to ~0; selector actually selects.
+_base_: ./arcmemo_arc_strict.yaml
+
+run:
+  run_type: colm_rebuttal_ps_selector_SMOKE_dsv4f
+  max_passes: 3
+  retry_criterion: train
+  retry_policy:
+    max_passes: 3
+    criterion: train
+    error_feedback: all
+    num_feedback_passes: 1
+    include_past_outcomes: true
+  strict_arcmemo_compat: false
+  strict_arcmemo_logic_compat: false
+  seed: 42
+
+pipeline:
+  provider: llmplus_openrouter_dsv4f
+  memory_builder: arcmemo_ps
+  memory_retriever: ps_selector
+
+components:
+  provider:
+    profile_name: llmplus_openrouter_dsv4f
+    default_max_concurrency: 10
+  memory_builder:
+    seed_memory_file: data/arc_agi/concept_memory/compressed_v1.json
+    domain: arc
+    freeze_memory: true
+  memory_retriever:
+    use_llm_selector: true
+    selector_model: deepseek/deepseek-v4-flash
+    selector_gen_cfg:
+      n: 1
+      temperature: 0.0
+      max_tokens: 16384
+    top_k: 10
+    hint_template_key: op3
+  benchmark:
+    data_root: data/arc_agi/evaluation
+    include_ids:
+      - '97239e3d'
+      - 'b7f8a4d8'
+      - '351d6448'
+      - '0a2355a6'
+      - '845d6e51'
+      - '84f2aca1'
+      - 'fd096ab6'
+      - '8719f442'
+      - 'c62e2108'
+      - 'ac605cbb'
+    limit: 10
+  inference_engine:
+    model: deepseek/deepseek-v4-flash
+    gen_cfg:
+      batch_size: 10
+      n: 1
+      temperature: 0.3
+      max_tokens: 16384
+      top_p: 1.0
+      seed: 42
+      ignore_cache: true
+    prompt_options:
+      include_hint: true
+      hint_template_key: op3
+      instruction_key: default
+      system_prompt_key: default

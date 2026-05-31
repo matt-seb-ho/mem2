@@ -1,0 +1,27 @@
+# COLM 2026 rebuttal — PS field ablation: REMOVE description from concept rendering.
+# Tests whether concept descriptions are load-bearing.
+_base_: ./arcmemo_arc_strict.yaml
+
+pipeline:
+  provider: llmplus_openrouter_dsv4f
+  memory_builder: arcmemo_ps
+  memory_retriever: ps_selector
+
+run:
+  run_type: colm_rebuttal_arcmemo_ps_dsv4f_ablate_no_description
+  strict_arcmemo_compat: false  # COLM rebuttal: intentionally on dsv4f, not gpt-4.1
+
+components:
+  memory_builder:
+    seed_memory_file: data/arc_agi/concept_memory/compressed_v1.json
+    domain: arc
+    freeze: true  # use the 270-concept memory frozen (paper baseline behavior)
+  provider:
+    profile_name: llmplus_openrouter_dsv4f
+  inference_engine:
+    model: deepseek/deepseek-v4-flash
+    prompt_options:
+      include_hint: true
+      hint_template_key: selected
+  memory_retriever:
+    render_mode: ablate_no_description

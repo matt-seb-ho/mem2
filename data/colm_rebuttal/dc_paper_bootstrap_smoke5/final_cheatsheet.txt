@@ -1,0 +1,125 @@
+Version: 5
+
+SOLUTIONS, IMPLEMENTATION PATTERNS, AND CODE SNIPPETS
+<memory_item>
+<description>
+Object shifting based on local context: For each pixel in an object, shift it right (x+1, y) if there are other non-black pixels down and to the right (x+1:, y+1:). Otherwise, keep the pixel in place. This selectively moves parts of an object while preserving the overall shape. (Reference: Q025d127b)
+</description>
+<example>
+```python
+for obj in objects:
+    transformed = np.zeros_like(obj)
+    for x in range(obj.shape[0]):
+        for y in range(obj.shape[1]):
+            if obj[x, y] != Color.BLACK:
+                down_right = obj[x+1:, y+1:]
+                if np.any(down_right != Color.BLACK):
+                    transformed[x+1, y] = obj[x, y]
+                else:
+                    transformed[x, y] = obj[x, y]
+    blit_object(output_grid, transformed, background=Color.BLACK)
+```
+Key: The condition checks if there are any colored pixels in the subgrid below and to the right of the current pixel. If yes, shift right; else, stay.
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+Connected component extraction with monochromatic flag: Use `find_connected_components(input_grid, background=Color.BLACK, connectivity=8, monochromatic=True)` to isolate each object. This ensures each component is a single color, which is useful for per-object transformations. (General)
+</description>
+<example>
+```python
+objects = find_connected_components(input_grid, background=Color.BLACK, connectivity=8, monochromatic=True)
+for obj in objects:
+    # process each object independently
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+Blitting transformed objects: After modifying an object, use `blit_object(output_grid, transformed_object, background=Color.BLACK)` to place it onto the output grid. This handles alignment and background correctly. (General)
+</description>
+<example>
+```python
+output_grid = np.zeros_like(input_grid)
+for obj in objects:
+    transformed = transform_object(obj)
+    blit_object(output_grid, transformed, background=Color.BLACK)
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+Sliding to overlap and repetition: Given a central object and other objects, slide the central object so it completely overlaps each other object (i.e., translate it so that the other object's non-black pixels are a subset of the translated central object's non-black pixels). Choose the displacement vector that maximizes the distance (e.g., largest magnitude). Then recolor the central object to the other object's color. Then repeatedly translate the central object by that displacement vector, blitting each copy, until it falls off the canvas. (Reference: Q045e512c)
+</description>
+<example>
+```python
+# For each other_object:
+max_disp = (0,0)
+for dx in range(-10,10):
+  for dy in range(-10,10):
+    translated = translate(central_object, dx, dy, background=Color.BLACK)
+    if np.all(translated[translated != Color.BLACK] & other_object[other_object != Color.BLACK] == other_object[other_object != Color.BLACK]):
+      if dx**2+dy**2 > max_disp[0]**2+max_disp[1]**2:
+        max_disp = (dx,dy)
+# change color of central_object to color of other_object
+# Then repeat:
+for i in range(1, max_steps):
+  blit_object(output_grid, translate(central_object, max_disp[0]*i, max_disp[1]*i, background=Color.BLACK), background=Color.BLACK)
+```
+Key: Find displacement vector that makes central object completely cover the other object (other_mask subset of translated_mask) and choose the one with maximum magnitude. Then recolor and repeat.
+</example>
+</memory_item>
+** Count: 1
+
+GENERAL META-REASONING STRATEGIES
+<memory_item>
+<description>
+When output dimensions match input dimensions, look for per-pixel or per-object transformations that preserve the overall grid size. Common operations include shifting parts of objects based on local context (e.g., presence of other pixels in a direction), color changes, or filling interiors. (Reference: Q025d127b)
+</description>
+<example>
+In puzzle 025d127b, output is same size as input. Each object's pixels are conditionally shifted right by 1 if there are other pixels down and to the right. This creates a subtle shape change while keeping the object's overall position.
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+For object-based transformations, process each connected component independently. This allows applying different rules to different objects, even if they overlap in color or shape. Use `find_connected_components` with `monochromatic=True` to separate objects. (General)
+</description>
+<example>
+1. Extract objects via connected components.
+2. For each object, apply a per-pixel rule (e.g., shift, recolor, delete).
+3. Blit all transformed objects onto a blank output grid.
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+When a transformation depends on the presence of other pixels in a region, use numpy slicing to check subgrids efficiently. For example, `obj[x+1:, y+1:]` gives all pixels down and to the right of (x,y). Use `np.any(... != Color.BLACK)` to test for non-background pixels. (General)
+</description>
+<example>
+```python
+down_right = obj[x+1:, y+1:]
+if np.any(down_right != Color.BLACK):
+    # there are pixels down-right
+```
+</example>
+</memory_item>
+** Count: 1
+
+<memory_item>
+<description>
+When a transformation involves a central object and multiple other objects, consider using the central object as a "stamp" that is slid to cover the others, then repeated in a pattern. Useful for puzzles where output has periodic copies of a shape. (Reference: Q045e512c)
+</description>
+<example>
+In puzzle 045e512c, a 3x3 central sprite is slid to overlap other sprites (e.g., plus sign shaped objects) and then repeated along that direction. The central sprite's color changes to match each other sprite, creating multiple periodic patterns.
+</example>
+</memory_item>
+** Count: 1

@@ -22,6 +22,14 @@ Clone targets for Mem2 axis-candidate methods. Cloned with `git clone --depth 1`
 | F. Architecture-edit source | ADAS (Meta Agent Search) | `third_party/adas/` | https://github.com/ShengranHu/ADAS |
 | F. Architecture-edit source | ALMA (shared with axis A) | `third_party/alma/` | same |
 
+## COLM 2026 rebuttal cycle (cloned 2026-05-27)
+
+| Method | Local path | Upstream | Notes |
+|--------|------------|----------|-------|
+| Dynamic Cheatsheet (Suzgun 2025) | `third_party/dynamic-cheatsheet/` | https://github.com/suzgunmirac/dynamic-cheatsheet | DC-Cu (frozen) + DC-RS (retrieval+synthesis). Prompts at `prompts/{generator,curator_prompt_for_dc_cumulative,curator_prompt_for_dc_retrieval_synthesis}.txt`. Core at `dynamic_cheatsheet/language_model.py`. Approach names: `DynamicCheatsheet_Cumulative`, `DynamicCheatsheet_RetrievalSynthesis`, `FullHistoryAppending`, `Dynamic_Retrieval`. |
+| ACE (Zhao 2025) | `third_party/ace/` | https://github.com/ace-agent/ace | 3-agent (Generator/Reflector/Curator). Bullet format `[id] helpful=X harmful=Y :: content` (see `ace/playbook_utils.py:parse_playbook_line`). Prompts at `ace/ace/prompts/{generator,reflector,curator}.py`. `EXTENDING_ACE.md` is the developer guide. |
+| ReasoningBank (Ouyang 2025, Google) | `third_party/reasoning-bank/` | https://github.com/google-research/reasoning-bank | WebArena + SWE-Bench scope (NOT ARC). Core: `WebArena/induce_memory.py` (extraction), `WebArena/memory_management.py` (gemini-embedding-001 storage). Prompts: `WebArena/prompts/memory_instruction.py` (`SUCCESSFUL_SI`, `FAILED_SI` — Markdown format with `# Memory Item / ## Title / ## Description / ## Content`). |
+
 ## Not cloned (no public repo at time of setup, 2026-04-21)
 
 These methods had no official public repo found. The mem2 copilot should try again on a future pass or implement from paper + literature/ PDF alone, with a flag that the implementation is spec-only.
