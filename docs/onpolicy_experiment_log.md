@@ -257,18 +257,18 @@ re-runs (ignore_cache:true), so a "pair" = 2 independent attempts ensembled by o
 
 | condition | oracle@1 (single mean) | oracle@2 (pair mean ± sd) [min,max] | oracle@5 (union) |
 |---|---|---|---|
-| baseline — no memory | 60.4 | **66.30 ± 1.70** [63, 69] | 70 |
-| on-policy induced (55) | 61.4 | **66.62 ± 1.86** [?, ?] | 70 |
-| on-policy + reselection | 60.4 | 67.10 ± 2.18 | 71 |
-| paper lib (270, ref) | 59.4 | 67.20 ± 2.18 | 69 |
+| baseline — no memory | 60.4 | **65.1 ± 2.33** [62, 69] | 70 |
+| on-policy induced (55) | 61.4 | **66.5 ± 1.27** [64, 69] | 70 |
+| on-policy + reselection | 60.4 | 65.8 ± 1.69 [63, 69] | 71 |
+| paper lib (270, ref) | 59.4 | 65.0 ± 1.89 [63, 68] | 69 |
 
 **Takeaways:**
-- A 2nd independent sample is worth **~+6 puzzles** (oracle@1 ~60 → oracle@2 ~66–67) — far
+- A 2nd independent sample is worth **~+5 puzzles** (oracle@1 ~60 → oracle@2 ~65–66.5) — far
   more than memory's ~+1 single-run edge. Width (independent attempts) dominates here.
-- At oracle@2 the conditions are nearly tied (66.3–67.2, ~1-puzzle spread): **memory's small
-  single-run advantage is washed out once you ensemble two samples.** Consistent with the
-  earlier finding that oracle∪5 ≈ equal (69–71) — memory mostly reshuffles *which* puzzles
-  solve rather than expanding the solvable set, so a 2nd random sample captures most of the
-  same headroom memory would.
-- Paper lib (270) has the lowest oracle@1 (59.4) but ties at the top of oracle@2 (67.2),
-  i.e. its per-run solved sets are slightly more *diverse* across samples.
+- At oracle@2 the conditions are close (65.0–66.5, ~1.5-puzzle spread). The induced library
+  is highest (66.5) and lowest-variance (sd 1.27), and its oracle@2 lead over baseline (+1.4)
+  is a touch larger than its single-run lead (+1.0) — but still within noise. Largely
+  consistent with oracle∪5 ≈ equal (69–71): a 2nd random sample captures most of the headroom
+  memory would, so memory's small edge is mostly (not entirely) washed out by ensembling.
+- Paper lib (270) has the lowest oracle@1 (59.4) AND the lowest oracle@2 (65.0): ensembling
+  two of its (more variable, sd 2.97) runs does not close the gap to the induced library.
