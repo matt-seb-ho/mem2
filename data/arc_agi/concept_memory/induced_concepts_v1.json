@@ -1,0 +1,1944 @@
+{
+  "concepts": {
+    "bounding box": {
+      "name": "bounding box",
+      "kind": "structure",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "The smallest axis-aligned rectangle that encloses a given set of cells.",
+      "cues": [
+        "Need to encompass all cells of a particular color, component, or non-background region.",
+        "Operations that depend on extreme rows/columns of a group of cells.",
+        "Extracting or cropping a subgrid based on content boundaries."
+      ],
+      "implementation": [
+        "Collect all relevant cell coordinates.",
+        "Compute min row, max row, min col, max col.",
+        "The bounding box is defined by these values (r_min, r_max, c_min, c_max)."
+      ],
+      "used_in": [
+        "025d127b",
+        "05f2a901",
+        "1cf80156",
+        "2bcee788",
+        "3befdf3e",
+        "3de23699",
+        "41e4d17e",
+        "444801d8",
+        "44d8ac46",
+        "6855a6e4",
+        "6b9890af",
+        "6d58a25d",
+        "6d75e8bb",
+        "7f4411dc",
+        "810b9b61",
+        "8e1813be",
+        "e21d9049",
+        "f8a8fe49"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "bounding box computation": {
+      "name": "bounding box computation",
+      "kind": "routine",
+      "routine_subtype": "intermediate",
+      "output_typing": "BBox := (min_row: int, max_row: int, min_col: int, max_col: int)",
+      "parameters": [
+        {
+          "name": "cells",
+          "typing": "list[tuple[int, int]]",
+          "description": "List of (row, col) coordinates to be enclosed by the bounding box."
+        }
+      ],
+      "description": "Computes the minimal axis-aligned rectangle that encloses a given set of cell coordinates, returning the inclusive row and column bounds.",
+      "cues": [
+        "Task requires cropping or isolating a subgrid around non-zero pixels.",
+        "Task involves measuring the extent of a color, component, or set of features.",
+        "Task computes a center point using floor division of bounding box dimensions.",
+        "Task splits grid based on horizontal/vertical extents of regions."
+      ],
+      "implementation": [
+        "Initialize min_row, max_row, min_col, max_col with the first cell's coordinates.",
+        "Iterate over all cells, updating min_row = min(min_row, row), max_row = max(max_row, row), and similarly for columns.",
+        "Return the tuple (min_row, max_row, min_col, max_col)."
+      ],
+      "used_in": [
+        "0b148d64",
+        "1caeab9d",
+        "3f7978a0",
+        "41e4d17e",
+        "48d8fb45",
+        "90c28cc7",
+        "d4f3cd78",
+        "d6ad076f",
+        "f9012d9b"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "bounds checking": {
+      "name": "bounds checking",
+      "kind": "routine",
+      "routine_subtype": "intermediate",
+      "output_typing": "bool or (int, int)",
+      "parameters": [
+        {
+          "name": "row",
+          "typing": "int",
+          "description": "Row index to validate."
+        },
+        {
+          "name": "col",
+          "typing": "int",
+          "description": "Column index to validate."
+        },
+        {
+          "name": "height",
+          "typing": "int",
+          "description": "Height of the grid."
+        },
+        {
+          "name": "width",
+          "typing": "int",
+          "description": "Width of the grid."
+        },
+        {
+          "name": "mode",
+          "typing": "str",
+          "description": "'check' returns boolean if coordinates are in bounds; 'clamp' returns clamped (row, col) tuple."
+        }
+      ],
+      "description": "Determines whether a given (row, col) coordinate lies within the valid dimensions of a grid, or adjusts it to the nearest valid coordinate. This routine prevents out‑of‑bounds errors when reading or writing grid cells.",
+      "cues": [
+        "Transformations that shift, propagate, or mirror pixels.",
+        "Operations that reference neighboring cells (e.g., 3×3 blocks, diagonals).",
+        "Any loop that computes new coordinates from old ones."
+      ],
+      "implementation": [
+        "Define a helper function taking (row, col, height, width, mode='check').",
+        "For 'check', return 0 <= row < height and 0 <= col < width.",
+        "For 'clamp', return (max(0, min(row, height ‑ 1)), max(0, min(col, width ‑ 1))).",
+        "Use this helper before every grid access or assignment based on computed coordinates."
+      ],
+      "used_in": [
+        "25ff71a9",
+        "3ac3eb23",
+        "3bdb4ada",
+        "4258a5f9",
+        "7447852a",
+        "a9f96cdd",
+        "d06dbe63",
+        "e9614598",
+        "ff28f65a"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "background initialization": {
+      "name": "background initialization",
+      "kind": "routine",
+      "routine_subtype": "grid manipulation",
+      "output_typing": "grid",
+      "parameters": [
+        {
+          "name": "dimensions",
+          "typing": "(int, int)",
+          "description": "height and width of the output grid (often derived from the input grid)"
+        },
+        {
+          "name": "background_color",
+          "typing": "int",
+          "description": "the color value to fill the grid with (default 0, black)"
+        }
+      ],
+      "description": "Create a new grid of given dimensions and fill every cell with a specified background color, providing a blank canvas for subsequent drawing operations.",
+      "cues": [
+        "The output grid is constructed before any lines, shapes, or copied regions are added.",
+        "The solution explicitly sets all cells to a uniform color (typically 0) at the start.",
+        "The initial fill color is often black but may be another color (e.g., green) when the background should be non‑black."
+      ],
+      "implementation": [
+        "Allocate a 2D array with the required height and width.",
+        "Loop over every cell and assign the background color.",
+        "Use language‑specific grid creation utilities (e.g., `new Grid(width, height, fill_value)`) for conciseness.",
+        "Ensure the background color is treated as the default; later operations may overwrite it."
+      ],
+      "used_in": [
+        "178fcbfb",
+        "23581191",
+        "2bcee788",
+        "623ea044",
+        "6e82a1ae",
+        "6f8cd79b",
+        "a9f96cdd",
+        "bbc9ae5d"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "connected components": {
+      "name": "connected components",
+      "kind": "routine",
+      "routine_subtype": "intermediate",
+      "output_typing": "list[Component] where Component := {cells: list[tuple], bbox: (min_row, max_row, min_col, max_col), color: int}",
+      "parameters": [
+        {
+          "name": "color",
+          "typing": "optional int",
+          "description": "Color to restrict components to (None means all non-background colors)."
+        },
+        {
+          "name": "connectivity",
+          "typing": "int (4 or 8)",
+          "description": "Adjacency rule (default 4)."
+        }
+      ],
+      "description": "Partition the grid into maximal contiguous groups of same-color cells (ignoring background if color is specified) using flood-fill or BFS/DFS, returning each component's pixel coordinates, bounding box, and color.",
+      "cues": [
+        "Objects or patterns formed by clusters of same-color pixels.",
+        "Need to isolate individual shapes or blobs in the grid.",
+        "Operations like size-based filtering, bounding-box computation, or shape analysis depend on grouping.",
+        "Detection of holes or connections within a region."
+      ],
+      "implementation": [
+        "Use a visited boolean grid to track processed cells.",
+        "Iterate over all cells; for each unvisited cell matching the target color (or any non-background if color is None), start a BFS/DFS queue.",
+        "During traversal, collect cell coordinates and update min/max row/col for the bounding box.",
+        "Mark visited and add neighbors of the same color and connectivity.",
+        "Append a Component object (cells, bbox, color) to the result list."
+      ],
+      "used_in": [
+        "41e4d17e",
+        "44d8ac46",
+        "48d8fb45",
+        "6855a6e4",
+        "6e82a1ae",
+        "7f4411dc",
+        "810b9b61",
+        "eb5a1d5d"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "separator line": {
+      "name": "separator line",
+      "kind": "structure",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "A full row or column of a single uniform non-background color that visually divides the grid into independent spatial regions.",
+      "cues": [
+        "Look for rows or columns where every cell has the same non-zero color (often gray=5, but can be any color).",
+        "The line typically spans the entire grid dimension and is not interrupted.",
+        "Separator lines often appear in pairs (multiple rows/columns) to create a tiled layout."
+      ],
+      "implementation": [
+        "Scan all rows and columns for uniform non-zero color; record their indices and the color.",
+        "Use separator indices to split the grid into blocks (regions between separators and edges).",
+        "Extract subgrids using the block boundaries, ignoring the separator lines themselves.",
+        "The separator color may be preserved in the output or used as a reference for layout."
+      ],
+      "used_in": [
+        "0520fde7",
+        "29623171",
+        "8d510a79",
+        "8e5a5113",
+        "9f236235",
+        "bc1d5164",
+        "cf98881b"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "background color": {
+      "name": "background color",
+      "kind": "structure",
+      "routine_subtype": null,
+      "output_typing": "color",
+      "parameters": [
+        {
+          "name": "default_color",
+          "typing": "int",
+          "description": "The integer value representing empty/background cells, typically 0."
+        }
+      ],
+      "description": "A designated color (often 0) that represents empty, default, or irrelevant space in the grid. It is excluded from counting, analysis, and transformations unless explicitly manipulated.",
+      "cues": [
+        "Grid cells with value 0 are ignored in most operations (e.g., flood fill boundaries, counting, shifting).",
+        "The background color acts as a canvas; foreground objects are non‑background colors.",
+        "Many puzzles assume a fixed background (0) that is never part of the output pattern.",
+        "Bounding box extraction / cropping often removes background margins."
+      ],
+      "implementation": [
+        "Define a constant for the background color (e.g., BLACK = 0).",
+        "For flood‑fill or connectivity, treat background cells as open space unless they are on the border.",
+        "When copying a grid, initialize the output with the background color.",
+        "For counting or sorting colors, exclude background from the frequency map.",
+        "When cropping, determine the smallest rectangle that contains all non‑background cells."
+      ],
+      "used_in": [
+        "00d62c1b",
+        "1b2d62fb",
+        "1cf80156",
+        "25d487eb",
+        "25ff71a9",
+        "f8b3ba0a"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "anchor points": {
+      "name": "anchor points",
+      "kind": "structure",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Distinct non-background pixels (often of a specific color, position, or connectivity) that serve as reference points for spatial transformations, such as alignment, splitting, drawing lines, or extracting subgrids.",
+      "cues": [
+        "One or more isolated non‑background cells that appear to be landmarks (e.g., a single gray cell, two pixels in a line, a cell at a corner).",
+        "Cells whose colors or positions are used to determine where to draw, copy, or modify other parts of the grid.",
+        "The transformation often involves moving, erasing, or drawing relative to the anchor(s) (e.g., drawing lines between them, filling regions, or extracting a block)."
+      ],
+      "implementation": [
+        "Scan the grid for all non‑background cells; if the puzzle suggests a specific color, filter by that.",
+        "Record the positions (row, col) of the anchor points.",
+        "When multiple anchors exist, sort or group them by row, column, or connectivity as needed.",
+        "{'Use the anchor coordinates to control subsequent operations': 'e.g., split the grid at a computed row/column, draw a line between them, or use them as the center or corner of a subgrid.'}"
+      ],
+      "used_in": [
+        "137eaa0f",
+        "1bfc4729",
+        "5168d44c",
+        "aabf363d",
+        "d4a91cb9"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "color detection": {
+      "name": "color detection",
+      "kind": "routine",
+      "routine_subtype": "intermediate",
+      "output_typing": "list[tuple[int, int]]",
+      "parameters": [
+        {
+          "name": "grid",
+          "typing": "grid",
+          "description": "The 2D array of integers (colors) to search."
+        },
+        {
+          "name": "color",
+          "typing": "int",
+          "description": "The color value (0-9) to locate."
+        }
+      ],
+      "description": "Returns the coordinates of all cells in the grid that have a specific color value.",
+      "cues": [
+        "Tasks that require isolating or counting pixels of a certain color.",
+        "Steps that precede bounding‑box computation, adjacency checks, or selective transformations.",
+        "Puzzles where a single color is the focus of the rule (e.g., moving, deleting, or filling)."
+      ],
+      "implementation": [
+        "Iterate over every cell (r, c) in the grid.",
+        "If the cell's color equals the target color, append (r, c) to a list.",
+        "Return the list (or set) of positions."
+      ],
+      "used_in": [
+        "239be575",
+        "3618c87e",
+        "6d75e8bb",
+        "e9614598",
+        "f8a8fe49"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "uniform rectangle": {
+      "name": "uniform rectangle",
+      "kind": "structure",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "A rectangular region of cells all having the same non-background color, with no holes.",
+      "cues": [
+        "Contiguous same-color blocks that form axis-aligned rectangles.",
+        "Bounding box of a connected component has area equal to the number of pixels in that component.",
+        "Often used as solid blocks (area > 1) to delimit regions or count occurrences.",
+        "Can appear as a single-color rectangle with no interior background holes."
+      ],
+      "implementation": [
+        "Iterate over all cells to find connected components of non-background colors (e.g., using flood fill or BFS/DFS).",
+        "For each component, compute its bounding box (min/max row and column).",
+        "If the number of pixels in the component equals (max_row - min_row + 1) * (max_col - min_col + 1), then it is a uniform rectangle.",
+        "Optionally filter by area > 1 to exclude single cells if required.",
+        "Alternatively, use sliding window or row/column scans for small fixed sizes (e.g., 2x2)."
+      ],
+      "used_in": [
+        "1fad071e",
+        "2c608aff",
+        "3bdb4ada",
+        "780d0b14",
+        "9f236235"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "color frequency counting": {
+      "name": "color frequency counting",
+      "kind": "routine",
+      "routine_subtype": "intermediate",
+      "output_typing": "dict[int, int]",
+      "parameters": [
+        {
+          "name": "exclude_background",
+          "typing": "bool",
+          "description": "if True, ignore cells with color 0 (black) when counting"
+        },
+        {
+          "name": "filter_count",
+          "typing": "int | None",
+          "description": "if set, only return colors with exactly this count (for identification)"
+        }
+      ],
+      "description": "Counts occurrences of each distinct color in the input grid, optionally filtering out the background and/or returning colors that satisfy a specific count condition.",
+      "cues": [
+        "Grid contains multiple non‑background colors with distinct frequencies.",
+        "The transformation depends on which color appears fewest, most, or a specific number of times (e.g., exactly 1 or exactly 10).",
+        "The output grid’s structure (e.g., bounding box, shape, color mapping) is determined by frequency ordering."
+      ],
+      "implementation": [
+        "Flatten the grid and iterate over all cells (or only non‑zero if exclude_background).",
+        "Use a dictionary (or Counter) to accumulate counts for each color.",
+        "Optionally filter the dictionary to keep only entries where the count equals a given value.",
+        "Return the dictionary (or the filtered list of colors with their counts)."
+      ],
+      "used_in": [
+        "2bcee788",
+        "31aa019c",
+        "6d58a25d",
+        "f8b3ba0a"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "color mapping": {
+      "name": "color mapping",
+      "kind": "routine",
+      "routine_subtype": "grid manipulation",
+      "output_typing": "grid",
+      "parameters": [
+        {
+          "name": "mapping_rule",
+          "typing": "function(color, position, grid) -> color or dict[color, color]",
+          "description": "A rule that determines the output color for each input color, possibly also depending on position or other grid properties."
+        }
+      ],
+      "description": "Replaces each pixel's color (or a selected set of colors) with new colors according to a predetermined rule, which may be a simple lookup table, a positional transformation, or a shape-drawing instruction derived from source colors.",
+      "cues": [
+        "The output grid has the same dimensions as the input, with colors consistently altered or swapped.",
+        "A small set of colors appear in the input and are mapped to a different set in the output.",
+        "The mapping may involve non‑local operations (e.g., copying source color to a different location)."
+      ],
+      "implementation": [
+        "Define the mapping rule: either as a dictionary for direct swaps or as a function that can access pixel coordinates and grid context.",
+        "Iterate over every cell (or over a subset of cells) in the input grid, compute the output color using the rule, and assign it to the corresponding position in the output grid.",
+        "If the rule involves drawing (e.g., lines), iterate over the source positions and for each, update multiple output cells accordingly.",
+        "Handle edge cases: unmapped colors usually stay unchanged (identity mapping) unless specified otherwise."
+      ],
+      "used_in": [
+        "0d3d703e",
+        "a79310a0",
+        "d511f180",
+        "feca6190"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "sorting": {
+      "name": "sorting",
+      "kind": "routine",
+      "routine_subtype": "intermediate",
+      "output_typing": "list[Entity]",
+      "parameters": [
+        {
+          "name": "entities",
+          "typing": "list[Entity]",
+          "description": "The set of items to sort (e.g., columns, colors, connected components)."
+        },
+        {
+          "name": "key",
+          "typing": "callable[[Entity], number]",
+          "description": "Function that extracts a numerical attribute from each entity (e.g., frequency, area, row index)."
+        },
+        {
+          "name": "reverse",
+          "typing": "bool",
+          "description": "Whether to sort descending (True) or ascending (False)."
+        },
+        {
+          "name": "tiebreaker",
+          "typing": "callable[[Entity], comparable] | None",
+          "description": "Optional secondary key for stable sorting (e.g., color value)."
+        }
+      ],
+      "description": "Orders a collection of entities (objects, colors, columns, etc.) by a numerical attribute extracted from each entity, typically frequency, area, spatial position, or count. The sorted order is used as a sequence for subsequent output construction.",
+      "cues": [
+        "Multiple instances of a similar visual element (columns, colors, blobs) that need ranking or sequencing.",
+        "Output grid’s arrangement (e.g., layers, color bars, filled regions) depends on a quantifiable property of each instance.",
+        "The puzzle hints at “largest to smallest”, “top to bottom”, or “most to least frequent”."
+      ],
+      "implementation": [
+        "Identify the entities to sort (e.g., list of columns with a marker, all non‑background colors, connected components).",
+        "For each entity, compute the required numerical attribute (e.g., count, area, top‑most row index).",
+        "Use a standard comparison sort with the attribute as primary key (and optional tiebreaker) in the specified order.",
+        "Return the sorted list; the caller then uses it to assign colors, fill layers, or place objects."
+      ],
+      "used_in": [
+        "08ed6ac7",
+        "9af7a82c",
+        "eb5a1d5d",
+        "f8b3ba0a"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "translation": {
+      "name": "translation",
+      "kind": "routine",
+      "routine_subtype": "grid manipulation",
+      "output_typing": "grid",
+      "parameters": [],
+      "description": "Translate all non‑background cells or a specific connected object by a fixed vector (dx, dy), often to bring it into contact with another object or reference line. The translation vector may be derived from properties of the input grid, such as distances, counts, or relative positions.",
+      "cues": [
+        "Objects that appear to be shifted from one location to another in the output.",
+        "A constant offset between corresponding cells in input and output.",
+        "Need to move an object so that it touches another object or a line without overlap.",
+        "Presence of a feature (e.g., a line, a count) that determines the shift amount."
+      ],
+      "implementation": [
+        "Identify the set of cells or object to be translated (e.g., by color, connectivity).",
+        "Compute the translation vector (dx, dy) from the input grid properties (e.g., bounding boxes, leading counts, full rows/columns).",
+        "For each cell in the selected set, compute its new position (r+dy, c+dx), ensuring it stays within grid bounds.",
+        "Place the cell's color in the output grid at the new position, leaving background elsewhere.",
+        "Handle potential overlaps by overwriting (or preserving original if required)."
+      ],
+      "used_in": [
+        "05f2a901",
+        "25ff71a9",
+        "56dc2b01",
+        "e48d4e1a"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "anti-diagonal line": {
+      "name": "anti-diagonal line",
+      "kind": "structure",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "A set of grid cells where the sum of row index and column index is constant, forming a diagonal line from top-right to bottom-left.",
+      "cues": [
+        "Patterns or operations that involve (r + c) mod something (e.g., mod 3).",
+        "Drawing lines where cells share the same row+col value.",
+        "Single non-background pixel used to determine one or more such lines.",
+        "Output grids whose filled cells lie on constant‑sum diagonals."
+      ],
+      "implementation": [
+        "For a given constant sum S, iterate over all cells (r, c) such that 0 ≤ r < H, 0 ≤ c < W, and r + c == S.",
+        "To compute all anti‑diagonal lines, iterate over possible sums from 0 to (H-1)+(W-1).",
+        "Use modulo arithmetic (e.g., (r + c) % N) to group cells into periodic anti‑diagonals."
+      ],
+      "used_in": [
+        "05269061",
+        "623ea044",
+        "feca6190"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "background identification": {
+      "name": "background identification",
+      "kind": "routine",
+      "routine_subtype": "intermediate",
+      "output_typing": "color",
+      "parameters": [],
+      "description": "Determine the color that serves as the background or empty space in a grid, often the most frequent color or the color not used for specific structures like lines or solid blocks.",
+      "cues": [
+        "The majority of the grid is filled with a single color that appears many times.",
+        "Specific patterns (full rows/columns of one color, solid rectangles) exclude one color.",
+        "Only one non-zero color exists, implying it is the background.",
+        "A color appears in all rows or all columns except those occupied by foreground objects."
+      ],
+      "implementation": [
+        "Compute color frequencies and pick the most frequent (mode) as background.",
+        "Alternatively, find a color that is not used in any full row or full column (line color) and use any other color as background.",
+        "If only one non-zero color exists, that color is the background (with 0 reserved for special marks).",
+        "Ensure fallback logic for edge cases (e.g., all colors are equally frequent)."
+      ],
+      "used_in": [
+        "1190e5a7",
+        "2c608aff",
+        "ea786f4a"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "connected component extraction": {
+      "name": "connected component extraction",
+      "kind": "routine",
+      "routine_subtype": "intermediate",
+      "output_typing": "list[Component]",
+      "parameters": [
+        {
+          "name": "connectivity",
+          "typing": "int",
+          "description": "Number of directions for neighborhood (4 or 8). Default 8."
+        },
+        {
+          "name": "condition",
+          "typing": "function(cell_value) -> bool",
+          "description": "Predicate that a cell must satisfy to be part of a component (e.g., color != 0, or color in a set). Default: value != 0."
+        },
+        {
+          "name": "mask",
+          "typing": "grid[bool] (optional)",
+          "description": "If provided, extract components from this boolean grid instead of from the raw cell values."
+        }
+      ],
+      "description": "Identify all connected groups of cells that satisfy a given condition, using BFS (or DFS) traversal. Each component is returned as a set of coordinates and, if applicable, the common color (or None for masks).",
+      "cues": [
+        "Grid contains distinct objects (blobs) separated by background or boundaries.",
+        "Operations like counting objects, determining shapes, or analyzing per‑component properties (size, bounding box) are needed.",
+        "Multiple cells of the same color appear in contiguous regions.",
+        "A mask or condition selects which cells belong to the foreground."
+      ],
+      "implementation": [
+        "Initialize a visited grid (same dimensions) to false.",
+        "Iterate over all cells; if unvisited and satisfies the condition, start a BFS/DFS queue.",
+        "For each neighbor (4‑ or 8‑direction) within bounds that satisfies the condition and not visited, add to the component and mark visited.",
+        "Collect all cells of the component, and optionally record the common color (if all same).",
+        "Add the component (set of coordinates + color) to the result list.",
+        "Return the list of components."
+      ],
+      "used_in": [
+        "137eaa0f",
+        "228f6490",
+        "3befdf3e"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "extract subgrid": {
+      "name": "extract subgrid",
+      "kind": "routine",
+      "routine_subtype": "grid manipulation",
+      "output_typing": "grid",
+      "parameters": [
+        {
+          "name": "input_grid",
+          "typing": "grid",
+          "description": "The source grid from which a rectangular region is extracted."
+        },
+        {
+          "name": "top_row",
+          "typing": "int",
+          "description": "The starting row index (inclusive) of the region."
+        },
+        {
+          "name": "bottom_row",
+          "typing": "int",
+          "description": "The ending row index (exclusive) of the region."
+        },
+        {
+          "name": "left_col",
+          "typing": "int",
+          "description": "The starting column index (inclusive) of the region."
+        },
+        {
+          "name": "right_col",
+          "typing": "int",
+          "description": "The ending column index (exclusive) of the region."
+        }
+      ],
+      "description": "Extract a contiguous rectangular subgrid from a larger grid, defined by exclusive row and column boundaries.",
+      "cues": [
+        "Grid contains distinct separator lines (vertical/horizontal) dividing it into rectangular blocks.",
+        "Output is composed of one or more rectangular pieces taken from the input.",
+        "Need to isolate a repeated pattern or a specific region (e.g., top-left corner, left/right halves).",
+        "Presence of constant-colored lines or columns that indicate boundaries of subregions."
+      ],
+      "implementation": [
+        "Use array slicing if the grid supports it (e.g., grid[top_row:bottom_row, left_col:right_col]).",
+        "Alternatively, iterate row by row and column by column within the bounds to copy cell values into a new grid.",
+        "Ensure indices are within the input grid dimensions.",
+        "The extracted subgrid is a new grid object; the original grid is not modified."
+      ],
+      "used_in": [
+        "1b2d62fb",
+        "3f7978a0",
+        "8e5a5113"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "grid lines": {
+      "name": "grid lines",
+      "kind": "structure",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Full rows or columns of a uniform color that span the entire grid, partitioning the grid into rectangular regions and often serving as structural dividers or a special \"line color\" for further logic.",
+      "cues": [
+        "Rows or columns where every cell is the same non-black color.",
+        "The lines may be of a single color that appears nowhere else, or of a color that also appears elsewhere.",
+        "The grid is visually divided into strips or quadrants by these lines."
+      ],
+      "implementation": [
+        "Iterate over each row and each column; check if all cells are equal (and optionally not black).",
+        "Record indices and color of each full uniform row/column.",
+        "For separation, note that lines are contiguous and cover the entire dimension.",
+        "Use these lines to define subgrid bounds (between lines) or to identify a \"line color\" that appears in both a full row and a full column."
+      ],
+      "used_in": [
+        "1190e5a7",
+        "3428a4f5",
+        "941d9a10"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "hollow shape": {
+      "name": "hollow shape",
+      "kind": "structure",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "A contiguous region of cells (all the same color) that forms a closed outline, where the interior region (inside the bounding box) contains no cells of that color (typically background). The most common instance is a hollow rectangle.",
+      "cues": [
+        "Shapes that look like frames, rings, or borders rather than solid filled areas.",
+        "The bounding box of a colored component contains only perimeter cells of that color.",
+        "Interior of the bounding box is empty (background) or filled with a different color.",
+        "Often appears in puzzles where shapes need to be transformed based on whether they are hollow."
+      ],
+      "implementation": [
+        "Find connected components of the target color (use 4-connectivity unless 8-connectivity is more appropriate for the shape).",
+        "For each component, compute its axis-aligned bounding box (min/max row and column).",
+        "Verify that every cell of the component lies on the perimeter of the bounding box (i.e., row is min or max, or column is min or max).",
+        "Optionally, also check that every cell inside the bounding box (strictly) is not part of the component (background or other color).",
+        "The shape must have at least size 2×2 to have an interior (1×1 or rows/columns of length 1 cannot be hollow)."
+      ],
+      "used_in": [
+        "54d82841",
+        "776ffc46",
+        "810b9b61"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "marker pixel": {
+      "name": "marker pixel",
+      "kind": "structure",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "A single pixel of a non-background color that is distinct from other structures (e.g., not part of any larger uniform rectangle or contiguous region) and serves as a reference point for transformations.",
+      "cues": [
+        "A solitary pixel of a unique color (appears only once in the grid).",
+        "The pixel's color is often different from any large colored shapes or background.",
+        "Often located near or within a uniform rectangle, but not belonging to it.",
+        "May be used to trigger a pattern or locate a region to manipulate."
+      ],
+      "implementation": [
+        "Scan the grid for non-background colors and count their occurrences; a marker pixel is typically the only pixel of that color.",
+        "Alternatively, find all non-background pixels; then identify those whose color does not appear in any contiguous block of area > 1.",
+        "Confirm the marker pixel is isolated (no same-colored neighbors) to avoid confusion with parts of larger shapes."
+      ],
+      "used_in": [
+        "2c608aff",
+        "48d8fb45",
+        "a9f96cdd"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "seed cells": {
+      "name": "seed cells",
+      "kind": "structure",
+      "routine_subtype": null,
+      "output_typing": "SeedCells := list[tuple[int, int, int]]",
+      "parameters": [
+        {
+          "name": "background_color",
+          "typing": "int",
+          "description": "color value treated as background (default 0)"
+        },
+        {
+          "name": "exclude_colors",
+          "typing": "list[int]",
+          "description": "colors to exclude from being considered seeds (e.g., neutral/obstacle colors)"
+        }
+      ],
+      "description": "Non-zero cells (or cells not in excluded set) that provide constraints, anchors, or starting points for inferring larger patterns, transformations, or rules in the grid.",
+      "cues": [
+        "Grid contains isolated non-zero cells not obviously part of a continuous object.",
+        "Non-zero cells used to determine periodicity, parity-based coloring, or as centers for symmetric transformations.",
+        "Presence of a specific color (or set of colors) that act as key hints while others (e.g., gray or obstacle) are ignored.",
+        "Seeds often appear scattered and are the only non-background cells in otherwise empty regions."
+      ],
+      "implementation": [
+        "Iterate over all cells, collect positions and colors where color != background_color and color not in exclude_colors.",
+        "Store as list of (row, col, color) tuples.",
+        "Optionally filter further by additional constraints (e.g., adjacency to background, specified color range).",
+        "Seeds are typically used to infer a mapping (e.g., parity to color) or to initiate a flood fill / transformation."
+      ],
+      "used_in": [
+        "0dfd9992",
+        "4258a5f9",
+        "b782dc8a"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "tiling": {
+      "name": "tiling",
+      "kind": "routine",
+      "routine_subtype": "grid manipulation",
+      "output_typing": "grid",
+      "parameters": [
+        {
+          "name": "tile_pattern",
+          "typing": "grid",
+          "description": "The small pattern (tile) to be repeated."
+        },
+        {
+          "name": "output_size",
+          "typing": "tuple[int, int]",
+          "description": "Height and width of the output grid."
+        },
+        {
+          "name": "tile_transformations",
+          "typing": "list[Callable[[grid], grid]]",
+          "description": "Optional list of transformations (e.g., flip, rotate) applied per tile repetition; indexed by block row and column."
+        },
+        {
+          "name": "target_region",
+          "typing": "tuple[int, int, int, int]",
+          "description": "Bounding box of the area to fill; defaults to entire output grid."
+        }
+      ],
+      "description": "Fill a rectangular area by placing copies of a tile pattern in a regular grid arrangement, optionally applying different transformations to each tile.",
+      "cues": [
+        "Output grid shows clear periodic repetition of a small pattern.",
+        "Input grid contains a small template that appears repeatedly, possibly with symmetry operations (flips, rotations).",
+        "The grid dimensions are multiples of the tile dimensions.",
+        "The solution involves iterating over blocks and mapping coordinates modulo tile size."
+      ],
+      "implementation": [
+        "Determine tile height and width from the pattern (or infer from periodicity).",
+        "For each cell in the target region, compute the tile block (row // tile_h, col // tile_w) and the local coordinates (row % tile_h, col % tile_w).",
+        "If transformations are supplied, apply the appropriate one to the tile based on block indices before indexing.",
+        "Assign the value from the (possibly transformed) tile at the local coordinates to the output cell.",
+        "Use direct assignment (no scanning for conflicts) since the pattern is deterministic."
+      ],
+      "used_in": [
+        "0dfd9992",
+        "8d5021e8",
+        "f9012d9b"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "4-directional adjacency": {
+      "name": "4-directional adjacency",
+      "kind": "structure",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "A relation between grid cells where two cells are adjacent if they share a common edge (up, down, left, or right), not just a corner. This is the standard definition of 4-connectivity used in flood-fill and connected component analysis.",
+      "cues": [
+        "Tasks that involve grouping or separating objects based on whether they touch along edges vs diagonals.",
+        "Grids where diagonal contacts are considered disconnected (e.g., separate blobs that only touch at corners).",
+        "Problems using flood-fill or BFS/DFS and explicitly stating \"4-directional\" or \"up/down/left/right\"."
+      ],
+      "implementation": [
+        "{'When scanning cells, consider only the four orthogonal neighbors': '(row-1, col), (row+1, col), (row, col-1), (row, col+1).'}",
+        "Ensure visited tracking to avoid infinite loops during component extraction.",
+        "For any algorithm that needs connectivity (e.g., component counting, size measurement), use this neighbor set to define the graph edges."
+      ],
+      "used_in": [
+        "6e82a1ae",
+        "d2abd087"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "axis aligned rectangle": {
+      "name": "axis aligned rectangle",
+      "kind": "structure",
+      "routine_subtype": null,
+      "output_typing": "Rectangle := (min_row: int, max_row: int, min_col: int, max_col: int)",
+      "parameters": [
+        {
+          "name": "color",
+          "typing": "int (optional)",
+          "description": "If specified, only consider rectangles whose cells all share this color."
+        },
+        {
+          "name": "corner_only",
+          "typing": "bool (optional, default False)",
+          "description": "If True, rectangle is defined solely by its four corner cells having the given color, ignoring interior cells."
+        }
+      ],
+      "description": "A rectangular block of cells aligned with the grid axes, possibly solid (all interior cells the same color) or defined by corner cells.",
+      "cues": [
+        "Grid contains contiguous blocks of non‑zero cells that are rectangular in shape.",
+        "Bounding boxes of connected components are often perfect rectangles.",
+        "Four same‑colored cells at the corners of a potential rectangle suggest a deliberate rectangle structure.",
+        "Rectangles appear as frames or filled regions in input or output."
+      ],
+      "implementation": [
+        "For a set of coordinates, compute bounding box and test if every cell inside is present (solid rectangle).",
+        "For a set of candidate corners, iterate over all row pairs and column pairs and check if the four corners are present and optionally if interior cells match a condition.",
+        "Use nested loops over rows and columns to enumerate all possible subrectangles and test properties (area, color, corner presence)."
+      ],
+      "used_in": [
+        "7f4411dc",
+        "af902bf9"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "axis line fill": {
+      "name": "axis line fill",
+      "kind": "routine",
+      "routine_subtype": "grid manipulation",
+      "output_typing": "grid",
+      "parameters": [
+        {
+          "name": "grid",
+          "typing": "Grid",
+          "description": "The source grid providing dimensions and possibly context for seed detection."
+        },
+        {
+          "name": "seeds",
+          "typing": "list[SeedPoint]",
+          "description": "A list of points, each with integer row, col, and color value. A SeedPoint is defined as a dict with keys 'row' (int), 'col' (int), 'color' (int)."
+        }
+      ],
+      "description": "For each given seed point, draw a full horizontal line across its row and a full vertical line down its column, setting every cell on those lines to the seed's color. The output grid is typically initialized to black (0) or is a copy of the input; conflicts (cells already non-zero with a different color) are handled per-puzzle.",
+      "cues": [
+        "Cross-like patterns or plus signs in output grids.",
+        "Puzzles where isolated colored pixels are expected to form full lines.",
+        "Symmetric lines extending to grid borders.",
+        "Seed points determined by centroids, bounding‑box centers, or all non‑zero cells."
+      ],
+      "implementation": [
+        "Create an output grid of the same dimensions, filled with black (0).",
+        "{'For each seed point': ['Set every cell in the seed’s row (all columns) to the seed’s color.', 'Set every cell in the seed’s column (all rows) to the seed’s color.']}",
+        "Optionally, handle conflicts by checking if a cell already has a different color (e.g., leave it unchanged, blend, or use a rule).",
+        "Return the resulting grid."
+      ],
+      "used_in": [
+        "23581191",
+        "41e4d17e"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "background exclusion": {
+      "name": "background exclusion",
+      "kind": "routine",
+      "routine_subtype": "intermediate",
+      "output_typing": "list[object]",
+      "parameters": [
+        {
+          "name": "background_color",
+          "typing": "color (int)",
+          "description": "The integer value (typically 0) representing the background to ignore."
+        }
+      ],
+      "description": "Ignore cells whose color equals a designated background value when extracting information (e.g., patterns, frequencies, positions) from the grid.",
+      "cues": [
+        "Most cells in the grid are background; only a sparse set of non-background cells carry meaningful data.",
+        "The transformation rule depends on properties (color, position) of non-background cells only.",
+        "Frequency or pattern analysis that would be distorted by including background cells."
+      ],
+      "implementation": [
+        "Iterate over all grid cells; skip any cell whose color equals the background_color.",
+        "Collect the desired information (e.g., color, coordinates) from the remaining cells.",
+        "Use the collected data to compute the output (e.g., fill pattern, color mapping, output dimensions)."
+      ],
+      "used_in": [
+        "05269061",
+        "9af7a82c"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "binary color mapping": {
+      "name": "binary color mapping",
+      "kind": "routine",
+      "routine_subtype": "grid manipulation",
+      "output_typing": "grid",
+      "parameters": [
+        {
+          "name": "unit",
+          "typing": "element type (e.g., row, column, object, entire grid)",
+          "description": "The atomic input component tested by the predicate."
+        },
+        {
+          "name": "predicate",
+          "typing": "callable(unit) -> bool",
+          "description": "Boolean function determining which output color is assigned."
+        },
+        {
+          "name": "color_if_true",
+          "typing": "color (int 0-9)",
+          "description": "Output color used when predicate returns true."
+        },
+        {
+          "name": "color_if_false",
+          "typing": "color (int 0-9)",
+          "description": "Output color used when predicate returns false."
+        },
+        {
+          "name": "output_region_mapping",
+          "typing": "callable(unit, input_grid) -> grid region",
+          "description": "Maps each unit to the region in the output grid (e.g., same row, a single cell) that will be filled with the chosen color."
+        }
+      ],
+      "description": "For each unit of the input (e.g., row, column, entire grid, contiguous object), evaluate a boolean predicate.\nAssign one of two fixed output colors to the corresponding output region based on the result.\nThe output grid is constructed by combining these colored regions; its shape may differ from the input.",
+      "cues": [
+        "Output grid uses only two colors.",
+        "Logic depends on a condition that either holds or does not hold for each structural part of the input.",
+        "{'Common predicates': 'uniformity, symmetry, presence of a pattern, size threshold.'}",
+        "The mapping from input units to output regions is often straightforward (e.g., same row, same position, single cell)."
+      ],
+      "implementation": [
+        "Choose the input unit (e.g., rows, columns, objects, whole grid).",
+        "Define the predicate function on that unit.",
+        "Choose the two output colors.",
+        "Determine the output region for each unit (e.g., copy input shape, or smaller grid).",
+        "Iterate over all units, apply predicate, fill the corresponding output region with the chosen color.",
+        "If the output grid dimensions are not predetermined by the input, compute them from the number of units and the region shape."
+      ],
+      "used_in": [
+        "25d8a9c8",
+        "44f52bb0"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "boolean mask to highlight": {
+      "name": "boolean mask to highlight",
+      "kind": "routine",
+      "routine_subtype": "grid manipulation",
+      "output_typing": "grid",
+      "parameters": [
+        {
+          "name": "source_grid",
+          "typing": "grid",
+          "description": "The grid (or subgrid region) on which the condition is evaluated."
+        },
+        {
+          "name": "condition",
+          "typing": "(cell_value, row, col) -> bool",
+          "description": "A predicate that determines whether a cell should be highlighted."
+        },
+        {
+          "name": "highlight_color",
+          "typing": "color",
+          "description": "The integer color index assigned to cells where condition is true."
+        },
+        {
+          "name": "background_color",
+          "typing": "color",
+          "description": "The integer color index assigned to cells where condition is false (default 0 = black)."
+        }
+      ],
+      "description": "Produces a new grid of the same dimensions as source_grid. Each cell is set to highlight_color if the condition holds for that cell, otherwise to background_color. This implements a binary mask visualization.",
+      "cues": [
+        "Puzzles where a binary distinction is made between two sets of cells (e.g., equality, inequality, XOR of two layers).",
+        "Grids containing separators (rows or columns) that split the input into comparable regions.",
+        "Conditions that involve comparing values from corresponding positions in two subgrids."
+      ],
+      "implementation": [
+        "Determine the region(s) of interest; if separators exist, extract subgrids.",
+        "For each cell in the region, evaluate condition using its value (and possibly values from other regions).",
+        "Set the output cell's color to highlight_color if condition is true, else background_color.",
+        "Return the resulting grid."
+      ],
+      "used_in": [
+        "1b2d62fb",
+        "3428a4f5"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "center cell selection": {
+      "name": "center cell selection",
+      "kind": "routine",
+      "routine_subtype": "intermediate",
+      "output_typing": "tuple[int,int]",
+      "parameters": [
+        {
+          "name": "height",
+          "typing": "int",
+          "description": "number of rows in the grid"
+        },
+        {
+          "name": "width",
+          "typing": "int",
+          "description": "number of columns in the grid"
+        }
+      ],
+      "description": "Returns the coordinates (row, col) of the cell at the center of a grid, computed via integer division of each dimension (floor(n/2)). The same logic applies to 1D arrays by considering only the relevant dimension.",
+      "cues": [
+        "Puzzles where a single cell (or column/row) is symmetrically placed and colored differently (e.g., gray).",
+        "Patterns involving mirroring or splitting around a middle index.",
+        "Use of floor division (//2) in the solution logic."
+      ],
+      "implementation": [
+        "Compute row_center = height // 2.",
+        "Compute col_center = width // 2.",
+        "Return (row_center, col_center).",
+        "For 1D selection (e.g., center column index), use width // 2 directly."
+      ],
+      "used_in": [
+        "29c11459",
+        "941d9a10"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "clear color": {
+      "name": "clear color",
+      "kind": "routine",
+      "routine_subtype": "grid manipulation",
+      "output_typing": "grid",
+      "parameters": [
+        {
+          "name": "grid",
+          "typing": "grid",
+          "description": "The input grid (2D list of integers)."
+        },
+        {
+          "name": "color",
+          "typing": "int",
+          "description": "The color value to replace with background (0)."
+        }
+      ],
+      "description": "Modifies the grid by setting every cell whose color equals the specified color to 0 (background), effectively erasing all occurrences of that color.",
+      "cues": [
+        "The puzzle output requires removal of a specific color entirely.",
+        "A color appears only as noise or scaffolding and is not present in the final grid.",
+        "Preprocessing steps often clear a color before further operations."
+      ],
+      "implementation": [
+        "Iterate over all cells (row, col) of the input grid.",
+        "If grid[row][col] == color, set grid[row][col] = 0.",
+        "Return the modified grid (or a copy, depending on mutability needs)."
+      ],
+      "used_in": [
+        "6855a6e4",
+        "f8a8fe49"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "color swap": {
+      "name": "color swap",
+      "kind": "routine",
+      "routine_subtype": "grid manipulation",
+      "output_typing": "grid",
+      "parameters": [
+        {
+          "name": "color_a",
+          "typing": "int",
+          "description": "One of the two colors to be swapped (0–9, but typically not background 0)."
+        },
+        {
+          "name": "color_b",
+          "typing": "int",
+          "description": "The other color to be swapped with color_a."
+        },
+        {
+          "name": "region",
+          "typing": "callable[[grid], set[tuple[int,int]]]",
+          "description": "A function that returns the set of cell coordinates where the swap should be applied. Common choices: 'all cells' (lambda g: {(r,c) for r in range(h) for c in range(w)}) or 'bounding boxes of connected non‑zero components' (extracted by flood fill)."
+        }
+      ],
+      "description": "Exchange two colors in a defined region, so that every occurrence of color_a becomes color_b and every occurrence of color_b becomes color_a. The swap is symmetric and leaves other colors unchanged.",
+      "cues": [
+        "The output grid appears to be a simple recoloring where two specific colors are interchanged.",
+        "In some puzzles, the transformation applies only inside bounding boxes of connected shapes, often swapping a border color with an interior color.",
+        "The presence of two dominant colors that co‑occur in a region (e.g., a shape’s outline and fill) suggests a localized swap."
+      ],
+      "implementation": [
+        "Determine the set of cells to process (region). For global swaps, use all cells; for localized swaps, identify connected components (using BFS/DFS on non‑background cells) and use their bounding boxes or entire component areas.",
+        "Iterate over each cell in the region; if its color equals color_a, set output cell to color_b; if its color equals color_b, set output cell to color_a; otherwise leave it unchanged.",
+        "The region may exclude background (0) if the swap is only for non‑zero colors, but the definition can be adapted (e.g., include background only if part of the pattern)."
+      ],
+      "used_in": [
+        "3befdf3e",
+        "d511f180"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "conditional color replacement": {
+      "name": "conditional color replacement",
+      "kind": "routine",
+      "routine_subtype": "grid manipulation",
+      "output_typing": "grid",
+      "parameters": [],
+      "description": "For each pixel, if its color satisfies a condition (typically being non-zero or matching a specific color), \nit is replaced with another color (which may be a fixed value or derived from contextual analysis); \notherwise the pixel is left unchanged.",
+      "cues": [
+        "Grids contain multiple non-zero colors, where some colors appear as isolated pixels or noise.",
+        "Background (color 0) remains unchanged while other colors are altered based on rules.",
+        "Patterns where replacement depends on pixel’s own color, its cardinal neighbors, or global properties (e.g., minority color)."
+      ],
+      "implementation": [
+        "Start with a copy of the input grid as the output.",
+        "Iterate over all cells (row, col).",
+        "For each cell, evaluate a condition (e.g., color != 0, color equals a target value, or color is the minority color and has a certain number of dominant neighbors).",
+        "If condition is true, set the output pixel to a new color (fixed or computed from context); otherwise keep the original color.",
+        "Return the output grid."
+      ],
+      "used_in": [
+        "7c008303",
+        "7e0986d6"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "directional priority": {
+      "name": "directional priority",
+      "kind": "routine",
+      "routine_subtype": "grid manipulation",
+      "output_typing": "grid",
+      "parameters": [],
+      "description": "When multiple directions (e.g., horizontal and vertical) are possible for an operation—such as drawing lines or moving elements—a fixed or conditional rule determines which direction takes precedence, resolving conflicts or guiding selection.",
+      "cues": [
+        "Grids with intersecting lines of different colors.",
+        "Patterns that could be extended in both rows and columns (e.g., a single row and column of the same color crossing).",
+        "Colored cells that suggest a linear path or movement in two perpendicular directions.",
+        "Situations where the output consistently shows one direction overriding or dominating the other."
+      ],
+      "implementation": [
+        "Define a rule that selects a direction (e.g., always horizontal, or horizontal if a condition holds, otherwise vertical).",
+        "When drawing lines, apply the chosen direction first. If both directions are to be drawn, overwrite intersections according to the priority rule (e.g., horizontal line color wins over vertical line color).",
+        "For movement/placement decisions, check candidate cells or paths in each direction and apply the priority rule to decide which action to take.",
+        "The rule may depend on the presence of specific colors or patterns in the grid (conditional priority)."
+      ],
+      "used_in": [
+        "178fcbfb",
+        "5168d44c"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "full line": {
+      "name": "full line",
+      "kind": "structure",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "A full line is a row or column that spans the entire grid and consists entirely of a single non-background color.",
+      "cues": [
+        "Rows or columns where every cell has the same non-black color.",
+        "Often used as a dividing line or boundary within the grid.",
+        "May appear in only one orientation (horizontal or vertical) in a given puzzle.",
+        "Color can vary; look for any non-zero value that repeats across an entire row or column."
+      ],
+      "implementation": [
+        "Scan all rows; for each row, if all cells are equal and the value is not 0, record the row index and color.",
+        "Scan all columns similarly.",
+        "Return the list of such lines (each as (index, color, orientation)).",
+        "{'Handle edge cases': 'grid with no full lines, or lines of the same color.'}"
+      ],
+      "used_in": [
+        "1a07d186",
+        "56dc2b01"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "grid bounds check": {
+      "name": "grid bounds check",
+      "kind": "routine",
+      "routine_subtype": "grid manipulation",
+      "output_typing": "bool",
+      "parameters": [
+        {
+          "name": "grid",
+          "typing": "list[list]",
+          "description": "The grid to check bounds against."
+        },
+        {
+          "name": "row",
+          "typing": "int",
+          "description": "Row index to validate."
+        },
+        {
+          "name": "col",
+          "typing": "int",
+          "description": "Column index to validate."
+        }
+      ],
+      "description": "Returns True if the given (row, col) coordinate lies within the dimensions of the grid, otherwise False. Used to safely write to computed positions in the output grid.",
+      "cues": [
+        "When a transformation computes new coordinates from existing ones (e.g., neighbor offsets, translations).",
+        "Before writing to the output grid at a dynamically calculated position.",
+        "In puzzles where the output size is the same as the input, but writes might go out of bounds."
+      ],
+      "implementation": [
+        "Compare row >= 0 and row < height of grid.",
+        "Compare col >= 0 and col < width of grid.",
+        "Typically placed inside loops over input cells, checking each target coordinate before assignment."
+      ],
+      "used_in": [
+        "0ca9ddb6",
+        "a79310a0"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "grid partitioning by lines": {
+      "name": "grid partitioning by lines",
+      "kind": "routine",
+      "routine_subtype": "grid manipulation",
+      "output_typing": "list[list[grid]]",
+      "parameters": [
+        {
+          "name": "separator_condition",
+          "typing": "function(row_or_col: list[color]) -> bool",
+          "description": "A condition that determines whether a row or column is considered a separator line (e.g., all cells equal to background color, or all cells equal to a single arbitrary color)."
+        },
+        {
+          "name": "include_edges",
+          "typing": "bool",
+          "description": "Whether to treat the outer boundaries (row=-1, row=H, col=-1, col=W) as implicit separators so that intervals always cover the entire grid."
+        }
+      ],
+      "description": "Splits a 2D grid into rectangular subgrids by identifying rows and columns that satisfy a given uniform‑color condition (separator lines) and taking the intervals between consecutive separators, including grid boundaries.",
+      "cues": [
+        "Full rows or columns of a single color (often black background or a repeating separator color).",
+        "The grid appears to contain a regular or irregular tiling of smaller patterns.",
+        "Separator lines may be thin (1‑pixel) or thicker regions of constant color."
+      ],
+      "implementation": [
+        "Iterate over all row indices; for each row, check if all cells satisfy the separator condition.",
+        "Iterate over all column indices; similarly.",
+        "Collect the indices of separator rows and columns into lists.",
+        "{'Define interval boundaries': 'start = 0, then each separator index (excluding if include_edges duplicates), then end = grid height/width.'}",
+        "For each pair of consecutive row boundaries and each pair of consecutive column boundaries, extract the rectangular subgrid from the original grid.",
+        "Return a 2D list of these subgrids (rows of subgrids correspond to row intervals, columns to col intervals)."
+      ],
+      "used_in": [
+        "780d0b14",
+        "9f236235"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "horizontal line fill": {
+      "name": "horizontal line fill",
+      "kind": "routine",
+      "routine_subtype": "grid manipulation",
+      "output_typing": "grid",
+      "parameters": [
+        {
+          "name": "rows",
+          "typing": "list[int] | range",
+          "description": "Row indices or a contiguous range of rows to be filled."
+        },
+        {
+          "name": "colors",
+          "typing": "list[color] | color",
+          "description": "A single color (all rows same) or a list of colors (one per row, cycled if shorter)."
+        }
+      ],
+      "description": "Set every cell in one or more entire rows of the output grid to a constant color (or to a sequence of colors, one per row).",
+      "cues": [
+        "Output grid contains horizontal stripes or uniformly colored rows.",
+        "Pattern of rows filled entirely with a single non‑background color.",
+        "Input has a single row that defines a color sequence for subsequent rows.",
+        "Presence of two anchor pixels that determine a horizontal split line."
+      ],
+      "implementation": [
+        "Iterate over the specified row indices.",
+        "For each row, assign the chosen color to every column (i.e., set the entire row slice to that color).",
+        "If colors are given as a list, cycle through them (e.g., color_index % len(colors)) when filling multiple rows.",
+        "The rows and colors may be derived from input features such as non‑zero pixel positions, a color sequence in row 0, or explicit splitting."
+      ],
+      "used_in": [
+        "1bfc4729",
+        "bd4472b8"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "isolated pixel": {
+      "name": "isolated pixel",
+      "kind": "structure",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "A single cell that is not part of any full line or larger connected component of the same color, often serving as a reference point.",
+      "cues": [
+        "A cell with a color that appears only once in the grid, or a unique non-background color.",
+        "A cell surrounded entirely by a different color (often background) with no same-colored neighbors.",
+        "Not part of any contiguous block of size >1 of the same color, nor part of a full row/column of that color."
+      ],
+      "implementation": [
+        "Use connected component labeling (e.g., flood fill) on non-background cells; components of size 1 are candidates.",
+        "Additionally verify that the candidate is not part of a full row or column of its color (if lines are relevant).",
+        "Alternatively, count occurrences of each color; if a color appears exactly once, that cell is an isolated pixel.",
+        "For black (0) isolated pixels, treat background as a color only if the grid is otherwise filled with a single non-zero color."
+      ],
+      "used_in": [
+        "1a07d186",
+        "ea786f4a"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "line drawing": {
+      "name": "line drawing",
+      "kind": "routine",
+      "routine_subtype": "grid manipulation",
+      "output_typing": "grid",
+      "parameters": [
+        {
+          "name": "grid",
+          "typing": "grid",
+          "description": "The input grid (2D list of integers) to modify."
+        },
+        {
+          "name": "start",
+          "typing": "Point",
+          "description": "A pair (row, col) indicating one endpoint of the line."
+        },
+        {
+          "name": "end",
+          "typing": "Point",
+          "description": "A pair (row, col) indicating the other endpoint. Must share the same row or same column."
+        },
+        {
+          "name": "color",
+          "typing": "int",
+          "description": "The color (integer) to set along the line segment."
+        }
+      ],
+      "description": "Draws a straight horizontal or vertical line between two points on the grid, setting all cells on the segment (including endpoints) to the specified color.",
+      "cues": [
+        "Two distinct non‑background pixels that need to be connected with a line.",
+        "The line is axis‑aligned (horizontal or vertical) – no diagonal.",
+        "The line may be part of a larger pattern (e.g., completing a rectangle, linking markers)."
+      ],
+      "implementation": [
+        "Verify that start and end are aligned (same row for horizontal, same column for vertical).",
+        "Determine the minimum and maximum row or column indices along the shared axis.",
+        "Loop through all cells on that axis between the min and max, and set each cell to the given color.",
+        "Return the modified grid (or modify in place)."
+      ],
+      "used_in": [
+        "2c608aff",
+        "b7249182"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "output grid scaling": {
+      "name": "output grid scaling",
+      "kind": "routine",
+      "routine_subtype": "grid manipulation",
+      "output_typing": "grid",
+      "parameters": [
+        {
+          "name": "row_scale",
+          "typing": "int",
+          "description": "factor by which to multiply the input height to get output height"
+        },
+        {
+          "name": "col_scale",
+          "typing": "int",
+          "description": "factor by which to multiply the input width to get output width"
+        }
+      ],
+      "description": "The output grid's dimensions are a fixed multiple of the input grid's dimensions. The scaling factors may differ for rows and columns, but are determined by the puzzle's logic.",
+      "cues": [
+        "Output grid size is a multiple (often >1) of input grid size in at least one dimension.",
+        "The ratio (output height / input height) and (output width / input width) are integers, possibly different.",
+        "No shrinking or resampling; scaling is by integer factors."
+      ],
+      "implementation": [
+        "Compute output height = input_height * row_scale, output width = input_width * col_scale.",
+        "Create a new grid of that size, initially filled with background (0).",
+        "Map each input cell (or region) to one or more output cells according to the puzzle's rule (e.g., tiling, nearest‑neighbor, block expansion).",
+        "Ensure coordinate transformations respect the scaling factors."
+      ],
+      "used_in": [
+        "46f33fce",
+        "8d5021e8"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "pixel-wise operation": {
+      "name": "pixel-wise operation",
+      "kind": "routine",
+      "routine_subtype": "grid manipulation",
+      "output_typing": "grid",
+      "parameters": [
+        {
+          "name": "transform_function",
+          "typing": "Callable[[int, int, int], int]",
+          "description": "A function that takes (row, column, input_value) and returns the output color for that pixel. The row and column indices allow conditional logic (e.g., shifts based on position), but the transformation does not use neighboring pixel values."
+        }
+      ],
+      "description": "A transformation that independently determines the output color of each pixel based solely on its original value and possibly its coordinates, without any reference to neighboring pixels.",
+      "cues": [
+        "The rule can be described as \"for each cell, change its color according to a fixed mapping or simple positional rule.\"",
+        "No patterns like blobs, lines, or symmetry are required; each cell is treated identically in isolation.",
+        "Colors are swapped, shifted, or replaced without any dependency on adjacent cells."
+      ],
+      "implementation": [
+        "Create a new output grid of the same dimensions, initialized to background (0) or a copy of the input.",
+        "Iterate over every cell (row, column) of the input grid.",
+        "For each cell, compute a new color using a function that may depend on the original color and pixel coordinates, but never on other cells.",
+        "Set the corresponding output cell to that computed color."
+      ],
+      "used_in": [
+        "25ff71a9",
+        "d511f180"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "quadrant extraction": {
+      "name": "quadrant extraction",
+      "kind": "routine",
+      "routine_subtype": "grid manipulation",
+      "output_typing": "list[grid]",
+      "parameters": [
+        {
+          "name": "line_color",
+          "typing": "int",
+          "description": "Color value that fills the separating row and column entirely (e.g., 0 for black, 8 for azure). This color is used to detect the dividing lines."
+        }
+      ],
+      "description": "Splits a grid into four rectangular regions (quadrants) by locating a horizontal row and a vertical column that consist of a single uniform color (the separator), then extracting the subgrids from the four corners, excluding the separator lines themselves.",
+      "cues": [
+        "The grid contains a full row and a full column of a single color (often black or a specific color) that partition the grid into four blocks.",
+        "Quadrants may be of equal or varying sizes depending on the position of the separator lines.",
+        "The separator lines are continuous (every cell in that row/column has the same color) and are not part of any quadrant."
+      ],
+      "implementation": [
+        "Scan all rows to find one where every cell equals `line_color`; store its index. Similarly scan all columns for a column matching `line_color`.",
+        "If exactly one such row and one such column are found, extract four subgrids: top-left: rows[0:row_idx], cols[0:col_idx]; top-right: rows[0:row_idx], cols[col_idx+1:]; bottom-left: rows[row_idx+1:], cols[0:col_idx]; bottom-right: rows[row_idx+1:], cols[col_idx+1:].",
+        "Handle edge cases where the separator is at the edge (e.g., first row) – the corresponding quadrant will be empty; in practice the puzzles assume separators are interior."
+      ],
+      "used_in": [
+        "7c008303",
+        "bc1d5164"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "rectangle frame": {
+      "name": "rectangle frame",
+      "kind": "structure",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [
+        {
+          "name": "frame_color",
+          "typing": "int (0-9)",
+          "description": "The color of the frame pixels (may be absent if variable across instances)"
+        }
+      ],
+      "description": "A hollow, single-pixel-thick rectangular outline of uniform color, forming the four edges of a rectangle with an empty interior.",
+      "cues": [
+        "A contiguous set of pixels of a single color arranged in a rectangular loop with no interior fill of that same color.",
+        "The frame thickness is exactly one pixel; the interior area is either black or contains other patterns.",
+        "Often appears as a bounding box or container for other objects."
+      ],
+      "implementation": [
+        "Identify all pixels of the candidate frame color, compute their bounding box.",
+        "Verify that the bounding box's perimeter pixels (all four edges) are exactly those candidate pixels and that there are no additional interior pixels of that color.",
+        "Alternatively, detect by looking for a shape where the number of pixels equals 2*(width+height-2) for a width and height determined by the bounding box.",
+        "The frame may be recognized via connected component analysis if it forms a closed loop."
+      ],
+      "used_in": [
+        "6b9890af",
+        "b7249182"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "region extraction": {
+      "name": "region extraction",
+      "kind": "routine",
+      "routine_subtype": "intermediate",
+      "output_typing": "grid (2D list of ints)",
+      "parameters": [
+        {
+          "name": "input_grid",
+          "typing": "grid",
+          "description": "The larger grid from which a rectangular subgrid is extracted."
+        },
+        {
+          "name": "row_range",
+          "typing": "tuple[int, int]",
+          "description": "Inclusive start row index and exclusive end row index defining the vertical bounds."
+        },
+        {
+          "name": "col_range",
+          "typing": "tuple[int, int]",
+          "description": "Inclusive start column index and exclusive end column index defining the horizontal bounds."
+        }
+      ],
+      "description": "Isolate a contiguous rectangular subgrid from a larger grid by specifying row and column boundaries.",
+      "cues": [
+        "Grids that contain full-row or full-column separators (single color) suggesting natural splits.",
+        "Grids composed of multiple equal-sized blocks that can be extracted separately.",
+        "Patterns where a region of interest is defined by known indices (e.g., left/right or top/bottom of a separator)."
+      ],
+      "implementation": [
+        "{'Use array slicing': 'subgrid = input_grid[row_start:row_end, col_start:col_end] (or equivalent list comprehension).'}",
+        "If separator lines are present, locate them first (e.g., find rows/columns where all cells equal a specific color) to compute boundaries.",
+        "Ensure extracted region dimensions match expected output size; padding or reshaping may be needed if boundaries are not exact."
+      ],
+      "used_in": [
+        "0520fde7",
+        "3428a4f5"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "seed points": {
+      "name": "seed points",
+      "kind": "structure",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "Non-zero cells in the input grid that serve as sources for transformations or propagation.",
+      "cues": [
+        "The input contains isolated non-zero cells on a black background.",
+        "The transformation appears to originate from these cells (e.g., drawing lines, moving objects).",
+        "The output pattern is determined by the positions and colors of the non-zero cells."
+      ],
+      "implementation": [
+        "Iterate over all cells; record row, column, and color of each non-zero cell.",
+        "Store them as a list of points with associated color.",
+        "Use these points as starting positions or condition anchors for subsequent operations."
+      ],
+      "used_in": [
+        "23581191",
+        "a3df8b1e"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "set cell color": {
+      "name": "set cell color",
+      "kind": "routine",
+      "routine_subtype": "grid manipulation",
+      "output_typing": "grid",
+      "parameters": [
+        {
+          "name": "target_cell",
+          "typing": "tuple(int, int)",
+          "description": "Coordinates (row, column) of the cell whose color will be changed."
+        },
+        {
+          "name": "new_color",
+          "typing": "int",
+          "description": "The color value (0-9) to assign to the target cell. May be derived from another cell's color or computed from the puzzle's logic."
+        }
+      ],
+      "description": "A grid manipulation that overwrites the color of a single cell with a specified value. The new color often originates from another cell's color or from a pattern, and the target cell is usually identified by geometric or relational criteria (e.g., after a straight-line projection, or the center of a known block).",
+      "cues": [
+        "The output differs from the input by exactly one cell's color.",
+        "A cell's color is set to match the color of a cell located in a straight line (horizontal, vertical, or diagonal) after skipping background cells.",
+        "A specific cell (e.g., the center of a 3x3 pattern) is recolored to a fixed or context-dependent value.",
+        "The operation is conditional on the presence of certain colors or shapes."
+      ],
+      "implementation": [
+        "Copy the input grid to avoid mutation.",
+        "Determine the target cell coordinates (e.g., by searching for a pattern or by tracing a ray from a source cell).",
+        "Compute or extract the new color (e.g., the color of a source cell, a constant, or a color from a pattern).",
+        "Assign the new color to the target cell in the output grid.",
+        "Return the modified grid."
+      ],
+      "used_in": [
+        "1f642eb9",
+        "5168d44c"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "shape matching": {
+      "name": "shape matching",
+      "kind": "routine",
+      "routine_subtype": "intermediate",
+      "output_typing": "bool",
+      "parameters": [
+        {
+          "name": "shape_a",
+          "typing": "set of (int, int)",
+          "description": "Set of cell coordinates (row, col) representing the first shape."
+        },
+        {
+          "name": "shape_b",
+          "typing": "set of (int, int)",
+          "description": "Set of cell coordinates representing the second shape."
+        }
+      ],
+      "description": "Compare two shapes by checking equality of their coordinate sets after normalizing for translation (subtracting the minimum row and column).",
+      "cues": [
+        "Puzzles where objects or patterns need to be matched by exact shape, ignoring position.",
+        "Highlighted use of connected components followed by normalization and set comparison.",
+        "Look for binary patterns that recur with the same relative arrangement but different locations."
+      ],
+      "implementation": [
+        "Extract shapes as sets of cell coordinates (via connected components or manual selection).",
+        "Normalize each shape by subtracting the minimum row and minimum column from all coordinates.",
+        "Compare the resulting sets; if identical, the shapes match.",
+        "For pattern searching, slide the normalized pattern over the grid and test equality at each candidate origin."
+      ],
+      "used_in": [
+        "228f6490",
+        "776ffc46"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "single line grid": {
+      "name": "single line grid",
+      "kind": "structure",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "A grid that consists of exactly one row (height 1) or exactly one column (width 1), often treated as a special case for transformations such as compression, expansion, or pattern extraction along the single dimension.",
+      "cues": [
+        "Input or output grid has height == 1 or width == 1.",
+        "All rows in a multi‑row grid are identical (hints that the output may be a single row).",
+        "All columns in a multi‑column grid are identical (hints that output may be a single column).",
+        "Transformations that manipulate the grid as a linear sequence (e.g., compressing consecutive duplicates, extending blocks)."
+      ],
+      "implementation": [
+        "{'Check grid.shape': 'if rows == 1 or cols == 1, treat as a 1D array.'}",
+        "Access the single row or column as a list.",
+        "Apply operations along that axis (e.g., compress duplicates, expand blocks, compute lengths).",
+        "When returning a single line grid, ensure output shape matches the expected orientation (1×N or N×1)."
+      ],
+      "used_in": [
+        "746b3537",
+        "bbc9ae5d"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "sliding window scan": {
+      "name": "sliding window scan",
+      "kind": "routine",
+      "routine_subtype": "intermediate",
+      "output_typing": "int (count) or list[grid] (collected subgrids) depending on use",
+      "parameters": [
+        {
+          "name": "window_size",
+          "typing": "tuple[int, int] (height, width)",
+          "description": "Dimensions of the fixed-size subgrid to scan over the input."
+        },
+        {
+          "name": "condition",
+          "typing": "Callable[[grid, int, int], bool]",
+          "description": "A function that takes the full grid and the top-left corner (row, col) and returns True if the subgrid at that position satisfies some local property."
+        },
+        {
+          "name": "stride",
+          "typing": "tuple[int, int] (row_step, col_step)",
+          "description": "Step size between consecutive windows. Default (1,1) for dense sliding."
+        }
+      ],
+      "description": "Iterate over all possible positions of a fixed-size subgrid in a larger grid, checking a local condition at each position and optionally counting matches or collecting the qualifying subgrids.",
+      "cues": [
+        "The output depends on the count or positions of a specific local pattern (e.g., all‑same 2×2 block).",
+        "The input has repeated uniform blocks that are being detected.",
+        "The output size is unrelated to input size (e.g., always 1×5) and is derived from the count."
+      ],
+      "implementation": [
+        "Determine the grid dimensions and the window size.",
+        "Loop over top-left row from 0 to (rows - window_height) inclusive, stepping by stride[0].",
+        "Loop over top-left col from 0 to (cols - window_width) inclusive, stepping by stride[1].",
+        "At each position, apply the condition (e.g., extract subgrid and test uniformity).",
+        "If condition holds, increment a counter or store the subgrid / its location.",
+        "Return the accumulated result (count, list, or derived output)."
+      ],
+      "used_in": [
+        "1fad071e",
+        "ff28f65a"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "source erasure": {
+      "name": "source erasure",
+      "kind": "routine",
+      "routine_subtype": "grid manipulation",
+      "output_typing": "grid",
+      "parameters": [],
+      "description": "After extracting a property (color, shape, etc.) from a source region or cell, erase that source by setting its cells to the background color.",
+      "cues": [
+        "A distinct colored cell or region that is used as a template or parameter but does not appear in the final output.",
+        "The source often has a unique color or position (e.g., bottom-left corner) that is not used elsewhere.",
+        "The output grid is a transformation of the input where the source is absent."
+      ],
+      "implementation": [
+        "Identify the source region or cell based on a rule (e.g., specific color, location, shape).",
+        "Extract the needed property (color, pattern, etc.) from the source.",
+        "Apply that property to other parts of the grid (e.g., copy shape, flood fill).",
+        "Set all cells belonging to the source to background (0) before returning the grid."
+      ],
+      "used_in": [
+        "228f6490",
+        "aabf363d"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "unique color extraction": {
+      "name": "unique color extraction",
+      "kind": "routine",
+      "routine_subtype": "intermediate",
+      "output_typing": "color",
+      "parameters": [],
+      "description": "Extract a color that is either the sole non-background color in a region, or a color that appears in one region but not in another (set difference). The specific region definitions and extraction rule depend on the puzzle context.",
+      "cues": [
+        "Grid contains regions separated by solid background rows/columns.",
+        "One region has exactly one non-background color, others have more.",
+        "Need to identify a color unique to a portion of the grid."
+      ],
+      "implementation": [
+        "Identify regions (e.g., by splitting on all-zero rows or columns).",
+        "Compute the set of non-background colors for each region.",
+        "{'For single-color extraction': 'if a region has exactly one non-background color, return that color.'}",
+        "{'For set difference': \"if one region's color set is a subset of another's, return the color in the larger set not in the smaller.\"}"
+      ],
+      "used_in": [
+        "0b148d64",
+        "780d0b14"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "unique pixel": {
+      "name": "unique pixel",
+      "kind": "structure",
+      "routine_subtype": null,
+      "output_typing": null,
+      "parameters": [],
+      "description": "A grid containing exactly one non‑background (non‑zero) cell, or the process of locating that single pixel.",
+      "cues": [
+        "Grid has only one colored cell (non-zero) among many black (0) cells.",
+        "The presence of a single isolated object often triggers a global transformation.",
+        "Puzzle may ask to find its position, color, or properties."
+      ],
+      "implementation": [
+        "Iterate over all cells; count cells with value != 0; if exactly one, record its position and color.",
+        "Return a tuple (row, col, color) or a custom object, or None if not unique.",
+        "Alternatively, use functions like np.argwhere if using numpy."
+      ],
+      "used_in": [
+        "623ea044",
+        "834ec97d"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "vertical line drawing": {
+      "name": "vertical line drawing",
+      "kind": "routine",
+      "routine_subtype": "grid manipulation",
+      "output_typing": "grid",
+      "parameters": [
+        {
+          "name": "color",
+          "typing": "int (0-9)",
+          "description": "The color value to use for the fill."
+        },
+        {
+          "name": "column_indices",
+          "typing": "list[int]",
+          "description": "One or more columns where the vertical line(s) should be drawn."
+        },
+        {
+          "name": "start_row",
+          "typing": "int",
+          "description": "The row index (inclusive) where the fill begins."
+        },
+        {
+          "name": "end_row",
+          "typing": "int",
+          "description": "The row index (inclusive) where the fill ends. Must satisfy start_row ≤ end_row."
+        }
+      ],
+      "description": "For each column in column_indices, set every cell from start_row to end_row (inclusive) to the given color, overwriting any existing values.",
+      "cues": [
+        "A rule that fills entire columns or column segments with a single, usually prominent, non‑black color.",
+        "Bottom‑row cells (often red) acting as markers to decide which columns to fill.",
+        "Gray or other colored cells acting as blockers that limit the vertical extent of the fill.",
+        "Frequency analysis of non‑background colors to determine which color fills from the top."
+      ],
+      "implementation": [
+        "Determine the set of columns to fill (e.g., based on marker colors, pattern, or frequency).",
+        "{'Compute the vertical range': 'either from row 0 to a blocker, from a blocker to bottom, or the whole column.'}",
+        "For each target column, iterate over rows in [start_row, end_row] and set the color.",
+        "If the range is empty (e.g., start > end), skip that column."
+      ],
+      "used_in": [
+        "9af7a82c",
+        "d9f24cd1"
+      ],
+      "tags": [],
+      "links": []
+    },
+    "visited grid": {
+      "name": "visited grid",
+      "kind": "structure",
+      "routine_subtype": null,
+      "output_typing": "Grid[bool]",
+      "parameters": [],
+      "description": "A boolean grid of the same dimensions as the input that tracks which cells have already been processed, preventing redundant operations and repeated modifications during multi-step grid transformations.",
+      "cues": [
+        "Presence of iterative scanning or flood-fill where each cell should be processed only once.",
+        "Need to avoid double-counting or re-coloring cells that are part of a larger region.",
+        "Algorithms that depend on the order of processing (e.g., row-major, component-based) and must skip already handled cells."
+      ],
+      "implementation": [
+        "Create a 2D boolean array of the same size as the input grid, initialized to false.",
+        "Set a cell to true immediately after it is processed (e.g., when its component is fully collected or its rectangle is analyzed).",
+        "Before processing a cell, check the visited flag and skip if already true.",
+        "Use visited grid in conjunction with connectivity checks (e.g., flood fill) or shape analysis to ensure each region is handled exactly once."
+      ],
+      "used_in": [
+        "3bdb4ada",
+        "6e82a1ae"
+      ],
+      "tags": [],
+      "links": []
+    }
+  },
+  "solutions": {},
+  "custom_types": {
+    "BBox": "(min_row: int, max_row: int, min_col: int, max_col: int)",
+    "SeedCells": "list[tuple[int, int, int]]",
+    "Rectangle": "(min_row: int, max_row: int, min_col: int, max_col: int)"
+  }
+}

@@ -14,4 +14,6 @@ PROVIDERS = {
     "llmplus_xai_v1": LLMPlusProviderClient,
     "llmplus_vllm": LLMPlusProviderClient,
     "llmplus_vllm_v1": LLMPlusProviderClient,
+    "llmplus_deepseek_v4_flash": LLMPlusProviderClient,
+    "llmplus_deepseek_v4_flash_v1": LLMPlusProviderClient,
 }

@@ -104,6 +104,8 @@ MODEL_REGISTRY: dict[Provider, ProviderMeta] = {
         models={
             "deepseek-chat": ModelMeta("deepseek-chat"),
             "deepseek-reasoner": ModelMeta("deepseek-reasoner"),
+            "deepseek-v4-flash": ModelMeta("deepseek-v4-flash"),
+            "deepseek-v4-pro": ModelMeta("deepseek-v4-pro"),
         },
     ),
     Provider.VLLM: ProviderMeta(

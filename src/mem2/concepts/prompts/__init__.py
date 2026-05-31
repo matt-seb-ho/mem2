@@ -1,7 +1,10 @@
 """Prompt template registry for concept-based pipelines."""
 
 from mem2.concepts.prompts.arc_hints import HINT_TEMPLATE_OP3
-from mem2.concepts.prompts.arc_select import SELECT_PROMPT_TEMPLATE
+from mem2.concepts.prompts.arc_select import (
+    RESELECT_PROMPT_TEMPLATE,
+    SELECT_PROMPT_TEMPLATE,
+)
 from mem2.concepts.prompts.code_hints import CODE_HINT_TEMPLATE
 from mem2.concepts.prompts.code_select import CODE_SELECT_PROMPT_TEMPLATE
 from mem2.concepts.prompts.math_hints import MATH_HINT_TEMPLATE

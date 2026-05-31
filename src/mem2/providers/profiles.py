@@ -72,6 +72,26 @@ _VLLM = ProviderProfile(
     extra_gen_defaults={"n": 1, "temperature": 0.0},
 )
 
+# Official DeepSeek API (api.deepseek.com) — on-policy concept-induction effort.
+# supports_multi=False on this backend, so n>1 is emulated as N separate requests.
+_DEEPSEEK_V4_FLASH = ProviderProfile(
+    profile_name="llmplus_deepseek_v4_flash",
+    backend="llmplus",
+    provider="deepseek",
+    model="deepseek-v4-flash",
+    # ArcMemo default solver system prompt (matches _ARCMEMO_GPT41).
+    system_prompt=(
+        "You are a world-class puzzle solver with exceptional pattern recognition "
+        "skills and expertise in Python programming. Your task is to analyze "
+        "puzzles and provide Python solutions."
+    ),
+    default_max_concurrency=32,
+    retry_attempts=5,
+    retry_wait_min=1,
+    retry_wait_max=120,
+    extra_gen_defaults={"n": 1, "temperature": 0.3},
+)
+
 DEFAULT_PROVIDER_PROFILES: dict[str, ProviderProfile] = {
     "mock": _MOCK,
     "mock_v1": replace(_MOCK, profile_name="mock_v1"),
@@ -90,6 +110,10 @@ DEFAULT_PROVIDER_PROFILES: dict[str, ProviderProfile] = {
     "llmplus_xai_v1": replace(_XAI, profile_name="llmplus_xai_v1"),
     "llmplus_vllm": _VLLM,
     "llmplus_vllm_v1": replace(_VLLM, profile_name="llmplus_vllm_v1"),
+    "llmplus_deepseek_v4_flash": _DEEPSEEK_V4_FLASH,
+    "llmplus_deepseek_v4_flash_v1": replace(
+        _DEEPSEEK_V4_FLASH, profile_name="llmplus_deepseek_v4_flash_v1"
+    ),
 }
 
 

@@ -40,3 +40,36 @@ Identify which concepts could be relevant to the given puzzle.
 # Your Given Puzzle
 Analyze the following puzzle:
 {puzzle}"""
+
+
+# Reselection variant: used between solve attempts. Adds the prior attempt(s) so the
+# selector can build on what was already explored — reflect on what was tried and why
+# it likely failed, then pick concepts (possibly different ones) to inform the next try.
+RESELECT_PROMPT_TEMPLATE = """\
+# Introduction
+Consider a class of "ARC" puzzles where each puzzle has a hidden transformation rule that maps input grids to output grids. Each puzzle presents several input-output grid pairs as reference examples and solving the puzzle means predicting the transformation rule. Grids are 2D numpy integer arrays with integers representing colors. 0 represents black and should be treated as the background.
+
+We already made one or more solution attempts on this puzzle that did NOT fully solve it. Your task is to look at the prior attempt(s), reflect briefly on what was tried and why it may have failed, and then re-select concepts from the library that would best help the NEXT attempt — including ideas the previous attempt did not consider.
+
+# Concepts from Previously Solved Puzzles
+We recorded concepts about structures and routines observed in previously solved puzzles. Each is annotated with cues (what to look for), implementation notes, output typing, and parameters.
+
+{concepts}
+
+# Prior attempt(s) on this puzzle (did not fully solve it)
+{prior_attempts}
+
+# Instructions
+- First, in 1-3 sentences, note what the prior attempt(s) tried and what likely went wrong (write this inside <reflection> </reflection> tags).
+- Then re-select concepts that could help the next attempt. Favor concepts that address the prior failure or open a different line of attack; do not just repeat the prior approach.
+- Use the exact concept names as they appear in the above concept list.
+- Write your final selection inside a ```yaml fenced block as a yaml list of concept names:
+```yaml
+- concept name one
+- concept name two
+...
+```
+
+# Your Given Puzzle
+Analyze the following puzzle:
+{puzzle}"""

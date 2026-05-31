@@ -27,6 +27,8 @@ import yaml
 from mem2.concepts.domain import DomainProfile
 from mem2.concepts.memory import ConceptMemory
 from mem2.concepts.prompts import DOMAIN_PROMPT_MAP
+from mem2.concepts.prompts.arc_select import RESELECT_PROMPT_TEMPLATE
+from mem2.utils.code_execution import extract_python_block
 from mem2.core.entities import (
     AttemptRecord,
     MemoryState,
@@ -147,6 +149,9 @@ class PsSelectorRetriever:
         selected_concepts_file: str = "",
         render_mode: str = "full",
         selector_render_mode: str = "full",
+        use_reselection: bool = True,
+        reselect_max_attempts: int = 1,
+        reselect_max_chars: int = 1200,
         max_frequency: float = 0.0,
         max_concepts_per_problem: int = 0,
         routing_strategy: str = "none",
@@ -165,6 +170,9 @@ class PsSelectorRetriever:
         self.hint_template_key = hint_template_key
         self.render_mode = render_mode
         self.selector_render_mode = selector_render_mode
+        self.use_reselection = bool(use_reselection)
+        self.reselect_max_attempts = int(reselect_max_attempts)
+        self.reselect_max_chars = int(reselect_max_chars)
 
         # ── Format-independent stages (reusable by any retriever) ─────
         self._filter = ConceptFilter(
@@ -221,6 +229,21 @@ class PsSelectorRetriever:
 
     def _get_prompt_templates(self):
         return DOMAIN_PROMPT_MAP.get(self.domain, DOMAIN_PROMPT_MAP["arc"])
+
+    def _format_prior_attempts(self, previous_attempts: list[AttemptRecord]) -> str:
+        """Compact 'exploration digest' of the most recent prior attempt(s): the
+        code that was tried (so the reselection call can build on prior work)."""
+        if not previous_attempts:
+            return "(none)"
+        recent = previous_attempts[-self.reselect_max_attempts:]
+        blocks = []
+        for i, att in enumerate(recent, 1):
+            code, _ = extract_python_block(getattr(att, "completion", "") or "")
+            snippet = (code or getattr(att, "completion", "") or "").strip()
+            if len(snippet) > self.reselect_max_chars:
+                snippet = snippet[: self.reselect_max_chars] + "\n# ...(truncated)"
+            blocks.append(f"### Attempt {i} (did not fully solve)\n```python\n{snippet}\n```")
+        return "\n\n".join(blocks)
 
     def _format_problem_for_selection(self, problem: ProblemSpec) -> str:
         if self.domain == "code":
@@ -556,10 +579,19 @@ class PsSelectorRetriever:
 
         select_template, _ = self._get_prompt_templates()
         puzzle_str = self._format_problem_for_selection(problem)
-        selection_prompt = select_template.format(
-            concepts=full_concepts_str,
-            puzzle=puzzle_str,
-        )
+        # Reselection: on retry passes, fold prior-attempt context into the
+        # selection prompt so the selector builds on what was already explored.
+        if self.use_reselection and previous_attempts and self.domain == "arc":
+            selection_prompt = RESELECT_PROMPT_TEMPLATE.format(
+                concepts=full_concepts_str,
+                puzzle=puzzle_str,
+                prior_attempts=self._format_prior_attempts(previous_attempts),
+            )
+        else:
+            selection_prompt = select_template.format(
+                concepts=full_concepts_str,
+                puzzle=puzzle_str,
+            )
 
         model_name = self.selector_model or selector_model
         if not model_name:
