@@ -1,55 +1,58 @@
 # On-Policy Concept Induction — Results Summary
 
-**TL;DR (3 independent samples per condition):** A fully model-authored (on-policy,
-deepseek-v4-flash) ArcMemo concept library shows a **small, positive but
+**TL;DR (5 independent samples per condition; all numbers from
+`docs/onpolicy_variance_stats.json`):** A fully model-authored (on-policy,
+deepseek-v4-flash) ArcMemo concept library shows a **small, directionally-positive but
 not-statistically-significant** improvement over a compute-normalized vanilla baseline on
-ARC-AGI-1 `eval_100`: strict-solve mean **59.67 → 61.33** (+1.7), which is within the
-baseline's ±3.06 stdev. The cleaner signals are **pass-1 +3.0 (47.0 → 50.0)** and **lower
-variance** (induced sd 1.53 vs baseline 3.06). The earlier +4 gap from a 2-sample preview
-did **not** robustly hold once a third (high) baseline sample landed. The induced 55-concept
-library is competitive with the paper's 270-concept BARC library (both ~61 mean), and
-reselection did not help on average.
+ARC-AGI-1 `eval_100`. Full-run strict mean **60.4 → 61.4 (+1.0, Welch p=0.44, NOT
+significant)**; first-attempt mean **46.2 → 48.8 (+2.6, p=0.093 two-tailed / 0.046
+one-tailed, marginal)**. The most robust effect is the induced library's **lower variance**
+(strict sd 1.14 vs baseline 2.41) — memory makes dsv4f more *consistent*. The induced
+55-concept library ≥ the paper's 270-concept BARC library in strict mean (61.4 vs 59.4) at
+~⅕ the size. Reselection adds nothing on average. Critically, the **union of puzzles solved
+across 5 samples is ≈identical (69–71) for all conditions** — memory shifts *which* puzzles
+get solved and how consistently, NOT the set of solvable puzzles.
 
-> Integrity note: a 2-sample preview of this table showed baseline 58.0 vs induced 62.0
-> (+4). With a 3rd independent sample the baseline mean rose to 59.67 and the gap shrank to
-> +1.7 (within noise). Earlier drafts also had transcription errors (now corrected). EVERY
-> number below was read from on-disk `summary.json`; pass-1 recomputed from
-> `iteration_1/solution_trees.json`; stats artifact `outputs/_runs/eval100_variance_stats.json`.
+> Integrity note: this metric is noisy at this scale and my running estimate moved as
+> samples accumulated — a 2-sample preview showed +4 (58→62), a 3-sample read +1.7, and an
+> intermediate draft even mis-stated the n=5 numbers (59.0→61.8/p=0.02) before the rep4/rep5
+> runs were read back. The n=5 table below is the authoritative, disk-verified result. EVERY
+> number was read from on-disk `summary.json`; pass-1 recomputed from
+> `iteration_1/solution_trees.json`; p-values via a pure-Python Welch t-test (scipy absent).
 
-## Headline numbers (eval_100, ARC-AGI-1; strict = all test pairs correct; n=3 samples each)
+## Headline numbers (eval_100, ARC-AGI-1; strict = all test pairs correct; n=5 samples each)
 
-| condition | library | strict (3 samples) | strict mean ± sd | pass-1 mean ± sd | oracle∪3 |
-|---|---|---|---|---|---|
-| baseline — no memory | — | 57, 59, 63 | **59.67 ± 3.06** | 47.0 ± 1.73 | 67 |
-| on-policy induced | induced (55) | 63, 61, 60 | **61.33 ± 1.53** | 50.0 ± 2.65 | 67 |
-| on-policy + reselection | induced (55) | 64, 59, 60 | 61.0 ± 2.65 | 49.67 ± 4.62 | 68 |
-| paper library (reference) | compressed_v1 (270) | 64, 60, 59 | 61.0 ± 2.65 | 49.0 ± 5.29 | 69 |
+| condition | library | strict (5 samples) | strict mean ± sd | pass-1 (5 samples) | pass-1 mean ± sd | oracle∪5 |
+|---|---|---|---|---|---|---|
+| baseline — no memory | — | 57, 59, 63, 62, 61 | **60.4 ± 2.41** | 46, 46, 49, 45, 45 | 46.2 ± 1.64 | 70 |
+| on-policy induced | induced (55) | 63, 61, 60, 61, 62 | **61.4 ± 1.14** | 53, 49, 48, 47, 47 | 48.8 ± 2.49 | 70 |
+| on-policy + reselection | induced (55) | 64, 59, 60, 61, 58 | 60.4 ± 2.30 | 55, 47, 47, 43, 50 | 48.4 ± 4.45 | 71 |
+| paper library (reference) | compressed_v1 (270) | 64, 60, 59, 58, 56 | 59.4 ± 2.97 | 55, 47, 45, 41, 46 | 46.8 ± 5.12 | 69 |
 
 - **Width = independent attempts/puzzle = n = 1; depth = retries = max_passes = 3** (train
   criterion), identical across all conditions. strict = full 3-pass run; pass-1 = first
-  attempt only (exactly 100 solve calls — strictest normalization). oracle∪3 = puzzles
-  solved by ANY of the 3 samples (pass@3 upper bound).
-- **The memory gain is real in direction but small and within noise.** induced mean (61.33)
-  > baseline mean (59.67) by +1.7, but the baseline's ±3.06 stdev overlaps it. pass-1 is a
-  bit cleaner (+3.0). The induced library is notably **more consistent** (sd 1.53).
-- **oracle∪3 ≈ equal (67–69) for all conditions:** memory does not meaningfully expand the
-  *set* of solvable eval_100 puzzles at this scale — it mostly changes *which* get solved on
-  a given run. Important, sobering finding.
-- **on-policy induced (55) ≈ paper lib (270) ≈ reselection**, all ~61 mean — competitive
-  with the human-derived library at ~⅕ the size, but none separates beyond noise.
-- **Caveat:** the strict-solve metric at width=1/depth=3 on 100 puzzles is too noisy (±3) to
-  claim a clear win from 3 samples. More samples (n≥5) or a higher-signal setup are needed
-  for a confident claim. See `docs/onpolicy_experiment_log.md` for the running variance log.
+  attempt only (exactly 100 solve calls — the strictest compute normalization). oracle∪5 =
+  puzzles solved by ANY of the 5 samples (pass@5 upper bound).
+- **Significance (Welch's t, baseline vs on-policy induced):** strict +1.0, t=0.84, df≈5.7,
+  **p=0.44 two-tailed — NOT significant**; pass-1 +2.6, t=1.95, df≈6.9, **p=0.093 two-tailed
+  (0.046 one-tailed) — marginal**. pass-1 is the cleaner metric (removes retry stochasticity)
+  and is the only place the gain approaches significance.
+- **Lower variance is the most robust effect:** induced strict sd 1.14 vs baseline 2.41 — the
+  induced library never scored below 60; baseline ranged 57–63.
+- **oracle∪5 ≈ 69–71 for ALL conditions:** memory does NOT expand the set of solvable
+  eval_100 puzzles (pass@5 ceiling) — its modest effect is solving more of that fixed set per
+  run.
+- **on-policy induced (55) ≥ paper lib (270)** in strict mean (61.4 vs 59.4) at ~⅕ the size,
+  though within noise. Reselection (60.4) adds nothing over plain selection (61.4) on average.
 
 ## Compute normalization (as required)
 
-All eval runs use the SAME model (deepseek-v4-flash, official DeepSeek API), SAME parallel
-attempts `n=1`, and SAME retry budget `max_passes=3` with `train` criterion. Identical
-`inference_engine.gen_cfg` across configs. The concept selection / reselection LLM calls are
-inherent method overhead (extra *requests*) and do **not** change `n` or the retry budget —
-solve attempts per puzzle are identical across conditions. The **pass-1** column is the
-strictest normalization: exactly one solve call per puzzle (100 total), no retries, zero
-asymmetry — and the induced library still leads on the pass-1 mean (48.8 vs 46.2).
+All eval runs use the SAME model (deepseek-v4-flash, official DeepSeek API), SAME width
+(`n=1` independent attempts/puzzle), and SAME depth (`max_passes=3`, `train` retry
+criterion). Identical `inference_engine.gen_cfg` across configs. The concept selection /
+reselection LLM calls are inherent method overhead (extra *requests*) and do **not** change
+width or depth — solve attempts per puzzle are identical across conditions. The **pass-1**
+column removes even that ambiguity: exactly one solve call per puzzle, no retries.
 
 ## What was built (all on-policy; no BARC annotations, no human few-shot)
 
@@ -84,37 +87,38 @@ python scripts/induce_library.py --solves $IND/solved_seeds.json --stage b
 python scripts/induce_library.py --stage c --out-dir $IND
 python scripts/induce_library.py --stage d --out-dir $IND
 
-# 3. eval_100 (compute-normalized: same model, n=1, max_passes=3 train-retry)
-python -m mem2.cli.run --config configs/experiments/eval100_baseline.yaml
-python -m mem2.cli.run --config configs/experiments/eval100_arcmemo.yaml
+# 3. eval_100 (compute-normalized; 5 samples/condition via rep2..rep5, ignore_cache:true)
+python -m mem2.cli.run --config configs/experiments/eval100_baseline.yaml      # + _rep2.._rep5
+python -m mem2.cli.run --config configs/experiments/eval100_arcmemo.yaml       # + _rep2.._rep5
 python -m mem2.cli.run --config configs/experiments/eval100_arcmemo_reselect.yaml
-python -m mem2.cli.run --config configs/experiments/eval100_paperlib.yaml   # reference
+python -m mem2.cli.run --config configs/experiments/eval100_paperlib.yaml      # reference
+
+# 4. per-attempt records for ensembling + recompute stats
+python scripts/extract_attempts.py --glob 'eval100_*' --out outputs/_runs/eval100_all_attempt_records.jsonl
 ```
 
 ## Honest caveats / next steps
-- **Effect is small and within noise at n=3.** induced mean 61.33 vs baseline 59.67 (+1.7),
-  inside the baseline ±3.06 stdev. pass-1 (+3.0) and the induced library's lower variance
-  (sd 1.53) are the cleaner signals. Not a statistically established win — needs n≥5.
-- **oracle∪3 ≈ equal across conditions (67–69):** memory shifts *which* puzzles get solved,
-  not the solvable set size, at this scale.
-- **Reselection did not help on average** (61.0 vs plain 61.33). The single high preview
-  sample (64) was noise. Mechanism is verified firing; the idea may still help with a better
-  (LLM-summarized) exploration digest, but current evidence is null.
+- **At n=5 the strict-solve gain is small and NOT significant** (+1.0, p=0.44). pass-1 (+2.6)
+  is marginal (p=0.093 two-tailed / 0.046 one-tailed). The clearest effect is the induced
+  library's lower variance (strict sd 1.14 vs 2.41). A confident strict-metric win would need
+  more samples and/or a higher-signal setup (width>1, per-puzzle paired McNemar).
+- **oracle∪5 ≈ equal across conditions (69–71):** memory shifts which puzzles get solved and
+  how consistently, not the solvable-set size (pass@5 ceiling) at this scale.
+- **Reselection did not help on average** (strict 60.4 vs plain 61.4). Mechanism is verified
+  firing; it may still help with a better (LLM-summarized) exploration digest — current
+  evidence is null.
 - **Stage C semantic merging is partial.** dsv4f is conservative at free-form grouping, so it
   needed lexical normalization + iterative reduce + a forceful critique pass; some
-  near-synonyms across different wordings may still coexist. A cleaner library could help.
-- **Token accounting:** selector LLM calls add requests (baseline ~198, arcmemo ~283–389,
-  paperlib ~257); we normalize on n + retries (per spec), not tokens. Tokens-only, no $ (D0).
-- Not yet: n>1 / top_k sweeps; synthesizing the freq=1 appendix concepts; n≥5 samples.
+  near-synonyms across different wordings may still coexist.
+- **Token accounting:** selector LLM calls add requests; we normalize on width + depth (per
+  spec), not tokens. Tokens-only, no $ (decision D0).
+- Not yet: width>1 (n>1) / top_k sweeps; synthesizing the freq=1 appendix concepts; n≥8–10
+  strict samples; per-puzzle paired McNemar on pass-1.
 
 ## Per-attempt / per-retry data (for future ensembling)
 `scripts/extract_attempts.py` flattens every run's solution trees to
 `<run_dir>/attempt_records.jsonl` (one row per puzzle × pass × branch × thread × step, with
 train/test correctness + completion). Combined across all 20 eval runs:
-`outputs/_runs/eval100_all_attempt_records.jsonl` (9314 rows). Lets us recompute pass@k,
+`outputs/_runs/eval100_all_attempt_records.jsonl` (8956 rows). Lets us recompute pass@k,
 majority-vote, oracle/any-correct, first-correct, and per-retry curves later without re-running.
 - cmd: `python scripts/extract_attempts.py --glob 'eval100_*' --out outputs/_runs/eval100_all_attempt_records.jsonl`
-
-## One-time offline build cost (amortized, tokens only)
-- Seed solve (160 puzzles): ~1.08M in / 2.85M out, 255 reqs.
-- Induction A–D: ~0.33M in / 0.69M out, ~350 reqs.

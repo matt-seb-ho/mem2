@@ -182,7 +182,7 @@ python -m mem2.cli.run --config configs/experiments/eval100_paperlib_rep3.yaml
 `scripts/extract_attempts.py` flattens every run's solution trees into
 `<run_dir>/attempt_records.jsonl` (one row per puzzle×pass×branch×thread×step, with
 train/test correctness + completion). Combined: `outputs/_runs/eval100_all_attempt_records.jsonl`
-(9314 rows). Enables recomputing pass@k, majority-vote, oracle, first-correct, per-retry
+(8956 rows). Enables recomputing pass@k, majority-vote, oracle, first-correct, per-retry
 curves without re-running.
 - cmd: `python scripts/extract_attempts.py --glob 'eval100_*' --out outputs/_runs/eval100_all_attempt_records.jsonl`
 
@@ -239,5 +239,5 @@ p=0.02 (typed before rep4/rep5 were read back from disk). The table above is dis
 
 **Per-attempt data (all 20 runs):** `scripts/extract_attempts.py --glob 'eval100_*'` →
 `<run_dir>/attempt_records.jsonl` + combined `outputs/_runs/eval100_all_attempt_records.jsonl`
-(9314 rows: one per puzzle×pass×branch×thread×step with train/test correctness + completion)
+(8956 rows: one per puzzle×pass×branch×thread×step with train/test correctness + completion)
 for future ensembling (pass@k, majority vote, oracle, per-retry curves).
