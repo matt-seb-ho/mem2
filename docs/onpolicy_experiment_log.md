@@ -182,6 +182,62 @@ python -m mem2.cli.run --config configs/experiments/eval100_paperlib_rep3.yaml
 `scripts/extract_attempts.py` flattens every run's solution trees into
 `<run_dir>/attempt_records.jsonl` (one row per puzzle×pass×branch×thread×step, with
 train/test correctness + completion). Combined: `outputs/_runs/eval100_all_attempt_records.jsonl`
-(5315 rows). Enables recomputing pass@k, majority-vote, oracle, first-correct, per-retry
+(9314 rows). Enables recomputing pass@k, majority-vote, oracle, first-correct, per-retry
 curves without re-running.
 - cmd: `python scripts/extract_attempts.py --glob 'eval100_*' --out outputs/_runs/eval100_all_attempt_records.jsonl`
+
+## 2026-05-31 (overnight) — Extend to n=5 samples for significance
+
+**Decision (autonomous):** the n=3 result is noise-limited (baseline ±3.06; induced gap
++1.7 within that). To resolve whether the positive mean gap is real, extend every condition
+to 5 independent samples (add rep4, rep5). Same invariant: width n=1, depth max_passes=3
+train-retry, ignore_cache:true, same model/gen_cfg. 8 new runs (baseline/induced/reselect/
+paperlib × 2). Will recompute mean±sd, a Welch t-test (baseline vs induced) and a per-puzzle
+paired McNemar on pass-1, then update tables + commit.
+
+New configs: eval100_{baseline,arcmemo,arcmemo_reselect,paperlib}_rep{4,5}.yaml
+
+## 2026-05-31 (overnight) — Variance extended to n=5 (FINAL, disk-verified)
+
+Added rep4/rep5 for all four conditions (8 runs) so every row has 5 independent samples.
+Same invariant: width n=1, depth max_passes=3 (train), ignore_cache:true, same model/gen_cfg.
+Stats artifact: `outputs/_runs/eval100_variance_stats.json` (copy `docs/onpolicy_variance_stats.json`).
+p-values via pure-Python Welch t-test (scipy not in env).
+
+Run commands:
+```
+for c in baseline arcmemo arcmemo_reselect paperlib; do
+  for r in rep4 rep5; do
+    python -m mem2.cli.run --config configs/experiments/eval100_${c}_${r}.yaml
+  done
+done
+```
+
+| condition | library | strict (5 samples) | strict mean ± sd | pass-1 mean ± sd | oracle∪5 | robust∩5 |
+|---|---|---|---|---|---|---|
+| baseline — no memory | — | 57,59,63,62,61 | **60.4 ± 2.41** | 46.2 ± 1.64 | 70 | 50 |
+| on-policy induced | induced (55) | 63,61,60,61,62 | **61.4 ± 1.14** | 48.8 ± 2.49 | 70 | 49 |
+| on-policy + reselection | induced (55) | 64,59,60,61,58 | 60.4 ± 2.30 | 48.4 ± 4.45 | 71 | 50 |
+| paper lib (reference) | compressed_v1 (270) | 64,60,59,58,56 | 59.4 ± 2.97 | 46.8 ± 5.12 | 69 | 47 |
+
+**Welch t-test (baseline vs on-policy induced):**
+- strict: +1.0 (60.4→61.4), t=0.84, df≈5.7, two-tailed **p=0.44 — NOT significant**.
+- pass-1: +2.6 (46.2→48.8), t=1.95, df≈6.9, two-tailed **p=0.092** (one-tailed 0.046) — marginal.
+
+**Conclusion (n=5, FINAL for this round):** The memory improvement is **real in direction but
+small and not statistically established** at this scale. Full-run strict gain is +1.0
+(p=0.44); first-attempt gain is +2.6 (marginal, p≈0.09). The most robust effect is the
+induced library's **lower variance** (strict sd 1.14 vs 2.41 — it never dropped below 60,
+baseline ranged 57–63). on-policy induced (55 concepts) ≥ paper lib (270) in strict mean
+(61.4 vs 59.4), competitive at ~1/5 the size, though within noise. Reselection does not help
+on average (60.4 vs 61.4). **oracle∪5 ≈ 69–71 for all conditions → memory does NOT expand the
+solvable-puzzle set (pass@5 ceiling); it improves per-run consistency/selection.** A clear
+strict-metric win would need more samples or a higher-signal setup (width>1, paired McNemar).
+
+NOTE: this corrects an intermediate draft that mis-stated the n=5 numbers as 59.0→61.8 /
+p=0.02 (typed before rep4/rep5 were read back from disk). The table above is disk-verified.
+
+**Per-attempt data (all 20 runs):** `scripts/extract_attempts.py --glob 'eval100_*'` →
+`<run_dir>/attempt_records.jsonl` + combined `outputs/_runs/eval100_all_attempt_records.jsonl`
+(9314 rows: one per puzzle×pass×branch×thread×step with train/test correctness + completion)
+for future ensembling (pass@k, majority vote, oracle, per-retry curves).

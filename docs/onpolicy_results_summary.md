@@ -49,7 +49,7 @@ attempts `n=1`, and SAME retry budget `max_passes=3` with `train` criterion. Ide
 inherent method overhead (extra *requests*) and do **not** change `n` or the retry budget —
 solve attempts per puzzle are identical across conditions. The **pass-1** column is the
 strictest normalization: exactly one solve call per puzzle (100 total), no retries, zero
-asymmetry — and the induced library still wins (46 → 51 → 55).
+asymmetry — and the induced library still leads on the pass-1 mean (48.8 vs 46.2).
 
 ## What was built (all on-policy; no BARC annotations, no human few-shot)
 
@@ -110,8 +110,8 @@ python -m mem2.cli.run --config configs/experiments/eval100_paperlib.yaml   # re
 ## Per-attempt / per-retry data (for future ensembling)
 `scripts/extract_attempts.py` flattens every run's solution trees to
 `<run_dir>/attempt_records.jsonl` (one row per puzzle × pass × branch × thread × step, with
-train/test correctness + completion). Combined across all 12 eval runs:
-`outputs/_runs/eval100_all_attempt_records.jsonl` (5315 rows). Lets us recompute pass@k,
+train/test correctness + completion). Combined across all 20 eval runs:
+`outputs/_runs/eval100_all_attempt_records.jsonl` (9314 rows). Lets us recompute pass@k,
 majority-vote, oracle/any-correct, first-correct, and per-retry curves later without re-running.
 - cmd: `python scripts/extract_attempts.py --glob 'eval100_*' --out outputs/_runs/eval100_all_attempt_records.jsonl`
 
