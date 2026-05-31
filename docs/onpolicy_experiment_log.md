@@ -272,3 +272,44 @@ re-runs (ignore_cache:true), so a "pair" = 2 independent attempts ensembled by o
   memory would, so memory's small edge is mostly (not entirely) washed out by ensembling.
 - Paper lib (270) has the lowest oracle@1 (59.4) AND the lowest oracle@2 (65.0): ensembling
   two of its (more variable, sd 2.97) runs does not close the gap to the induced library.
+
+## 2026-05-31 (overnight) — Does memory unlock NEW solves? (union-of-solves diff)
+
+**Question:** comparing each condition's union-of-solves over its 5 runs (oracle@5 set,
+test-correct), does any memory method solve puzzles baseline NEVER solves (unlocked), and
+does it lose any baseline solves (lost)?
+
+- cmd: `python scripts/compare_union_solves.py` → `outputs/_runs/eval100_union_diff.json`
+- Width n=1 / depth max_passes=3 throughout; union = solved test-correct in ANY of the 5 runs.
+
+| method | union | unlocked (mem-only) | lost (baseline-only) | net |
+|---|---|---|---|---|
+| baseline | 70 | — | — | — |
+| induced (55) | 70 | 4 | 4 | +0 |
+| reselect | 71 | 4 | 3 | +1 |
+| paper lib (270) | 69 | 4 | 5 | −1 |
+| **ANY memory (∪ of 3)** | **75** | **8** | **3** | **+5** |
+
+**Findings:**
+- **Yes — memory unlocks new solves, but it also loses some.** Each individual method
+  unlocks ~4 puzzles baseline never gets, while losing ~3–5 baseline solves → near-zero net
+  per method (induced +0, reselect +1, paperlib −1). This is exactly why the aggregate
+  oracle@5 numbers looked "≈equal": they net out, but the underlying solved SETS genuinely
+  differ.
+- **The unlocks are partly systematic, partly noise.** 2 puzzles are unlocked by ALL THREE
+  memory methods (`963f59bc`, `cb227835`) — these look like genuine memory-enabled solves.
+  The rest are method-specific (induced-only: `4c177718`, `69889d6e`; reselect-only:
+  `9bebae7a`, `d931c21c`; paperlib-only: `b7f8a4d8`, `ecaa0ec1`) and may be sampling luck.
+- **Memory + baseline are complementary.** Pooling baseline with all memory methods reaches
+  **75** distinct solved puzzles vs baseline's 70 — i.e. memory contributes **8 puzzles no
+  baseline run ever solves**, at the cost of **3 puzzles every memory method misses but
+  baseline gets** (`103eff5b`, `351d6448`, `c62e2108`). Net **+5** capability if ensembled
+  with baseline.
+- Caveat: "never in 5 runs" is a strong-but-not-infinite bar; some single-method unlocks
+  could flip with more baseline samples. The all-three-method unlocks (2) and the
+  baseline-only-never-memory set (3) are the most robust signals.
+
+**Interpretation:** memory's value here is **not** a higher single-run mean (that's ~+1,
+n.s.) — it's that memory explores a *different, partly-complementary* region of the solution
+space. The strongest practical takeaway: an ensemble of baseline + a memory method covers
+more puzzles (75) than either alone (70 / ≤71).
