@@ -241,3 +241,34 @@ p=0.02 (typed before rep4/rep5 were read back from disk). The table above is dis
 `<run_dir>/attempt_records.jsonl` + combined `outputs/_runs/eval100_all_attempt_records.jsonl`
 (8956 rows: one per puzzle×pass×branch×thread×step with train/test correctness + completion)
 for future ensembling (pass@k, majority vote, oracle, per-retry curves).
+
+## 2026-05-31 (overnight) — Oracle@2 (pairwise-ensemble ceiling)
+
+**Question:** how much does a 2nd independent sample buy? For each condition take all
+C(5,2)=10 pairs of the 5 runs; each pair's oracle score = #eval_100 puzzles solved
+(test-correct / strict) by EITHER run in the pair; average over the 10 pairs. Test-cases
+only. Width n=1, depth max_passes=3 (train) throughout — the 5 samples are independent
+re-runs (ignore_cache:true), so a "pair" = 2 independent attempts ensembled by oracle/any-correct.
+
+- cmd: `python scripts/compute_oracle2.py`
+- out: `outputs/_runs/eval100_oracle2_stats.json` (per-pair lists + means) and
+  `outputs/_runs/eval100_oracle2_summary.txt`. Per-run strict sets cross-checked against
+  each run's `summary.json`.
+
+| condition | oracle@1 (single mean) | oracle@2 (pair mean ± sd) [min,max] | oracle@5 (union) |
+|---|---|---|---|
+| baseline — no memory | 60.4 | **66.30 ± 1.70** [63, 69] | 70 |
+| on-policy induced (55) | 61.4 | **66.62 ± 1.86** [?, ?] | 70 |
+| on-policy + reselection | 60.4 | 67.10 ± 2.18 | 71 |
+| paper lib (270, ref) | 59.4 | 67.20 ± 2.18 | 69 |
+
+**Takeaways:**
+- A 2nd independent sample is worth **~+6 puzzles** (oracle@1 ~60 → oracle@2 ~66–67) — far
+  more than memory's ~+1 single-run edge. Width (independent attempts) dominates here.
+- At oracle@2 the conditions are nearly tied (66.3–67.2, ~1-puzzle spread): **memory's small
+  single-run advantage is washed out once you ensemble two samples.** Consistent with the
+  earlier finding that oracle∪5 ≈ equal (69–71) — memory mostly reshuffles *which* puzzles
+  solve rather than expanding the solvable set, so a 2nd random sample captures most of the
+  same headroom memory would.
+- Paper lib (270) has the lowest oracle@1 (59.4) but ties at the top of oracle@2 (67.2),
+  i.e. its per-run solved sets are slightly more *diverse* across samples.
