@@ -215,7 +215,64 @@ plain retries close most of the gap.
 
 ---
 
-## 7. Synthesis — what the whole picture says
+## 7. Does this mean memory "doesn't scale with test-time compute"?
+
+The gap shrinks as we add either kind of test-time compute:
+
+| compute axis | gap (induced − baseline) | trend |
+|---|---|---|
+| **depth** (retries) | +2.6 (pass 1) → +1.6 (pass 2) → +1.0 (pass 3) | shrinks, stays positive |
+| **width** (oracle@k) | +1.0 (k=1) → +1.4 (k=2) → 0.0 (k=5) | shrinks to a tie at the ceiling |
+
+**This gap-closing is the expected behavior, not a failure mode.** Memory's value
+proposition is *amortizing rediscovery*: it spares the model from re-deriving ideas it
+already worked out on earlier puzzles. Test-time compute — extra retries, or extra
+independent samples — is precisely the budget the model can spend to *rediscover those same
+ideas on the fly*. So giving the no-memory baseline more exploration budget should, by
+construction, let it close the gap. A memory advantage that *narrows* as you pour in
+per-puzzle compute is exactly what the rediscovery account predicts. The interesting
+quantity is not whether the gap shrinks (it must) but **how much compute it takes to erase
+it** — here, roughly one extra independent sample or ~two retries.
+
+**Why this is not the criticism "the method doesn't scale with test-time compute."**
+1. **The advantage never inverts.** Across every compute level on both axes the gap is
+   ≥ 0 — memory is never *worse* than baseline at higher compute. At worst it ties (oracle@5,
+   70 = 70). There is no anti-scaling: more compute doesn't make memory a liability, it just
+   makes its head-start less necessary.
+2. **Per-puzzle compute is the wrong axis for memory's scaling.** Retry-rediscovery is
+   *throwaway*: whatever the baseline figures out on passes 2–3 of puzzle *i* is discarded
+   before puzzle *i+1*, so it re-pays the full rediscovery cost on every puzzle. Memory is
+   *cumulative*: it pays the discovery cost once and reuses it. The axis along which memory is
+   *supposed* to scale is therefore the **number of problems / size of the library**, not the
+   per-puzzle attempt budget. Our width/depth sweeps deliberately hold the library fixed and
+   scale only per-puzzle compute — the one axis where memory and rediscovery are
+   substitutes — so a closing gap there says nothing about whether memory scales on its own
+   axis.
+3. **The front-loaded win is the economically relevant one.** The largest gap is at the
+   smallest budget (pass 1: +2.6; single sample: +1.0). For any deployment where attempts are
+   expensive or latency-bound — i.e. you *can't* afford many retries/samples per problem —
+   memory delivers its biggest edge exactly where it matters, and does so with **lower
+   variance** (strict sd 1.14 vs 2.41), which is itself a compute saving (fewer wasted runs).
+4. **Memory and baseline remain complementary at scale.** Even pooling 5 samples, baseline +
+   any-memory covers **75** distinct puzzles vs 70 for baseline alone (§4) — memory keeps
+   adding solves the baseline never reaches no matter how many times it re-rolls, so the
+   contribution is not fully absorbed by more sampling.
+
+**Honest limit / forward-looking claim.** On *this* fixed 100-puzzle set with a fixed
+55-concept library, memory does **not** raise the absolute oracle@5 ceiling (tied at 70): we
+have **not** demonstrated "memory wins at large test-time compute" on the ceiling metric, and
+we should not claim it. The stronger statement — that the early-attempt wins compound and
+matter *more* on **future / harder problems** — is the natural consequence of the
+amortization mechanism (a growing library should keep paying off on novel puzzles while the
+baseline re-pays rediscovery each time), but it is a **hypothesis our current eval does not
+test.** The clean way to settle it is to scale memory's *own* axis: grow the seed corpus /
+library and measure whether the gap widens with problem count, and/or evaluate on harder
+splits where per-puzzle rediscovery is more expensive. That is the experiment that would
+convert "expected gap-closing under per-puzzle compute" into a positive "memory scales" result.
+
+---
+
+## 8. Synthesis — what the whole picture says
 
 Decomposing the comparison along both compute axes plus capability/ensembling gives a
 consistent story:
@@ -249,7 +306,7 @@ mean) at ~⅕ the size — the model can author a competitive concept library fr
 
 ---
 
-## 8. Reproducibility — artifacts and commands
+## 9. Reproducibility — artifacts and commands
 
 **Code (branch `onpolicy-concept-induction`).**
 - Pipeline: `scripts/harvest_solves.py`, `src/mem2/concepts/induction.py`,
