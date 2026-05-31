@@ -313,3 +313,45 @@ does it lose any baseline solves (lost)?
 n.s.) — it's that memory explores a *different, partly-complementary* region of the solution
 space. The strongest practical takeaway: an ensemble of baseline + a memory method covers
 more puzzles (75) than either alone (70 / ≤71).
+
+## 2026-05-31 (overnight) — Depth curve: memory vs baseline across retry depth
+
+**Question:** how does the memory-vs-baseline gap change as retry DEPTH increases?
+Each run has iteration_1/2/3 = pass 1 (initial) + passes 2,3 (train-feedback retries).
+"Solved by depth k" = test-correct in ANY pass ≤ k (cumulative). Mean ± sd over the 5
+independent samples per condition. Width held at n=1 throughout. depth1 = pass-1;
+depth3 = full run (== strict_solved). Depth-3 cumulative cross-checked == summary.json
+strict for all 20 runs.
+
+- cmd: `python scripts/compute_depth_curve.py` → `outputs/_runs/eval100_depth_curve.json`
+
+| condition | depth1 (pass-1) | depth2 | depth3 (full) | +pass2 | +pass3 |
+|---|---|---|---|---|---|
+| baseline — no memory | 46.2 ± 1.64 | 55.6 ± 1.52 | 60.4 ± 2.41 | +9.4 | +4.8 |
+| on-policy induced (55) | 48.8 ± 2.49 | 57.2 ± 3.42 | 61.4 ± 1.14 | +8.4 | +4.2 |
+| on-policy + reselection | 48.4 ± 4.45 | 57.0 ± 3.32 | 60.4 ± 2.30 | +8.6 | +3.4 |
+| paper lib (270, ref) | 46.8 ± 5.12 | 55.6 ± 4.72 | 59.4 ± 2.97 | +8.8 | +3.8 |
+
+memory(induced) − baseline gap by depth: **+2.6 (d1) → +1.6 (d2) → +1.0 (d3)**.
+
+**Findings:**
+- **Retries help everyone a lot, and roughly equally.** Each condition gains ~+9 from the
+  first retry (pass 2) and ~+4 from the second (pass 3); baseline 46→55.6→60.4, induced
+  48.8→57.2→61.4. The depth curves are near-parallel.
+- **The memory edge is largest at depth 1 (+2.6) and SHRINKS with depth** (+1.6 at d2, +1.0
+  at d3). Retries are a partial substitute for memory: a no-memory model with 2 retries
+  (60.4) ≈ a memory model with retries (61.4), and the memory model's *first-attempt* lead
+  (+2.6) is its biggest. Intuitively, train-feedback retries let baseline rediscover much of
+  what memory front-loads.
+- **Reselection does NOT improve the retry slope.** Its whole premise is better retries
+  (prior-attempt-informed concept reselection on passes 2-3), but its pass-2/pass-3 gains
+  (+8.6/+3.4) are not above plain induced (+8.4/+4.2) — if anything pass-3 is slightly worse.
+  Reselection is not buying better depth scaling here.
+- All depth-3 differences remain within noise (sds 1.1–3.0), consistent with the n=5
+  significance result (strict +1.0, p=0.44). The depth view's cleaner signal is the
+  **first-attempt** gap (+2.6), matching the earlier pass-1 finding (marginal, p≈0.09).
+
+**Interpretation:** memory mostly helps the *first* attempt; retry depth and memory are
+partially redundant (both surface the same fixes), so the gap compresses as depth grows.
+For compute-limited single-attempt use, memory's relative value is highest; with a retry
+budget, plain retries close most of the gap.
