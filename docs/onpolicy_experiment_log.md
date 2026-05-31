@@ -145,4 +145,43 @@ python -m mem2.cli.run --config configs/experiments/eval100_paperlib_rep2.yaml
 python -m mem2.cli.run --config configs/experiments/eval100_paperlib_rep3.yaml
 ```
 
-**Results:** _(filled in after runs complete — table with per-sample strict, mean ± stdev)_
+**Results (3 independent samples each; read from disk; stats artifact
+`outputs/_runs/eval100_variance_stats.json`):**
+
+| condition | library | strict (3 samples) | strict mean ± sd | pass-1 (3 samples) | pass-1 mean ± sd | oracle∪3 | robust∩3 |
+|---|---|---|---|---|---|---|---|
+| baseline — no memory | — | 57, 59, 63 | **59.67 ± 3.06** | 46, 46, 49 | 47.0 ± 1.73 | 67 | 52 |
+| on-policy induced | induced (55) | 63, 61, 60 | **61.33 ± 1.53** | 53, 49, 48 | 50.0 ± 2.65 | 67 | 54 |
+| on-policy + reselection | induced (55) | 64, 59, 60 | 61.0 ± 2.65 | 55, 47, 47 | 49.67 ± 4.62 | 68 | 53 |
+| paper lib (reference) | compressed_v1 (270) | 64, 60, 59 | 61.0 ± 2.65 | 55, 47, 45 | 49.0 ± 5.29 | 69 | 52 |
+
+- strict = full run (depth 3); pass-1 = first attempt only (1 solve call/puzzle, perfect
+  width/depth normalization). oracle∪3 = puzzles solved by ANY of the 3 samples (pass@3
+  upper bound). robust∩3 = solved by ALL 3 samples.
+
+**Honest takeaways (this is the corrected, 3-sample picture):**
+- ⚠️ **The +4 strict gap from the 2-sample preview did NOT robustly hold.** With a 3rd
+  sample, baseline drew a high run (63), lifting baseline mean to 59.67. The memory vs
+  no-memory gap is now **+1.7 strict (59.67 → 61.33)**, which is WITHIN the baseline's
+  ±3.06 stdev — i.e. not statistically distinguishable at n=3.
+- The cleaner signal is **pass-1: +3.0 (47.0 → 50.0)** and **lower variance** for the
+  induced library (sd 1.53 vs baseline 3.06). Memory makes dsv4f more *consistent* more than
+  it raises the ceiling.
+- **oracle∪3 is ~equal across all conditions (67–69):** memory does NOT meaningfully expand
+  the SET of solvable eval_100 puzzles at this scale; it mostly shifts which get solved on a
+  given run. This is an important, sobering finding.
+- on-policy induced (55 concepts) ≈ paper lib (270) ≈ reselection — all ~61 mean. No
+  condition separates from another beyond noise. Reselection did not help on average.
+- **Bottom line:** at width=1 / depth=3 on eval_100 (100 puzzles), the strict-solve metric
+  is too noisy (±3) to claim a clear memory win from 3 samples. Direction of the mean is
+  still positive (induced > baseline on mean and much tighter), but it is not significant.
+  More samples and/or a higher-signal setup (e.g. width>1, or per-puzzle paired analysis)
+  are needed to make a confident claim.
+
+**Per-attempt / per-retry data saved (for future ensembling):**
+`scripts/extract_attempts.py` flattens every run's solution trees into
+`<run_dir>/attempt_records.jsonl` (one row per puzzle×pass×branch×thread×step, with
+train/test correctness + completion). Combined: `outputs/_runs/eval100_all_attempt_records.jsonl`
+(5315 rows). Enables recomputing pass@k, majority-vote, oracle, first-correct, per-retry
+curves without re-running.
+- cmd: `python scripts/extract_attempts.py --glob 'eval100_*' --out outputs/_runs/eval100_all_attempt_records.jsonl`

@@ -1,0 +1,94 @@
+{
+  "baseline (no memory)": {
+    "strict": [
+      57,
+      59,
+      63
+    ],
+    "strict_mean": 59.67,
+    "strict_sd": 3.06,
+    "pass1": [
+      46,
+      46,
+      49
+    ],
+    "pass1_mean": 47,
+    "pass1_sd": 1.73,
+    "oracle_union3": 67,
+    "robust_intersection3": 52,
+    "dirs": [
+      "eval100_baseline/7f6af99c7234",
+      "eval100_baseline_rep2/83e80339b1a0",
+      "eval100_baseline_rep3/c2a44b6a374e"
+    ]
+  },
+  "on-policy induced (55)": {
+    "strict": [
+      63,
+      61,
+      60
+    ],
+    "strict_mean": 61.33,
+    "strict_sd": 1.53,
+    "pass1": [
+      53,
+      49,
+      48
+    ],
+    "pass1_mean": 50,
+    "pass1_sd": 2.65,
+    "oracle_union3": 67,
+    "robust_intersection3": 54,
+    "dirs": [
+      "eval100_arcmemo/5286d74e39b2",
+      "eval100_arcmemo_rep2/86d94e24c8e2",
+      "eval100_arcmemo_rep3/6741c21b508a"
+    ]
+  },
+  "on-policy + reselection": {
+    "strict": [
+      64,
+      59,
+      60
+    ],
+    "strict_mean": 61,
+    "strict_sd": 2.65,
+    "pass1": [
+      55,
+      47,
+      47
+    ],
+    "pass1_mean": 49.67,
+    "pass1_sd": 4.62,
+    "oracle_union3": 68,
+    "robust_intersection3": 53,
+    "dirs": [
+      "eval100_arcmemo_reselect/cd6c4624f8ea",
+      "eval100_arcmemo_reselect_rep2/31f09f42b410",
+      "eval100_arcmemo_reselect_rep3/003933e586ce"
+    ]
+  },
+  "paper lib (270, ref)": {
+    "strict": [
+      64,
+      60,
+      59
+    ],
+    "strict_mean": 61,
+    "strict_sd": 2.65,
+    "pass1": [
+      55,
+      47,
+      45
+    ],
+    "pass1_mean": 49,
+    "pass1_sd": 5.29,
+    "oracle_union3": 69,
+    "robust_intersection3": 52,
+    "dirs": [
+      "eval100_paperlib/4bbcb1af4941",
+      "eval100_paperlib_rep2/2d38cdc3df34",
+      "eval100_paperlib_rep3/c8cd0c86217e"
+    ]
+  }
+}
